@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { storage } from '~utils/mmkv-storage';
 
 import useColorScheme from './useColorScheme';
 
@@ -15,13 +15,13 @@ export default function useAppIsReady() {
 
   useEffect(() => {
     (async () => {
-      const theme = await AsyncStorage.getItem('theme');
+      const theme = storage.getString('theme');
       if (Platform.OS === 'web') {
         // Adds the background color to the html element to prevent white background on overscroll.
         document.documentElement.classList.add('bg-background');
       }
       if (!theme) {
-        AsyncStorage.setItem('theme', colorScheme);
+        storage.set('theme', colorScheme);
         return;
       }
       const colorTheme = theme === 'dark' ? 'dark' : 'light';
