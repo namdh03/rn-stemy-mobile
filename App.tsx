@@ -2,6 +2,7 @@ import * as Linking from 'expo-linking';
 import { StatusBar } from 'expo-status-bar';
 
 import { NavigationContainer, Theme, ThemeProvider } from '@react-navigation/native';
+import { PortalHost } from '@rn-primitives/portal';
 
 import constants from '~constants';
 import { useAppIsReady, useColorScheme } from '~hooks';
@@ -48,6 +49,7 @@ export default function App() {
       >
         <AuthStack />
       </NavigationContainer>
+      <PortalHost />
     </ThemeProvider>
   );
 }
