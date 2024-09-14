@@ -6,7 +6,7 @@ import tseslint from 'typescript-eslint';
 import pluginJs from '@eslint/js';
 
 export default tseslint.config(
-  { ignores: ['node_modules', 'dist'] },
+  { ignores: ['node_modules', 'android'] },
   {
     extends: [pluginJs.configs.recommended, ...tseslint.configs.recommended],
     files: ['**/*.{mjs,ts,tsx}'],
