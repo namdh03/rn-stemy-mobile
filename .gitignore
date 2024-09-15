@@ -28,8 +28,8 @@ yarn-error.*
 .DS_Store
 *.pem
 
-# env files
-/.env*
+# ignores all .env files
+.env*
 
 # typescript
 *.tsbuildinfo
