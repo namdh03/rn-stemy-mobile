@@ -1,9 +1,15 @@
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 
-const RegisterScreen = () => {
+import { Button } from '~components/ui/button';
+import { Text } from '~components/ui/text';
+import { RegisterScreenNavigationProps } from '~types/navigation';
+
+const RegisterScreen = ({ navigation }: RegisterScreenNavigationProps) => {
   return (
-    <View>
-      <Text>RegisterScreen</Text>
+    <View className='flex-1 justify-center items-center gap-5 p-6 bg-secondary/30'>
+      <Button onPress={() => navigation.replace('LoginScreen')}>
+        <Text>Login</Text>
+      </Button>
     </View>
   );
 };

@@ -26,6 +26,7 @@
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="stemy"/>
         <data android:scheme="com.anonymous.rnstemymobile"/>
+        <data android:scheme="exp+rn-stemy-mobile"/>
       </intent-filter>
     </activity>
     <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" android:exported="false"/>

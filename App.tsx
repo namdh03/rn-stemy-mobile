@@ -1,3 +1,4 @@
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import * as Linking from 'expo-linking';
 import { StatusBar } from 'expo-status-bar';
 
@@ -40,16 +41,18 @@ export default function App() {
   }
 
   return (
-    <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-      <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
-      <NavigationContainer
-        linking={linking}
-        onReady={onLayoutRootView}
-        theme={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}
-      >
-        <AuthStack />
-      </NavigationContainer>
-      <PortalHost />
-    </ThemeProvider>
+    <SafeAreaProvider style={{ backgroundColor: isDarkColorScheme ? 'black' : 'white' }}>
+      <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
+        <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
+        <NavigationContainer
+          linking={linking}
+          onReady={onLayoutRootView}
+          theme={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}
+        >
+          <AuthStack />
+        </NavigationContainer>
+        <PortalHost />
+      </ThemeProvider>
+    </SafeAreaProvider>
   );
 }
