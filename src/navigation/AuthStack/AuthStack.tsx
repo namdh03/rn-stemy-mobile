@@ -1,6 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import Logout from '~components/customs/Logout';
 import ThemeToggle from '~components/customs/ThemeToggle';
 import LoginScreen from '~screens/LoginScreen';
 import RegisterScreen from '~screens/RegisterScreen';
@@ -16,7 +15,6 @@ export default function AuthStack() {
         component={LoginScreen}
         options={{
           headerTitleAlign: 'center',
-          headerLeft: () => <Logout />,
           headerRight: () => <ThemeToggle />,
         }}
       />
@@ -25,7 +23,6 @@ export default function AuthStack() {
         component={RegisterScreen}
         options={{
           headerTitleAlign: 'center',
-          headerLeft: () => <Logout />,
           headerRight: () => <ThemeToggle />,
         }}
       />
