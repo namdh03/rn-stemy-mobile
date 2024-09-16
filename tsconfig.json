@@ -12,6 +12,7 @@
       "~components/*": ["src/components/*"],
       "~configs/*": ["src/configs/*"],
       "~constants/*": ["src/constants/*"],
+      "~graphql/*": ["src/graphql/*"],
       "~hooks/*": ["src/hooks/*"],
       "~lib/*": ["src/lib/*"],
       "~navigation/*": ["src/navigation/*"],
@@ -19,6 +20,14 @@
       "~store/*": ["src/store/*"],
       "~types/*": ["src/types/*"],
       "~utils/*": ["src/utils/*"]
-    }
+    },
+
+    /* Config GraphQL Codegen */
+    "plugins": [
+      {
+        "name": "@0no-co/graphqlsp",
+        "schema": "./schema.graphql"
+      }
+    ]
   }
 }

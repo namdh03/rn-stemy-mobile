@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { View } from 'react-native';
 import Animated, { FadeInUp, FadeOutDown, LayoutAnimationConfig } from 'react-native-reanimated';
 
+import { useQuery } from '@tanstack/react-query';
+
 import { Info } from '~components/icons';
 import { Avatar, AvatarFallback, AvatarImage } from '~components/ui/avatar';
 import { Button } from '~components/ui/button';
@@ -9,12 +11,27 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Progress } from '~components/ui/progress';
 import { Text } from '~components/ui/text';
 import { Tooltip, TooltipContent, TooltipTrigger } from '~components/ui/tooltip';
+import { graphql } from '~graphql';
 import { LoginScreenNavigationProps } from '~types/navigation';
+import { execute } from '~utils/execute';
 
 const GITHUB_AVATAR_URI = 'https://i.pinimg.com/originals/ef/a2/8d/efa28d18a04e7fa40ed49eeb0ab660db.jpg';
 
+const ExampleQuery = graphql(`
+  query ExampleQ($id: ID!) {
+    post(id: $id) {
+      title
+    }
+  }
+`);
+
 const LoginScreen = ({ navigation }: LoginScreenNavigationProps) => {
   const [progress, setProgress] = useState(78);
+
+  const { data } = useQuery({
+    queryKey: ['post'],
+    queryFn: () => execute(ExampleQuery, { id: '1' }),
+  });
 
   function updateProgressValue() {
     setProgress(Math.floor(Math.random() * 100));
@@ -43,6 +60,7 @@ const LoginScreen = ({ navigation }: LoginScreenNavigationProps) => {
               </TooltipContent>
             </Tooltip>
           </View>
+          <CardDescription className='text-base font-semibold text-center'>{data?.post?.title}</CardDescription>
         </CardHeader>
         <CardContent>
           <View className='flex-row justify-around gap-3'>

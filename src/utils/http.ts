@@ -26,6 +26,7 @@ class Http {
       timeout: 10000,
       headers: {
         'Content-Type': 'application/json',
+        Accept: 'application/graphql-response+json',
       },
     });
     this.instance.interceptors.request.use(
