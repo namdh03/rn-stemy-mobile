@@ -12,15 +12,15 @@ import { Progress } from '~components/ui/progress';
 import { Text } from '~components/ui/text';
 import { Tooltip, TooltipContent, TooltipTrigger } from '~components/ui/tooltip';
 import { graphql } from '~graphql';
+import execute from '~graphql/execute';
 import { LoginScreenNavigationProps } from '~types/navigation';
-import { execute } from '~utils/execute';
 
 const GITHUB_AVATAR_URI = 'https://i.pinimg.com/originals/ef/a2/8d/efa28d18a04e7fa40ed49eeb0ab660db.jpg';
 
-const ExampleQuery = graphql(`
-  query ExampleQ($id: ID!) {
-    post(id: $id) {
-      title
+const UserQuery = graphql(`
+  query User($id: Int!) {
+    user(id: $id) {
+      email
     }
   }
 `);
@@ -29,8 +29,9 @@ const LoginScreen = ({ navigation }: LoginScreenNavigationProps) => {
   const [progress, setProgress] = useState(78);
 
   const { data } = useQuery({
-    queryKey: ['post'],
-    queryFn: () => execute(ExampleQuery, { id: '1' }),
+    queryKey: ['user'],
+    queryFn: () => execute(UserQuery, { id: 10 }),
+    select: (data) => data.data,
   });
 
   function updateProgressValue() {
@@ -60,7 +61,7 @@ const LoginScreen = ({ navigation }: LoginScreenNavigationProps) => {
               </TooltipContent>
             </Tooltip>
           </View>
-          <CardDescription className='text-base font-semibold text-center'>{data?.post?.title}</CardDescription>
+          <CardDescription className='text-base font-semibold'>Email: {data?.user?.email}</CardDescription>
         </CardHeader>
         <CardContent>
           <View className='flex-row justify-around gap-3'>

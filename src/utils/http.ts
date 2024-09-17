@@ -55,6 +55,7 @@ class Http {
           removeAccessToken();
           removeRefreshToken();
         }
+
         return response;
       },
       (error: AxiosError) => {

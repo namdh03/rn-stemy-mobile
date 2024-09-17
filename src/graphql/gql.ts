@@ -12,15 +12,15 @@ import * as types from './graphql';
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-  '\n  query ExampleQ($id: ID!) {\n    post(id: $id) {\n      title\n    }\n  }\n': types.ExampleQDocument,
+  '\n  query User($id: Int!) {\n    user(id: $id) {\n      email\n    }\n  }\n': types.UserDocument,
 };
 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query ExampleQ($id: ID!) {\n    post(id: $id) {\n      title\n    }\n  }\n',
-): typeof import('./graphql').ExampleQDocument;
+  source: '\n  query User($id: Int!) {\n    user(id: $id) {\n      email\n    }\n  }\n',
+): typeof import('./graphql').UserDocument;
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

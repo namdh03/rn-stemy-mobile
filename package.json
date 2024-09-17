@@ -12,7 +12,7 @@
     "prettier": "prettier --check .",
     "prettier:fix": "prettier --write .",
     "format": "npm run lint:fix && npm run prettier:fix",
-    "codegen": "graphql-codegen --config codegen.ts --watcher"
+    "codegen": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {
     "@react-native-community/netinfo": "^11.4.0",
@@ -35,7 +35,7 @@
     "expo-navigation-bar": "~3.0.7",
     "expo-splash-screen": "~0.27.5",
     "expo-status-bar": "~1.12.1",
-    "graphql": "^15.8.0",
+    "graphql": "^15.9.0",
     "immer": "^10.1.1",
     "lucide-react-native": "^0.441.0",
     "nativewind": "4.0.36",
