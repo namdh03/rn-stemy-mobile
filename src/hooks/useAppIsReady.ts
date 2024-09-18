@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 import { useCallback, useEffect, useState } from 'react';
 import { Platform } from 'react-native';
+import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
 import { storage } from '~utils/mmkv-storage';
@@ -15,20 +17,35 @@ export default function useAppIsReady() {
 
   useEffect(() => {
     (async () => {
+      // Handle theme mode
       const theme = storage.getString('theme');
+
       if (Platform.OS === 'web') {
         // Adds the background color to the html element to prevent white background on overscroll.
         document.documentElement.classList.add('bg-background');
       }
       if (!theme) {
         storage.set('theme', colorScheme);
-        return;
+      } else {
+        const colorTheme = theme === 'dark' ? 'dark' : 'light';
+
+        if (colorTheme !== colorScheme) {
+          setColorScheme(colorTheme);
+        }
       }
-      const colorTheme = theme === 'dark' ? 'dark' : 'light';
-      if (colorTheme !== colorScheme) {
-        setColorScheme(colorTheme);
-        return;
-      }
+
+      // Load fonts
+      await Font.loadAsync({
+        'Inter_18pt-Black': require('~assets/fonts/Inter_18pt-Black.ttf'),
+        'Inter_18pt-Bold': require('~assets/fonts/Inter_18pt-Bold.ttf'),
+        'Inter_18pt-ExtraBold': require('~assets/fonts/Inter_18pt-ExtraBold.ttf'),
+        'Inter_18pt-ExtraLight': require('~assets/fonts/Inter_18pt-ExtraLight.ttf'),
+        'Inter_18pt-Light': require('~assets/fonts/Inter_18pt-Light.ttf'),
+        'Inter_18pt-Medium': require('~assets/fonts/Inter_18pt-Medium.ttf'),
+        'Inter_18pt-Regular': require('~assets/fonts/Inter_18pt-Regular.ttf'),
+        'Inter_18pt-SemiBold': require('~assets/fonts/Inter_18pt-SemiBold.ttf'),
+        'Inter_18pt-Thin': require('~assets/fonts/Inter_18pt-Thin.ttf'),
+      });
     })().finally(() => {
       setAppIsReady(true);
     });

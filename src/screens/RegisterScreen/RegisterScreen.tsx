@@ -10,6 +10,7 @@ const RegisterScreen = ({ navigation }: RegisterScreenNavigationProps) => {
       <Button onPress={() => navigation.replace('LoginScreen')}>
         <Text>Login</Text>
       </Button>
+      <Text className='font-inter-black text-7xl text-primary tracking-[0.24px]'>Welcome!</Text>
     </View>
   );
 };

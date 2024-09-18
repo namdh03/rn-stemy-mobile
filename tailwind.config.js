@@ -1,4 +1,4 @@
-const { hairlineWidth } = require('nativewind/theme');
+import { hairlineWidth } from 'nativewind/theme';
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -58,6 +58,17 @@ module.exports = {
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+      },
+      fontFamily: {
+        'inter-black': ['Inter_18pt-Black'],
+        'inter-bold': ['Inter_18pt-Bold'],
+        'inter-extraBold': ['Inter_18pt-ExtraBold'],
+        'inter-extraLight': ['Inter_18pt-ExtraLight'],
+        'inter-light': ['Inter_18pt-Light'],
+        'inter-medium': ['Inter_18pt-Medium'],
+        'inter-regular': ['Inter_18pt-Regular'],
+        'inter-semiBold': ['Inter_18pt-SemiBold'],
+        'inter-thin': ['Inter_18pt-Thin'],
       },
     },
   },
