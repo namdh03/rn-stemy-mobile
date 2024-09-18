@@ -1,4 +1,4 @@
-package com.anonymous.rnstemymobile
+package com.namdh03.rnstemymobile
 
 import android.app.Application
 import android.content.res.Configuration

@@ -13,15 +13,14 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.rnstemymobile"
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.rnstemymobile"
+      "package": "com.namdh03.rnstemymobile"
     },
     "web": {
       "favicon": "./src/assets/favicon.png",

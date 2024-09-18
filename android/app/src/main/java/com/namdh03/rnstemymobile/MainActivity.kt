@@ -1,4 +1,4 @@
-package com.anonymous.rnstemymobile
+package com.namdh03.rnstemymobile
 
 import android.os.Build
 import android.os.Bundle
