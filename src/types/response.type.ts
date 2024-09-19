@@ -1,5 +1,5 @@
 export interface ErrorResponse<T> {
-  error: T;
+  errors: T;
 }
 
 export interface SuccessResponse<T> {

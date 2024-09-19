@@ -33,10 +33,20 @@ export type Feedback = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  getOauth2GoogleURL: Scalars['String']['output'];
+  createProduct: Product;
+  forgotPassword: Scalars['String']['output'];
   login: AccessTokenResponse;
   loginWithGoogle: AccessTokenResponse;
   register: AccessTokenResponse;
+  resetPassword: Scalars['String']['output'];
+};
+
+export type MutationCreateProductArgs = {
+  input: ProductInput;
+};
+
+export type MutationForgotPasswordArgs = {
+  email: Scalars['String']['input'];
 };
 
 export type MutationLoginArgs = {
@@ -50,7 +60,14 @@ export type MutationLoginWithGoogleArgs = {
 
 export type MutationRegisterArgs = {
   email: Scalars['String']['input'];
+  fullName: Scalars['String']['input'];
   password: Scalars['String']['input'];
+  phone: Scalars['String']['input'];
+};
+
+export type MutationResetPasswordArgs = {
+  password: Scalars['String']['input'];
+  token: Scalars['String']['input'];
 };
 
 export type Order = {
@@ -83,15 +100,24 @@ export type ProductCategory = {
   name: Scalars['String']['output'];
 };
 
-export type ProductsPaginatedResponse = {
-  __typename?: 'ProductsPaginatedResponse';
+export type ProductInput = {
+  categoryId: Scalars['Int']['input'];
+  description: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  price: Scalars['Int']['input'];
+};
+
+export type ProductsWithPaginationResponse = {
+  __typename?: 'ProductsWithPaginationResponse';
   items: Array<Product>;
   pageInfo: E;
 };
 
 export type Query = {
   __typename?: 'Query';
-  products: ProductsPaginatedResponse;
+  getOauth2GoogleURL: Scalars['String']['output'];
+  me: User;
+  products: ProductsWithPaginationResponse;
   user?: Maybe<User>;
   users: Array<User>;
 };
@@ -99,15 +125,12 @@ export type Query = {
 export type QueryProductsArgs = {
   currentItem?: Scalars['Int']['input'];
   currentPage?: Scalars['Int']['input'];
+  order?: SortOrder;
+  sort?: Scalars['String']['input'];
 };
 
 export type QueryUserArgs = {
   id: Scalars['Int']['input'];
-};
-
-export type QueryUsersArgs = {
-  limit: Scalars['Float']['input'];
-  offset: Scalars['Float']['input'];
 };
 
 export enum Role {
@@ -115,6 +138,11 @@ export enum Role {
   Customer = 'CUSTOMER',
   Manager = 'MANAGER',
   Staff = 'STAFF',
+}
+
+export enum SortOrder {
+  Asc = 'ASC',
+  Desc = 'DESC',
 }
 
 export type User = {
@@ -140,11 +168,30 @@ export type E = {
   totalPage: Scalars['Int']['output'];
 };
 
-export type UserQueryVariables = Exact<{
-  id: Scalars['Int']['input'];
+export type LoginMutationMutationVariables = Exact<{
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
 }>;
 
-export type UserQuery = { __typename?: 'Query'; user?: { __typename?: 'User'; email?: string | null } | null };
+export type LoginMutationMutation = {
+  __typename?: 'Mutation';
+  login: { __typename?: 'AccessTokenResponse'; access_token: string };
+};
+
+export type MeQueryQueryVariables = Exact<{ [key: string]: never }>;
+
+export type MeQueryQuery = {
+  __typename?: 'Query';
+  me: {
+    __typename?: 'User';
+    email?: string | null;
+    fullName?: string | null;
+    id: string;
+    phone?: string | null;
+    role: Role;
+    status: UserStatus;
+  };
+};
 
 export class TypedDocumentString<TResult, TVariables>
   extends String
@@ -164,10 +211,22 @@ export class TypedDocumentString<TResult, TVariables>
   }
 }
 
-export const UserDocument = new TypedDocumentString(`
-    query User($id: Int!) {
-  user(id: $id) {
-    email
+export const LoginMutationDocument = new TypedDocumentString(`
+    mutation LoginMutation($email: String!, $password: String!) {
+  login(email: $email, password: $password) {
+    access_token
   }
 }
-    `) as unknown as TypedDocumentString<UserQuery, UserQueryVariables>;
+    `) as unknown as TypedDocumentString<LoginMutationMutation, LoginMutationMutationVariables>;
+export const MeQueryDocument = new TypedDocumentString(`
+    query MeQuery {
+  me {
+    email
+    fullName
+    id
+    phone
+    role
+    status
+  }
+}
+    `) as unknown as TypedDocumentString<MeQueryQuery, MeQueryQueryVariables>;

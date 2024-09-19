@@ -2,17 +2,17 @@ import { View } from 'react-native';
 
 import { Button } from '~components/ui/button';
 import { Text } from '~components/ui/text';
-import { RegisterScreenNavigationProps } from '~types/navigation';
+import { ForgotPasswordScreenNavigationProps } from '~types/navigation';
 
-const RegisterScreen = ({ navigation }: RegisterScreenNavigationProps) => {
+const ForgotPasswordScreen = ({ navigation }: ForgotPasswordScreenNavigationProps) => {
   return (
     <View className='flex-1 justify-center items-center gap-5 p-6 bg-secondary/30'>
       <Button onPress={() => navigation.replace('LoginScreen')}>
         <Text>Login</Text>
       </Button>
-      <Text className='font-inter-black text-7xl text-primary tracking-[0.24px]'>Welcome Register!</Text>
+      <Text className='font-inter-black text-7xl text-primary tracking-[0.24px]'>Welcome Forgot Password!</Text>
     </View>
   );
 };
 
-export default RegisterScreen;
+export default ForgotPasswordScreen;
