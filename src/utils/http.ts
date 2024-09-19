@@ -1,16 +1,18 @@
-import axios, { AxiosError, AxiosInstance } from 'axios';
+import axios, { AxiosInstance } from 'axios';
 
 import configs from '~configs';
 import constants from '~constants';
-import { AuthResponse } from '~types/auth.type';
 
+// import constants from '~constants';
+// import { AuthResponse } from '~types/auth.type';
+import { isErrorResponse, isLoginResponse, isRegisterResponse } from './responseChecker';
 import {
   getAccessToken,
   getRefreshToken,
   removeAccessToken,
-  removeRefreshToken,
+  // removeRefreshToken,
   setAccessToken,
-  setRefreshToken,
+  // setRefreshToken,
 } from './token-storage';
 
 class Http {
@@ -37,35 +39,33 @@ class Http {
         }
         return config;
       },
-      (error) => {
-        return Promise.reject(error);
-      },
+      (error) => Promise.reject(error),
     );
     this.instance.interceptors.response.use(
       (response) => {
-        const { url, method } = response.config;
-        if (method === 'post' && url?.includes(constants.AUTH_ROUTES.login || constants.AUTH_ROUTES.register)) {
-          this.accessToken = (response.data as AuthResponse).data.access_token;
-          this.refreshToken = (response.data as AuthResponse).data.refresh_token;
-          setAccessToken(this.accessToken);
-          setRefreshToken(this.refreshToken);
-        } else if (url === constants.AUTH_ROUTES.logout) {
-          this.accessToken = '';
-          this.refreshToken = '';
-          removeAccessToken();
-          removeRefreshToken();
+        if (isLoginResponse(response)) {
+          this.accessToken = response.data.data.login.access_token;
+          if (this.accessToken) setAccessToken(this.accessToken);
+        }
+
+        if (isRegisterResponse(response)) {
+          this.accessToken = response.data.data.register.access_token;
+          if (this.accessToken) setAccessToken(this.accessToken);
+        }
+
+        if (isErrorResponse(response)) {
+          const isUnAuthenticated = response.data.errors.some((error) =>
+            error.message.includes(constants.MESSAGES.TOKEN_NOT_FOUND),
+          );
+
+          if (isUnAuthenticated) removeAccessToken();
+
+          throw response.data.errors;
         }
 
         return response;
       },
-      (error: AxiosError) => {
-        if (error.response?.status === constants.HTTP_STATUS.UNAUTHORIZED) {
-          removeAccessToken();
-          removeRefreshToken();
-        }
-
-        return Promise.reject(error);
-      },
+      (error) => Promise.reject(error),
     );
   }
 }

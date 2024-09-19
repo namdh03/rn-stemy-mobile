@@ -22,10 +22,12 @@ type Feedback {
 }
 
 type Mutation {
-  getOauth2GoogleURL: String!
+  createProduct(input: ProductInput!): Product!
+  forgotPassword(email: String!): String!
   login(email: String!, password: String!): AccessTokenResponse!
   loginWithGoogle(code: String!): AccessTokenResponse!
-  register(email: String!, password: String!): AccessTokenResponse!
+  register(email: String!, fullName: String!, password: String!, phone: String!): AccessTokenResponse!
+  resetPassword(password: String!, token: String!): String!
 }
 
 type Order {
@@ -54,15 +56,29 @@ type ProductCategory {
   name: String!
 }
 
-type ProductsPaginatedResponse {
+input ProductInput {
+  categoryId: Int!
+  description: String!
+  name: String!
+  price: Int!
+}
+
+type ProductsWithPaginationResponse {
   items: [Product!]!
   pageInfo: e!
 }
 
 type Query {
-  products(currentItem: Int! = 9, currentPage: Int! = 1): ProductsPaginatedResponse!
+  getOauth2GoogleURL: String!
+  me: User!
+  products(
+    currentItem: Int! = 9
+    currentPage: Int! = 1
+    order: SortOrder! = ASC
+    sort: String! = "id"
+  ): ProductsWithPaginationResponse!
   user(id: Int!): User
-  users(limit: Float!, offset: Float!): [User!]!
+  users: [User!]!
 }
 
 enum Role {
@@ -70,6 +86,11 @@ enum Role {
   CUSTOMER
   MANAGER
   STAFF
+}
+
+enum SortOrder {
+  ASC
+  DESC
 }
 
 type User {

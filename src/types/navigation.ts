@@ -8,6 +8,7 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
  *  ├── Auth Stack
  *  │   ├── Login Screen
  *  │   └── Register Screen
+ *  │   └── Forgot Password Screen
  *  │
  *  ├── Main (Drawer Navigator)
  *  │   ├── Profile Screen
@@ -23,6 +24,7 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 export type AuthStackParamList = {
   LoginScreen: undefined;
   RegisterScreen: undefined;
+  ForgotPasswordScreen: undefined;
 };
 
 export type BottomTabParamList = {
@@ -58,5 +60,10 @@ export type LoginScreenNavigationProps = CompositeScreenProps<
 
 export type RegisterScreenNavigationProps = CompositeScreenProps<
   NativeStackScreenProps<AuthStackParamList, 'RegisterScreen'>,
+  NativeStackScreenProps<RootStackParamList>
+>;
+
+export type ForgotPasswordScreenNavigationProps = CompositeScreenProps<
+  NativeStackScreenProps<AuthStackParamList, 'ForgotPasswordScreen'>,
   NativeStackScreenProps<RootStackParamList>
 >;

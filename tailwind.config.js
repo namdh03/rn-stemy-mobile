@@ -60,6 +60,7 @@ module.exports = {
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
       fontFamily: {
+        'jaro-regular': ['Jaro-Regular'],
         'inter-black': ['Inter_18pt-Black'],
         'inter-bold': ['Inter_18pt-Bold'],
         'inter-extraBold': ['Inter_18pt-ExtraBold'],

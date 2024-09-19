@@ -1,104 +1,135 @@
-import { useState } from 'react';
-import { View } from 'react-native';
-import Animated, { FadeInUp, FadeOutDown, LayoutAnimationConfig } from 'react-native-reanimated';
+import { useRef } from 'react';
+import { ActivityIndicator, ScrollView, View } from 'react-native';
+import { useForm } from 'react-hook-form';
 
-import { useQuery } from '@tanstack/react-query';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
 
-import { Info } from '~components/icons';
-import { Avatar, AvatarFallback, AvatarImage } from '~components/ui/avatar';
+import InputPassword from '~components/customs/InputPassword/InputPassword';
+import LoginWithGoogle from '~components/customs/LoginWithGoogle';
+import Logo from '~components/customs/Logo';
+import Pressable from '~components/customs/Pressable';
+import { Form, FormField, FormInput } from '~components/deprecated-ui/form';
 import { Button } from '~components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '~components/ui/card';
-import { Progress } from '~components/ui/progress';
+import { Separator } from '~components/ui/separator';
 import { Text } from '~components/ui/text';
-import { Tooltip, TooltipContent, TooltipTrigger } from '~components/ui/tooltip';
-import { graphql } from '~graphql';
 import execute from '~graphql/execute';
+import { Login } from '~services/user.serivces';
 import { LoginScreenNavigationProps } from '~types/navigation';
+import isErrors from '~utils/responseChecker';
 
-const GITHUB_AVATAR_URI = 'https://i.pinimg.com/originals/ef/a2/8d/efa28d18a04e7fa40ed49eeb0ab660db.jpg';
-
-const UserQuery = graphql(`
-  query User($id: Int!) {
-    user(id: $id) {
-      email
-    }
-  }
-`);
+import schema, { LoginFormType } from './schema';
 
 const LoginScreen = ({ navigation }: LoginScreenNavigationProps) => {
-  const [progress, setProgress] = useState(78);
-
-  const { data } = useQuery({
-    queryKey: ['user'],
-    queryFn: () => execute(UserQuery, { id: 10 }),
-    select: (data) => data.data,
+  const scrollRef = useRef<ScrollView>(null);
+  const form = useForm<LoginFormType>({
+    mode: 'all',
+    resolver: zodResolver(schema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
+  const { mutate, isPending } = useMutation({
+    mutationFn: (values: LoginFormType) => execute(Login, values),
   });
 
-  function updateProgressValue() {
-    setProgress(Math.floor(Math.random() * 100));
-  }
+  const onSubmit = (values: LoginFormType) => {
+    mutate(values, {
+      onSuccess: () => {
+        scrollRef.current?.scrollTo({ y: 0 });
+        form.reset();
+      },
+      onError: (errors) => {
+        if (isErrors(errors)) {
+          const error = errors.find((error) => error.path.includes('login'));
+
+          if (error?.message) {
+            form.setError('email', { message: error.message });
+            form.setError('password', { message: error.message });
+          }
+        }
+      },
+    });
+  };
 
   return (
-    <View className='flex-1 justify-center items-center gap-5 p-6 bg-secondary/30'>
-      <Card className='w-full max-w-sm p-6 rounded-2xl'>
-        <CardHeader className='items-center'>
-          <Avatar alt="Rick Sanchez's Avatar" className='w-24 h-24'>
-            <AvatarImage source={{ uri: GITHUB_AVATAR_URI }} />
-            <AvatarFallback>
-              <Text>RS</Text>
-            </AvatarFallback>
-          </Avatar>
-          <View className='p-3' />
-          <CardTitle className='pb-2 text-center'>Rick Sanchez</CardTitle>
-          <View className='flex-row'>
-            <CardDescription className='text-base font-semibold'>Scientist</CardDescription>
-            <Tooltip delayDuration={150}>
-              <TooltipTrigger className='px-2 pb-0.5 active:opacity-50'>
-                <Info size={14} strokeWidth={2.5} className='w-4 h-4 text-foreground/70' />
-              </TooltipTrigger>
-              <TooltipContent className='py-2 px-4 shadow'>
-                <Text className='native:text-lg'>Freelance</Text>
-              </TooltipContent>
-            </Tooltip>
+    <ScrollView
+      ref={scrollRef}
+      contentContainerClassName='items-center p-[24px] py-[50px] mx-auto w-full max-w-xl'
+      showsVerticalScrollIndicator={false}
+      automaticallyAdjustContentInsets={false}
+    >
+      <Logo />
+      <Text className='font-jaro-regular mt-[4px] text-foreground text-center text-[32px] leading-[44.8px]'>
+        STEMMY
+      </Text>
+      <Text className='font-inter-regular text-muted-foreground text-center text-[14px] leading-[19.6px]'>
+        Empowering Learning, Simplifying STEM
+      </Text>
+      <Text className='font-inter-black mt-[62px] w-full text-left text-primary text-[24px] tracking-[0.24px]'>
+        Welcome!
+      </Text>
+
+      <Form {...form}>
+        <View className='gap-[24px] mt-[24px] w-full'>
+          <FormField
+            control={form.control}
+            name='email'
+            render={({ field }) => (
+              <FormInput
+                className='font-inter-regular h-[48px] px-[16px] py-[12px]'
+                placeholder='Email Address'
+                autoCapitalize='none'
+                autoComplete='email'
+                {...field}
+              />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='password'
+            render={({ field }) => <InputPassword placeholder='Password' {...field} />}
+          />
+
+          <View className='flex-row self-start'>
+            <Pressable onPress={() => navigation.replace('ForgotPasswordScreen')}>
+              <Text className='font-inter-semiBold text-primary text-[14px]'>Forgot password?</Text>
+            </Pressable>
           </View>
-          <CardDescription className='text-base font-semibold'>Email: {data?.user?.email}</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <View className='flex-row justify-around gap-3'>
-            <View className='items-center'>
-              <Text className='text-sm text-muted-foreground'>Dimension</Text>
-              <Text className='text-xl font-semibold'>C-137</Text>
-            </View>
-            <View className='items-center'>
-              <Text className='text-sm text-muted-foreground'>Age</Text>
-              <Text className='text-xl font-semibold'>70</Text>
-            </View>
-            <View className='items-center'>
-              <Text className='text-sm text-muted-foreground'>Species 1</Text>
-              <Text className='text-xl font-semibold'>Human</Text>
-            </View>
-          </View>
-        </CardContent>
-        <CardFooter className='flex-col gap-3 pb-0'>
-          <View className='flex-row items-center overflow-hidden'>
-            <Text className='text-sm text-muted-foreground'>Productivity:</Text>
-            <LayoutAnimationConfig skipEntering>
-              <Animated.View key={progress} entering={FadeInUp} exiting={FadeOutDown} className='w-11 items-center'>
-                <Text className='text-sm font-bold text-sky-600'>{progress}%</Text>
-              </Animated.View>
-            </LayoutAnimationConfig>
-          </View>
-          <Progress value={progress} className='h-2' indicatorClassName='bg-sky-600' />
-          <View />
-          <Button variant='outline' onPress={updateProgressValue}>
-            <Text>Update</Text>
+
+          <Button disabled={isPending} className='min-h-[44px]' onPress={form.handleSubmit(onSubmit)}>
+            {isPending ? (
+              <View className='flex-row items-center justify-center gap-[6px]'>
+                <ActivityIndicator />
+                <Text className='font-inter-medium text-secondary text-[16px] leading-[24px]'>Loading...</Text>
+              </View>
+            ) : (
+              <Text className='font-inter-medium text-secondary text-[16px] leading-[24px]'>Login</Text>
+            )}
           </Button>
-          <Button onPress={() => navigation.replace('RegisterScreen')}>
-            <Text>Register</Text>
-          </Button>
-        </CardFooter>
-      </Card>
-    </View>
+
+          <View className='flex-row justify-center items-center gap-[4px]'>
+            <Text className='font-inter-regular text-muted-foreground text-[14px] leading-[16px] tracking-[0.12px]'>
+              Not a member?
+            </Text>
+            <Pressable className='-mt-[1.5px]' onPress={() => navigation.replace('RegisterScreen')}>
+              <Text className='font-inter-semiBold text-primary text-[14px] leading-[16px]'>Register now</Text>
+            </Pressable>
+          </View>
+
+          <Separator />
+
+          <View className='gap-[16px]'>
+            <Text className='font-inter-regular text-center text-muted-foreground text-[14px] leading-[16px] tracking-[0.12px]'>
+              Or continue with
+            </Text>
+
+            <LoginWithGoogle />
+          </View>
+        </View>
+      </Form>
+    </ScrollView>
   );
 };
 
