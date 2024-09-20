@@ -7,9 +7,10 @@ import { Separator } from '~components/ui/separator';
 
 interface AuthLayoutProps {
   children: ReactNode;
+  title: string;
 }
 
-const AuthLayout = forwardRef<ScrollView, AuthLayoutProps>(({ children }, ref) => {
+const AuthLayout = forwardRef<ScrollView, AuthLayoutProps>(({ children, title }, ref) => {
   return (
     <ScrollView
       ref={ref}
@@ -25,7 +26,7 @@ const AuthLayout = forwardRef<ScrollView, AuthLayoutProps>(({ children }, ref) =
         Empowering Learning, Simplifying STEM
       </Text>
       <Text className='font-inter-black mt-[62px] w-full text-left text-primary text-[24px] tracking-[0.24px]'>
-        Welcome!
+        {title}
       </Text>
 
       {children}
