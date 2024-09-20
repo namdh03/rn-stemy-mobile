@@ -1,14 +1,10 @@
 import { z } from 'zod';
 
-import constants from '~constants';
+import { emailSchema, passwordSchema } from '~utils/schema';
 
 const schema = z.object({
-  email: z.string().email({
-    message: constants.MESSAGES.AUTH_MESSAGES.EMAIL_VALIDATE,
-  }),
-  password: z.string().min(8, {
-    message: constants.MESSAGES.AUTH_MESSAGES.PASSWORD_VALIDATE,
-  }),
+  email: emailSchema,
+  password: passwordSchema,
 });
 
 export type LoginFormType = z.infer<typeof schema>;

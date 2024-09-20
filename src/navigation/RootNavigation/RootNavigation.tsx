@@ -1,6 +1,5 @@
 import { AppStateStatus, Platform } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import * as Linking from 'expo-linking';
 import { StatusBar } from 'expo-status-bar';
 import { useShallow } from 'zustand/react/shallow';
 
@@ -13,17 +12,6 @@ import { useAppIsReady, useAppState, useColorScheme, useOnlineManager } from '~h
 import AuthStack from '~navigation/AuthStack';
 import MainStack from '~navigation/MainStack';
 import { useStore } from '~store';
-
-// Config deep link
-const prefix = Linking.createURL('/');
-const linking = {
-  prefixes: [prefix],
-  config: {
-    screens: {
-      Login: 'login',
-    },
-  },
-};
 
 function onAppStateChange(status: AppStateStatus) {
   // React Query already supports in web browser refetch on window focus by default
@@ -49,7 +37,6 @@ const RootNavigation = () => {
         <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
         <SafeAreaView style={{ flex: 1 }}>
           <NavigationContainer
-            linking={linking}
             onReady={onLayoutRootView}
             theme={isDarkColorScheme ? constants.THEME.DARK_THEME : constants.THEME.LIGHT_THEME}
           >
