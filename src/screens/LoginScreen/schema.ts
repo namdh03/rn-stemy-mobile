@@ -1,11 +1,13 @@
 import { z } from 'zod';
 
+import constants from '~constants';
+
 const schema = z.object({
   email: z.string().email({
-    message: 'Please enter a valid email address.',
+    message: constants.MESSAGES.AUTH_MESSAGES.EMAIL_VALIDATE,
   }),
   password: z.string().min(8, {
-    message: 'Password must be at least 8 characters.',
+    message: constants.MESSAGES.AUTH_MESSAGES.PASSWORD_VALIDATE,
   }),
 });
 
