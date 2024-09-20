@@ -6,14 +6,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 
 import InputPassword from '~components/customs/InputPassword/InputPassword';
-import LoginWithGoogle from '~components/customs/LoginWithGoogle';
-import Logo from '~components/customs/Logo';
 import Pressable from '~components/customs/Pressable';
 import { Form, FormField, FormInput } from '~components/deprecated-ui/form';
 import { Button } from '~components/ui/button';
-import { Separator } from '~components/ui/separator';
 import { Text } from '~components/ui/text';
 import execute from '~graphql/execute';
+import AuthLayout from '~layouts/AuthLayout';
 import { Login } from '~services/user.serivces';
 import { LoginScreenNavigationProps } from '~types/navigation';
 import isErrors from '~utils/responseChecker';
@@ -54,23 +52,7 @@ const LoginScreen = ({ navigation }: LoginScreenNavigationProps) => {
   };
 
   return (
-    <ScrollView
-      ref={scrollRef}
-      contentContainerClassName='items-center p-[24px] py-[50px] mx-auto w-full max-w-xl'
-      showsVerticalScrollIndicator={false}
-      automaticallyAdjustContentInsets={false}
-    >
-      <Logo />
-      <Text className='font-jaro-regular mt-[4px] text-foreground text-center text-[32px] leading-[44.8px]'>
-        STEMMY
-      </Text>
-      <Text className='font-inter-regular text-muted-foreground text-center text-[14px] leading-[19.6px]'>
-        Empowering Learning, Simplifying STEM
-      </Text>
-      <Text className='font-inter-black mt-[62px] w-full text-left text-primary text-[24px] tracking-[0.24px]'>
-        Welcome!
-      </Text>
-
+    <AuthLayout ref={scrollRef}>
       <Form {...form}>
         <View className='gap-[24px] mt-[24px] w-full'>
           <FormField
@@ -117,19 +99,9 @@ const LoginScreen = ({ navigation }: LoginScreenNavigationProps) => {
               <Text className='font-inter-semiBold text-primary text-[14px] leading-[16px]'>Register now</Text>
             </Pressable>
           </View>
-
-          <Separator />
-
-          <View className='gap-[16px]'>
-            <Text className='font-inter-regular text-center text-muted-foreground text-[14px] leading-[16px] tracking-[0.12px]'>
-              Or continue with
-            </Text>
-
-            <LoginWithGoogle />
-          </View>
         </View>
       </Form>
-    </ScrollView>
+    </AuthLayout>
   );
 };
 
