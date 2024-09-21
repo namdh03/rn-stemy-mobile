@@ -25,7 +25,6 @@ const ForgotPasswordScreen = ({ navigation }: ForgotPasswordScreenNavigationProp
       email: '',
     },
   });
-
   const { mutate, isPending } = useMutation({
     mutationFn: (values: ForgotPasswordFormType) => execute(SendResetPasswordOTP, values),
   });
