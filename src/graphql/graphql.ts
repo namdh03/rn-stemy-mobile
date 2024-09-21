@@ -236,6 +236,13 @@ export type GetTokenResetPasswordMutationMutationVariables = Exact<{
 
 export type GetTokenResetPasswordMutationMutation = { __typename?: 'Mutation'; getTokenResetPassword: string };
 
+export type ResetPasswordMutationMutationVariables = Exact<{
+  password: Scalars['String']['input'];
+  token: Scalars['String']['input'];
+}>;
+
+export type ResetPasswordMutationMutation = { __typename?: 'Mutation'; resetPassword: string };
+
 export type MeQueryQueryVariables = Exact<{ [key: string]: never }>;
 
 export type MeQueryQuery = {
@@ -299,6 +306,11 @@ export const GetTokenResetPasswordMutationDocument = new TypedDocumentString(`
   GetTokenResetPasswordMutationMutation,
   GetTokenResetPasswordMutationMutationVariables
 >;
+export const ResetPasswordMutationDocument = new TypedDocumentString(`
+    mutation ResetPasswordMutation($password: String!, $token: String!) {
+  resetPassword(password: $password, token: $token)
+}
+    `) as unknown as TypedDocumentString<ResetPasswordMutationMutation, ResetPasswordMutationMutationVariables>;
 export const MeQueryDocument = new TypedDocumentString(`
     query MeQuery {
   me {
