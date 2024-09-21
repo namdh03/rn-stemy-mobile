@@ -75,7 +75,7 @@ const LoginScreen = ({ navigation }: LoginScreenNavigationProps) => {
           />
 
           <View className='flex-row self-start'>
-            <Pressable onPress={() => navigation.replace('ForgotPasswordScreen')}>
+            <Pressable onPress={() => navigation.navigate('ForgotPasswordScreen')}>
               <Text className='font-inter-semiBold text-primary text-[14px]'>Forgot password?</Text>
             </Pressable>
           </View>

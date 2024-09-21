@@ -190,6 +190,12 @@ export type RegisterMutationMutation = {
   register: { __typename?: 'AccessTokenResponse'; access_token: string };
 };
 
+export type ForgotPasswordMutationMutationVariables = Exact<{
+  email: Scalars['String']['input'];
+}>;
+
+export type ForgotPasswordMutationMutation = { __typename?: 'Mutation'; forgotPassword: string };
+
 export type MeQueryQueryVariables = Exact<{ [key: string]: never }>;
 
 export type MeQueryQuery = {
@@ -237,6 +243,11 @@ export const RegisterMutationDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<RegisterMutationMutation, RegisterMutationMutationVariables>;
+export const ForgotPasswordMutationDocument = new TypedDocumentString(`
+    mutation ForgotPasswordMutation($email: String!) {
+  forgotPassword(email: $email)
+}
+    `) as unknown as TypedDocumentString<ForgotPasswordMutationMutation, ForgotPasswordMutationMutationVariables>;
 export const MeQueryDocument = new TypedDocumentString(`
     query MeQuery {
   me {
