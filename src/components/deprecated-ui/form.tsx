@@ -208,4 +208,4 @@ const FormInput = React.forwardRef<React.ElementRef<typeof Input>, FormItemProps
 
 FormInput.displayName = 'FormInput';
 
-export { Form, FormField, FormInput };
+export { Form, FormField, FormInput, FormMessage };

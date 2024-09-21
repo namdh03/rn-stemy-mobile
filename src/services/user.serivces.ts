@@ -16,9 +16,15 @@ export const Register = graphql(`
   }
 `);
 
-export const ForgotPassword = graphql(`
-  mutation ForgotPasswordMutation($email: String!) {
-    forgotPassword(email: $email)
+export const SendResetPasswordOTP = graphql(`
+  mutation SendResetPasswordOTPMutation($email: String!) {
+    sendResetPasswordOTP(email: $email)
+  }
+`);
+
+export const GetTokenResetPassword = graphql(`
+  mutation GetTokenResetPasswordMutation($email: String!, $OTPCode: String!) {
+    getTokenResetPassword(email: $email, OTPCode: $OTPCode)
   }
 `);
 

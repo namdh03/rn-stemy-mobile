@@ -16,8 +16,10 @@ const documents = {
     types.LoginMutationDocument,
   '\n  mutation RegisterMutation($email: String!, $fullName: String!, $password: String!, $phone: String!) {\n    register(email: $email, fullName: $fullName, password: $password, phone: $phone) {\n      access_token\n    }\n  }\n':
     types.RegisterMutationDocument,
-  '\n  mutation ForgotPasswordMutation($email: String!) {\n    forgotPassword(email: $email)\n  }\n':
-    types.ForgotPasswordMutationDocument,
+  '\n  mutation SendResetPasswordOTPMutation($email: String!) {\n    sendResetPasswordOTP(email: $email)\n  }\n':
+    types.SendResetPasswordOtpMutationDocument,
+  '\n  mutation GetTokenResetPasswordMutation($email: String!, $OTPCode: String!) {\n    getTokenResetPassword(email: $email, OTPCode: $OTPCode)\n  }\n':
+    types.GetTokenResetPasswordMutationDocument,
   '\n  query MeQuery {\n    me {\n      email\n      fullName\n      id\n      phone\n      role\n      status\n    }\n  }\n':
     types.MeQueryDocument,
 };
@@ -38,8 +40,14 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  mutation ForgotPasswordMutation($email: String!) {\n    forgotPassword(email: $email)\n  }\n',
-): typeof import('./graphql').ForgotPasswordMutationDocument;
+  source: '\n  mutation SendResetPasswordOTPMutation($email: String!) {\n    sendResetPasswordOTP(email: $email)\n  }\n',
+): typeof import('./graphql').SendResetPasswordOtpMutationDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation GetTokenResetPasswordMutation($email: String!, $OTPCode: String!) {\n    getTokenResetPassword(email: $email, OTPCode: $OTPCode)\n  }\n',
+): typeof import('./graphql').GetTokenResetPasswordMutationDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
