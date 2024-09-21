@@ -5,11 +5,13 @@ import { ChevronLeft } from '~components/icons';
 import ForgotPasswordConfirmScreen from '~screens/ForgotPasswordConfirmScreen';
 import ForgotPasswordScreen from '~screens/ForgotPasswordScreen';
 import LoginScreen from '~screens/LoginScreen';
+import OTPScreen from '~screens/OTPScreen';
 import RegisterScreen from '~screens/RegisterScreen';
 import {
   AuthStackParamList,
   ForgotPasswordConfirmScreenNavigationProps,
   ForgotPasswordScreenNavigationProps,
+  OTPScreenNavigationProps,
 } from '~types/navigation';
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();
@@ -37,6 +39,20 @@ export default function AuthStack() {
         name='ForgotPasswordConfirmScreen'
         component={ForgotPasswordConfirmScreen}
         options={({ navigation }: ForgotPasswordConfirmScreenNavigationProps) => ({
+          headerTitle: '',
+          headerShadowVisible: false,
+          headerBackVisible: false,
+          headerLeft: () => (
+            <Pressable onPress={() => navigation.goBack()}>
+              <ChevronLeft className='text-primary' size={24} />
+            </Pressable>
+          ),
+        })}
+      />
+      <Stack.Screen
+        name='OTPScreen'
+        component={OTPScreen}
+        options={({ navigation }: OTPScreenNavigationProps) => ({
           headerTitle: '',
           headerShadowVisible: false,
           headerBackVisible: false,

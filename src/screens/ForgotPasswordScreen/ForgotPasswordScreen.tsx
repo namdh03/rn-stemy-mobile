@@ -33,7 +33,7 @@ const ForgotPasswordScreen = ({ navigation }: ForgotPasswordScreenNavigationProp
   const onSubmit = (values: ForgotPasswordFormType) => {
     mutate(values, {
       onSuccess: () => {
-        navigation.navigate('ForgotPasswordConfirmScreen');
+        navigation.navigate('ForgotPasswordConfirmScreen', values);
       },
       onError: (errors) => {
         if (isErrors(errors)) {
