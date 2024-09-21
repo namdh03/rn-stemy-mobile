@@ -16,6 +16,12 @@ export const Register = graphql(`
   }
 `);
 
+export const ForgotPassword = graphql(`
+  mutation ForgotPasswordMutation($email: String!) {
+    forgotPassword(email: $email)
+  }
+`);
+
 export const GetMe = graphql(`
   query MeQuery {
     me {

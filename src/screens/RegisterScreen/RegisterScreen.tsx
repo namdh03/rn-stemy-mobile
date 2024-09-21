@@ -78,7 +78,7 @@ const RegisterScreen = ({ navigation }: RegisterScreenNavigationProps) => {
                 placeholder='Phone Number'
                 autoCapitalize='none'
                 autoComplete='off'
-                keyboardType='phone-pad'
+                keyboardType='number-pad'
                 {...field}
               />
             )}

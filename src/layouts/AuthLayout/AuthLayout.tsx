@@ -35,7 +35,7 @@ const AuthLayout = forwardRef<ScrollView, AuthLayoutProps>(({ children, title },
         <Separator />
 
         <View className='gap-[16px]'>
-          <Text className='font-inter-regular text-center text-muted-foreground text-[14px] leading-[16px] tracking-[0.12px]'>
+          <Text className='font-inter-regular text-muted-foreground text-center text-[14px] leading-[16px] tracking-[0.12px]'>
             Or continue with
           </Text>
 

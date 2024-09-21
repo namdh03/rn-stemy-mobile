@@ -8,7 +8,7 @@ export const fullNameSchema = z.string().min(1, {
 });
 
 export const phoneSchema = z.string().refine((value) => constants.REGEX.PHONE_REGEX.test(value), {
-  message: constants.MESSAGES.AUTH_MESSAGES.PASSWORD_VALIDATE,
+  message: constants.MESSAGES.AUTH_MESSAGES.PHONE_VALIDATE,
 });
 
 export const emailSchema = z.string().email({
