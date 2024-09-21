@@ -21,6 +21,14 @@ export type AccessTokenResponse = {
   access_token: Scalars['String']['output'];
 };
 
+export type Cart = {
+  __typename?: 'Cart';
+  id: Scalars['ID']['output'];
+  product: Product;
+  quantity: Scalars['Int']['output'];
+  user: User;
+};
+
 export type Feedback = {
   __typename?: 'Feedback';
   comment: Scalars['String']['output'];
@@ -33,19 +41,33 @@ export type Feedback = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addToCart: Cart;
   createProduct: Product;
-  forgotPassword: Scalars['String']['output'];
+  deleteCart: Scalars['String']['output'];
+  getTokenResetPassword: Scalars['String']['output'];
   login: AccessTokenResponse;
   loginWithGoogle: AccessTokenResponse;
   register: AccessTokenResponse;
   resetPassword: Scalars['String']['output'];
+  sendResetPasswordOTP: Scalars['String']['output'];
+  updateCart: Cart;
+};
+
+export type MutationAddToCartArgs = {
+  productId: Scalars['Float']['input'];
+  quantity: Scalars['Float']['input'];
 };
 
 export type MutationCreateProductArgs = {
   input: ProductInput;
 };
 
-export type MutationForgotPasswordArgs = {
+export type MutationDeleteCartArgs = {
+  productId: Scalars['Float']['input'];
+};
+
+export type MutationGetTokenResetPasswordArgs = {
+  OTPCode: Scalars['String']['input'];
   email: Scalars['String']['input'];
 };
 
@@ -68,6 +90,15 @@ export type MutationRegisterArgs = {
 export type MutationResetPasswordArgs = {
   password: Scalars['String']['input'];
   token: Scalars['String']['input'];
+};
+
+export type MutationSendResetPasswordOtpArgs = {
+  email: Scalars['String']['input'];
+};
+
+export type MutationUpdateCartArgs = {
+  productId: Scalars['Float']['input'];
+  quantity: Scalars['Float']['input'];
 };
 
 export type Order = {
@@ -115,6 +146,8 @@ export type ProductsWithPaginationResponse = {
 
 export type Query = {
   __typename?: 'Query';
+  carts?: Maybe<Array<Cart>>;
+  countCart: Scalars['Float']['output'];
   getOauth2GoogleURL: Scalars['String']['output'];
   me: User;
   products: ProductsWithPaginationResponse;
@@ -190,11 +223,18 @@ export type RegisterMutationMutation = {
   register: { __typename?: 'AccessTokenResponse'; access_token: string };
 };
 
-export type ForgotPasswordMutationMutationVariables = Exact<{
+export type SendResetPasswordOtpMutationMutationVariables = Exact<{
   email: Scalars['String']['input'];
 }>;
 
-export type ForgotPasswordMutationMutation = { __typename?: 'Mutation'; forgotPassword: string };
+export type SendResetPasswordOtpMutationMutation = { __typename?: 'Mutation'; sendResetPasswordOTP: string };
+
+export type GetTokenResetPasswordMutationMutationVariables = Exact<{
+  email: Scalars['String']['input'];
+  OTPCode: Scalars['String']['input'];
+}>;
+
+export type GetTokenResetPasswordMutationMutation = { __typename?: 'Mutation'; getTokenResetPassword: string };
 
 export type MeQueryQueryVariables = Exact<{ [key: string]: never }>;
 
@@ -243,11 +283,22 @@ export const RegisterMutationDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<RegisterMutationMutation, RegisterMutationMutationVariables>;
-export const ForgotPasswordMutationDocument = new TypedDocumentString(`
-    mutation ForgotPasswordMutation($email: String!) {
-  forgotPassword(email: $email)
+export const SendResetPasswordOtpMutationDocument = new TypedDocumentString(`
+    mutation SendResetPasswordOTPMutation($email: String!) {
+  sendResetPasswordOTP(email: $email)
 }
-    `) as unknown as TypedDocumentString<ForgotPasswordMutationMutation, ForgotPasswordMutationMutationVariables>;
+    `) as unknown as TypedDocumentString<
+  SendResetPasswordOtpMutationMutation,
+  SendResetPasswordOtpMutationMutationVariables
+>;
+export const GetTokenResetPasswordMutationDocument = new TypedDocumentString(`
+    mutation GetTokenResetPasswordMutation($email: String!, $OTPCode: String!) {
+  getTokenResetPassword(email: $email, OTPCode: $OTPCode)
+}
+    `) as unknown as TypedDocumentString<
+  GetTokenResetPasswordMutationMutation,
+  GetTokenResetPasswordMutationMutationVariables
+>;
 export const MeQueryDocument = new TypedDocumentString(`
     query MeQuery {
   me {

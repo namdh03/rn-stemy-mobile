@@ -11,7 +11,7 @@ import { Form, FormField, FormInput } from '~components/deprecated-ui/form';
 import { Button } from '~components/ui/button';
 import { Text } from '~components/ui/text';
 import execute from '~graphql/execute';
-import { ForgotPassword } from '~services/user.serivces';
+import { SendResetPasswordOTP } from '~services/user.serivces';
 import { ForgotPasswordScreenNavigationProps } from '~types/navigation';
 import isErrors from '~utils/responseChecker';
 
@@ -27,7 +27,7 @@ const ForgotPasswordScreen = ({ navigation }: ForgotPasswordScreenNavigationProp
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (values: ForgotPasswordFormType) => execute(ForgotPassword, values),
+    mutationFn: (values: ForgotPasswordFormType) => execute(SendResetPasswordOTP, values),
   });
 
   const onSubmit = (values: ForgotPasswordFormType) => {
@@ -84,7 +84,7 @@ const ForgotPasswordScreen = ({ navigation }: ForgotPasswordScreenNavigationProp
           <Button disabled={isPending} className='mt-[8px] min-h-[44px]' onPress={form.handleSubmit(onSubmit)}>
             {isPending ? (
               <View className='flex-row items-center justify-center gap-[6px]'>
-                <ActivityIndicator />
+                <ActivityIndicator className='text-secondary' />
                 <Text className='font-inter-medium text-secondary text-[16px] leading-[24px]'>Loading...</Text>
               </View>
             ) : (

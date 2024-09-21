@@ -105,7 +105,7 @@ const RegisterScreen = ({ navigation }: RegisterScreenNavigationProps) => {
           <Button disabled={isPending} className='min-h-[44px]' onPress={form.handleSubmit(onSubmit)}>
             {isPending ? (
               <View className='flex-row items-center justify-center gap-[6px]'>
-                <ActivityIndicator />
+                <ActivityIndicator className='text-secondary' />
                 <Text className='font-inter-medium text-secondary text-[16px] leading-[24px]'>Loading...</Text>
               </View>
             ) : (
