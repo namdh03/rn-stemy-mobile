@@ -3,13 +3,18 @@ schema {
   mutation: Mutation
 }
 
-"""
-Indicates exactly one field must be supplied and this field must not be `null`.
-"""
+"""Indicates exactly one field must be supplied and this field must not be `null`."""
 directive @oneOf on INPUT_OBJECT
 
 type AccessTokenResponse {
   access_token: String!
+}
+
+type Cart {
+  id: ID!
+  product: Product!
+  quantity: Int!
+  user: User!
 }
 
 type Feedback {
@@ -22,12 +27,16 @@ type Feedback {
 }
 
 type Mutation {
+  addToCart(productId: Float!, quantity: Float!): Cart!
   createProduct(input: ProductInput!): Product!
-  forgotPassword(email: String!): String!
+  deleteCart(productId: Float!): String!
+  getTokenResetPassword(OTPCode: String!, email: String!): String!
   login(email: String!, password: String!): AccessTokenResponse!
   loginWithGoogle(code: String!): AccessTokenResponse!
   register(email: String!, fullName: String!, password: String!, phone: String!): AccessTokenResponse!
   resetPassword(password: String!, token: String!): String!
+  sendResetPasswordOTP(email: String!): String!
+  updateCart(productId: Float!, quantity: Float!): Cart!
 }
 
 type Order {
@@ -69,14 +78,11 @@ type ProductsWithPaginationResponse {
 }
 
 type Query {
+  carts: [Cart!]
+  countCart: Float!
   getOauth2GoogleURL: String!
   me: User!
-  products(
-    currentItem: Int! = 9
-    currentPage: Int! = 1
-    order: SortOrder! = ASC
-    sort: String! = "id"
-  ): ProductsWithPaginationResponse!
+  products(currentItem: Int! = 9, currentPage: Int! = 1, order: SortOrder! = ASC, sort: String! = "id"): ProductsWithPaginationResponse!
   user(id: Int!): User
   users: [User!]!
 }

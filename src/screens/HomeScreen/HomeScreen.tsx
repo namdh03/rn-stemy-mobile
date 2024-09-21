@@ -1,25 +1,56 @@
-import { View } from 'react-native';
-import { useShallow } from 'zustand/react/shallow';
+import { ScrollView, View } from 'react-native';
 
-import { Button } from '~components/ui/button';
 import { Text } from '~components/ui/text';
-import { useStore } from '~store';
-import { removeAccessToken } from '~utils/token-storage';
+
+import CardProduct from './components/CardProduct';
+
+// interface ProductProps {
+//   title: string;
+// }
 
 const HomeScreen = () => {
-  const unAuthenticate = useStore(useShallow((state) => state.unAuthenticate));
-
-  const logout = () => {
-    unAuthenticate();
-    removeAccessToken();
-  };
-
   return (
-    <View>
-      <Button onPress={logout}>
-        <Text>Logout</Text>
-      </Button>
-    </View>
+    <ScrollView className='flex-1'>
+      <View className='flex-1 mt-[24px] px-[16px] mx-auto w-full max-w-xl '>
+        <View className=' flex-row justify-between mb-[16px] '>
+          <Text className='font-inter-extraBold color-foreground text-[14px]'>Perfect for you</Text>
+          <Text className='font-inter-semiBold text-[12px] color-primary'>See more</Text>
+        </View>
+        <CardProduct />
+      </View>
+
+      <View className='flex-1 mt-[24px] px-[16px] mx-auto w-full max-w-xl '>
+        <View className=' flex-row justify-between mb-[16px] '>
+          <Text className='font-inter-extraBold color-foreground text-[14px]'>Best seller</Text>
+          <Text className='font-inter-semiBold text-[12px] color-primary'>See more</Text>
+        </View>
+        <CardProduct />
+      </View>
+
+      <View className='flex-1 mt-[24px] px-[16px] mx-auto w-full max-w-xl '>
+        <View className=' flex-row justify-between mb-[16px] '>
+          <Text className='font-inter-extraBold color-foreground text-[14px]'>Best seller</Text>
+          <Text className='font-inter-semiBold text-[12px] color-primary'>See more</Text>
+        </View>
+        <CardProduct />
+      </View>
+
+      <View className='flex-1 mt-[24px] px-[16px] mx-auto w-full max-w-xl '>
+        <View className=' flex-row justify-between mb-[16px] '>
+          <Text className='font-inter-extraBold color-foreground text-[14px]'>Best seller</Text>
+          <Text className='font-inter-semiBold text-[12px] color-primary'>See more</Text>
+        </View>
+        <CardProduct />
+      </View>
+
+      <View className='flex-1 mt-[24px] px-[16px] mx-auto w-full max-w-xl '>
+        <View className=' flex-row justify-between mb-[16px] '>
+          <Text className='font-inter-extraBold color-foreground text-[14px]'>Best seller</Text>
+          <Text className='font-inter-semiBold text-[12px] color-primary'>See more</Text>
+        </View>
+        <CardProduct />
+      </View>
+    </ScrollView>
   );
 };
 

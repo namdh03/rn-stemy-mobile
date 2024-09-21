@@ -67,7 +67,7 @@ module.exports = {
         'inter-extraLight': ['Inter_18pt-ExtraLight'],
         'inter-light': ['Inter_18pt-Light'],
         'inter-medium': ['Inter_18pt-Medium'],
-        'inter-regular': ['Inter_18pt-Regular'],
+        'inter-regular': ['Inter_18pt-Regular'],  
         'inter-semiBold': ['Inter_18pt-SemiBold'],
         'inter-thin': ['Inter_18pt-Thin'],
       },
