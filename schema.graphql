@@ -26,9 +26,12 @@ type Feedback {
   user: User!
 }
 
+"""File upload scalar type"""
+scalar File
+
 type Mutation {
   addToCart(productId: Float!, quantity: Float!): Cart!
-  createProduct(input: ProductInput!): Product!
+  createProduct(images: [File!]!, input: ProductInput!, lab: File!): Product!
   deleteCart(productId: Float!): String!
   getTokenResetPassword(OTPCode: String!, email: String!): String!
   login(email: String!, password: String!): AccessTokenResponse!
@@ -82,7 +85,7 @@ type Query {
   countCart: Float!
   getOauth2GoogleURL: String!
   me: User!
-  products(currentItem: Int! = 9, currentPage: Int! = 1, order: SortOrder! = ASC, sort: String! = "id"): ProductsWithPaginationResponse!
+  products(currentItem: Int! = 9, currentPage: Int! = 1, order: SortOrder! = ASC, sort: String! = "id"): ProductsWithPaginationResponse
   user(id: Int!): User
   users: [User!]!
 }

@@ -14,6 +14,8 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
+  /** File upload scalar type */
+  File: { input: any; output: any; }
 };
 
 export type AccessTokenResponse = {
@@ -61,7 +63,9 @@ export type MutationAddToCartArgs = {
 
 
 export type MutationCreateProductArgs = {
+  images: Array<Scalars['File']['input']>;
   input: ProductInput;
+  lab: Scalars['File']['input'];
 };
 
 
@@ -160,7 +164,7 @@ export type Query = {
   countCart: Scalars['Float']['output'];
   getOauth2GoogleURL: Scalars['String']['output'];
   me: User;
-  products: ProductsWithPaginationResponse;
+  products?: Maybe<ProductsWithPaginationResponse>;
   user?: Maybe<User>;
   users: Array<User>;
 };
