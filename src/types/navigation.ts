@@ -25,7 +25,8 @@ export type AuthStackParamList = {
   LoginScreen: undefined;
   RegisterScreen: undefined;
   ForgotPasswordScreen: undefined;
-  ForgotPasswordConfirmScreen: undefined;
+  ForgotPasswordConfirmScreen: { email: string };
+  OTPScreen: { email: string };
 };
 
 export type BottomTabParamList = {
@@ -71,5 +72,10 @@ export type ForgotPasswordScreenNavigationProps = CompositeScreenProps<
 
 export type ForgotPasswordConfirmScreenNavigationProps = CompositeScreenProps<
   NativeStackScreenProps<AuthStackParamList, 'ForgotPasswordConfirmScreen'>,
+  NativeStackScreenProps<RootStackParamList>
+>;
+
+export type OTPScreenNavigationProps = CompositeScreenProps<
+  NativeStackScreenProps<AuthStackParamList, 'OTPScreen'>,
   NativeStackScreenProps<RootStackParamList>
 >;
