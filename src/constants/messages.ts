@@ -5,4 +5,6 @@ export const AUTH_MESSAGES = {
   PHONE_VALIDATE: 'Please enter a valid phone number.',
   EMAIL_VALIDATE: 'Please enter a valid email address.',
   PASSWORD_VALIDATE: 'Password must be at least 8 characters.',
+  CONFIRM_PASSWORD_VALIDATE: 'Passwords do not match. Please try again.',
+  OTP_CODE_VALIDATE: 'Please enter a valid OTP code.',
 };

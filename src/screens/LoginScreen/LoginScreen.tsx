@@ -75,7 +75,7 @@ const LoginScreen = ({ navigation }: LoginScreenNavigationProps) => {
           />
 
           <View className='flex-row self-start'>
-            <Pressable onPress={() => navigation.replace('ForgotPasswordScreen')}>
+            <Pressable onPress={() => navigation.navigate('ForgotPasswordScreen')}>
               <Text className='font-inter-semiBold text-primary text-[14px]'>Forgot password?</Text>
             </Pressable>
           </View>
@@ -83,7 +83,7 @@ const LoginScreen = ({ navigation }: LoginScreenNavigationProps) => {
           <Button disabled={isPending} className='min-h-[44px]' onPress={form.handleSubmit(onSubmit)}>
             {isPending ? (
               <View className='flex-row items-center justify-center gap-[6px]'>
-                <ActivityIndicator />
+                <ActivityIndicator className='text-secondary' />
                 <Text className='font-inter-medium text-secondary text-[16px] leading-[24px]'>Loading...</Text>
               </View>
             ) : (

@@ -7,8 +7,11 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
  *  │
  *  ├── Auth Stack
  *  │   ├── Login Screen
- *  │   └── Register Screen
- *  │   └── Forgot Password Screen
+ *  │   ├── Register Screen
+ *  │   ├── Forgot Password Screen
+ *  │   ├── Forgot Password Confirm Screen
+ *  │   ├── OTP Screen
+ *  │   └── Reset Password Screen
  *  │
  *  ├── Main (Drawer Navigator)
  *  │   ├── Profile Screen
@@ -25,6 +28,9 @@ export type AuthStackParamList = {
   LoginScreen: undefined;
   RegisterScreen: undefined;
   ForgotPasswordScreen: undefined;
+  ForgotPasswordConfirmScreen: { email: string };
+  OTPScreen: { email: string };
+  ResetPasswordScreen: { token: string };
 };
 
 export type BottomTabParamList = {
@@ -65,5 +71,20 @@ export type RegisterScreenNavigationProps = CompositeScreenProps<
 
 export type ForgotPasswordScreenNavigationProps = CompositeScreenProps<
   NativeStackScreenProps<AuthStackParamList, 'ForgotPasswordScreen'>,
+  NativeStackScreenProps<RootStackParamList>
+>;
+
+export type ForgotPasswordConfirmScreenNavigationProps = CompositeScreenProps<
+  NativeStackScreenProps<AuthStackParamList, 'ForgotPasswordConfirmScreen'>,
+  NativeStackScreenProps<RootStackParamList>
+>;
+
+export type OTPScreenNavigationProps = CompositeScreenProps<
+  NativeStackScreenProps<AuthStackParamList, 'OTPScreen'>,
+  NativeStackScreenProps<RootStackParamList>
+>;
+
+export type ResetPasswordScreenNavigationProps = CompositeScreenProps<
+  NativeStackScreenProps<AuthStackParamList, 'ResetPasswordScreen'>,
   NativeStackScreenProps<RootStackParamList>
 >;

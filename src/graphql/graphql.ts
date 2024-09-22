@@ -233,6 +233,26 @@ export type RegisterMutationMutation = {
   register: { __typename?: 'AccessTokenResponse'; access_token: string };
 };
 
+export type SendResetPasswordOtpMutationMutationVariables = Exact<{
+  email: Scalars['String']['input'];
+}>;
+
+export type SendResetPasswordOtpMutationMutation = { __typename?: 'Mutation'; sendResetPasswordOTP: string };
+
+export type GetTokenResetPasswordMutationMutationVariables = Exact<{
+  email: Scalars['String']['input'];
+  OTPCode: Scalars['String']['input'];
+}>;
+
+export type GetTokenResetPasswordMutationMutation = { __typename?: 'Mutation'; getTokenResetPassword: string };
+
+export type ResetPasswordMutationMutationVariables = Exact<{
+  password: Scalars['String']['input'];
+  token: Scalars['String']['input'];
+}>;
+
+export type ResetPasswordMutationMutation = { __typename?: 'Mutation'; resetPassword: string };
+
 export type MeQueryQueryVariables = Exact<{ [key: string]: never }>;
 
 export type MeQueryQuery = {
@@ -280,6 +300,27 @@ export const RegisterMutationDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<RegisterMutationMutation, RegisterMutationMutationVariables>;
+export const SendResetPasswordOtpMutationDocument = new TypedDocumentString(`
+    mutation SendResetPasswordOTPMutation($email: String!) {
+  sendResetPasswordOTP(email: $email)
+}
+    `) as unknown as TypedDocumentString<
+  SendResetPasswordOtpMutationMutation,
+  SendResetPasswordOtpMutationMutationVariables
+>;
+export const GetTokenResetPasswordMutationDocument = new TypedDocumentString(`
+    mutation GetTokenResetPasswordMutation($email: String!, $OTPCode: String!) {
+  getTokenResetPassword(email: $email, OTPCode: $OTPCode)
+}
+    `) as unknown as TypedDocumentString<
+  GetTokenResetPasswordMutationMutation,
+  GetTokenResetPasswordMutationMutationVariables
+>;
+export const ResetPasswordMutationDocument = new TypedDocumentString(`
+    mutation ResetPasswordMutation($password: String!, $token: String!) {
+  resetPassword(password: $password, token: $token)
+}
+    `) as unknown as TypedDocumentString<ResetPasswordMutationMutation, ResetPasswordMutationMutationVariables>;
 export const MeQueryDocument = new TypedDocumentString(`
     query MeQuery {
   me {
