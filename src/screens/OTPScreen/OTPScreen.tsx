@@ -17,7 +17,6 @@ import schema, { OTPFormType } from './schema';
 
 const OTPScreen = ({ route, navigation }: OTPScreenNavigationProps) => {
   const [timer, setTimer] = useState(0);
-
   const form = useForm<OTPFormType>({
     mode: 'all',
     resolver: zodResolver(schema),
@@ -25,11 +24,9 @@ const OTPScreen = ({ route, navigation }: OTPScreenNavigationProps) => {
       OTPCode: '',
     },
   });
-
   const { mutate: sendOTPMutate, isPending: isSendOTPPending } = useMutation({
     mutationFn: (OTPCode: string) => execute(GetTokenResetPassword, { email: route.params.email, OTPCode }),
   });
-
   const { mutate: resendOTPMutate, isPending: isResendOTPPending } = useMutation({
     mutationFn: () => execute(SendResetPasswordOTP, { email: route.params.email }),
   });

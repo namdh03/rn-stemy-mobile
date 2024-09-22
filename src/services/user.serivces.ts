@@ -28,6 +28,12 @@ export const GetTokenResetPassword = graphql(`
   }
 `);
 
+export const ResetPassword = graphql(`
+  mutation ResetPasswordMutation($password: String!, $token: String!) {
+    resetPassword(password: $password, token: $token)
+  }
+`);
+
 export const LoginGoogle = graphql(`
   mutation LoginWithGoogleMutation($code: String!) {
     loginWithGoogle(code: $code) {

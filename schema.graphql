@@ -3,7 +3,9 @@ schema {
   mutation: Mutation
 }
 
-"""Indicates exactly one field must be supplied and this field must not be `null`."""
+"""
+Indicates exactly one field must be supplied and this field must not be `null`.
+"""
 directive @oneOf on INPUT_OBJECT
 
 type AccessTokenResponse {
@@ -26,7 +28,9 @@ type Feedback {
   user: User!
 }
 
-"""File upload scalar type"""
+"""
+File upload scalar type
+"""
 scalar File
 
 type Mutation {
@@ -90,7 +94,12 @@ type Query {
   carts: [Cart!]
   countCart: Float!
   me: User!
-  products(currentItem: Int! = 9, currentPage: Int! = 1, order: SortOrder! = ASC, sort: String! = "id"): ProductsWithPaginationResponse!
+  products(
+    currentItem: Int! = 9
+    currentPage: Int! = 1
+    order: SortOrder! = ASC
+    sort: String! = "id"
+  ): ProductsWithPaginationResponse!
   user(id: Int!): User
   users: [User!]!
 }
