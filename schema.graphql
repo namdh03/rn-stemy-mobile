@@ -28,9 +28,14 @@ type Feedback {
   user: User!
 }
 
+"""
+File upload scalar type
+"""
+scalar File
+
 type Mutation {
   addToCart(productId: Float!, quantity: Float!): Cart!
-  createProduct(input: ProductInput!): Product!
+  createProduct(images: [File!]!, input: ProductInput!, lab: File!): Product!
   deleteCart(productId: Float!): String!
   getTokenResetPassword(OTPCode: String!, email: String!): String!
   login(email: String!, password: String!): AccessTokenResponse!
@@ -58,6 +63,7 @@ type Product {
   description: String!
   feedbacks: [Feedback!]!
   id: ID!
+  images: [ProductImage!]!
   name: String!
   price: Float!
 }
@@ -65,6 +71,11 @@ type Product {
 type ProductCategory {
   id: ID!
   name: String!
+}
+
+type ProductImage {
+  id: ID!
+  url: String!
 }
 
 input ProductInput {
@@ -82,7 +93,6 @@ type ProductsWithPaginationResponse {
 type Query {
   carts: [Cart!]
   countCart: Float!
-  getOauth2GoogleURL: String!
   me: User!
   products(
     currentItem: Int! = 9

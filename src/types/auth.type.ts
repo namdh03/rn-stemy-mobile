@@ -11,3 +11,9 @@ export type RegisterResponse = SuccessResponse<{
     access_token: string;
   };
 }>;
+
+export type LoginWithGoogleResponse = SuccessResponse<{
+  loginWithGoogle: {
+    access_token: string;
+  };
+}>;

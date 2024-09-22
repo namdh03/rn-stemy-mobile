@@ -5,7 +5,7 @@ import constants from '~constants';
 
 // import constants from '~constants';
 // import { AuthResponse } from '~types/auth.type';
-import { isErrorResponse, isLoginResponse, isRegisterResponse } from './responseChecker';
+import { isErrorResponse, isLoginResponse, isLoginWithGoogleResponse, isRegisterResponse } from './responseChecker';
 import {
   getAccessToken,
   getRefreshToken,
@@ -50,6 +50,11 @@ class Http {
 
         if (isRegisterResponse(response)) {
           this.accessToken = response.data.data.register.access_token;
+          if (this.accessToken) setAccessToken(this.accessToken);
+        }
+
+        if (isLoginWithGoogleResponse(response)) {
+          this.accessToken = response.data.data.loginWithGoogle.access_token;
           if (this.accessToken) setAccessToken(this.accessToken);
         }
 

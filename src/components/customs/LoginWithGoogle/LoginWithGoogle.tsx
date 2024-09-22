@@ -1,12 +1,56 @@
 import React from 'react';
 import Svg, { G, Path } from 'react-native-svg';
 
+import {
+  GoogleSignin,
+  isErrorWithCode,
+  isSuccessResponse,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
+import { useMutation } from '@tanstack/react-query';
+
 import { Button } from '~components/ui/button';
 import { Text } from '~components/ui/text';
+import execute from '~graphql/execute';
+import { LoginGoogle } from '~services/user.serivces';
 
 const LoginWithGoogle = () => {
+  const { mutate } = useMutation({
+    mutationFn: (code: string) => execute(LoginGoogle, { code }),
+  });
+
+  const signIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+
+      const response = await GoogleSignin.signIn();
+      if (isSuccessResponse(response)) {
+        if (response.data.serverAuthCode) {
+          mutate(response.data.serverAuthCode);
+        }
+      } else {
+        // sign in was cancelled by user
+      }
+    } catch (error) {
+      if (isErrorWithCode(error)) {
+        switch (error.code) {
+          case statusCodes.IN_PROGRESS:
+            // operation (eg. sign in) already in progress
+            break;
+          case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
+            // Android only, play services not available or outdated
+            break;
+          default:
+          // some other error happened
+        }
+      } else {
+        // an error that's not related to google sign in occurred
+      }
+    }
+  };
+
   return (
-    <Button className='flex-row gap-[12px] items-center min-h-[44px]' variant='outline'>
+    <Button variant='outline' className='flex-row items-center gap-x-[12px] min-h-[44px]' onPress={signIn}>
       <Svg width={19} height={18} fill='none'>
         <G fillRule='evenodd' clipRule='evenodd'>
           <Path

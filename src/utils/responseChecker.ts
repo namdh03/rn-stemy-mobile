@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 
-import { LoginResponse, RegisterResponse } from '~types/auth.type';
+import { LoginResponse, LoginWithGoogleResponse, RegisterResponse } from '~types/auth.type';
 import { Error, ErrorResponse } from '~types/error.type';
 
 export function isLoginResponse(response: AxiosResponse<unknown>): response is AxiosResponse<LoginResponse> {
@@ -9,6 +9,12 @@ export function isLoginResponse(response: AxiosResponse<unknown>): response is A
 
 export function isRegisterResponse(response: AxiosResponse<unknown>): response is AxiosResponse<RegisterResponse> {
   return typeof (response.data as RegisterResponse)?.data?.register?.access_token === 'string';
+}
+
+export function isLoginWithGoogleResponse(
+  response: AxiosResponse<unknown>,
+): response is AxiosResponse<LoginWithGoogleResponse> {
+  return typeof (response.data as LoginWithGoogleResponse)?.data?.loginWithGoogle?.access_token === 'string';
 }
 
 export function isErrorResponse(response: AxiosResponse<unknown>): response is AxiosResponse<ErrorResponse> {

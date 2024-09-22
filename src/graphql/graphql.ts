@@ -14,6 +14,8 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean };
   Int: { input: number; output: number };
   Float: { input: number; output: number };
+  /** File upload scalar type */
+  File: { input: any; output: any };
 };
 
 export type AccessTokenResponse = {
@@ -59,7 +61,9 @@ export type MutationAddToCartArgs = {
 };
 
 export type MutationCreateProductArgs = {
+  images: Array<Scalars['File']['input']>;
   input: ProductInput;
+  lab: Scalars['File']['input'];
 };
 
 export type MutationDeleteCartArgs = {
@@ -121,6 +125,7 @@ export type Product = {
   description: Scalars['String']['output'];
   feedbacks: Array<Feedback>;
   id: Scalars['ID']['output'];
+  images: Array<ProductImage>;
   name: Scalars['String']['output'];
   price: Scalars['Float']['output'];
 };
@@ -129,6 +134,12 @@ export type ProductCategory = {
   __typename?: 'ProductCategory';
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
+};
+
+export type ProductImage = {
+  __typename?: 'ProductImage';
+  id: Scalars['ID']['output'];
+  url: Scalars['String']['output'];
 };
 
 export type ProductInput = {
@@ -148,7 +159,6 @@ export type Query = {
   __typename?: 'Query';
   carts?: Maybe<Array<Cart>>;
   countCart: Scalars['Float']['output'];
-  getOauth2GoogleURL: Scalars['String']['output'];
   me: User;
   products: ProductsWithPaginationResponse;
   user?: Maybe<User>;
@@ -243,6 +253,15 @@ export type ResetPasswordMutationMutationVariables = Exact<{
 
 export type ResetPasswordMutationMutation = { __typename?: 'Mutation'; resetPassword: string };
 
+export type LoginWithGoogleMutationMutationVariables = Exact<{
+  code: Scalars['String']['input'];
+}>;
+
+export type LoginWithGoogleMutationMutation = {
+  __typename?: 'Mutation';
+  loginWithGoogle: { __typename?: 'AccessTokenResponse'; access_token: string };
+};
+
 export type MeQueryQueryVariables = Exact<{ [key: string]: never }>;
 
 export type MeQueryQuery = {
@@ -311,6 +330,13 @@ export const ResetPasswordMutationDocument = new TypedDocumentString(`
   resetPassword(password: $password, token: $token)
 }
     `) as unknown as TypedDocumentString<ResetPasswordMutationMutation, ResetPasswordMutationMutationVariables>;
+export const LoginWithGoogleMutationDocument = new TypedDocumentString(`
+    mutation LoginWithGoogleMutation($code: String!) {
+  loginWithGoogle(code: $code) {
+    access_token
+  }
+}
+    `) as unknown as TypedDocumentString<LoginWithGoogleMutationMutation, LoginWithGoogleMutationMutationVariables>;
 export const MeQueryDocument = new TypedDocumentString(`
     query MeQuery {
   me {
