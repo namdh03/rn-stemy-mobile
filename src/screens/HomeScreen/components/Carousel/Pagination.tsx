@@ -12,8 +12,8 @@ const Pagination = ({ items, paginationIndex }: Props) => {
         return (
           <View
             key={index}
-            className='w-[8px] h-[8px] rounded-[24px] opacity-30 '
-            style={{ backgroundColor: paginationIndex === index ? '#222' : '#aaa' }}
+            className='w-[8px] h-[8px] rounded-[24px] '
+            style={{ backgroundColor: paginationIndex === index ? '#FFF1F2' : 'rgba(31, 32, 36, 0.3)' }}
           />
         );
       })}

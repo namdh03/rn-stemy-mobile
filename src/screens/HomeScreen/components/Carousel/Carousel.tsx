@@ -34,7 +34,7 @@ const Carousel = () => {
   };
   const viewabilityConfigCallbackPairs = useRef([{ viewabilityConfig, onViewableItemsChanged }]);
   return (
-    <View>
+    <View className='relative'>
       <FlatList
         data={imageList}
         renderItem={({ item }) => (
@@ -48,7 +48,7 @@ const Carousel = () => {
         pagingEnabled
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
       />
-      <View style={{ position: 'absolute', bottom: 0, right: 0, left: 0 }}>
+      <View className='absolute bottom-0 left-0 right-0 '>
         <Pagination items={imageList} paginationIndex={paginationIndex} />
       </View>
     </View>
