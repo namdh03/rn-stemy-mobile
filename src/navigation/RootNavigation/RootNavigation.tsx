@@ -7,6 +7,7 @@ import { NavigationContainer, ThemeProvider } from '@react-navigation/native';
 import { PortalHost } from '@rn-primitives/portal';
 import { focusManager } from '@tanstack/react-query';
 
+import LoadingOverlay from '~components/customs/LoadingOverlay';
 import constants from '~constants';
 import { useAppIsReady, useAppState, useColorScheme, useOnlineManager } from '~hooks';
 import AuthStack from '~navigation/AuthStack';
@@ -22,10 +23,14 @@ function onAppStateChange(status: AppStateStatus) {
 
 const RootNavigation = () => {
   const { isDarkColorScheme } = useColorScheme();
-  const { appIsReady, onLayoutRootView } = useAppIsReady();
+  const { isFetching, appIsReady, onLayoutRootView } = useAppIsReady();
   const isAuthenticated = useStore(useShallow((state) => state.isAuthenticated));
   useOnlineManager();
   useAppState(onAppStateChange);
+
+  if (isFetching) {
+    return <LoadingOverlay message='Loading...' loop />;
+  }
 
   if (!appIsReady) {
     return null;

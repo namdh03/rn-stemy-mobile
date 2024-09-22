@@ -20,9 +20,13 @@ const getEnv = (key: string, defaultValue?: string, warnOnDefault: boolean = fal
 };
 
 const EXPO_PUBLIC_API_URL = getEnv('EXPO_PUBLIC_API_URL');
+const EXPO_PUBLIC_WEB_CLIENT_ID = getEnv('EXPO_PUBLIC_WEB_CLIENT_ID');
+const EXPO_PUBLIC_ANDROID_CLIENT_ID = getEnv('EXPO_PUBLIC_ANDROID_CLIENT_ID');
 
 const env = {
   EXPO_PUBLIC_API_URL,
+  EXPO_PUBLIC_WEB_CLIENT_ID,
+  EXPO_PUBLIC_ANDROID_CLIENT_ID,
 };
 
 export default env;

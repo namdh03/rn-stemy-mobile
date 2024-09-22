@@ -28,6 +28,14 @@ export const GetTokenResetPassword = graphql(`
   }
 `);
 
+export const LoginGoogle = graphql(`
+  mutation LoginWithGoogleMutation($code: String!) {
+    loginWithGoogle(code: $code) {
+      access_token
+    }
+  }
+`);
+
 export const GetMe = graphql(`
   query MeQuery {
     me {

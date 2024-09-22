@@ -23,7 +23,7 @@ export default function useAppIsReady() {
   const [appIsReady, setAppIsReady] = useState(false);
   const { colorScheme, setColorScheme } = useColorScheme();
   const [accessToken] = useMMKVString(constants.TOKEN.ACCESS_TOKEN_KEY);
-  const { data, refetch } = useQuery({
+  const { data, refetch, isFetching } = useQuery({
     queryKey: [constants.USER_QUERY_KEY.GET_ME_QUERY_KEY],
     queryFn: () => execute(GetMe),
     enabled: !!accessToken,
@@ -93,6 +93,7 @@ export default function useAppIsReady() {
   }, [appIsReady]);
 
   return {
+    isFetching,
     appIsReady,
     onLayoutRootView,
   };
