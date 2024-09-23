@@ -18,7 +18,7 @@ import schema, { OTPFormType } from './schema';
 const OTPScreen = ({ route, navigation }: OTPScreenNavigationProps) => {
   const [timer, setTimer] = useState(0);
   const form = useForm<OTPFormType>({
-    mode: 'all',
+    mode: 'onBlur',
     resolver: zodResolver(schema),
     defaultValues: {
       OTPCode: '',

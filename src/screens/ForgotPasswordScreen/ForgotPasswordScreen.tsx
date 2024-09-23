@@ -19,7 +19,7 @@ import schema, { ForgotPasswordFormType } from './scheme';
 
 const ForgotPasswordScreen = ({ navigation }: ForgotPasswordScreenNavigationProps) => {
   const form = useForm<ForgotPasswordFormType>({
-    mode: 'all',
+    mode: 'onBlur',
     resolver: zodResolver(schema),
     defaultValues: {
       email: '',
