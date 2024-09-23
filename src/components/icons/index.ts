@@ -4,4 +4,5 @@ export { default as EyeOff } from './EyeOff';
 export { default as Info } from './Info';
 export { default as Mail } from './Mail';
 export { default as MoonStar } from './MoonStar';
+export { default as Search } from './Search';
 export { default as Sun } from './Sun';
