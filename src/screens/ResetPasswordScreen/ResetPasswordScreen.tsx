@@ -17,7 +17,7 @@ import schema, { ResetPasswordFormType } from './schema';
 
 const ResetPasswordScreen = ({ route, navigation }: ResetPasswordScreenNavigationProps) => {
   const form = useForm<ResetPasswordFormType>({
-    mode: 'all',
+    mode: 'onBlur',
     resolver: zodResolver(schema),
     defaultValues: {
       password: '',

@@ -21,7 +21,7 @@ import schema, { LoginFormType } from './schema';
 const LoginScreen = ({ navigation }: LoginScreenNavigationProps) => {
   const scrollRef = useRef<ScrollView>(null);
   const form = useForm<LoginFormType>({
-    mode: 'all',
+    mode: 'onBlur',
     resolver: zodResolver(schema),
     defaultValues: {
       email: '',
