@@ -80,7 +80,7 @@ const LoginWithGoogle = () => {
           </G>
         </Svg>
       )}
-      <Text className='font-inter-regular text-muted-foreground'>Đăng nhập với Google</Text>
+      <Text className='font-inter-regular text-muted-foreground'>Sign in with Google</Text>
     </Button>
   );
 };

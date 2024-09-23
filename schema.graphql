@@ -19,6 +19,27 @@ type Cart {
   user: User!
 }
 
+enum CategoryType {
+  AGE
+  PRODUCT
+  TOPIC
+}
+
+input CheckoutOrderInput {
+  vnp_Amount: String!
+  vnp_BankCode: String!
+  vnp_BankTranNo: String!
+  vnp_CardType: String!
+  vnp_OrderInfo: String!
+  vnp_PayDate: String!
+  vnp_ResponseCode: String!
+  vnp_SecureHash: String!
+  vnp_TmnCode: String!
+  vnp_TransactionNo: String!
+  vnp_TransactionStatus: String!
+  vnp_TxnRef: String!
+}
+
 type Feedback {
   comment: String!
   id: ID!
@@ -35,6 +56,8 @@ scalar File
 
 type Mutation {
   addToCart(productId: Float!, quantity: Float!): Cart!
+  checkoutOrder(input: CheckoutOrderInput!): Boolean!
+  createOrder(address: String!, cartIds: Int!, paymentProvider: PaymentProvider!, phone: String!): String!
   createProduct(images: [File!]!, input: ProductInput!, lab: File!): Product!
   deleteCart(productId: Float!): String!
   getTokenResetPassword(OTPCode: String!, email: String!): String!
@@ -58,19 +81,27 @@ type OrderItem {
   unitPrice: Int!
 }
 
+enum PaymentProvider {
+  VNPAY
+}
+
 type Product {
-  category: ProductCategory!
+  categories: [ProductCategory!]!
   description: String!
   feedbacks: [Feedback!]!
   id: ID!
   images: [ProductImage!]!
   name: String!
-  price: Float!
+  price: Int!
+  rating: Int!
+  sold: Int!
 }
 
 type ProductCategory {
   id: ID!
   name: String!
+  title: String!
+  type: [CategoryType!]!
 }
 
 type ProductImage {
@@ -79,7 +110,7 @@ type ProductImage {
 }
 
 input ProductInput {
-  categoryId: Int!
+  categoryIds: [Int!]!
   description: String!
   name: String!
   price: Int!
@@ -94,6 +125,7 @@ type Query {
   carts: [Cart!]
   countCart: Float!
   me: User!
+  product(id: Float!): Product!
   products(
     currentItem: Int! = 9
     currentPage: Int! = 1
@@ -117,8 +149,8 @@ enum SortOrder {
 }
 
 type User {
-  email: String
-  fullName: String
+  email: String!
+  fullName: String!
   id: ID!
   phone: String
   role: Role!
