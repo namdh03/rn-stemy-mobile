@@ -31,6 +31,27 @@ export type Cart = {
   user: User;
 };
 
+export enum CategoryType {
+  Age = 'AGE',
+  Product = 'PRODUCT',
+  Topic = 'TOPIC',
+}
+
+export type CheckoutOrderInput = {
+  vnp_Amount: Scalars['String']['input'];
+  vnp_BankCode: Scalars['String']['input'];
+  vnp_BankTranNo: Scalars['String']['input'];
+  vnp_CardType: Scalars['String']['input'];
+  vnp_OrderInfo: Scalars['String']['input'];
+  vnp_PayDate: Scalars['String']['input'];
+  vnp_ResponseCode: Scalars['String']['input'];
+  vnp_SecureHash: Scalars['String']['input'];
+  vnp_TmnCode: Scalars['String']['input'];
+  vnp_TransactionNo: Scalars['String']['input'];
+  vnp_TransactionStatus: Scalars['String']['input'];
+  vnp_TxnRef: Scalars['String']['input'];
+};
+
 export type Feedback = {
   __typename?: 'Feedback';
   comment: Scalars['String']['output'];
@@ -44,6 +65,8 @@ export type Feedback = {
 export type Mutation = {
   __typename?: 'Mutation';
   addToCart: Cart;
+  checkoutOrder: Scalars['Boolean']['output'];
+  createOrder: Scalars['String']['output'];
   createProduct: Product;
   deleteCart: Scalars['String']['output'];
   getTokenResetPassword: Scalars['String']['output'];
@@ -58,6 +81,17 @@ export type Mutation = {
 export type MutationAddToCartArgs = {
   productId: Scalars['Float']['input'];
   quantity: Scalars['Float']['input'];
+};
+
+export type MutationCheckoutOrderArgs = {
+  input: CheckoutOrderInput;
+};
+
+export type MutationCreateOrderArgs = {
+  address: Scalars['String']['input'];
+  cartIds: Scalars['Int']['input'];
+  paymentProvider: PaymentProvider;
+  phone: Scalars['String']['input'];
 };
 
 export type MutationCreateProductArgs = {
@@ -119,21 +153,29 @@ export type OrderItem = {
   unitPrice: Scalars['Int']['output'];
 };
 
+export enum PaymentProvider {
+  Vnpay = 'VNPAY',
+}
+
 export type Product = {
   __typename?: 'Product';
-  category: ProductCategory;
+  categories: Array<ProductCategory>;
   description: Scalars['String']['output'];
   feedbacks: Array<Feedback>;
   id: Scalars['ID']['output'];
   images: Array<ProductImage>;
   name: Scalars['String']['output'];
-  price: Scalars['Float']['output'];
+  price: Scalars['Int']['output'];
+  rating: Scalars['Int']['output'];
+  sold: Scalars['Int']['output'];
 };
 
 export type ProductCategory = {
   __typename?: 'ProductCategory';
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
+  title: Scalars['String']['output'];
+  type: Array<CategoryType>;
 };
 
 export type ProductImage = {
@@ -143,7 +185,7 @@ export type ProductImage = {
 };
 
 export type ProductInput = {
-  categoryId: Scalars['Int']['input'];
+  categoryIds: Array<Scalars['Int']['input']>;
   description: Scalars['String']['input'];
   name: Scalars['String']['input'];
   price: Scalars['Int']['input'];
@@ -160,9 +202,14 @@ export type Query = {
   carts?: Maybe<Array<Cart>>;
   countCart: Scalars['Float']['output'];
   me: User;
+  product: Product;
   products: ProductsWithPaginationResponse;
   user?: Maybe<User>;
   users: Array<User>;
+};
+
+export type QueryProductArgs = {
+  id: Scalars['Float']['input'];
 };
 
 export type QueryProductsArgs = {
@@ -190,8 +237,8 @@ export enum SortOrder {
 
 export type User = {
   __typename?: 'User';
-  email?: Maybe<Scalars['String']['output']>;
-  fullName?: Maybe<Scalars['String']['output']>;
+  email: Scalars['String']['output'];
+  fullName: Scalars['String']['output'];
   id: Scalars['ID']['output'];
   phone?: Maybe<Scalars['String']['output']>;
   role: Role;
@@ -268,8 +315,8 @@ export type MeQueryQuery = {
   __typename?: 'Query';
   me: {
     __typename?: 'User';
-    email?: string | null;
-    fullName?: string | null;
+    email: string;
+    fullName: string;
     id: string;
     phone?: string | null;
     role: Role;
