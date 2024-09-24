@@ -14,6 +14,8 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean };
   Int: { input: number; output: number };
   Float: { input: number; output: number };
+  /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.This scalar is serialized to a string in ISO 8601 format and parsed from a string in ISO 8601 format. */
+  DateTimeISO: { input: any; output: any };
   /** File upload scalar type */
   File: { input: any; output: any };
 };
@@ -25,9 +27,11 @@ export type AccessTokenResponse = {
 
 export type Cart = {
   __typename?: 'Cart';
+  createdAt: Scalars['DateTimeISO']['output'];
   id: Scalars['ID']['output'];
   product: Product;
   quantity: Scalars['Int']['output'];
+  updatedAt: Scalars['DateTimeISO']['output'];
   user: User;
 };
 
@@ -55,10 +59,12 @@ export type CheckoutOrderInput = {
 export type Feedback = {
   __typename?: 'Feedback';
   comment: Scalars['String']['output'];
+  createdAt: Scalars['DateTimeISO']['output'];
   id: Scalars['ID']['output'];
   orderItem: OrderItem;
   product: Product;
   rating: Scalars['Int']['output'];
+  updatedAt: Scalars['DateTimeISO']['output'];
   user: User;
 };
 
@@ -141,16 +147,20 @@ export type MutationUpdateCartArgs = {
 
 export type Order = {
   __typename?: 'Order';
+  createdAt: Scalars['DateTimeISO']['output'];
   id: Scalars['ID']['output'];
+  updatedAt: Scalars['DateTimeISO']['output'];
 };
 
 export type OrderItem = {
   __typename?: 'OrderItem';
+  createdAt: Scalars['DateTimeISO']['output'];
   id: Scalars['ID']['output'];
   order: Order;
   product: Product;
   quantity: Scalars['Int']['output'];
   unitPrice: Scalars['Int']['output'];
+  updatedAt: Scalars['DateTimeISO']['output'];
 };
 
 export enum PaymentProvider {
@@ -160,6 +170,7 @@ export enum PaymentProvider {
 export type Product = {
   __typename?: 'Product';
   categories: Array<ProductCategory>;
+  createdAt: Scalars['DateTimeISO']['output'];
   description: Scalars['String']['output'];
   feedbacks: Array<Feedback>;
   id: Scalars['ID']['output'];
@@ -168,19 +179,24 @@ export type Product = {
   price: Scalars['Int']['output'];
   rating: Scalars['Int']['output'];
   sold: Scalars['Int']['output'];
+  updatedAt: Scalars['DateTimeISO']['output'];
 };
 
 export type ProductCategory = {
   __typename?: 'ProductCategory';
+  createdAt: Scalars['DateTimeISO']['output'];
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
   title: Scalars['String']['output'];
   type: Array<CategoryType>;
+  updatedAt: Scalars['DateTimeISO']['output'];
 };
 
 export type ProductImage = {
   __typename?: 'ProductImage';
+  createdAt: Scalars['DateTimeISO']['output'];
   id: Scalars['ID']['output'];
+  updatedAt: Scalars['DateTimeISO']['output'];
   url: Scalars['String']['output'];
 };
 
@@ -203,6 +219,7 @@ export type Query = {
   countCart: Scalars['Float']['output'];
   me: User;
   product: Product;
+  productCategories: Array<ProductCategory>;
   products: ProductsWithPaginationResponse;
   user?: Maybe<User>;
   users: Array<User>;
@@ -237,12 +254,14 @@ export enum SortOrder {
 
 export type User = {
   __typename?: 'User';
+  createdAt: Scalars['DateTimeISO']['output'];
   email: Scalars['String']['output'];
   fullName: Scalars['String']['output'];
   id: Scalars['ID']['output'];
   phone?: Maybe<Scalars['String']['output']>;
   role: Role;
   status: UserStatus;
+  updatedAt: Scalars['DateTimeISO']['output'];
 };
 
 export enum UserStatus {

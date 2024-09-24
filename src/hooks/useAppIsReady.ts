@@ -76,7 +76,7 @@ export default function useAppIsReady() {
 
   // Listen accessToken change
   useEffect(() => {
-    if (accessToken && appIsReady && data) {
+    if (accessToken && data) {
       authenticate(data);
     }
   }, [accessToken, data]);
