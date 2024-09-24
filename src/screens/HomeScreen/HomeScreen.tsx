@@ -1,4 +1,7 @@
 import { View } from 'react-native';
+import { useShallow } from 'zustand/react/shallow';
+
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 import Category from '~components/customs/Category';
 import Bot from '~components/icons/Bot';
@@ -6,8 +9,28 @@ import CircleX from '~components/icons/CircleX';
 import Laptop from '~components/icons/Laptop';
 import SlidersVertical from '~components/icons/SlidersVertical';
 import Wrench from '~components/icons/Wrench';
+import { Button } from '~components/ui/button';
+import { Text } from '~components/ui/text';
+import { useStore } from '~store';
+import { HomeScreenNavigationProps } from '~types/navigation';
+import { removeAccessToken } from '~utils/token-storage';
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
+  const unAuthenticate = useStore(useShallow((state) => state.unAuthenticate));
+
+  const goToProductDetail = (productId: number) => {
+    navigation.navigate('StoresStack', {
+      screen: 'ProductDetailScreen',
+      params: { id: productId },
+    });
+  };
+
+  const logout = async () => {
+    unAuthenticate();
+    removeAccessToken();
+    await GoogleSignin.signOut();
+  };
+
   const renderCategory = (type: string) => {
     switch (type) {
       case 'robot':
@@ -24,11 +47,17 @@ const HomeScreen = () => {
   };
   return (
     <View>
+      <Button onPress={logout}>
+        <Text>Logout</Text>
+      </Button>
       {renderCategory('robot')}
       {renderCategory('programming')}
       {renderCategory('module')}
       {renderCategory('accessory')}
       {renderCategory('another')}
+      <Button className='mt-[4px]' onPress={() => goToProductDetail(1)}>
+        <Text>Product Detail</Text>
+      </Button>
     </View>
   );
 };

@@ -26,7 +26,7 @@ const ProductCard = ({ id, imageUrl, title, price, rating, numOfReviews }: Produ
       />
       <Text className='font-inter-medium mt-[20px] text-[16px] tracking-[0.2px]'>{title}</Text>
       <Text className='font-inter-bold mt-[4px] text-[14px] tracking-[0.2px] text-[#FE3A30]'>
-        {price.toLocaleString()}₫
+        {price.toLocaleString()} ₫
       </Text>
       <View className='flex-row items-center mt-[10px]'>
         <View className='flex-row items-center gap-[4px]'>
