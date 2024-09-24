@@ -3,7 +3,9 @@ schema {
   mutation: Mutation
 }
 
-"""Indicates exactly one field must be supplied and this field must not be `null`."""
+"""
+Indicates exactly one field must be supplied and this field must not be `null`.
+"""
 directive @oneOf on INPUT_OBJECT
 
 type AccessTokenResponse {
@@ -11,9 +13,11 @@ type AccessTokenResponse {
 }
 
 type Cart {
+  createdAt: DateTimeISO!
   id: ID!
   product: Product!
   quantity: Int!
+  updatedAt: DateTimeISO!
   user: User!
 }
 
@@ -38,16 +42,25 @@ input CheckoutOrderInput {
   vnp_TxnRef: String!
 }
 
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.This scalar is serialized to a string in ISO 8601 format and parsed from a string in ISO 8601 format.
+"""
+scalar DateTimeISO
+
 type Feedback {
   comment: String!
+  createdAt: DateTimeISO!
   id: ID!
   orderItem: OrderItem!
   product: Product!
   rating: Int!
+  updatedAt: DateTimeISO!
   user: User!
 }
 
-"""File upload scalar type"""
+"""
+File upload scalar type
+"""
 scalar File
 
 type Mutation {
@@ -66,15 +79,19 @@ type Mutation {
 }
 
 type Order {
+  createdAt: DateTimeISO!
   id: ID!
+  updatedAt: DateTimeISO!
 }
 
 type OrderItem {
+  createdAt: DateTimeISO!
   id: ID!
   order: Order!
   product: Product!
   quantity: Int!
   unitPrice: Int!
+  updatedAt: DateTimeISO!
 }
 
 enum PaymentProvider {
@@ -83,6 +100,7 @@ enum PaymentProvider {
 
 type Product {
   categories: [ProductCategory!]!
+  createdAt: DateTimeISO!
   description: String!
   feedbacks: [Feedback!]!
   id: ID!
@@ -91,17 +109,22 @@ type Product {
   price: Int!
   rating: Int!
   sold: Int!
+  updatedAt: DateTimeISO!
 }
 
 type ProductCategory {
+  createdAt: DateTimeISO!
   id: ID!
   name: String!
   title: String!
   type: [CategoryType!]!
+  updatedAt: DateTimeISO!
 }
 
 type ProductImage {
+  createdAt: DateTimeISO!
   id: ID!
+  updatedAt: DateTimeISO!
   url: String!
 }
 
@@ -122,7 +145,13 @@ type Query {
   countCart: Float!
   me: User!
   product(id: Float!): Product!
-  products(currentItem: Int! = 9, currentPage: Int! = 1, order: SortOrder! = ASC, sort: String! = "id"): ProductsWithPaginationResponse!
+  productCategories: [ProductCategory!]!
+  products(
+    currentItem: Int! = 9
+    currentPage: Int! = 1
+    order: SortOrder! = ASC
+    sort: String! = "id"
+  ): ProductsWithPaginationResponse!
   user(id: Int!): User
   users: [User!]!
 }
@@ -140,12 +169,14 @@ enum SortOrder {
 }
 
 type User {
+  createdAt: DateTimeISO!
   email: String!
   fullName: String!
   id: ID!
   phone: String
   role: Role!
   status: UserStatus!
+  updatedAt: DateTimeISO!
 }
 
 enum UserStatus {
