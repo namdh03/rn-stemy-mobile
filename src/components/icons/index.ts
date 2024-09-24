@@ -1,11 +1,16 @@
+export { default as Bot } from './Bot';
 export { default as ChevronLeft } from './ChevronLeft';
+export { default as CircleX } from './CircleX';
 export { default as EllipsisVertical } from './EllipsisVertical';
 export { default as Eye } from './Eye';
 export { default as EyeOff } from './EyeOff';
 export { default as Info } from './Info';
+export { default as Laptop } from './Laptop';
 export { default as Mail } from './Mail';
 export { default as MoonStar } from './MoonStar';
 export { default as Search } from './Search';
 export { default as ShoppingCart } from './ShoppingCart';
+export { default as SlidersVertical } from './SlidersVertical';
 export { default as Star } from './Star';
 export { default as Sun } from './Sun';
+export { default as Wrench } from './Wrench';
