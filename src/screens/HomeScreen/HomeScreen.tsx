@@ -27,6 +27,10 @@ const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
     await GoogleSignin.signOut();
   };
 
+  const handlePress = () => {
+    navigation.navigate('StoresScreen');
+  };
+
   return (
     <ScrollView className='px-[25px]'>
       <Button onPress={logout}>
@@ -37,7 +41,7 @@ const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
       </Button>
       <Carousel />
 
-      <Banner />
+      <Banner onPress={handlePress} />
     </ScrollView>
   );
 };
