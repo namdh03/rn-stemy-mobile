@@ -1,7 +1,3 @@
-import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import type { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native';
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-
 /*
  *  Root Stack
  *  │
@@ -13,16 +9,23 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
  *  │   ├── OTP Screen
  *  │   └── Reset Password Screen
  *  │
- *  ├── Main (Drawer Navigator)
- *  │   ├── Profile Screen
- *  │   └── Bottom Tab Navigator
- *  │       ├── Home Screen
- *  │       ├── Stores (Stores Stack)
- *  │       │   ├── Product List Screen
- *  │       │   └── Product Detail Screen
- *  │       └── Me Screen
+ *  └── Main Stack
+ *      ├── Bottom Tab
+ *      │   ├── Home Screen
+ *      │   ├── Stores Screen
+ *      │   └── Me Screen
+ *      └── Product Detail Stack
+ *          ├── Product Detail Screen
+ *          └── Product Feedback Screen
  */
 
+// import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import type { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+
+import { ProductFeedbackType } from './feedback.type';
+
+// Auth Stack
 export type AuthStackParamList = {
   LoginScreen: undefined;
   RegisterScreen: undefined;
@@ -32,29 +35,40 @@ export type AuthStackParamList = {
   ResetPasswordScreen: { token: string };
 };
 
-export type StoresStackParamList = {
-  ProductListScreen: undefined;
-  ProductDetailScreen: { id: number };
+// Drawer Tab
+export type DrawerParamList = {
+  HomeScreen: undefined;
 };
 
+// Bottom Tab
 export type BottomTabParamList = {
   HomeScreen: undefined;
-  StoresStack: NavigatorScreenParams<StoresStackParamList>;
+  StoresScreen: undefined;
   MeScreen: undefined;
 };
 
-export type MainStackParamList = {
-  BottomTabs: NavigatorScreenParams<BottomTabParamList>;
+// Product Detail Stack
+export type ProductDetailStackParamList = {
+  ProductDetailScreen: { id: number };
+  ProductFeedbackScreen: { rating: number; feedbacks: ProductFeedbackType[] };
 };
 
+// Main Stack
+export type MainStackParamList = {
+  DrawerStack: NavigatorScreenParams<DrawerParamList>;
+  BottomTabStack: NavigatorScreenParams<BottomTabParamList>;
+  ProductDetailStack: NavigatorScreenParams<ProductDetailStackParamList>;
+};
+
+// Root Stack
 export type RootStackParamList = {
-  Auth: NavigatorScreenParams<AuthStackParamList>;
-  Main: NavigatorScreenParams<BottomTabParamList>;
+  AuthStack: NavigatorScreenParams<AuthStackParamList>;
+  MainStack: NavigatorScreenParams<MainStackParamList>;
 };
 
 export type HomeScreenNavigationProps = CompositeScreenProps<
-  BottomTabScreenProps<BottomTabParamList, 'HomeScreen'>,
-  NativeStackScreenProps<RootStackParamList> & NativeStackScreenProps<StoresStackParamList>
+  NativeStackScreenProps<BottomTabParamList, 'HomeScreen'>,
+  NativeStackScreenProps<MainStackParamList>
 >;
 
 export type LoginScreenNavigationProps = CompositeScreenProps<
@@ -87,22 +101,12 @@ export type ResetPasswordScreenNavigationProps = CompositeScreenProps<
   NativeStackScreenProps<RootStackParamList>
 >;
 
-export type StoresScreenNavigationProps = CompositeScreenProps<
-  NativeStackScreenProps<RootStackParamList, 'Main'>,
-  BottomTabScreenProps<BottomTabParamList, 'StoresStack'>
+export type ProductDetailScreenNavigationProps = NativeStackScreenProps<
+  ProductDetailStackParamList,
+  'ProductDetailScreen'
 >;
 
-export type ProductListScreenNavigationProps = CompositeScreenProps<
-  NativeStackScreenProps<StoresStackParamList, 'ProductListScreen'>,
-  BottomTabScreenProps<BottomTabParamList, 'StoresStack'>
->;
-
-export type ProductDetailScreenNavigationProps = CompositeScreenProps<
-  NativeStackScreenProps<StoresStackParamList, 'ProductDetailScreen'>,
-  BottomTabScreenProps<BottomTabParamList, 'StoresStack'>
->;
-
-export type MeScreenNavigationProps = CompositeScreenProps<
-  NativeStackScreenProps<RootStackParamList, 'Main'>,
-  BottomTabScreenProps<BottomTabParamList, 'MeScreen'>
+export type ProductFeedbackScreenNavigationProps = NativeStackScreenProps<
+  ProductDetailStackParamList,
+  'ProductFeedbackScreen'
 >;

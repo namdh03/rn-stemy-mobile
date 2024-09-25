@@ -1,10 +1,14 @@
+// eslint-disable-next-line simple-import-sort/imports
+import './gesture-handler';
+
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import configs from '~configs';
-import RootNavigation from '~navigation/RootNavigation';
+import RootNavigator from '~navigation/RootNavigator';
 
 import './global.css';
+import { enableScreens } from 'react-native-screens';
 
 // Config react query
 const queryClient = new QueryClient({
@@ -17,10 +21,12 @@ GoogleSignin.configure({
   offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
 });
 
+enableScreens();
+
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <RootNavigation />
+      <RootNavigator />
     </QueryClientProvider>
   );
 }

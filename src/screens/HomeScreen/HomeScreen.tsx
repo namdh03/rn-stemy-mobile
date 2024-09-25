@@ -3,6 +3,7 @@ import { useShallow } from 'zustand/react/shallow';
 
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
+import Carousel from '~components/customs/Carousel';
 import Category from '~components/customs/Category';
 import Bot from '~components/icons/Bot';
 import CircleX from '~components/icons/CircleX';
@@ -19,7 +20,7 @@ const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
   const unAuthenticate = useStore(useShallow((state) => state.unAuthenticate));
 
   const goToProductDetail = (productId: number) => {
-    navigation.navigate('StoresStack', {
+    navigation.navigate('ProductDetailStack', {
       screen: 'ProductDetailScreen',
       params: { id: productId },
     });
@@ -55,7 +56,9 @@ const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
         <Text>Product Detail</Text>
       </Button>
 
-      <Text className='pt-[17px] font-inter-medium text-[16px] color-foreground leading-[25px] tracking-[0.061px]'>
+      <Carousel />
+
+      <Text className='mt-[17px] font-inter-medium text-[16px] color-foreground leading-[25px] tracking-[0.061px]'>
         Categories
       </Text>
       <View className='flex-row inline-flex items-center justify-between pt-[15px]'>
