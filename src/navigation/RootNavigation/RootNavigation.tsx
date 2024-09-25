@@ -1,4 +1,5 @@
 import { AppStateStatus, Platform } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { useShallow } from 'zustand/react/shallow';
@@ -38,18 +39,20 @@ const RootNavigation = () => {
 
   return (
     <SafeAreaProvider style={{ backgroundColor: isDarkColorScheme ? 'black' : 'white' }}>
-      <ThemeProvider value={isDarkColorScheme ? constants.THEME.DARK_THEME : constants.THEME.LIGHT_THEME}>
-        <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
-        <SafeAreaView style={{ flex: 1 }}>
-          <NavigationContainer
-            onReady={onLayoutRootView}
-            theme={isDarkColorScheme ? constants.THEME.DARK_THEME : constants.THEME.LIGHT_THEME}
-          >
-            {isAuthenticated ? <MainStack /> : <AuthStack />}
-          </NavigationContainer>
-        </SafeAreaView>
-        <PortalHost />
-      </ThemeProvider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <ThemeProvider value={isDarkColorScheme ? constants.THEME.DARK_THEME : constants.THEME.LIGHT_THEME}>
+          <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
+          <SafeAreaView style={{ flex: 1 }}>
+            <NavigationContainer
+              onReady={onLayoutRootView}
+              theme={isDarkColorScheme ? constants.THEME.DARK_THEME : constants.THEME.LIGHT_THEME}
+            >
+              {isAuthenticated ? <MainStack /> : <AuthStack />}
+            </NavigationContainer>
+          </SafeAreaView>
+          <PortalHost />
+        </ThemeProvider>
+      </GestureHandlerRootView>
     </SafeAreaProvider>
   );
 };
