@@ -187,6 +187,7 @@ export type ProductCategory = {
   createdAt: Scalars['DateTimeISO']['output'];
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
+  products: Array<Product>;
   title: Scalars['String']['output'];
   type: Array<CategoryType>;
   updatedAt: Scalars['DateTimeISO']['output'];

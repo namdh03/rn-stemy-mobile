@@ -16,14 +16,14 @@ import {
   ResetPasswordScreenNavigationProps,
 } from '~types/navigation';
 
-const Stack = createNativeStackNavigator<AuthStackParamList>();
+const AuthStack = createNativeStackNavigator<AuthStackParamList>();
 
-export default function AuthStack() {
+export default function AuthNavigator() {
   return (
-    <Stack.Navigator screenOptions={{ animation: 'fade' }}>
-      <Stack.Screen name='LoginScreen' component={LoginScreen} options={{ headerShown: false }} />
-      <Stack.Screen name='RegisterScreen' component={RegisterScreen} options={{ headerShown: false }} />
-      <Stack.Screen
+    <AuthStack.Navigator screenOptions={{ animation: 'fade' }}>
+      <AuthStack.Screen name='LoginScreen' component={LoginScreen} options={{ headerShown: false }} />
+      <AuthStack.Screen name='RegisterScreen' component={RegisterScreen} options={{ headerShown: false }} />
+      <AuthStack.Screen
         name='ForgotPasswordScreen'
         component={ForgotPasswordScreen}
         options={({ navigation }: ForgotPasswordScreenNavigationProps) => ({
@@ -37,7 +37,7 @@ export default function AuthStack() {
           ),
         })}
       />
-      <Stack.Screen
+      <AuthStack.Screen
         name='ForgotPasswordConfirmScreen'
         component={ForgotPasswordConfirmScreen}
         options={({ navigation }: ForgotPasswordConfirmScreenNavigationProps) => ({
@@ -51,7 +51,7 @@ export default function AuthStack() {
           ),
         })}
       />
-      <Stack.Screen
+      <AuthStack.Screen
         name='OTPScreen'
         component={OTPScreen}
         options={({ navigation }: OTPScreenNavigationProps) => ({
@@ -65,7 +65,7 @@ export default function AuthStack() {
           ),
         })}
       />
-      <Stack.Screen
+      <AuthStack.Screen
         name='ResetPasswordScreen'
         component={ResetPasswordScreen}
         options={({ navigation }: ResetPasswordScreenNavigationProps) => ({
@@ -79,6 +79,6 @@ export default function AuthStack() {
           ),
         })}
       />
-    </Stack.Navigator>
+    </AuthStack.Navigator>
   );
 }
