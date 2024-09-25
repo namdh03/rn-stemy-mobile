@@ -3,6 +3,7 @@ import { useShallow } from 'zustand/react/shallow';
 
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
+import Banner from '~components/customs/Banner';
 import { Button } from '~components/ui/button';
 import { Text } from '~components/ui/text';
 import { useStore } from '~store';
@@ -33,6 +34,8 @@ const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
       <Button className='mt-[4px]' onPress={() => goToProductDetail('1')}>
         <Text>Product Detail</Text>
       </Button>
+
+      <Banner />
     </View>
   );
 };
