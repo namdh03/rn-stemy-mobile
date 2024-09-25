@@ -17,6 +17,7 @@ const Category = ({ id, icon: Icon, title, bgColor, colorIcon }: CateProps) => {
   const handlePress = () => {
     console.log(`Category ID: ${id}`);
   };
+
   return (
     <View className='flex justify-center items-center gap-[10px]'>
       <Button
