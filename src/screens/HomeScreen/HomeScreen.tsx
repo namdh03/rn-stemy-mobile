@@ -14,7 +14,7 @@ import { removeAccessToken } from '~utils/token-storage';
 const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
   const unAuthenticate = useStore(useShallow((state) => state.unAuthenticate));
 
-  const goToProductDetail = (productId: string) => {
+  const goToProductDetail = (productId: number) => {
     navigation.navigate('ProductDetailStack', {
       screen: 'ProductDetailScreen',
       params: { id: productId },
@@ -36,7 +36,7 @@ const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
       <Button onPress={logout}>
         <Text>Logout</Text>
       </Button>
-      <Button className='mt-[4px]' onPress={() => goToProductDetail('1')}>
+      <Button className='mt-[4px]' onPress={() => goToProductDetail(1)}>
         <Text>Product Detail</Text>
       </Button>
       <Carousel />

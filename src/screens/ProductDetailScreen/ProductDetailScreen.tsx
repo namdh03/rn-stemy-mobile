@@ -1,4 +1,6 @@
-import { Image, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
+
+import { useQuery } from '@tanstack/react-query';
 
 import FlexibleImage from '~components/customs/FlexibleImage';
 import ProductList from '~components/customs/ProductList';
@@ -6,11 +8,23 @@ import { Star } from '~components/icons';
 import { Button } from '~components/ui/button';
 import { Separator } from '~components/ui/separator';
 import { Text } from '~components/ui/text';
+import { GET_PRODUCT_QUERY_KEY } from '~constants/product-query-key';
+import execute from '~graphql/execute';
+import { GetProduct } from '~services/product.services';
 import { ProductDetailScreenNavigationProps } from '~types/navigation';
 
 import FeedbackItem from './components/FeedbackItem';
+import ImageCarousel from './components/ImageCarousel';
 
-const ProductDetailScreen = ({ navigation }: ProductDetailScreenNavigationProps) => {
+const MAX_FEEDBACK_DISPLAY = 4;
+
+const ProductDetailScreen = ({ route, navigation }: ProductDetailScreenNavigationProps) => {
+  const { data } = useQuery({
+    queryKey: [GET_PRODUCT_QUERY_KEY],
+    queryFn: () => execute(GetProduct, { id: route.params.id }),
+    select: (data) => data.data,
+  });
+
   return (
     <ScrollView
       contentContainerClassName='py-[25px] mx-auto w-full max-w-xl'
@@ -18,28 +32,25 @@ const ProductDetailScreen = ({ navigation }: ProductDetailScreenNavigationProps)
       automaticallyAdjustContentInsets={false}
     >
       <View className='px-[25px]'>
-        <View className='w-[325px] h-[300px] p-[10px] rounded-[10px] bg-muted items-end justify-center'>
-          <Image
-            source={{
-              uri: 'https://megatoys.vn/thumb_1000_1000_2/data/images/products/2022/06/10/cb70c3ee7716ec96598c129232ec4526_1654828014.jpg',
-            }}
-            className='w-full h-full'
-          />
+        <View className='flex-1 p-[10px] rounded-[10px] bg-muted'>
+          <ImageCarousel images={data?.product.images || []} />
         </View>
 
         <View className='gap-[10px] mt-[30px]'>
-          <Text className='font-inter-bold text-[24px] leading-[32px] tracking-[0.2px]'>TMA-2HD Wireless</Text>
+          <Text className='font-inter-bold text-[24px] leading-[32px] tracking-[0.2px]'>{data?.product.name}</Text>
           <Text className='font-inter-medium text-[16px] text-[#FE3A30] leading-[20px] tracking-[0.2px]'>
-            1.500.000 ₫
+            {data?.product.price.toLocaleString()} ₫
           </Text>
           <View className='flex-row items-center mt-[10px]'>
             <View className='flex-row items-center gap-[4px]'>
               <Star color='#FFC120' size={16} className='fill-[#FFC120]' />
-              <Text className='font-inter-regular text-[14px] tracking-[0.2px]'>{4.6}</Text>
+              <Text className='font-inter-regular text-[14px] tracking-[0.2px]'>{data?.product.rating}</Text>
             </View>
-            <Text className='font-inter-regular ml-[10px] text-[14px] tracking-[0.2px]'>{86} Reviews</Text>
+            <Text className='font-inter-regular ml-[10px] text-[14px] tracking-[0.2px]'>
+              {data?.product.feedbacks.length || 0} Reviews
+            </Text>
             <View className='ml-auto px-[10px] py-[2px] bg-[#EEFAF6] rounded-[10px]'>
-              <Text className='font-inter-medium text-primary text-[12px]'>Tersedia : 250</Text>
+              <Text className='font-inter-medium text-primary text-[12px]'>Sold : {data?.product.sold}</Text>
             </View>
           </View>
         </View>
@@ -51,21 +62,20 @@ const ProductDetailScreen = ({ navigation }: ProductDetailScreenNavigationProps)
             Description Product
           </Text>
           <Text className='font-inter-regular text-foreground text-[14px] leading-[22px] tracking-[0.2px]'>
-            Robot STEM Rover – Coding kit sử dụng mạch lập trình Yolo:Bit, giúp làm quen với thế giới lập trình Robot dễ
-            dàng và thú vị. Các bạn có thể tự tay lắp ráp, điều khiển và lập trình các tính năng hấp dẫn của một chú
-            Robot theo phương pháp giáo dục STEM hiện đại.
+            {data?.product.description}
           </Text>
           <FlexibleImage
             source={{
-              uri: 'https://ohstem.vn/wp-content/uploads/2024/06/Robot-stem-rover-version-2-tai-ohstem-tich-hop-AI.png',
+              uri: data?.product.images[0].url || '',
             }}
           />
           <Text className='font-inter-bold text-foreground text-[16px] leading-[24px] tracking-[0.2px]'>
             Detailed instruction book
           </Text>
           <Text className='font-inter-regular text-foreground text-[14px] leading-[22px] tracking-[0.2px]'>
-            Đi kèm với Rover là sách hướng dẫn lập trình chi tiết bao gồm nhiều bài học có hình ảnh minh hoạ, code mẫu
-            và hướng dẫn từ A đến Z.
+            Included with the <Text className='font-inter-medium text-primary'>{data?.product.name}</Text> is a detailed
+            programming guide, featuring multiple lessons with illustrations, sample code, and step-by-step instructions
+            from A to Z.
           </Text>
         </View>
 
@@ -74,47 +84,41 @@ const ProductDetailScreen = ({ navigation }: ProductDetailScreenNavigationProps)
         <View className='gap-[30px] mb-[30px]'>
           <View className='flex-row justify-between'>
             <Text className='font-inter-bold text-foreground text-[16px] leading-[24px] tracking-[0.2px]'>
-              Review (86)
+              Review ({data?.product.feedbacks.length || 0})
             </Text>
             <View className='flex-row items-center gap-[4px]'>
               <Star color='#FFC120' size={18} className='fill-[#FFC120]' />
-              <Text className='font-inter-medium text-[16px] tracking-[0.2px]'>{4.6}</Text>
+              <Text className='font-inter-medium text-[16px] tracking-[0.2px]'>{data?.product.rating}</Text>
             </View>
           </View>
 
           <View className='flex-1 gap-[20px]'>
-            <FeedbackItem
-              id='1'
-              avatar='https://ispacedanang.edu.vn/wp-content/uploads/2024/05/hinh-anh-dep-ve-hoc-sinh-cap-3-1.jpg'
-              name='Dương Hoàng Nam'
-              time='2024-09-16T12:25:46.000Z'
-              rating={4}
-              comment='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-            />
-            <FeedbackItem
-              id='2'
-              avatar='https://ispacedanang.edu.vn/wp-content/uploads/2024/05/hinh-anh-dep-ve-hoc-sinh-cap-3-1.jpg'
-              name='Dương Hoàng Nam'
-              time='2024-09-16T12:25:46.000Z'
-              rating={4}
-              comment='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-            />
-            <FeedbackItem
-              id='3'
-              avatar='https://ispacedanang.edu.vn/wp-content/uploads/2024/05/hinh-anh-dep-ve-hoc-sinh-cap-3-1.jpg'
-              name='Dương Hoàng Nam'
-              time='2024-09-16T12:25:46.000Z'
-              rating={4}
-              comment='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-            />
+            {data?.product.feedbacks.map((feedback) => (
+              <FeedbackItem
+                key={feedback.id}
+                id={feedback.id}
+                avatar='https://ispacedanang.edu.vn/wp-content/uploads/2024/05/hinh-anh-dep-ve-hoc-sinh-cap-3-1.jpg'
+                name={feedback.user.fullName}
+                time={feedback.createdAt}
+                rating={feedback.rating}
+                comment={feedback.comment}
+              />
+            ))}
 
-            <Button
-              size='lg'
-              variant='outline'
-              onPress={() => navigation.navigate('ProductFeedbackScreen', { rating: 4.6 })}
-            >
-              <Text className='font-inter-medium text-foreground leading-[20px]'>See All Review</Text>
-            </Button>
+            {(data?.product.feedbacks.length || 0) > MAX_FEEDBACK_DISPLAY && (
+              <Button
+                size='lg'
+                variant='outline'
+                onPress={() =>
+                  navigation.navigate('ProductFeedbackScreen', {
+                    rating: route.params.id,
+                    feedbacks: data?.product.feedbacks || [],
+                  })
+                }
+              >
+                <Text className='font-inter-medium text-foreground leading-[20px]'>See All Review</Text>
+              </Button>
+            )}
           </View>
         </View>
       </View>

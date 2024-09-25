@@ -278,6 +278,32 @@ export type E = {
   totalPage: Scalars['Int']['output'];
 };
 
+export type GetProductQueryQueryVariables = Exact<{
+  id: Scalars['Float']['input'];
+}>;
+
+export type GetProductQueryQuery = {
+  __typename?: 'Query';
+  product: {
+    __typename?: 'Product';
+    description: string;
+    id: string;
+    name: string;
+    price: number;
+    rating: number;
+    sold: number;
+    images: Array<{ __typename?: 'ProductImage'; id: string; url: string }>;
+    feedbacks: Array<{
+      __typename?: 'Feedback';
+      comment: string;
+      createdAt: any;
+      id: string;
+      rating: number;
+      user: { __typename?: 'User'; fullName: string };
+    }>;
+  };
+};
+
 export type LoginMutationMutationVariables = Exact<{
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -362,6 +388,31 @@ export class TypedDocumentString<TResult, TVariables>
   }
 }
 
+export const GetProductQueryDocument = new TypedDocumentString(`
+    query GetProductQuery($id: Float!) {
+  product(id: $id) {
+    images {
+      id
+      url
+    }
+    description
+    id
+    name
+    price
+    rating
+    sold
+    feedbacks {
+      comment
+      createdAt
+      id
+      rating
+      user {
+        fullName
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<GetProductQueryQuery, GetProductQueryQueryVariables>;
 export const LoginMutationDocument = new TypedDocumentString(`
     mutation LoginMutation($email: String!, $password: String!) {
   login(email: $email, password: $password) {
