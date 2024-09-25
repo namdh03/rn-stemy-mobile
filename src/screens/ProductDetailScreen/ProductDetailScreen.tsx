@@ -6,10 +6,11 @@ import { Star } from '~components/icons';
 import { Button } from '~components/ui/button';
 import { Separator } from '~components/ui/separator';
 import { Text } from '~components/ui/text';
+import { ProductDetailScreenNavigationProps } from '~types/navigation';
 
 import FeedbackItem from './components/FeedbackItem';
 
-const ProductDetailScreen = () => {
+const ProductDetailScreen = ({ navigation }: ProductDetailScreenNavigationProps) => {
   return (
     <ScrollView
       contentContainerClassName='py-[25px] mx-auto w-full max-w-xl'
@@ -107,7 +108,11 @@ const ProductDetailScreen = () => {
               comment='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
             />
 
-            <Button size='lg' variant='outline'>
+            <Button
+              size='lg'
+              variant='outline'
+              onPress={() => navigation.navigate('ProductFeedbackScreen', { rating: 4.6 })}
+            >
               <Text className='font-inter-medium text-foreground leading-[20px]'>See All Review</Text>
             </Button>
           </View>

@@ -11,8 +11,8 @@ import { focusManager } from '@tanstack/react-query';
 import LoadingOverlay from '~components/customs/LoadingOverlay';
 import constants from '~constants';
 import { useAppIsReady, useAppState, useColorScheme, useOnlineManager } from '~hooks';
-import AuthStack from '~navigation/AuthStack';
-import MainStack from '~navigation/MainStack';
+import AuthNavigator from '~navigation/AuthNavigator';
+import MainNavigator from '~navigation/MainNavigator';
 import { useStore } from '~store';
 
 function onAppStateChange(status: AppStateStatus) {
@@ -22,7 +22,7 @@ function onAppStateChange(status: AppStateStatus) {
   }
 }
 
-const RootNavigation = () => {
+const RootNavigator = () => {
   const { isDarkColorScheme } = useColorScheme();
   const { isFetching, appIsReady, onLayoutRootView } = useAppIsReady();
   const isAuthenticated = useStore(useShallow((state) => state.isAuthenticated));
@@ -47,7 +47,7 @@ const RootNavigation = () => {
               onReady={onLayoutRootView}
               theme={isDarkColorScheme ? constants.THEME.DARK_THEME : constants.THEME.LIGHT_THEME}
             >
-              {isAuthenticated ? <MainStack /> : <AuthStack />}
+              {isAuthenticated ? <MainNavigator /> : <AuthNavigator />}
             </NavigationContainer>
           </SafeAreaView>
           <PortalHost />
@@ -57,4 +57,4 @@ const RootNavigation = () => {
   );
 };
 
-export default RootNavigation;
+export default RootNavigator;
