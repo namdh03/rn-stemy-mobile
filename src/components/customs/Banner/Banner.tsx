@@ -1,4 +1,4 @@
-import {  Image, TouchableOpacity, View } from 'react-native';
+import { Image, TouchableOpacity, View } from 'react-native';
 
 import images from '~assets/images';
 
