@@ -1,8 +1,9 @@
-import { View } from 'react-native';
+import { ScrollView } from 'react-native';
 import { useShallow } from 'zustand/react/shallow';
 
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
+import Carousel from '~components/customs/Carousel';
 import { Button } from '~components/ui/button';
 import { Text } from '~components/ui/text';
 import { useStore } from '~store';
@@ -26,14 +27,15 @@ const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
   };
 
   return (
-    <View>
+    <ScrollView className='px-[25px]'>
       <Button onPress={logout}>
         <Text>Logout</Text>
       </Button>
       <Button className='mt-[4px]' onPress={() => goToProductDetail(1)}>
         <Text>Product Detail</Text>
       </Button>
-    </View>
+      <Carousel />
+    </ScrollView>
   );
 };
 
