@@ -292,6 +292,7 @@ export type GetProductQueryQuery = {
     price: number;
     rating: number;
     sold: number;
+    images: Array<{ __typename?: 'ProductImage'; id: string; url: string }>;
     feedbacks: Array<{
       __typename?: 'Feedback';
       comment: string;
@@ -390,6 +391,10 @@ export class TypedDocumentString<TResult, TVariables>
 export const GetProductQueryDocument = new TypedDocumentString(`
     query GetProductQuery($id: Float!) {
   product(id: $id) {
+    images {
+      id
+      url
+    }
     description
     id
     name

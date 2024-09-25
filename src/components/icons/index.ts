@@ -1,4 +1,5 @@
 export { default as ChevronLeft } from './ChevronLeft';
+export { default as CircleX } from './CircleX ';
 export { default as EllipsisVertical } from './EllipsisVertical';
 export { default as Eye } from './Eye';
 export { default as EyeOff } from './EyeOff';
