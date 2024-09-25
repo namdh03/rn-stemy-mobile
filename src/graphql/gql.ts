@@ -1,8 +1,6 @@
 /* eslint-disable */
 import * as types from './graphql';
 
-
-
 /**
  * Map of all GraphQL operations in the project.
  *
@@ -47,28 +45,39 @@ export function graphql(
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  mutation RegisterMutation($email: String!, $fullName: String!, $password: String!, $phone: String!) {\n    register(email: $email, fullName: $fullName, password: $password, phone: $phone) {\n      access_token\n    }\n  }\n"): typeof import('./graphql').RegisterMutationDocument;
+export function graphql(
+  source: '\n  mutation RegisterMutation($email: String!, $fullName: String!, $password: String!, $phone: String!) {\n    register(email: $email, fullName: $fullName, password: $password, phone: $phone) {\n      access_token\n    }\n  }\n',
+): typeof import('./graphql').RegisterMutationDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  mutation SendResetPasswordOTPMutation($email: String!) {\n    sendResetPasswordOTP(email: $email)\n  }\n"): typeof import('./graphql').SendResetPasswordOtpMutationDocument;
+export function graphql(
+  source: '\n  mutation SendResetPasswordOTPMutation($email: String!) {\n    sendResetPasswordOTP(email: $email)\n  }\n',
+): typeof import('./graphql').SendResetPasswordOtpMutationDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  mutation GetTokenResetPasswordMutation($email: String!, $OTPCode: String!) {\n    getTokenResetPassword(email: $email, OTPCode: $OTPCode)\n  }\n"): typeof import('./graphql').GetTokenResetPasswordMutationDocument;
+export function graphql(
+  source: '\n  mutation GetTokenResetPasswordMutation($email: String!, $OTPCode: String!) {\n    getTokenResetPassword(email: $email, OTPCode: $OTPCode)\n  }\n',
+): typeof import('./graphql').GetTokenResetPasswordMutationDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  mutation ResetPasswordMutation($password: String!, $token: String!) {\n    resetPassword(password: $password, token: $token)\n  }\n"): typeof import('./graphql').ResetPasswordMutationDocument;
+export function graphql(
+  source: '\n  mutation ResetPasswordMutation($password: String!, $token: String!) {\n    resetPassword(password: $password, token: $token)\n  }\n',
+): typeof import('./graphql').ResetPasswordMutationDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  mutation LoginWithGoogleMutation($code: String!) {\n    loginWithGoogle(code: $code) {\n      access_token\n    }\n  }\n"): typeof import('./graphql').LoginWithGoogleMutationDocument;
+export function graphql(
+  source: '\n  mutation LoginWithGoogleMutation($code: String!) {\n    loginWithGoogle(code: $code) {\n      access_token\n    }\n  }\n',
+): typeof import('./graphql').LoginWithGoogleMutationDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query MeQuery {\n    me {\n      email\n      fullName\n      id\n      phone\n      role\n      status\n    }\n  }\n"): typeof import('./graphql').MeQueryDocument;
-
+export function graphql(
+  source: '\n  query MeQuery {\n    me {\n      email\n      fullName\n      id\n      phone\n      role\n      status\n    }\n  }\n',
+): typeof import('./graphql').MeQueryDocument;
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

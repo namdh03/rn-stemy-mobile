@@ -3,6 +3,7 @@ import { useShallow } from 'zustand/react/shallow';
 
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
+import Banner from '~components/customs/Banner';
 import Carousel from '~components/customs/Carousel';
 import { Button } from '~components/ui/button';
 import { Text } from '~components/ui/text';
@@ -26,6 +27,10 @@ const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
     await GoogleSignin.signOut();
   };
 
+  const handlePress = () => {
+    navigation.navigate('StoresScreen');
+  };
+
   return (
     <ScrollView className='px-[25px]'>
       <Button onPress={logout}>
@@ -35,6 +40,8 @@ const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
         <Text>Product Detail</Text>
       </Button>
       <Carousel />
+
+      <Banner onPress={handlePress} />
     </ScrollView>
   );
 };

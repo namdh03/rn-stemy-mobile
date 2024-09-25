@@ -9,15 +9,15 @@ export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> =
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string; }
-  String: { input: string; output: string; }
-  Boolean: { input: boolean; output: boolean; }
-  Int: { input: number; output: number; }
-  Float: { input: number; output: number; }
+  ID: { input: string; output: string };
+  String: { input: string; output: string };
+  Boolean: { input: boolean; output: boolean };
+  Int: { input: number; output: number };
+  Float: { input: number; output: number };
   /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.This scalar is serialized to a string in ISO 8601 format and parsed from a string in ISO 8601 format. */
-  DateTimeISO: { input: any; output: any; }
+  DateTimeISO: { input: any; output: any };
   /** File upload scalar type */
-  File: { input: any; output: any; }
+  File: { input: any; output: any };
 };
 
 export type AccessTokenResponse = {
@@ -38,7 +38,7 @@ export type Cart = {
 export enum CategoryType {
   Age = 'AGE',
   Product = 'PRODUCT',
-  Topic = 'TOPIC'
+  Topic = 'TOPIC',
 }
 
 export type CheckoutOrderInput = {
@@ -84,17 +84,14 @@ export type Mutation = {
   updateCart: Cart;
 };
 
-
 export type MutationAddToCartArgs = {
   productId: Scalars['Float']['input'];
   quantity: Scalars['Float']['input'];
 };
 
-
 export type MutationCheckoutOrderArgs = {
   input: CheckoutOrderInput;
 };
-
 
 export type MutationCreateOrderArgs = {
   address: Scalars['String']['input'];
@@ -103,35 +100,29 @@ export type MutationCreateOrderArgs = {
   phone: Scalars['String']['input'];
 };
 
-
 export type MutationCreateProductArgs = {
   images: Array<Scalars['File']['input']>;
   input: ProductInput;
   lab: Scalars['File']['input'];
 };
 
-
 export type MutationDeleteCartArgs = {
   productId: Scalars['Float']['input'];
 };
-
 
 export type MutationGetTokenResetPasswordArgs = {
   OTPCode: Scalars['String']['input'];
   email: Scalars['String']['input'];
 };
 
-
 export type MutationLoginArgs = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
 };
 
-
 export type MutationLoginWithGoogleArgs = {
   code: Scalars['String']['input'];
 };
-
 
 export type MutationRegisterArgs = {
   email: Scalars['String']['input'];
@@ -140,17 +131,14 @@ export type MutationRegisterArgs = {
   phone: Scalars['String']['input'];
 };
 
-
 export type MutationResetPasswordArgs = {
   password: Scalars['String']['input'];
   token: Scalars['String']['input'];
 };
 
-
 export type MutationSendResetPasswordOtpArgs = {
   email: Scalars['String']['input'];
 };
-
 
 export type MutationUpdateCartArgs = {
   productId: Scalars['Float']['input'];
@@ -176,7 +164,7 @@ export type OrderItem = {
 };
 
 export enum PaymentProvider {
-  Vnpay = 'VNPAY'
+  Vnpay = 'VNPAY',
 }
 
 export type Product = {
@@ -238,11 +226,9 @@ export type Query = {
   users: Array<User>;
 };
 
-
 export type QueryProductArgs = {
   id: Scalars['Float']['input'];
 };
-
 
 export type QueryProductsArgs = {
   currentItem?: Scalars['Int']['input'];
@@ -250,7 +236,6 @@ export type QueryProductsArgs = {
   order?: SortOrder;
   sort?: Scalars['String']['input'];
 };
-
 
 export type QueryUserArgs = {
   id: Scalars['Int']['input'];
@@ -260,12 +245,12 @@ export enum Role {
   Admin = 'ADMIN',
   Customer = 'CUSTOMER',
   Manager = 'MANAGER',
-  Staff = 'STAFF'
+  Staff = 'STAFF',
 }
 
 export enum SortOrder {
   Asc = 'ASC',
-  Desc = 'DESC'
+  Desc = 'DESC',
 }
 
 export type User = {
@@ -282,7 +267,7 @@ export type User = {
 
 export enum UserStatus {
   Active = 'ACTIVE',
-  Ban = 'BAN'
+  Ban = 'BAN',
 }
 
 export type E = {
@@ -324,8 +309,10 @@ export type LoginMutationMutationVariables = Exact<{
   password: Scalars['String']['input'];
 }>;
 
-
-export type LoginMutationMutation = { __typename?: 'Mutation', login: { __typename?: 'AccessTokenResponse', access_token: string } };
+export type LoginMutationMutation = {
+  __typename?: 'Mutation';
+  login: { __typename?: 'AccessTokenResponse'; access_token: string };
+};
 
 export type RegisterMutationMutationVariables = Exact<{
   email: Scalars['String']['input'];
@@ -334,43 +321,54 @@ export type RegisterMutationMutationVariables = Exact<{
   phone: Scalars['String']['input'];
 }>;
 
-
-export type RegisterMutationMutation = { __typename?: 'Mutation', register: { __typename?: 'AccessTokenResponse', access_token: string } };
+export type RegisterMutationMutation = {
+  __typename?: 'Mutation';
+  register: { __typename?: 'AccessTokenResponse'; access_token: string };
+};
 
 export type SendResetPasswordOtpMutationMutationVariables = Exact<{
   email: Scalars['String']['input'];
 }>;
 
-
-export type SendResetPasswordOtpMutationMutation = { __typename?: 'Mutation', sendResetPasswordOTP: string };
+export type SendResetPasswordOtpMutationMutation = { __typename?: 'Mutation'; sendResetPasswordOTP: string };
 
 export type GetTokenResetPasswordMutationMutationVariables = Exact<{
   email: Scalars['String']['input'];
   OTPCode: Scalars['String']['input'];
 }>;
 
-
-export type GetTokenResetPasswordMutationMutation = { __typename?: 'Mutation', getTokenResetPassword: string };
+export type GetTokenResetPasswordMutationMutation = { __typename?: 'Mutation'; getTokenResetPassword: string };
 
 export type ResetPasswordMutationMutationVariables = Exact<{
   password: Scalars['String']['input'];
   token: Scalars['String']['input'];
 }>;
 
-
-export type ResetPasswordMutationMutation = { __typename?: 'Mutation', resetPassword: string };
+export type ResetPasswordMutationMutation = { __typename?: 'Mutation'; resetPassword: string };
 
 export type LoginWithGoogleMutationMutationVariables = Exact<{
   code: Scalars['String']['input'];
 }>;
 
+export type LoginWithGoogleMutationMutation = {
+  __typename?: 'Mutation';
+  loginWithGoogle: { __typename?: 'AccessTokenResponse'; access_token: string };
+};
 
-export type LoginWithGoogleMutationMutation = { __typename?: 'Mutation', loginWithGoogle: { __typename?: 'AccessTokenResponse', access_token: string } };
+export type MeQueryQueryVariables = Exact<{ [key: string]: never }>;
 
-export type MeQueryQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type MeQueryQuery = { __typename?: 'Query', me: { __typename?: 'User', email: string, fullName: string, id: string, phone?: string | null, role: Role, status: UserStatus } };
+export type MeQueryQuery = {
+  __typename?: 'Query';
+  me: {
+    __typename?: 'User';
+    email: string;
+    fullName: string;
+    id: string;
+    phone?: string | null;
+    role: Role;
+    status: UserStatus;
+  };
+};
 
 export class TypedDocumentString<TResult, TVariables>
   extends String
@@ -378,7 +376,10 @@ export class TypedDocumentString<TResult, TVariables>
 {
   __apiType?: DocumentTypeDecoration<TResult, TVariables>['__apiType'];
 
-  constructor(private value: string, public __meta__?: Record<string, any>) {
+  constructor(
+    private value: string,
+    public __meta__?: Record<string, any>,
+  ) {
     super(value);
   }
 
@@ -430,12 +431,18 @@ export const SendResetPasswordOtpMutationDocument = new TypedDocumentString(`
     mutation SendResetPasswordOTPMutation($email: String!) {
   sendResetPasswordOTP(email: $email)
 }
-    `) as unknown as TypedDocumentString<SendResetPasswordOtpMutationMutation, SendResetPasswordOtpMutationMutationVariables>;
+    `) as unknown as TypedDocumentString<
+  SendResetPasswordOtpMutationMutation,
+  SendResetPasswordOtpMutationMutationVariables
+>;
 export const GetTokenResetPasswordMutationDocument = new TypedDocumentString(`
     mutation GetTokenResetPasswordMutation($email: String!, $OTPCode: String!) {
   getTokenResetPassword(email: $email, OTPCode: $OTPCode)
 }
-    `) as unknown as TypedDocumentString<GetTokenResetPasswordMutationMutation, GetTokenResetPasswordMutationMutationVariables>;
+    `) as unknown as TypedDocumentString<
+  GetTokenResetPasswordMutationMutation,
+  GetTokenResetPasswordMutationMutationVariables
+>;
 export const ResetPasswordMutationDocument = new TypedDocumentString(`
     mutation ResetPasswordMutation($password: String!, $token: String!) {
   resetPassword(password: $password, token: $token)
