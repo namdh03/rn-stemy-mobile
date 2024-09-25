@@ -1,4 +1,4 @@
-import { Image, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 
 import { useQuery } from '@tanstack/react-query';
 
@@ -14,9 +14,9 @@ import { GetProduct } from '~services/product.services';
 import { ProductDetailScreenNavigationProps } from '~types/navigation';
 
 import FeedbackItem from './components/FeedbackItem';
+import ImageCarousel from './components/ImageCarousel';
 
-// TODO: Uncomment later
-// const MAX_FEEDBACK_DISPLAY = 4;
+const MAX_FEEDBACK_DISPLAY = 4;
 
 const ProductDetailScreen = ({ route, navigation }: ProductDetailScreenNavigationProps) => {
   const { data } = useQuery({
@@ -32,13 +32,8 @@ const ProductDetailScreen = ({ route, navigation }: ProductDetailScreenNavigatio
       automaticallyAdjustContentInsets={false}
     >
       <View className='px-[25px]'>
-        <View className='w-[325px] h-[300px] p-[10px] rounded-[10px] bg-muted items-end justify-center'>
-          <Image
-            source={{
-              uri: 'https://megatoys.vn/thumb_1000_1000_2/data/images/products/2022/06/10/cb70c3ee7716ec96598c129232ec4526_1654828014.jpg',
-            }}
-            className='w-full h-full'
-          />
+        <View className='flex-1 p-[10px] rounded-[10px] bg-muted'>
+          <ImageCarousel images={data?.product.images || []} />
         </View>
 
         <View className='gap-[10px] mt-[30px]'>
@@ -71,7 +66,7 @@ const ProductDetailScreen = ({ route, navigation }: ProductDetailScreenNavigatio
           </Text>
           <FlexibleImage
             source={{
-              uri: 'https://ohstem.vn/wp-content/uploads/2024/06/Robot-stem-rover-version-2-tai-ohstem-tich-hop-AI.png',
+              uri: data?.product.images[0].url || '',
             }}
           />
           <Text className='font-inter-bold text-foreground text-[16px] leading-[24px] tracking-[0.2px]'>
@@ -110,21 +105,20 @@ const ProductDetailScreen = ({ route, navigation }: ProductDetailScreenNavigatio
               />
             ))}
 
-            {/* // TODO: Uncomment later */}
-            {/* {(data?.product.feedbacks.length || 0) > MAX_FEEDBACK_DISPLAY && ( */}
-            <Button
-              size='lg'
-              variant='outline'
-              onPress={() =>
-                navigation.navigate('ProductFeedbackScreen', {
-                  rating: route.params.id,
-                  feedbacks: data?.product.feedbacks || [],
-                })
-              }
-            >
-              <Text className='font-inter-medium text-foreground leading-[20px]'>See All Review</Text>
-            </Button>
-            {/* )} */}
+            {(data?.product.feedbacks.length || 0) > MAX_FEEDBACK_DISPLAY && (
+              <Button
+                size='lg'
+                variant='outline'
+                onPress={() =>
+                  navigation.navigate('ProductFeedbackScreen', {
+                    rating: route.params.id,
+                    feedbacks: data?.product.feedbacks || [],
+                  })
+                }
+              >
+                <Text className='font-inter-medium text-foreground leading-[20px]'>See All Review</Text>
+              </Button>
+            )}
           </View>
         </View>
       </View>
