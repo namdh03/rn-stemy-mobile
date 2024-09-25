@@ -16,7 +16,7 @@ const ProductCard = ({ id, imageUrl, title, price, rating, numOfReviews }: Produ
   return (
     <View
       id={id}
-      className='p-[15px] w-full max-w-[186px] rounded-[10px] border border-[#0000000d] bg-card shadow-sm shadow-foreground/10'
+      className='p-[15px] w-full rounded-[10px] border border-[#0000000d] bg-card shadow-sm shadow-foreground/10'
     >
       <Image
         source={typeof imageUrl === 'string' ? { uri: imageUrl } : imageUrl}

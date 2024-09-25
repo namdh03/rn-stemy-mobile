@@ -12,9 +12,10 @@ interface FeedbackItemProps {
   time: string;
   rating: number;
   comment: string;
+  nonFillColor?: string;
 }
 
-const FeedbackItem = ({ id, avatar, name, time, rating, comment }: FeedbackItemProps) => {
+const FeedbackItem = ({ id, avatar, name, time, rating, comment, nonFillColor }: FeedbackItemProps) => {
   return (
     <View key={id} className='flex-row gap-[15px]'>
       <Avatar alt={name} className='w-[40px] h-[40px]'>
@@ -38,7 +39,7 @@ const FeedbackItem = ({ id, avatar, name, time, rating, comment }: FeedbackItemP
             </View>
           </View>
 
-          <StarRating rating={rating} />
+          <StarRating rating={rating} nonFillColor={nonFillColor} />
         </View>
 
         <Text className='font-inter-regular text-foreground text-[14px] leading-[22px] tracking-[0.2px]'>
