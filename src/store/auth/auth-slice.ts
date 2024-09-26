@@ -1,6 +1,6 @@
 import { StateCreator } from 'zustand';
 
-import { User } from '~types/user.type';
+import { MeQuery } from '~graphql/graphql';
 
 import { AuthSlice, AuthState } from './auth.type';
 
@@ -11,12 +11,12 @@ const initialState: AuthState = {
 
 export const createAuthSlice: StateCreator<AuthSlice, [['zustand/immer', never]], [], AuthSlice> = (set) => ({
   ...initialState,
-  initialize: (isAuthenticated: boolean, user?: User) =>
+  initialize: (isAuthenticated: boolean, user?: MeQuery) =>
     set((state) => {
       state.isAuthenticated = isAuthenticated;
       state.user = user;
     }),
-  authenticate: (user: User) =>
+  authenticate: (user: MeQuery) =>
     set((state) => {
       state.isAuthenticated = true;
       state.user = user;

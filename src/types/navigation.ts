@@ -47,7 +47,7 @@ export type BottomTabParamList = {
 
 // Product Detail Stack
 export type ProductDetailStackParamList = {
-  ProductDetailScreen: { id: number };
+  ProductDetailScreen: { id: string };
   ProductFeedbackScreen: { rating: number };
 };
 

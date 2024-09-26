@@ -1,13 +1,13 @@
-import { User } from '~types/user.type';
+import { MeQuery } from '~graphql/graphql';
 
 export type AuthState = {
   isAuthenticated: boolean;
-  user?: User | null;
+  user?: MeQuery | null;
 };
 
 export type AuthActions = {
-  initialize: (isAuthenticated: boolean, user?: User) => void;
-  authenticate: (user: User) => void;
+  initialize: (isAuthenticated: boolean, user?: MeQuery) => void;
+  authenticate: (user: MeQuery) => void;
   unAuthenticate: () => void;
   reset: () => void;
 };

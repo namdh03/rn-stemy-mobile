@@ -9,7 +9,7 @@ import InputPassword from '~components/customs/InputPassword/InputPassword';
 import { Form, FormField } from '~components/deprecated-ui/form';
 import { Button } from '~components/ui/button';
 import execute from '~graphql/execute';
-import { ResetPassword } from '~services/user.serivces';
+import { ResetPasswordMutation } from '~services/user.serivces';
 import { ResetPasswordScreenNavigationProps } from '~types/navigation';
 import isErrors from '~utils/responseChecker';
 
@@ -25,7 +25,7 @@ const ResetPasswordScreen = ({ route, navigation }: ResetPasswordScreenNavigatio
   });
   const { mutate, isPending } = useMutation({
     mutationFn: (values: ResetPasswordFormType) =>
-      execute(ResetPassword, { token: route.params.token, password: values.password }),
+      execute(ResetPasswordMutation, { token: route.params.token, password: values.password }),
   });
 
   const onSubmit = (values: ResetPasswordFormType) => {

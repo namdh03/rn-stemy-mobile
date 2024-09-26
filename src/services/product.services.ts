@@ -1,8 +1,11 @@
 import { graphql } from '~graphql';
 
-export const GetProduct = graphql(`
-  query GetProductQuery($id: Float!) {
+export const GetProductQuery = graphql(`
+  query GetProduct($id: Float!) {
     product(id: $id) {
+      categories {
+        name
+      }
       images {
         id
         url
@@ -20,6 +23,20 @@ export const GetProduct = graphql(`
         rating
         user {
           fullName
+        }
+      }
+    }
+    products(currentItem: 10, order: ASC, sort: "price") {
+      items {
+        id
+        images {
+          url
+        }
+        price
+        name
+        rating
+        feedbacks {
+          id
         }
       }
     }

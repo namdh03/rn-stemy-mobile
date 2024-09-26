@@ -5,6 +5,7 @@ import { useShallow } from 'zustand/react/shallow';
 import { useQuery } from '@tanstack/react-query';
 
 import FlexibleImage from '~components/customs/FlexibleImage';
+import LoadingOverlay from '~components/customs/LoadingOverlay';
 import ProductList from '~components/customs/ProductList';
 import { Star } from '~components/icons';
 import { Button } from '~components/ui/button';
@@ -12,10 +13,11 @@ import { Separator } from '~components/ui/separator';
 import { Text } from '~components/ui/text';
 import { GET_PRODUCT_QUERY_KEY } from '~constants/product-query-key';
 import execute from '~graphql/execute';
-import { GetProduct } from '~services/product.services';
+import { GetProductQuery } from '~services/product.services';
 import { useStore } from '~store';
 import { ProductDetailScreenNavigationProps } from '~types/navigation';
 
+import CategoryList from './components/CategoryList';
 import FeedbackItem from './components/FeedbackItem';
 import ImageCarousel from './components/ImageCarousel';
 
@@ -23,9 +25,9 @@ const MAX_FEEDBACK_DISPLAY = 4;
 
 const ProductDetailScreen = ({ route, navigation }: ProductDetailScreenNavigationProps) => {
   const setFeedbacks = useStore(useShallow((state) => state.setFeedbacks));
-  const { data } = useQuery({
+  const { data, isFetching } = useQuery({
     queryKey: [GET_PRODUCT_QUERY_KEY],
-    queryFn: () => execute(GetProduct, { id: route.params.id }),
+    queryFn: () => execute(GetProductQuery, { id: Number(route.params.id) }),
     select: (data) => data.data,
   });
 
@@ -34,6 +36,10 @@ const ProductDetailScreen = ({ route, navigation }: ProductDetailScreenNavigatio
       setFeedbacks(data.product.rating, data.product.feedbacks);
     }
   }, [data]);
+
+  if (isFetching) {
+    return <LoadingOverlay loop />;
+  }
 
   return (
     <ScrollView
@@ -65,6 +71,8 @@ const ProductDetailScreen = ({ route, navigation }: ProductDetailScreenNavigatio
           </View>
         </View>
 
+        {data?.product.categories && <CategoryList categories={data.product.categories || []} />}
+
         <Separator className='mt-[30px] mb-[20px]' />
 
         <View className='gap-[15px]'>
@@ -74,11 +82,14 @@ const ProductDetailScreen = ({ route, navigation }: ProductDetailScreenNavigatio
           <Text className='font-inter-regular text-foreground text-[14px] leading-[22px] tracking-[0.2px]'>
             {data?.product.description}
           </Text>
-          <FlexibleImage
-            source={{
-              uri: data?.product.images[0].url || '',
-            }}
-          />
+          {data?.product.images[0]?.url && (
+            <FlexibleImage
+              source={{
+                uri: data.product.images[0].url || '',
+              }}
+            />
+          )}
+
           <Text className='font-inter-bold text-foreground text-[16px] leading-[24px] tracking-[0.2px]'>
             Detailed instruction book
           </Text>
@@ -134,38 +145,7 @@ const ProductDetailScreen = ({ route, navigation }: ProductDetailScreenNavigatio
         </View>
       </View>
 
-      <ProductList
-        title='Featured Product'
-        data={[
-          {
-            id: '1',
-            imageUrl:
-              'https://megatoys.vn/thumb_1000_1000_2/data/images/products/2022/06/10/cb70c3ee7716ec96598c129232ec4526_1654828014.jpg',
-            numOfReviews: 10,
-            price: 1500000,
-            rating: 4.3,
-            title: 'TMA-2 HD Wireless',
-          },
-          {
-            id: '2',
-            imageUrl:
-              'https://megatoys.vn/thumb_1000_1000_2/data/images/products/2022/06/10/cb70c3ee7716ec96598c129232ec4526_1654828014.jpg',
-            numOfReviews: 86,
-            price: 1200000,
-            rating: 4.3,
-            title: 'TMA-2 HD Wireless',
-          },
-          {
-            id: '3',
-            imageUrl:
-              'https://megatoys.vn/thumb_1000_1000_2/data/images/products/2022/06/10/cb70c3ee7716ec96598c129232ec4526_1654828014.jpg',
-            numOfReviews: 10,
-            price: 1200000,
-            rating: 4.3,
-            title: 'TMA-2 HD Wireless',
-          },
-        ]}
-      />
+      <ProductList title='Featured Product' data={data?.products.items || []} />
 
       <View className='flex-row gap-[20px] px-[25px] pt-[12px] bg-destructive-foreground'>
         <Button className='flex-1' size='lg' variant='destructive'>
