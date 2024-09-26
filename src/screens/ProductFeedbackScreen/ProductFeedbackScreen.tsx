@@ -11,7 +11,7 @@ import calculateStarRatings from '~utils/calculateStarRatings';
 import nFormatter from '~utils/nFormatter';
 
 const ProductFeedbackScreen = () => {
-  const { feedbacks } = useStore(
+  const { rating, feedbacks } = useStore(
     useShallow((state) => ({
       rating: state.rating,
       feedbacks: state.feedbacks,
@@ -27,7 +27,7 @@ const ProductFeedbackScreen = () => {
       <View className='flex-row'>
         <View className='gap-[5px]'>
           <Text className='font-inter-bold text-foreground text-[30px] tracking-[3px]'>
-            {0}
+            {rating}
             <Text className='font-inter-regular text-foreground text-[14px] tracking-[3px]'>/5</Text>
           </Text>
           <Text className='font-inter-regular text-foreground text-[14px] tracking-[0.2px]'>

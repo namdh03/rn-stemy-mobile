@@ -6,6 +6,7 @@ import { Image } from 'expo-image';
 import Pressable from '~components/customs/Pressable';
 import { CircleX } from '~components/icons';
 import constants from '~constants';
+import { useColorScheme } from '~hooks';
 import { Image as ImageType } from '~types/image.type';
 
 interface ImageCarouselProps {
@@ -13,6 +14,7 @@ interface ImageCarouselProps {
 }
 
 export default function ImageCarousel({ images }: ImageCarouselProps) {
+  const { isDarkColorScheme } = useColorScheme();
   const { width, height } = Dimensions.get('window');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
@@ -67,7 +69,7 @@ export default function ImageCarousel({ images }: ImageCarouselProps) {
       <Modal visible={modalVisible} transparent={true} animationType='slide' onRequestClose={closeModal}>
         <View className='relative flex-1 justify-center items-center bg-black/90'>
           <Pressable onPress={closeModal} className='absolute top-6 right-6 z-10'>
-            <CircleX size={32} className='text-muted' />
+            <CircleX size={32} className={`${isDarkColorScheme ? 'text-muted-foreground' : 'text-muted'}`} />
           </Pressable>
 
           <Carousel

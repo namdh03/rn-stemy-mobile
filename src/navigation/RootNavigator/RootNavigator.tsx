@@ -1,4 +1,5 @@
 import { AppStateStatus, Platform } from 'react-native';
+import { AlertNotificationRoot } from 'react-native-alert-notification';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
@@ -9,6 +10,7 @@ import { PortalHost } from '@rn-primitives/portal';
 import { focusManager } from '@tanstack/react-query';
 
 import LoadingOverlay from '~components/customs/LoadingOverlay';
+import configs from '~configs';
 import constants from '~constants';
 import { useAppIsReady, useAppState, useColorScheme, useOnlineManager } from '~hooks';
 import AuthNavigator from '~navigation/AuthNavigator';
@@ -41,16 +43,18 @@ const RootNavigator = () => {
     <SafeAreaProvider style={{ backgroundColor: isDarkColorScheme ? 'black' : 'white' }}>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <ThemeProvider value={isDarkColorScheme ? constants.THEME.DARK_THEME : constants.THEME.LIGHT_THEME}>
-          <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
-          <SafeAreaView style={{ flex: 1 }}>
-            <NavigationContainer
-              onReady={onLayoutRootView}
-              theme={isDarkColorScheme ? constants.THEME.DARK_THEME : constants.THEME.LIGHT_THEME}
-            >
-              {isAuthenticated ? <MainNavigator /> : <AuthNavigator />}
-            </NavigationContainer>
-          </SafeAreaView>
-          <PortalHost />
+          <AlertNotificationRoot theme={isDarkColorScheme ? 'dark' : 'light'} colors={configs.alertNotifies.colors}>
+            <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
+            <SafeAreaView style={{ flex: 1 }}>
+              <NavigationContainer
+                onReady={onLayoutRootView}
+                theme={isDarkColorScheme ? constants.THEME.DARK_THEME : constants.THEME.LIGHT_THEME}
+              >
+                {isAuthenticated ? <MainNavigator /> : <AuthNavigator />}
+              </NavigationContainer>
+            </SafeAreaView>
+            <PortalHost />
+          </AlertNotificationRoot>
         </ThemeProvider>
       </GestureHandlerRootView>
     </SafeAreaProvider>
