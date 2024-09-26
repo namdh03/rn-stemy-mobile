@@ -26,7 +26,7 @@ const documents = {
     types.ResetPasswordMutationDocument,
   '\n  mutation LoginWithGoogleMutation($code: String!) {\n    loginWithGoogle(code: $code) {\n      access_token\n    }\n  }\n':
     types.LoginWithGoogleMutationDocument,
-  '\n  query MeQuery {\n    me {\n      email\n      fullName\n      id\n      phone\n      role\n      status\n    }\n  }\n':
+  '\n  query MeQuery {\n    me {\n      createdAt\n      email\n      fullName\n      id\n      phone\n      role\n      status\n      updatedAt\n    }\n  }\n':
     types.MeQueryDocument,
 };
 
@@ -76,7 +76,7 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query MeQuery {\n    me {\n      email\n      fullName\n      id\n      phone\n      role\n      status\n    }\n  }\n',
+  source: '\n  query MeQuery {\n    me {\n      createdAt\n      email\n      fullName\n      id\n      phone\n      role\n      status\n      updatedAt\n    }\n  }\n',
 ): typeof import('./graphql').MeQueryDocument;
 
 export function graphql(source: string) {

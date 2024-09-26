@@ -361,12 +361,14 @@ export type MeQueryQuery = {
   __typename?: 'Query';
   me: {
     __typename?: 'User';
+    createdAt: any;
     email: string;
     fullName: string;
     id: string;
     phone?: string | null;
     role: Role;
     status: UserStatus;
+    updatedAt: any;
   };
 };
 
@@ -458,12 +460,14 @@ export const LoginWithGoogleMutationDocument = new TypedDocumentString(`
 export const MeQueryDocument = new TypedDocumentString(`
     query MeQuery {
   me {
+    createdAt
     email
     fullName
     id
     phone
     role
     status
+    updatedAt
   }
 }
     `) as unknown as TypedDocumentString<MeQueryQuery, MeQueryQueryVariables>;
