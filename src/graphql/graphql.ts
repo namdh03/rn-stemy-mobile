@@ -187,7 +187,6 @@ export type ProductCategory = {
   createdAt: Scalars['DateTimeISO']['output'];
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
-  products: Array<Product>;
   title: Scalars['String']['output'];
   type: Array<CategoryType>;
   updatedAt: Scalars['DateTimeISO']['output'];
@@ -277,6 +276,13 @@ export type E = {
   totalItem: Scalars['Int']['output'];
   totalPage: Scalars['Int']['output'];
 };
+
+export type AddToCartMutationVariables = Exact<{
+  productId: Scalars['Float']['input'];
+  quantity: Scalars['Float']['input'];
+}>;
+
+export type AddToCartMutation = { __typename?: 'Mutation'; addToCart: { __typename?: 'Cart'; id: string } };
 
 export type GetProductQueryVariables = Exact<{
   id: Scalars['Float']['input'];
@@ -403,6 +409,13 @@ export class TypedDocumentString<TResult, TVariables>
   }
 }
 
+export const AddToCartDocument = new TypedDocumentString(`
+    mutation AddToCart($productId: Float!, $quantity: Float!) {
+  addToCart(productId: $productId, quantity: $quantity) {
+    id
+  }
+}
+    `) as unknown as TypedDocumentString<AddToCartMutation, AddToCartMutationVariables>;
 export const GetProductDocument = new TypedDocumentString(`
     query GetProduct($id: Float!) {
   product(id: $id) {
