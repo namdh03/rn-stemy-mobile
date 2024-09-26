@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { ScrollView, View } from 'react-native';
+import { useShallow } from 'zustand/react/shallow';
 
 import { useQuery } from '@tanstack/react-query';
 
@@ -11,6 +13,7 @@ import { Text } from '~components/ui/text';
 import { GET_PRODUCT_QUERY_KEY } from '~constants/product-query-key';
 import execute from '~graphql/execute';
 import { GetProduct } from '~services/product.services';
+import { useStore } from '~store';
 import { ProductDetailScreenNavigationProps } from '~types/navigation';
 
 import FeedbackItem from './components/FeedbackItem';
@@ -19,11 +22,18 @@ import ImageCarousel from './components/ImageCarousel';
 const MAX_FEEDBACK_DISPLAY = 4;
 
 const ProductDetailScreen = ({ route, navigation }: ProductDetailScreenNavigationProps) => {
+  const setFeedbacks = useStore(useShallow((state) => state.setFeedbacks));
   const { data } = useQuery({
     queryKey: [GET_PRODUCT_QUERY_KEY],
     queryFn: () => execute(GetProduct, { id: route.params.id }),
     select: (data) => data.data,
   });
+
+  useEffect(() => {
+    if (data) {
+      setFeedbacks(data.product.rating, data.product.feedbacks);
+    }
+  }, [data]);
 
   return (
     <ScrollView
@@ -93,17 +103,19 @@ const ProductDetailScreen = ({ route, navigation }: ProductDetailScreenNavigatio
           </View>
 
           <View className='flex-1 gap-[20px]'>
-            {data?.product.feedbacks.map((feedback) => (
-              <FeedbackItem
-                key={feedback.id}
-                id={feedback.id}
-                avatar='https://ispacedanang.edu.vn/wp-content/uploads/2024/05/hinh-anh-dep-ve-hoc-sinh-cap-3-1.jpg'
-                name={feedback.user.fullName}
-                time={feedback.createdAt}
-                rating={feedback.rating}
-                comment={feedback.comment}
-              />
-            ))}
+            {data?.product.feedbacks
+              .slice(0, 4)
+              .map((feedback) => (
+                <FeedbackItem
+                  key={feedback.id}
+                  id={feedback.id}
+                  avatar='https://ispacedanang.edu.vn/wp-content/uploads/2024/05/hinh-anh-dep-ve-hoc-sinh-cap-3-1.jpg'
+                  name={feedback.user.fullName}
+                  time={feedback.createdAt}
+                  rating={feedback.rating}
+                  comment={feedback.comment}
+                />
+              ))}
 
             {(data?.product.feedbacks.length || 0) > MAX_FEEDBACK_DISPLAY && (
               <Button
@@ -111,8 +123,7 @@ const ProductDetailScreen = ({ route, navigation }: ProductDetailScreenNavigatio
                 variant='outline'
                 onPress={() =>
                   navigation.navigate('ProductFeedbackScreen', {
-                    rating: route.params.id,
-                    feedbacks: data?.product.feedbacks || [],
+                    rating: data?.product.rating || 0,
                   })
                 }
               >

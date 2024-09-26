@@ -45,12 +45,14 @@ export const LoginGoogle = graphql(`
 export const GetMe = graphql(`
   query MeQuery {
     me {
+      createdAt
       email
       fullName
       id
       phone
       role
       status
+      updatedAt
     }
   }
 `);

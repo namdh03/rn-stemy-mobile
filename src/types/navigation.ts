@@ -23,8 +23,6 @@
 import type { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-import { ProductFeedbackType } from './feedback.type';
-
 // Auth Stack
 export type AuthStackParamList = {
   LoginScreen: undefined;
@@ -50,7 +48,7 @@ export type BottomTabParamList = {
 // Product Detail Stack
 export type ProductDetailStackParamList = {
   ProductDetailScreen: { id: number };
-  ProductFeedbackScreen: { rating: number; feedbacks: ProductFeedbackType[] };
+  ProductFeedbackScreen: { rating: number };
 };
 
 // Main Stack

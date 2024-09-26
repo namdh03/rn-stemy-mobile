@@ -1,15 +1,23 @@
 import { ScrollView, View } from 'react-native';
+import { useShallow } from 'zustand/react/shallow';
 
 import { Progress } from '~components/ui/progress';
 import { Separator } from '~components/ui/separator';
 import { Text } from '~components/ui/text';
 import FeedbackItem from '~screens/ProductDetailScreen/components/FeedbackItem';
 import StarRating from '~screens/ProductDetailScreen/components/StarRating';
-import { ProductFeedbackScreenNavigationProps } from '~types/navigation';
+import { useStore } from '~store';
 import calculateStarRatings from '~utils/calculateStarRatings';
 import nFormatter from '~utils/nFormatter';
 
-const ProductFeedbackScreen = ({ route }: ProductFeedbackScreenNavigationProps) => {
+const ProductFeedbackScreen = () => {
+  const { feedbacks } = useStore(
+    useShallow((state) => ({
+      rating: state.rating,
+      feedbacks: state.feedbacks,
+    })),
+  );
+
   return (
     <ScrollView
       contentContainerClassName='px-[25px] py-[30px] mx-auto w-full max-w-xl'
@@ -19,18 +27,18 @@ const ProductFeedbackScreen = ({ route }: ProductFeedbackScreenNavigationProps) 
       <View className='flex-row'>
         <View className='gap-[5px]'>
           <Text className='font-inter-bold text-foreground text-[30px] tracking-[3px]'>
-            {route.params.rating}
+            {0}
             <Text className='font-inter-regular text-foreground text-[14px] tracking-[3px]'>/5</Text>
           </Text>
           <Text className='font-inter-regular text-foreground text-[14px] tracking-[0.2px]'>
-            {route.params.feedbacks.length || 0} Reviews
+            {feedbacks.length || 0} Reviews
           </Text>
         </View>
 
         <Separator orientation='vertical' className='ml-[18px] mr-[10px]' />
 
         <View className='flex-1 gap-[9px]'>
-          {calculateStarRatings(route.params.feedbacks)
+          {calculateStarRatings(feedbacks)
             .reverse()
             .map((feedback) => (
               <View key={feedback.star} className='flex-row'>
@@ -52,7 +60,7 @@ const ProductFeedbackScreen = ({ route }: ProductFeedbackScreenNavigationProps) 
       </View>
 
       <View className='flex-1 gap-[20px] mt-[30px]'>
-        {route.params.feedbacks.map((feedback) => (
+        {feedbacks?.map((feedback) => (
           <FeedbackItem
             key={feedback.id}
             id={feedback.id}

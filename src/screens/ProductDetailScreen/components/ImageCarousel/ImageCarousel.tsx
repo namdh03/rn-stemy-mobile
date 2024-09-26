@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { Dimensions, Image, Modal, Text, View } from 'react-native';
+import { Dimensions, Modal, Text, View } from 'react-native';
 import Carousel from 'react-native-reanimated-carousel';
+import { Image } from 'expo-image';
 
 import Pressable from '~components/customs/Pressable';
 import { CircleX } from '~components/icons';
+import constants from '~constants';
 import { Image as ImageType } from '~types/image.type';
 
 interface ImageCarouselProps {
@@ -47,7 +49,13 @@ export default function ImageCarousel({ images }: ImageCarouselProps) {
         onSnapToItem={(index) => setCurrentIndex(index)}
         renderItem={({ item }) => (
           <Pressable onPress={openModal}>
-            <Image source={{ uri: item.url }} className='w-full h-full rounded-lg' resizeMode='cover' />
+            <Image
+              style={{ width: '100%', height: '100%' }}
+              source={{ uri: item.url }}
+              placeholder={{ blurhash: constants.EXPO_IMAGE.BLUR_HASH }}
+              contentFit='cover'
+              transition={1000}
+            />
           </Pressable>
         )}
       />
@@ -72,7 +80,14 @@ export default function ImageCarousel({ images }: ImageCarouselProps) {
             defaultIndex={currentIndex}
             onSnapToItem={(index) => setCurrentIndex(index)}
             renderItem={({ item }) => (
-              <Image source={{ uri: item.url }} className='w-full h-full' resizeMode='contain' />
+              <Image
+                source={{ uri: item.url }}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                }}
+                contentFit='contain'
+              />
             )}
           />
 

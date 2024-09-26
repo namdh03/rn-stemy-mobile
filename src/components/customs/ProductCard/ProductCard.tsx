@@ -1,7 +1,9 @@
-import { Image, ImageSourcePropType, View } from 'react-native';
+import { ImageSourcePropType, View } from 'react-native';
+import { Image } from 'expo-image';
 
 import { EllipsisVertical, Star } from '~components/icons';
 import { Text } from '~components/ui/text';
+import constants from '~constants';
 
 export interface ProductCardProps {
   id: string;
@@ -20,9 +22,8 @@ const ProductCard = ({ id, imageUrl, title, price, rating, numOfReviews }: Produ
     >
       <Image
         source={typeof imageUrl === 'string' ? { uri: imageUrl } : imageUrl}
-        width={155}
-        height={155}
-        className='self-center'
+        placeholder={{ blurhash: constants.EXPO_IMAGE.BLUR_HASH }}
+        style={{ width: 155, height: 155, alignSelf: 'center' }}
       />
       <Text className='font-inter-medium mt-[20px] text-[16px] tracking-[0.2px]'>{title}</Text>
       <Text className='font-inter-bold mt-[4px] text-[14px] tracking-[0.2px] text-[#FE3A30]'>
