@@ -11,7 +11,7 @@ import { Form, FormField, FormInput } from '~components/deprecated-ui/form';
 import { Button } from '~components/ui/button';
 import { Text } from '~components/ui/text';
 import execute from '~graphql/execute';
-import { SendResetPasswordOTP } from '~services/user.serivces';
+import { SendResetPasswordOTPMutation } from '~services/user.serivces';
 import { ForgotPasswordScreenNavigationProps } from '~types/navigation';
 import isErrors from '~utils/responseChecker';
 
@@ -26,7 +26,7 @@ const ForgotPasswordScreen = ({ navigation }: ForgotPasswordScreenNavigationProp
     },
   });
   const { mutate, isPending } = useMutation({
-    mutationFn: (values: ForgotPasswordFormType) => execute(SendResetPasswordOTP, values),
+    mutationFn: (values: ForgotPasswordFormType) => execute(SendResetPasswordOTPMutation, values),
   });
 
   const onSubmit = (values: ForgotPasswordFormType) => {

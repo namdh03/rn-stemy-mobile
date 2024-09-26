@@ -10,7 +10,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import constants from '~constants';
 import execute from '~graphql/execute';
-import { GetMe } from '~services/user.serivces';
+import { GetMeQuery } from '~services/user.serivces';
 import { useStore } from '~store';
 import { storage } from '~utils/mmkv-storage';
 
@@ -25,7 +25,7 @@ export default function useAppIsReady() {
   const [accessToken] = useMMKVString(constants.TOKEN.ACCESS_TOKEN_KEY);
   const { data, refetch, isFetching } = useQuery({
     queryKey: [constants.USER_QUERY_KEY.GET_ME_QUERY_KEY],
-    queryFn: () => execute(GetMe),
+    queryFn: () => execute(GetMeQuery),
     enabled: !!accessToken,
     select: (data) => data.data.me,
   });

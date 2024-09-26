@@ -1,12 +1,12 @@
-import { ProductFeedbackType } from '~types/feedback.type';
+import { GetProductQuery } from '~graphql/graphql';
 
 export type ProductDetailState = {
   rating: number;
-  feedbacks: ProductFeedbackType[];
+  feedbacks: GetProductQuery['product']['feedbacks'];
 };
 
 export type ProductDetailActions = {
-  setFeedbacks: (rating: number, feedbacks: ProductFeedbackType[]) => void;
+  setFeedbacks: (rating: number, feedbacks: GetProductQuery['product']['feedbacks']) => void;
   reset: () => void;
 };
 
