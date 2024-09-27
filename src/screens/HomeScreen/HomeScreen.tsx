@@ -3,6 +3,8 @@ import { useShallow } from 'zustand/react/shallow';
 
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
+import images from '~assets/images';
+import Banner from '~components/customs/Banner';
 import Carousel from '~components/customs/Carousel';
 import Category from '~components/customs/Category';
 import ProductCard from '~components/customs/ProductCard';
@@ -31,6 +33,10 @@ const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
     unAuthenticate();
     removeAccessToken();
     await GoogleSignin.signOut();
+  };
+
+  const handlePress = () => {
+    navigation.navigate('StoresScreen');
   };
 
   const renderCategory = (type: string, name: string) => {
@@ -69,6 +75,8 @@ const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
         }}
       />
 
+      <Banner imageUrl={images.bannerA} onPress={handlePress} />
+
       <Text className='mt-[17px] font-inter-medium text-[16px] color-foreground leading-[25px] tracking-[0.061px]'>
         Categories
       </Text>
@@ -78,6 +86,8 @@ const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
         {renderCategory('Toy', 'Module')}
         {renderCategory('Toy', 'Accessory')}
       </View>
+
+      <Banner imageUrl={images.bannerB} onPress={handlePress} />
     </ScrollView>
   );
 };
