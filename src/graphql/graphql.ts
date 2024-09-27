@@ -79,6 +79,7 @@ export type Mutation = {
   login: AccessTokenResponse;
   loginWithGoogle: AccessTokenResponse;
   register: AccessTokenResponse;
+  repayOrder: Scalars['String']['output'];
   resetPassword: Scalars['String']['output'];
   sendResetPasswordOTP: Scalars['String']['output'];
   updateCart: Cart;
@@ -129,6 +130,10 @@ export type MutationRegisterArgs = {
   fullName: Scalars['String']['input'];
   password: Scalars['String']['input'];
   phone: Scalars['String']['input'];
+};
+
+export type MutationRepayOrderArgs = {
+  orderId: Scalars['Float']['input'];
 };
 
 export type MutationResetPasswordArgs = {
@@ -215,7 +220,7 @@ export type ProductsWithPaginationResponse = {
 
 export type Query = {
   __typename?: 'Query';
-  carts?: Maybe<Array<Cart>>;
+  carts: Array<Cart>;
   countCart: Scalars['Float']['output'];
   me: User;
   product: Product;
