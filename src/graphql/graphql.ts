@@ -79,6 +79,7 @@ export type Mutation = {
   login: AccessTokenResponse;
   loginWithGoogle: AccessTokenResponse;
   register: AccessTokenResponse;
+  repayOrder: Scalars['String']['output'];
   resetPassword: Scalars['String']['output'];
   sendResetPasswordOTP: Scalars['String']['output'];
   updateCart: Cart;
@@ -141,6 +142,11 @@ export type MutationRegisterArgs = {
 };
 
 
+export type MutationRepayOrderArgs = {
+  orderId: Scalars['Float']['input'];
+};
+
+
 export type MutationResetPasswordArgs = {
   password: Scalars['String']['input'];
   token: Scalars['String']['input'];
@@ -199,7 +205,6 @@ export type ProductCategory = {
   createdAt: Scalars['DateTimeISO']['output'];
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
-  products: Array<Product>;
   title: Scalars['String']['output'];
   type: Array<CategoryType>;
   updatedAt: Scalars['DateTimeISO']['output'];
@@ -228,7 +233,7 @@ export type ProductsWithPaginationResponse = {
 
 export type Query = {
   __typename?: 'Query';
-  carts?: Maybe<Array<Cart>>;
+  carts: Array<Cart>;
   countCart: Scalars['Float']['output'];
   me: User;
   product: Product;
