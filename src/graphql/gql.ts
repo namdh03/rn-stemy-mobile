@@ -14,6 +14,8 @@ import * as types from './graphql';
 const documents = {
   '\n  mutation AddToCart($productId: Float!, $quantity: Float!) {\n    addToCart(productId: $productId, quantity: $quantity) {\n      id\n    }\n  }\n':
     types.AddToCartDocument,
+  '\n  query GetCart {\n    carts {\n      id\n      quantity\n      product {\n        name\n        price\n        images {\n          url\n        }\n      }\n    }\n  }\n':
+    types.GetCartDocument,
   '\n  query GetProduct($id: Float!) {\n    product(id: $id) {\n      categories {\n        name\n      }\n      images {\n        id\n        url\n      }\n      description\n      id\n      name\n      price\n      rating\n      sold\n      feedbacks {\n        comment\n        createdAt\n        id\n        rating\n        user {\n          fullName\n        }\n      }\n    }\n    products(currentItem: 10, order: ASC, sort: "price") {\n      items {\n        id\n        images {\n          url\n        }\n        price\n        name\n        rating\n        feedbacks {\n          id\n        }\n      }\n    }\n  }\n':
     types.GetProductDocument,
   '\n  mutation Login($email: String!, $password: String!) {\n    login(email: $email, password: $password) {\n      access_token\n    }\n  }\n':
@@ -38,6 +40,12 @@ const documents = {
 export function graphql(
   source: '\n  mutation AddToCart($productId: Float!, $quantity: Float!) {\n    addToCart(productId: $productId, quantity: $quantity) {\n      id\n    }\n  }\n',
 ): typeof import('./graphql').AddToCartDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query GetCart {\n    carts {\n      id\n      quantity\n      product {\n        name\n        price\n        images {\n          url\n        }\n      }\n    }\n  }\n',
+): typeof import('./graphql').GetCartDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

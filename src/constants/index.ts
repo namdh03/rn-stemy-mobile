@@ -7,6 +7,7 @@ import * as REGEX from './regex';
 import * as THEME from './theme';
 import TOKEN from './token';
 import * as USER_QUERY_KEY from './user-query-key';
+import * as CART_QUERY_KEY from './user-query-key';
 
 const constants = {
   AUTH_ROUTES,
@@ -18,6 +19,7 @@ const constants = {
   THEME,
   TOKEN,
   USER_QUERY_KEY,
+  CART_QUERY_KEY,
 };
 
 export default constants;

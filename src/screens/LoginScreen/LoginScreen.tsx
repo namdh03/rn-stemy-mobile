@@ -15,6 +15,7 @@ import AuthLayout from '~layouts/AuthLayout';
 import { LoginMutation } from '~services/user.serivces';
 import { LoginScreenNavigationProps } from '~types/navigation';
 import isErrors from '~utils/responseChecker';
+import showDialogError from '~utils/showDialogError';
 
 import schema, { LoginFormType } from './schema';
 
@@ -47,6 +48,8 @@ const LoginScreen = ({ navigation }: LoginScreenNavigationProps) => {
             form.setError('password', { message: error.message });
           }
         }
+
+        showDialogError({ textBody: errors.message });
       },
     });
   };

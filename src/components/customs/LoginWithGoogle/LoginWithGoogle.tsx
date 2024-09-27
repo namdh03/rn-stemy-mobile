@@ -14,10 +14,12 @@ import { Button } from '~components/ui/button';
 import { Text } from '~components/ui/text';
 import execute from '~graphql/execute';
 import { LoginGoogleMutation } from '~services/user.serivces';
+import showDialogError from '~utils/showDialogError';
+import { removeAccessToken } from '~utils/token-storage';
 
 const LoginWithGoogle = () => {
   const [isLoadingProgress, setIsLoadingProgress] = useState(false);
-  const { mutate } = useMutation({
+  const { mutateAsync } = useMutation({
     mutationFn: (code: string) => execute(LoginGoogleMutation, { code }),
   });
 
@@ -29,7 +31,7 @@ const LoginWithGoogle = () => {
       const response = await GoogleSignin.signIn();
       if (isSuccessResponse(response)) {
         if (response.data.serverAuthCode) {
-          mutate(response.data.serverAuthCode);
+          await mutateAsync(response.data.serverAuthCode);
         }
       } else {
         // sign in was cancelled by user
@@ -49,6 +51,10 @@ const LoginWithGoogle = () => {
       } else {
         // an error that's not related to google sign in occurred
       }
+
+      showDialogError();
+      removeAccessToken();
+      await GoogleSignin.signOut();
     } finally {
       setIsLoadingProgress(false);
     }

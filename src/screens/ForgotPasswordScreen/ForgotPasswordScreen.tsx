@@ -14,6 +14,7 @@ import execute from '~graphql/execute';
 import { SendResetPasswordOTPMutation } from '~services/user.serivces';
 import { ForgotPasswordScreenNavigationProps } from '~types/navigation';
 import isErrors from '~utils/responseChecker';
+import showDialogError from '~utils/showDialogError';
 
 import schema, { ForgotPasswordFormType } from './scheme';
 
@@ -42,6 +43,8 @@ const ForgotPasswordScreen = ({ navigation }: ForgotPasswordScreenNavigationProp
             form.setError('email', { message: error.message });
           }
         }
+
+        showDialogError({ textBody: errors.message });
       },
     });
   };

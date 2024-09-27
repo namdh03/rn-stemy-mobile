@@ -12,6 +12,7 @@ import execute from '~graphql/execute';
 import { GetTokenResetPasswordMutation, SendResetPasswordOTPMutation } from '~services/user.serivces';
 import { OTPScreenNavigationProps } from '~types/navigation';
 import isErrors from '~utils/responseChecker';
+import showDialogError from '~utils/showDialogError';
 
 import schema, { OTPFormType } from './schema';
 
@@ -49,7 +50,11 @@ const OTPScreen = ({ route, navigation }: OTPScreenNavigationProps) => {
   const handleResendCode = () => {
     if (timer === 0) {
       setTimer(30);
-      resendOTPMutate();
+      resendOTPMutate(undefined, {
+        onError: (errors) => {
+          showDialogError({ textBody: errors.message });
+        },
+      });
     }
   };
 
@@ -64,6 +69,8 @@ const OTPScreen = ({ route, navigation }: OTPScreenNavigationProps) => {
             form.setError('OTPCode', { message: error.message });
           }
         }
+
+        showDialogError({ textBody: errors.message });
       },
     });
   };

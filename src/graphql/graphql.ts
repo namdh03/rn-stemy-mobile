@@ -290,6 +290,23 @@ export type AddToCartMutationVariables = Exact<{
 
 export type AddToCartMutation = { __typename?: 'Mutation'; addToCart: { __typename?: 'Cart'; id: string } };
 
+export type GetCartQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetCartQuery = {
+  __typename?: 'Query';
+  carts: Array<{
+    __typename?: 'Cart';
+    id: string;
+    quantity: number;
+    product: {
+      __typename?: 'Product';
+      name: string;
+      price: number;
+      images: Array<{ __typename?: 'ProductImage'; url: string }>;
+    };
+  }>;
+};
+
 export type GetProductQueryVariables = Exact<{
   id: Scalars['Float']['input'];
 }>;
@@ -422,6 +439,21 @@ export const AddToCartDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<AddToCartMutation, AddToCartMutationVariables>;
+export const GetCartDocument = new TypedDocumentString(`
+    query GetCart {
+  carts {
+    id
+    quantity
+    product {
+      name
+      price
+      images {
+        url
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<GetCartQuery, GetCartQueryVariables>;
 export const GetProductDocument = new TypedDocumentString(`
     query GetProduct($id: Float!) {
   product(id: $id) {
