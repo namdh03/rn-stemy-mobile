@@ -6,13 +6,16 @@ import { cn } from '~lib/utils';
 interface PressableProps {
   children: ReactNode;
   className?: string;
+  disabled?: boolean;
   onPress?: () => void;
 }
 
-const Pressable = ({ children, className, onPress }: PressableProps) => {
+const Pressable = ({ children, className, disabled, onPress }: PressableProps) => {
   return (
     <RNPressable
       onPress={onPress}
+      disabled={disabled}
+      hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
       className={`web:ring-offset-background web:transition-colors web:focus-visible:outline-none web:focus-visible:ring-2 web:focus-visible:ring-ring web:focus-visible:ring-offset-2 ${className}`}
     >
       {({ pressed }) => (

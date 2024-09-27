@@ -13,12 +13,12 @@ import { useMutation } from '@tanstack/react-query';
 import { Button } from '~components/ui/button';
 import { Text } from '~components/ui/text';
 import execute from '~graphql/execute';
-import { LoginGoogle } from '~services/user.serivces';
+import { LoginGoogleMutation } from '~services/user.serivces';
 
 const LoginWithGoogle = () => {
   const [isLoadingProgress, setIsLoadingProgress] = useState(false);
   const { mutate } = useMutation({
-    mutationFn: (code: string) => execute(LoginGoogle, { code }),
+    mutationFn: (code: string) => execute(LoginGoogleMutation, { code }),
   });
 
   const signIn = async () => {

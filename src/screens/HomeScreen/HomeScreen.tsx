@@ -5,6 +5,7 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 import Carousel from '~components/customs/Carousel';
 import Category from '~components/customs/Category';
+import ProductCard from '~components/customs/ProductCard';
 import Bot from '~components/icons/Bot';
 import CircleX from '~components/icons/CircleX';
 import Laptop from '~components/icons/Laptop';
@@ -19,10 +20,10 @@ import { removeAccessToken } from '~utils/token-storage';
 const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
   const unAuthenticate = useStore(useShallow((state) => state.unAuthenticate));
 
-  const goToProductDetail = (productId: number) => {
+  const goToProductDetail = () => {
     navigation.navigate('ProductDetailStack', {
       screen: 'ProductDetailScreen',
-      params: { id: productId },
+      params: { id: '1' },
     });
   };
 
@@ -51,12 +52,22 @@ const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
       <Button onPress={logout}>
         <Text>Logout</Text>
       </Button>
-
-      <Button className='mt-[4px]' onPress={() => goToProductDetail(1)}>
+      <Button className='mt-[4px]' onPress={() => goToProductDetail()}>
         <Text>Product Detail</Text>
       </Button>
 
       <Carousel />
+      <ProductCard
+        {...{
+          id: '1',
+          imageUrl:
+            'https://megatoys.vn/thumb_1000_1000_2/data/images/products/2022/06/10/cb70c3ee7716ec96598c129232ec4526_1654828014.jpg',
+          numOfReviews: 10,
+          price: 1500000,
+          rating: 4.3,
+          title: 'TMA-2 HD Wireless',
+        }}
+      />
 
       <Text className='mt-[17px] font-inter-medium text-[16px] color-foreground leading-[25px] tracking-[0.061px]'>
         Categories

@@ -12,7 +12,7 @@ import { Button } from '~components/ui/button';
 import { Text } from '~components/ui/text';
 import execute from '~graphql/execute';
 import AuthLayout from '~layouts/AuthLayout';
-import { Login } from '~services/user.serivces';
+import { LoginMutation } from '~services/user.serivces';
 import { LoginScreenNavigationProps } from '~types/navigation';
 import isErrors from '~utils/responseChecker';
 
@@ -29,7 +29,7 @@ const LoginScreen = ({ navigation }: LoginScreenNavigationProps) => {
     },
   });
   const { mutate, isPending } = useMutation({
-    mutationFn: (values: LoginFormType) => execute(Login, values),
+    mutationFn: (values: LoginFormType) => execute(LoginMutation, values),
   });
 
   const onSubmit = (values: LoginFormType) => {

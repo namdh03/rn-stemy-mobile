@@ -9,7 +9,7 @@ import { useMutation } from '@tanstack/react-query';
 import { Form, FormField, FormMessage } from '~components/deprecated-ui/form';
 import { Button } from '~components/ui/button';
 import execute from '~graphql/execute';
-import { GetTokenResetPassword, SendResetPasswordOTP } from '~services/user.serivces';
+import { GetTokenResetPasswordMutation, SendResetPasswordOTPMutation } from '~services/user.serivces';
 import { OTPScreenNavigationProps } from '~types/navigation';
 import isErrors from '~utils/responseChecker';
 
@@ -25,10 +25,10 @@ const OTPScreen = ({ route, navigation }: OTPScreenNavigationProps) => {
     },
   });
   const { mutate: sendOTPMutate, isPending: isSendOTPPending } = useMutation({
-    mutationFn: (OTPCode: string) => execute(GetTokenResetPassword, { email: route.params.email, OTPCode }),
+    mutationFn: (OTPCode: string) => execute(GetTokenResetPasswordMutation, { email: route.params.email, OTPCode }),
   });
   const { mutate: resendOTPMutate, isPending: isResendOTPPending } = useMutation({
-    mutationFn: () => execute(SendResetPasswordOTP, { email: route.params.email }),
+    mutationFn: () => execute(SendResetPasswordOTPMutation, { email: route.params.email }),
   });
 
   useEffect(() => {

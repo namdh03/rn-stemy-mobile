@@ -2,13 +2,15 @@ import React from 'react';
 import { Dimensions, FlatList, View } from 'react-native';
 
 import { Text } from '~components/ui/text';
+import { GetProductQuery } from '~graphql/graphql';
+import { useColorScheme } from '~hooks';
 
 import Pressable from '../Pressable';
-import ProductCard, { ProductCardProps } from '../ProductCard';
+import ProductCard from '../ProductCard';
 
 interface ProductListProps {
   title: string;
-  data: ProductCardProps[];
+  data: GetProductQuery['products']['items'];
   onPress?: () => void;
 }
 
@@ -16,14 +18,25 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const ITEM_WIDTH = SCREEN_WIDTH * 0.55;
 
 export default function ProductList({ title, data, onPress }: ProductListProps) {
-  const renderItem = ({ item }: { item: ProductCardProps }) => (
+  const { isDarkColorScheme } = useColorScheme();
+
+  const renderItem = ({ item }: { item: GetProductQuery['products']['items'][number] }) => (
     <View style={{ width: ITEM_WIDTH, marginRight: 15 }}>
-      <ProductCard {...item} />
+      <ProductCard
+        id={item.id}
+        imageUrl={'https://ispacedanang.edu.vn/wp-content/uploads/2024/05/hinh-anh-dep-ve-hoc-sinh-cap-3-1.jpg'}
+        numOfReviews={item.feedbacks.length || 0}
+        price={item.price}
+        rating={item.rating}
+        title={item.name}
+      />
     </View>
   );
 
   return (
-    <View className='px-[25px] py-[20px] rounded-t-[10px] bg-destructive-foreground'>
+    <View
+      className={`px-[25px] py-[20px] rounded-t-[10px] ${isDarkColorScheme ? 'bg-secondary' : 'bg-destructive-foreground'}`}
+    >
       <View className='flex-row items-center justify-between mb-[24px]'>
         <Text className='font-inter-medium text-foreground text-[17px] leading-[25px] tracking-[0.061px]'>{title}</Text>
         <Pressable onPress={onPress}>
