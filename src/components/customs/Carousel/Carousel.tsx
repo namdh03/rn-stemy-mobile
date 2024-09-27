@@ -16,7 +16,7 @@ const Carousel = () => {
         horizontal
         showsHorizontalScrollIndicator={false}
         ItemSeparatorComponent={() => <View style={{ width: 15 }} />}
-        className='inline-flex pb-[27px]'
+        className='inline-flex mb-[30px]'
       />
     </View>
   );
