@@ -3,9 +3,7 @@ schema {
   mutation: Mutation
 }
 
-"""
-Indicates exactly one field must be supplied and this field must not be `null`.
-"""
+"""Indicates exactly one field must be supplied and this field must not be `null`."""
 directive @oneOf on INPUT_OBJECT
 
 type AccessTokenResponse {
@@ -42,9 +40,7 @@ input CheckoutOrderInput {
   vnp_TxnRef: String!
 }
 
-"""
-A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.This scalar is serialized to a string in ISO 8601 format and parsed from a string in ISO 8601 format.
-"""
+"""A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.This scalar is serialized to a string in ISO 8601 format and parsed from a string in ISO 8601 format."""
 scalar DateTimeISO
 
 type Feedback {
@@ -58,9 +54,7 @@ type Feedback {
   user: User!
 }
 
-"""
-File upload scalar type
-"""
+"""File upload scalar type"""
 scalar File
 
 type Mutation {
@@ -148,12 +142,7 @@ type Query {
   me: User!
   product(id: Float!): Product!
   productCategories: [ProductCategory!]!
-  products(
-    currentItem: Int! = 9
-    currentPage: Int! = 1
-    order: SortOrder! = ASC
-    sort: String! = "id"
-  ): ProductsWithPaginationResponse!
+  products(currentItem: Int! = 9, currentPage: Int! = 1, order: SortOrder! = ASC, sort: String! = "id"): ProductsWithPaginationResponse!
   user(id: Int!): User
   users: [User!]!
 }
