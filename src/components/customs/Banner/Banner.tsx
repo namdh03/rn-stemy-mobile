@@ -1,17 +1,18 @@
-import { Image, TouchableOpacity, View } from 'react-native';
-
-import images from '~assets/images';
+import { Image, ImageSourcePropType, TouchableOpacity } from 'react-native';
 
 interface BannerProps {
   onPress: () => void;
+  imageUrl: ImageSourcePropType | string;
 }
 
-const Banner = ({ onPress }: BannerProps) => {
+const Banner = ({ onPress, imageUrl }: BannerProps) => {
   return (
-    <TouchableOpacity className='pb-[20px] pt-[41px]' onPress={onPress}>
-      <View className='w-[325px] h-[150px]'>
-        <Image source={images.banner1} />
-      </View>
+    <TouchableOpacity onPress={onPress} className='pb-[20px] pt-[41px]'>
+      <Image
+        source={typeof imageUrl === 'string' ? { uri: imageUrl } : imageUrl}
+        resizeMode='cover'
+        className='w-full h-[150px] rounded-[10px]'
+      />
     </TouchableOpacity>
   );
 };

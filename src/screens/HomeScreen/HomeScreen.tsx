@@ -3,6 +3,7 @@ import { useShallow } from 'zustand/react/shallow';
 
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
+import images from '~assets/images';
 import Banner from '~components/customs/Banner';
 import Carousel from '~components/customs/Carousel';
 import Category from '~components/customs/Category';
@@ -74,6 +75,8 @@ const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
         }}
       />
 
+      <Banner imageUrl={images.bannerA} onPress={handlePress} />
+
       <Text className='mt-[17px] font-inter-medium text-[16px] color-foreground leading-[25px] tracking-[0.061px]'>
         Categories
       </Text>
@@ -84,7 +87,7 @@ const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
         {renderCategory('Toy', 'Accessory')}
       </View>
 
-      <Banner onPress={handlePress} />
+      <Banner imageUrl={images.bannerB} onPress={handlePress} />
     </ScrollView>
   );
 };

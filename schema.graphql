@@ -117,6 +117,7 @@ type ProductCategory {
   createdAt: DateTimeISO!
   id: ID!
   name: String!
+  products: [Product!]!
   title: String!
   type: [CategoryType!]!
   updatedAt: DateTimeISO!
