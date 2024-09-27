@@ -9,15 +9,15 @@ export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> =
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string };
-  String: { input: string; output: string };
-  Boolean: { input: boolean; output: boolean };
-  Int: { input: number; output: number };
-  Float: { input: number; output: number };
+  ID: { input: string; output: string; }
+  String: { input: string; output: string; }
+  Boolean: { input: boolean; output: boolean; }
+  Int: { input: number; output: number; }
+  Float: { input: number; output: number; }
   /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.This scalar is serialized to a string in ISO 8601 format and parsed from a string in ISO 8601 format. */
-  DateTimeISO: { input: any; output: any };
+  DateTimeISO: { input: any; output: any; }
   /** File upload scalar type */
-  File: { input: any; output: any };
+  File: { input: any; output: any; }
 };
 
 export type AccessTokenResponse = {
@@ -38,7 +38,7 @@ export type Cart = {
 export enum CategoryType {
   Age = 'AGE',
   Product = 'PRODUCT',
-  Topic = 'TOPIC',
+  Topic = 'TOPIC'
 }
 
 export type CheckoutOrderInput = {
@@ -85,14 +85,17 @@ export type Mutation = {
   updateCart: Cart;
 };
 
+
 export type MutationAddToCartArgs = {
   productId: Scalars['Float']['input'];
   quantity: Scalars['Float']['input'];
 };
 
+
 export type MutationCheckoutOrderArgs = {
   input: CheckoutOrderInput;
 };
+
 
 export type MutationCreateOrderArgs = {
   address: Scalars['String']['input'];
@@ -101,29 +104,35 @@ export type MutationCreateOrderArgs = {
   phone: Scalars['String']['input'];
 };
 
+
 export type MutationCreateProductArgs = {
   images: Array<Scalars['File']['input']>;
   input: ProductInput;
   lab: Scalars['File']['input'];
 };
 
+
 export type MutationDeleteCartArgs = {
   productId: Scalars['Float']['input'];
 };
+
 
 export type MutationGetTokenResetPasswordArgs = {
   OTPCode: Scalars['String']['input'];
   email: Scalars['String']['input'];
 };
 
+
 export type MutationLoginArgs = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
 };
 
+
 export type MutationLoginWithGoogleArgs = {
   code: Scalars['String']['input'];
 };
+
 
 export type MutationRegisterArgs = {
   email: Scalars['String']['input'];
@@ -132,18 +141,22 @@ export type MutationRegisterArgs = {
   phone: Scalars['String']['input'];
 };
 
+
 export type MutationRepayOrderArgs = {
   orderId: Scalars['Float']['input'];
 };
+
 
 export type MutationResetPasswordArgs = {
   password: Scalars['String']['input'];
   token: Scalars['String']['input'];
 };
 
+
 export type MutationSendResetPasswordOtpArgs = {
   email: Scalars['String']['input'];
 };
+
 
 export type MutationUpdateCartArgs = {
   productId: Scalars['Float']['input'];
@@ -169,7 +182,7 @@ export type OrderItem = {
 };
 
 export enum PaymentProvider {
-  Vnpay = 'VNPAY',
+  Vnpay = 'VNPAY'
 }
 
 export type Product = {
@@ -231,9 +244,11 @@ export type Query = {
   users: Array<User>;
 };
 
+
 export type QueryProductArgs = {
   id: Scalars['Float']['input'];
 };
+
 
 export type QueryProductsArgs = {
   currentItem?: Scalars['Int']['input'];
@@ -241,6 +256,7 @@ export type QueryProductsArgs = {
   order?: SortOrder;
   sort?: Scalars['String']['input'];
 };
+
 
 export type QueryUserArgs = {
   id: Scalars['Int']['input'];
@@ -250,12 +266,12 @@ export enum Role {
   Admin = 'ADMIN',
   Customer = 'CUSTOMER',
   Manager = 'MANAGER',
-  Staff = 'STAFF',
+  Staff = 'STAFF'
 }
 
 export enum SortOrder {
   Asc = 'ASC',
-  Desc = 'DESC',
+  Desc = 'DESC'
 }
 
 export type User = {
@@ -272,7 +288,7 @@ export type User = {
 
 export enum UserStatus {
   Active = 'ACTIVE',
-  Ban = 'BAN',
+  Ban = 'BAN'
 }
 
 export type E = {
@@ -288,73 +304,28 @@ export type AddToCartMutationVariables = Exact<{
   quantity: Scalars['Float']['input'];
 }>;
 
-export type AddToCartMutation = { __typename?: 'Mutation'; addToCart: { __typename?: 'Cart'; id: string } };
 
-export type GetCartQueryVariables = Exact<{ [key: string]: never }>;
+export type AddToCartMutation = { __typename?: 'Mutation', addToCart: { __typename?: 'Cart', id: string } };
 
-export type GetCartQuery = {
-  __typename?: 'Query';
-  carts: Array<{
-    __typename?: 'Cart';
-    id: string;
-    quantity: number;
-    product: {
-      __typename?: 'Product';
-      name: string;
-      price: number;
-      images: Array<{ __typename?: 'ProductImage'; url: string }>;
-    };
-  }>;
-};
+export type GetCartQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCartQuery = { __typename?: 'Query', carts: Array<{ __typename?: 'Cart', id: string, quantity: number, product: { __typename?: 'Product', name: string, price: number, images: Array<{ __typename?: 'ProductImage', url: string }> } }> };
 
 export type GetProductQueryVariables = Exact<{
   id: Scalars['Float']['input'];
 }>;
 
-export type GetProductQuery = {
-  __typename?: 'Query';
-  product: {
-    __typename?: 'Product';
-    description: string;
-    id: string;
-    name: string;
-    price: number;
-    rating: number;
-    sold: number;
-    categories: Array<{ __typename?: 'ProductCategory'; name: string }>;
-    images: Array<{ __typename?: 'ProductImage'; id: string; url: string }>;
-    feedbacks: Array<{
-      __typename?: 'Feedback';
-      comment: string;
-      createdAt: any;
-      id: string;
-      rating: number;
-      user: { __typename?: 'User'; fullName: string };
-    }>;
-  };
-  products: {
-    __typename?: 'ProductsWithPaginationResponse';
-    items: Array<{
-      __typename?: 'Product';
-      id: string;
-      price: number;
-      name: string;
-      rating: number;
-      images: Array<{ __typename?: 'ProductImage'; url: string }>;
-      feedbacks: Array<{ __typename?: 'Feedback'; id: string }>;
-    }>;
-  };
-};
+
+export type GetProductQuery = { __typename?: 'Query', product: { __typename?: 'Product', description: string, id: string, name: string, price: number, rating: number, sold: number, categories: Array<{ __typename?: 'ProductCategory', name: string }>, images: Array<{ __typename?: 'ProductImage', id: string, url: string }>, feedbacks: Array<{ __typename?: 'Feedback', comment: string, createdAt: any, id: string, rating: number, user: { __typename?: 'User', fullName: string } }> }, products: { __typename?: 'ProductsWithPaginationResponse', items: Array<{ __typename?: 'Product', id: string, price: number, name: string, rating: number, images: Array<{ __typename?: 'ProductImage', url: string }>, feedbacks: Array<{ __typename?: 'Feedback', id: string }> }> } };
 
 export type LoginMutationVariables = Exact<{
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
 }>;
 
-export type LoginMutation = {
-  __typename?: 'Mutation';
-  login: { __typename?: 'AccessTokenResponse'; access_token: string };
-};
+
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'AccessTokenResponse', access_token: string } };
 
 export type RegisterMutationVariables = Exact<{
   email: Scalars['String']['input'];
@@ -363,56 +334,43 @@ export type RegisterMutationVariables = Exact<{
   phone: Scalars['String']['input'];
 }>;
 
-export type RegisterMutation = {
-  __typename?: 'Mutation';
-  register: { __typename?: 'AccessTokenResponse'; access_token: string };
-};
+
+export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'AccessTokenResponse', access_token: string } };
 
 export type SendResetPasswordOtpMutationVariables = Exact<{
   email: Scalars['String']['input'];
 }>;
 
-export type SendResetPasswordOtpMutation = { __typename?: 'Mutation'; sendResetPasswordOTP: string };
+
+export type SendResetPasswordOtpMutation = { __typename?: 'Mutation', sendResetPasswordOTP: string };
 
 export type GetTokenResetPasswordMutationVariables = Exact<{
   email: Scalars['String']['input'];
   OTPCode: Scalars['String']['input'];
 }>;
 
-export type GetTokenResetPasswordMutation = { __typename?: 'Mutation'; getTokenResetPassword: string };
+
+export type GetTokenResetPasswordMutation = { __typename?: 'Mutation', getTokenResetPassword: string };
 
 export type ResetPasswordMutationVariables = Exact<{
   password: Scalars['String']['input'];
   token: Scalars['String']['input'];
 }>;
 
-export type ResetPasswordMutation = { __typename?: 'Mutation'; resetPassword: string };
+
+export type ResetPasswordMutation = { __typename?: 'Mutation', resetPassword: string };
 
 export type LoginWithGoogleMutationVariables = Exact<{
   code: Scalars['String']['input'];
 }>;
 
-export type LoginWithGoogleMutation = {
-  __typename?: 'Mutation';
-  loginWithGoogle: { __typename?: 'AccessTokenResponse'; access_token: string };
-};
 
-export type MeQueryVariables = Exact<{ [key: string]: never }>;
+export type LoginWithGoogleMutation = { __typename?: 'Mutation', loginWithGoogle: { __typename?: 'AccessTokenResponse', access_token: string } };
 
-export type MeQuery = {
-  __typename?: 'Query';
-  me: {
-    __typename?: 'User';
-    createdAt: any;
-    email: string;
-    fullName: string;
-    id: string;
-    phone?: string | null;
-    role: Role;
-    status: UserStatus;
-    updatedAt: any;
-  };
-};
+export type MeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', createdAt: any, email: string, fullName: string, id: string, phone?: string | null, role: Role, status: UserStatus, updatedAt: any } };
 
 export class TypedDocumentString<TResult, TVariables>
   extends String
@@ -420,10 +378,7 @@ export class TypedDocumentString<TResult, TVariables>
 {
   __apiType?: DocumentTypeDecoration<TResult, TVariables>['__apiType'];
 
-  constructor(
-    private value: string,
-    public __meta__?: Record<string, any>,
-  ) {
+  constructor(private value: string, public __meta__?: Record<string, any>) {
     super(value);
   }
 
