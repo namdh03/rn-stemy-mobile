@@ -15,6 +15,7 @@ import AuthLayout from '~layouts/AuthLayout';
 import { RegisterMutation } from '~services/user.serivces';
 import { RegisterScreenNavigationProps } from '~types/navigation';
 import isErrors from '~utils/responseChecker';
+import showDialogError from '~utils/showDialogError';
 
 import schema, { RegisterFormType } from './schema';
 
@@ -48,6 +49,8 @@ const RegisterScreen = ({ navigation }: RegisterScreenNavigationProps) => {
             form.setError('email', { message: error.message });
           }
         }
+
+        showDialogError({ textBody: errors.message });
       },
     });
   };

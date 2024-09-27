@@ -12,6 +12,7 @@ import execute from '~graphql/execute';
 import { ResetPasswordMutation } from '~services/user.serivces';
 import { ResetPasswordScreenNavigationProps } from '~types/navigation';
 import isErrors from '~utils/responseChecker';
+import showDialogError from '~utils/showDialogError';
 
 import schema, { ResetPasswordFormType } from './schema';
 
@@ -39,6 +40,8 @@ const ResetPasswordScreen = ({ route, navigation }: ResetPasswordScreenNavigatio
             form.setError('password', { message: error.message });
           }
         }
+
+        showDialogError({ textBody: errors.message });
       },
     });
   };

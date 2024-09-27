@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Pressable from '~components/customs/Pressable';
 import { ChevronLeft, ShoppingCart, Star } from '~components/icons';
 import { Text } from '~components/ui/text';
+import { useThrottle } from '~hooks';
 import ProductDetailScreen from '~screens/ProductDetailScreen';
 import ProductFeedbackScreen from '~screens/ProductFeedbackScreen';
 import {
@@ -28,13 +29,13 @@ const ProductDetailNavigator = () => (
           fontFamily: 'Inter_18pt-Medium',
           fontSize: 18,
         },
-        headerLeft: () => (
-          <Pressable onPress={() => navigation.goBack()}>
+        headerLeft: ({ canGoBack }) => (
+          <Pressable onPress={useThrottle(() => canGoBack && navigation.goBack(), 500)}>
             <ChevronLeft className='text-foreground' size={28} />
           </Pressable>
         ),
         headerRight: () => (
-          <Pressable>
+          <Pressable onPress={() => navigation.navigate('CartScreen')}>
             <ShoppingCart className='text-foreground' size={24} />
           </Pressable>
         ),

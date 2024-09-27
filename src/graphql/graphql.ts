@@ -79,6 +79,7 @@ export type Mutation = {
   login: AccessTokenResponse;
   loginWithGoogle: AccessTokenResponse;
   register: AccessTokenResponse;
+  repayOrder: Scalars['String']['output'];
   resetPassword: Scalars['String']['output'];
   sendResetPasswordOTP: Scalars['String']['output'];
   updateCart: Cart;
@@ -129,6 +130,10 @@ export type MutationRegisterArgs = {
   fullName: Scalars['String']['input'];
   password: Scalars['String']['input'];
   phone: Scalars['String']['input'];
+};
+
+export type MutationRepayOrderArgs = {
+  orderId: Scalars['Float']['input'];
 };
 
 export type MutationResetPasswordArgs = {
@@ -187,6 +192,7 @@ export type ProductCategory = {
   createdAt: Scalars['DateTimeISO']['output'];
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
+  products: Array<Product>;
   title: Scalars['String']['output'];
   type: Array<CategoryType>;
   updatedAt: Scalars['DateTimeISO']['output'];
@@ -215,7 +221,7 @@ export type ProductsWithPaginationResponse = {
 
 export type Query = {
   __typename?: 'Query';
-  carts?: Maybe<Array<Cart>>;
+  carts: Array<Cart>;
   countCart: Scalars['Float']['output'];
   me: User;
   product: Product;
@@ -283,6 +289,23 @@ export type AddToCartMutationVariables = Exact<{
 }>;
 
 export type AddToCartMutation = { __typename?: 'Mutation'; addToCart: { __typename?: 'Cart'; id: string } };
+
+export type GetCartQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetCartQuery = {
+  __typename?: 'Query';
+  carts: Array<{
+    __typename?: 'Cart';
+    id: string;
+    quantity: number;
+    product: {
+      __typename?: 'Product';
+      name: string;
+      price: number;
+      images: Array<{ __typename?: 'ProductImage'; url: string }>;
+    };
+  }>;
+};
 
 export type GetProductQueryVariables = Exact<{
   id: Scalars['Float']['input'];
@@ -416,6 +439,21 @@ export const AddToCartDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<AddToCartMutation, AddToCartMutationVariables>;
+export const GetCartDocument = new TypedDocumentString(`
+    query GetCart {
+  carts {
+    id
+    quantity
+    product {
+      name
+      price
+      images {
+        url
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<GetCartQuery, GetCartQueryVariables>;
 export const GetProductDocument = new TypedDocumentString(`
     query GetProduct($id: Float!) {
   product(id: $id) {

@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { useEffect, useRef } from 'react';
+import { Keyboard, Pressable, ScrollView, View } from 'react-native';
 import { useShallow } from 'zustand/react/shallow';
 
 import BottomSheet from '@gorhom/bottom-sheet';
@@ -33,7 +33,6 @@ const ProductDetailScreen = ({ route }: ProductDetailScreenNavigationProps) => {
     select: (data) => data.data,
   });
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const [isBottomSheetVisible, setBottomSheetVisible] = useState(false);
 
   useEffect(() => {
     if (data) {
@@ -42,13 +41,15 @@ const ProductDetailScreen = ({ route }: ProductDetailScreenNavigationProps) => {
   }, [data]);
 
   const handleOpenAddToCart = () => {
-    setBottomSheetVisible(true);
-    bottomSheetRef.current?.snapToIndex(1);
+    bottomSheetRef.current?.expand();
   };
 
   const handleCloseAddToCart = () => {
-    setBottomSheetVisible(false);
     bottomSheetRef.current?.close();
+  };
+
+  const handleExpanseFullBottomSheet = () => {
+    bottomSheetRef.current?.snapToPosition('100%');
   };
 
   if (isFetching) {
@@ -56,7 +57,7 @@ const ProductDetailScreen = ({ route }: ProductDetailScreenNavigationProps) => {
   }
 
   return (
-    <>
+    <Pressable onPress={Keyboard.dismiss}>
       <ScrollView
         contentContainerClassName='pt-[25px] mx-auto w-full max-w-xl'
         showsVerticalScrollIndicator={false}
@@ -135,14 +136,13 @@ const ProductDetailScreen = ({ route }: ProductDetailScreenNavigationProps) => {
         </View>
       </ScrollView>
 
-      {isBottomSheetVisible && (
-        <AddCartBottomSheet
-          ref={bottomSheetRef}
-          defaultPrice={data?.product.price || 0}
-          onClose={handleCloseAddToCart}
-        />
-      )}
-    </>
+      <AddCartBottomSheet
+        ref={bottomSheetRef}
+        defaultPrice={data?.product.price || 0}
+        onFocus={handleExpanseFullBottomSheet}
+        onClose={handleCloseAddToCart}
+      />
+    </Pressable>
   );
 };
 

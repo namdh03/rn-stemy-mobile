@@ -7,3 +7,19 @@ export const AddToCartMutation = graphql(`
     }
   }
 `);
+
+export const GetCartQuery = graphql(`
+  query GetCart {
+    carts {
+      id
+      quantity
+      product {
+        name
+        price
+        images {
+          url
+        }
+      }
+    }
+  }
+`);

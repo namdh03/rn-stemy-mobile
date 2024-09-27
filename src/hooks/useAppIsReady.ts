@@ -27,7 +27,7 @@ export default function useAppIsReady() {
     queryKey: [constants.USER_QUERY_KEY.GET_ME_QUERY_KEY],
     queryFn: () => execute(GetMeQuery),
     enabled: !!accessToken,
-    select: (data) => data.data.me,
+    select: (data) => data.data,
   });
   const authenticate = useStore(useShallow((state) => state.authenticate));
 

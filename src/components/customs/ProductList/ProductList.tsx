@@ -20,18 +20,20 @@ const ITEM_WIDTH = SCREEN_WIDTH * 0.55;
 export default function ProductList({ title, data, onPress }: ProductListProps) {
   const { isDarkColorScheme } = useColorScheme();
 
-  const renderItem = ({ item }: { item: GetProductQuery['products']['items'][number] }) => (
-    <View style={{ width: ITEM_WIDTH, marginRight: 15 }}>
-      <ProductCard
-        id={item.id}
-        imageUrl={'https://ispacedanang.edu.vn/wp-content/uploads/2024/05/hinh-anh-dep-ve-hoc-sinh-cap-3-1.jpg'}
-        numOfReviews={item.feedbacks.length || 0}
-        price={item.price}
-        rating={item.rating}
-        title={item.name}
-      />
-    </View>
-  );
+  const renderItem = ({ item }: { item: GetProductQuery['products']['items'][number] }) => {
+    return (
+      <View style={{ width: ITEM_WIDTH, marginRight: 15 }}>
+        <ProductCard
+          id={item.id}
+          imageUrl={item.images[0]?.url}
+          numOfReviews={item.feedbacks.length || 0}
+          price={item.price}
+          rating={item.rating}
+          title={item.name}
+        />
+      </View>
+    );
+  };
 
   return (
     <View

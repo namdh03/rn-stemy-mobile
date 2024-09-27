@@ -14,9 +14,11 @@
  *      │   ├── Home Screen
  *      │   ├── Stores Screen
  *      │   └── Me Screen
- *      └── Product Detail Stack
- *          ├── Product Detail Screen
- *          └── Product Feedback Screen
+ *      ├── Product Detail Stack
+ *      │   ├── Product Detail Screen
+ *      │   └── Product Feedback Screen
+ *      ├── Cart Screen
+ *      └── Checkout Screen
  */
 
 // import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
@@ -31,11 +33,6 @@ export type AuthStackParamList = {
   ForgotPasswordConfirmScreen: { email: string };
   OTPScreen: { email: string };
   ResetPasswordScreen: { token: string };
-};
-
-// Drawer Tab
-export type DrawerParamList = {
-  HomeScreen: undefined;
 };
 
 // Bottom Tab
@@ -53,9 +50,10 @@ export type ProductDetailStackParamList = {
 
 // Main Stack
 export type MainStackParamList = {
-  DrawerStack: NavigatorScreenParams<DrawerParamList>;
   BottomTabStack: NavigatorScreenParams<BottomTabParamList>;
   ProductDetailStack: NavigatorScreenParams<ProductDetailStackParamList>;
+  CartScreen: undefined;
+  CheckoutScreen: undefined;
 };
 
 // Root Stack
@@ -99,12 +97,22 @@ export type ResetPasswordScreenNavigationProps = CompositeScreenProps<
   NativeStackScreenProps<RootStackParamList>
 >;
 
-export type ProductDetailScreenNavigationProps = NativeStackScreenProps<
-  ProductDetailStackParamList,
-  'ProductDetailScreen'
+export type ProductDetailScreenNavigationProps = CompositeScreenProps<
+  NativeStackScreenProps<ProductDetailStackParamList, 'ProductDetailScreen'>,
+  NativeStackScreenProps<MainStackParamList>
 >;
 
 export type ProductFeedbackScreenNavigationProps = NativeStackScreenProps<
   ProductDetailStackParamList,
   'ProductFeedbackScreen'
+>;
+
+export type CartScreenNavigationProps = CompositeScreenProps<
+  NativeStackScreenProps<MainStackParamList, 'CartScreen'>,
+  NativeStackScreenProps<RootStackParamList>
+>;
+
+export type CheckoutScreenNavigationProps = CompositeScreenProps<
+  NativeStackScreenProps<MainStackParamList, 'CheckoutScreen'>,
+  NativeStackScreenProps<RootStackParamList>
 >;

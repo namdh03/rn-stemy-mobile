@@ -19,9 +19,7 @@ const AuthLayout = forwardRef<ScrollView, AuthLayoutProps>(({ children, title },
       automaticallyAdjustContentInsets={false}
     >
       <Logo />
-      <Text className='font-jaro-regular mt-[4px] text-foreground text-center text-[32px] leading-[44.8px]'>
-        STEMMY
-      </Text>
+      <Text className='font-jaro-regular mt-[4px] text-foreground text-center text-[32px] leading-[44.8px]'>STEMY</Text>
       <Text className='font-inter-regular text-muted-foreground text-center text-[14px] leading-[19.6px]'>
         Empowering Learning, Simplifying STEM
       </Text>
