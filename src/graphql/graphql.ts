@@ -79,6 +79,7 @@ export type Mutation = {
   login: AccessTokenResponse;
   loginWithGoogle: AccessTokenResponse;
   register: AccessTokenResponse;
+  repayOrder: Scalars['String']['output'];
   resetPassword: Scalars['String']['output'];
   sendResetPasswordOTP: Scalars['String']['output'];
   updateCart: Cart;
@@ -129,6 +130,10 @@ export type MutationRegisterArgs = {
   fullName: Scalars['String']['input'];
   password: Scalars['String']['input'];
   phone: Scalars['String']['input'];
+};
+
+export type MutationRepayOrderArgs = {
+  orderId: Scalars['Float']['input'];
 };
 
 export type MutationResetPasswordArgs = {
@@ -187,7 +192,6 @@ export type ProductCategory = {
   createdAt: Scalars['DateTimeISO']['output'];
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
-  products: Array<Product>;
   title: Scalars['String']['output'];
   type: Array<CategoryType>;
   updatedAt: Scalars['DateTimeISO']['output'];
@@ -216,7 +220,7 @@ export type ProductsWithPaginationResponse = {
 
 export type Query = {
   __typename?: 'Query';
-  carts?: Maybe<Array<Cart>>;
+  carts: Array<Cart>;
   countCart: Scalars['Float']['output'];
   me: User;
   product: Product;
@@ -278,11 +282,18 @@ export type E = {
   totalPage: Scalars['Int']['output'];
 };
 
-export type GetProductQueryQueryVariables = Exact<{
+export type AddToCartMutationVariables = Exact<{
+  productId: Scalars['Float']['input'];
+  quantity: Scalars['Float']['input'];
+}>;
+
+export type AddToCartMutation = { __typename?: 'Mutation'; addToCart: { __typename?: 'Cart'; id: string } };
+
+export type GetProductQueryVariables = Exact<{
   id: Scalars['Float']['input'];
 }>;
 
-export type GetProductQueryQuery = {
+export type GetProductQuery = {
   __typename?: 'Query';
   product: {
     __typename?: 'Product';
@@ -292,6 +303,7 @@ export type GetProductQueryQuery = {
     price: number;
     rating: number;
     sold: number;
+    categories: Array<{ __typename?: 'ProductCategory'; name: string }>;
     images: Array<{ __typename?: 'ProductImage'; id: string; url: string }>;
     feedbacks: Array<{
       __typename?: 'Feedback';
@@ -302,71 +314,85 @@ export type GetProductQueryQuery = {
       user: { __typename?: 'User'; fullName: string };
     }>;
   };
+  products: {
+    __typename?: 'ProductsWithPaginationResponse';
+    items: Array<{
+      __typename?: 'Product';
+      id: string;
+      price: number;
+      name: string;
+      rating: number;
+      images: Array<{ __typename?: 'ProductImage'; url: string }>;
+      feedbacks: Array<{ __typename?: 'Feedback'; id: string }>;
+    }>;
+  };
 };
 
-export type LoginMutationMutationVariables = Exact<{
+export type LoginMutationVariables = Exact<{
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
 }>;
 
-export type LoginMutationMutation = {
+export type LoginMutation = {
   __typename?: 'Mutation';
   login: { __typename?: 'AccessTokenResponse'; access_token: string };
 };
 
-export type RegisterMutationMutationVariables = Exact<{
+export type RegisterMutationVariables = Exact<{
   email: Scalars['String']['input'];
   fullName: Scalars['String']['input'];
   password: Scalars['String']['input'];
   phone: Scalars['String']['input'];
 }>;
 
-export type RegisterMutationMutation = {
+export type RegisterMutation = {
   __typename?: 'Mutation';
   register: { __typename?: 'AccessTokenResponse'; access_token: string };
 };
 
-export type SendResetPasswordOtpMutationMutationVariables = Exact<{
+export type SendResetPasswordOtpMutationVariables = Exact<{
   email: Scalars['String']['input'];
 }>;
 
-export type SendResetPasswordOtpMutationMutation = { __typename?: 'Mutation'; sendResetPasswordOTP: string };
+export type SendResetPasswordOtpMutation = { __typename?: 'Mutation'; sendResetPasswordOTP: string };
 
-export type GetTokenResetPasswordMutationMutationVariables = Exact<{
+export type GetTokenResetPasswordMutationVariables = Exact<{
   email: Scalars['String']['input'];
   OTPCode: Scalars['String']['input'];
 }>;
 
-export type GetTokenResetPasswordMutationMutation = { __typename?: 'Mutation'; getTokenResetPassword: string };
+export type GetTokenResetPasswordMutation = { __typename?: 'Mutation'; getTokenResetPassword: string };
 
-export type ResetPasswordMutationMutationVariables = Exact<{
+export type ResetPasswordMutationVariables = Exact<{
   password: Scalars['String']['input'];
   token: Scalars['String']['input'];
 }>;
 
-export type ResetPasswordMutationMutation = { __typename?: 'Mutation'; resetPassword: string };
+export type ResetPasswordMutation = { __typename?: 'Mutation'; resetPassword: string };
 
-export type LoginWithGoogleMutationMutationVariables = Exact<{
+export type LoginWithGoogleMutationVariables = Exact<{
   code: Scalars['String']['input'];
 }>;
 
-export type LoginWithGoogleMutationMutation = {
+export type LoginWithGoogleMutation = {
   __typename?: 'Mutation';
   loginWithGoogle: { __typename?: 'AccessTokenResponse'; access_token: string };
 };
 
-export type MeQueryQueryVariables = Exact<{ [key: string]: never }>;
+export type MeQueryVariables = Exact<{ [key: string]: never }>;
 
-export type MeQueryQuery = {
+export type MeQuery = {
   __typename?: 'Query';
   me: {
     __typename?: 'User';
+    createdAt: any;
     email: string;
     fullName: string;
     id: string;
     phone?: string | null;
     role: Role;
     status: UserStatus;
+    updatedAt: any;
   };
 };
 
@@ -388,9 +414,19 @@ export class TypedDocumentString<TResult, TVariables>
   }
 }
 
-export const GetProductQueryDocument = new TypedDocumentString(`
-    query GetProductQuery($id: Float!) {
+export const AddToCartDocument = new TypedDocumentString(`
+    mutation AddToCart($productId: Float!, $quantity: Float!) {
+  addToCart(productId: $productId, quantity: $quantity) {
+    id
+  }
+}
+    `) as unknown as TypedDocumentString<AddToCartMutation, AddToCartMutationVariables>;
+export const GetProductDocument = new TypedDocumentString(`
+    query GetProduct($id: Float!) {
   product(id: $id) {
+    categories {
+      name
+    }
     images {
       id
       url
@@ -411,59 +447,69 @@ export const GetProductQueryDocument = new TypedDocumentString(`
       }
     }
   }
+  products(currentItem: 10, order: ASC, sort: "price") {
+    items {
+      id
+      images {
+        url
+      }
+      price
+      name
+      rating
+      feedbacks {
+        id
+      }
+    }
+  }
 }
-    `) as unknown as TypedDocumentString<GetProductQueryQuery, GetProductQueryQueryVariables>;
-export const LoginMutationDocument = new TypedDocumentString(`
-    mutation LoginMutation($email: String!, $password: String!) {
+    `) as unknown as TypedDocumentString<GetProductQuery, GetProductQueryVariables>;
+export const LoginDocument = new TypedDocumentString(`
+    mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {
     access_token
   }
 }
-    `) as unknown as TypedDocumentString<LoginMutationMutation, LoginMutationMutationVariables>;
-export const RegisterMutationDocument = new TypedDocumentString(`
-    mutation RegisterMutation($email: String!, $fullName: String!, $password: String!, $phone: String!) {
+    `) as unknown as TypedDocumentString<LoginMutation, LoginMutationVariables>;
+export const RegisterDocument = new TypedDocumentString(`
+    mutation Register($email: String!, $fullName: String!, $password: String!, $phone: String!) {
   register(email: $email, fullName: $fullName, password: $password, phone: $phone) {
     access_token
   }
 }
-    `) as unknown as TypedDocumentString<RegisterMutationMutation, RegisterMutationMutationVariables>;
-export const SendResetPasswordOtpMutationDocument = new TypedDocumentString(`
-    mutation SendResetPasswordOTPMutation($email: String!) {
+    `) as unknown as TypedDocumentString<RegisterMutation, RegisterMutationVariables>;
+export const SendResetPasswordOtpDocument = new TypedDocumentString(`
+    mutation SendResetPasswordOTP($email: String!) {
   sendResetPasswordOTP(email: $email)
 }
-    `) as unknown as TypedDocumentString<
-  SendResetPasswordOtpMutationMutation,
-  SendResetPasswordOtpMutationMutationVariables
->;
-export const GetTokenResetPasswordMutationDocument = new TypedDocumentString(`
-    mutation GetTokenResetPasswordMutation($email: String!, $OTPCode: String!) {
+    `) as unknown as TypedDocumentString<SendResetPasswordOtpMutation, SendResetPasswordOtpMutationVariables>;
+export const GetTokenResetPasswordDocument = new TypedDocumentString(`
+    mutation GetTokenResetPassword($email: String!, $OTPCode: String!) {
   getTokenResetPassword(email: $email, OTPCode: $OTPCode)
 }
-    `) as unknown as TypedDocumentString<
-  GetTokenResetPasswordMutationMutation,
-  GetTokenResetPasswordMutationMutationVariables
->;
-export const ResetPasswordMutationDocument = new TypedDocumentString(`
-    mutation ResetPasswordMutation($password: String!, $token: String!) {
+    `) as unknown as TypedDocumentString<GetTokenResetPasswordMutation, GetTokenResetPasswordMutationVariables>;
+export const ResetPasswordDocument = new TypedDocumentString(`
+    mutation ResetPassword($password: String!, $token: String!) {
   resetPassword(password: $password, token: $token)
 }
-    `) as unknown as TypedDocumentString<ResetPasswordMutationMutation, ResetPasswordMutationMutationVariables>;
-export const LoginWithGoogleMutationDocument = new TypedDocumentString(`
-    mutation LoginWithGoogleMutation($code: String!) {
+    `) as unknown as TypedDocumentString<ResetPasswordMutation, ResetPasswordMutationVariables>;
+export const LoginWithGoogleDocument = new TypedDocumentString(`
+    mutation LoginWithGoogle($code: String!) {
   loginWithGoogle(code: $code) {
     access_token
   }
 }
-    `) as unknown as TypedDocumentString<LoginWithGoogleMutationMutation, LoginWithGoogleMutationMutationVariables>;
-export const MeQueryDocument = new TypedDocumentString(`
-    query MeQuery {
+    `) as unknown as TypedDocumentString<LoginWithGoogleMutation, LoginWithGoogleMutationVariables>;
+export const MeDocument = new TypedDocumentString(`
+    query Me {
   me {
+    createdAt
     email
     fullName
     id
     phone
     role
     status
+    updatedAt
   }
 }
-    `) as unknown as TypedDocumentString<MeQueryQuery, MeQueryQueryVariables>;
+    `) as unknown as TypedDocumentString<MeQuery, MeQueryVariables>;

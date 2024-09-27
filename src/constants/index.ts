@@ -1,4 +1,5 @@
 import AUTH_ROUTES from './auth-routes';
+import * as EXPO_IMAGE from './expo-image';
 import HTTP_STATUS from './http-status';
 import * as MESSAGES from './messages';
 import NAV_THEME from './nav-theme';
@@ -9,6 +10,7 @@ import * as USER_QUERY_KEY from './user-query-key';
 
 const constants = {
   AUTH_ROUTES,
+  EXPO_IMAGE,
   HTTP_STATUS,
   MESSAGES,
   NAV_THEME,

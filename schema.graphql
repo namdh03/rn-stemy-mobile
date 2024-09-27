@@ -73,6 +73,7 @@ type Mutation {
   login(email: String!, password: String!): AccessTokenResponse!
   loginWithGoogle(code: String!): AccessTokenResponse!
   register(email: String!, fullName: String!, password: String!, phone: String!): AccessTokenResponse!
+  repayOrder(orderId: Float!): String!
   resetPassword(password: String!, token: String!): String!
   sendResetPasswordOTP(email: String!): String!
   updateCart(productId: Float!, quantity: Float!): Cart!
@@ -116,7 +117,6 @@ type ProductCategory {
   createdAt: DateTimeISO!
   id: ID!
   name: String!
-  products: [Product!]!
   title: String!
   type: [CategoryType!]!
   updatedAt: DateTimeISO!
@@ -142,7 +142,7 @@ type ProductsWithPaginationResponse {
 }
 
 type Query {
-  carts: [Cart!]
+  carts: [Cart!]!
   countCart: Float!
   me: User!
   product(id: Float!): Product!

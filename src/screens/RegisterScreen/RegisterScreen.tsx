@@ -12,7 +12,7 @@ import { Button } from '~components/ui/button';
 import { Text } from '~components/ui/text';
 import execute from '~graphql/execute';
 import AuthLayout from '~layouts/AuthLayout';
-import { Register } from '~services/user.serivces';
+import { RegisterMutation } from '~services/user.serivces';
 import { RegisterScreenNavigationProps } from '~types/navigation';
 import isErrors from '~utils/responseChecker';
 
@@ -31,7 +31,7 @@ const RegisterScreen = ({ navigation }: RegisterScreenNavigationProps) => {
     },
   });
   const { mutate, isPending } = useMutation({
-    mutationFn: (values: RegisterFormType) => execute(Register, values),
+    mutationFn: (values: RegisterFormType) => execute(RegisterMutation, values),
   });
 
   const onSubmit = (values: RegisterFormType) => {
