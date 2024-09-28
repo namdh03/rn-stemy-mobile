@@ -8,7 +8,7 @@ import Pressable from '~components/customs/Pressable';
 import { Bell, ShoppingCart } from '~components/icons';
 import { Text } from '~components/ui/text';
 import HomeScreen from '~screens/HomeScreen';
-import { HomeScreenScreenNavigationProps, HomeStackParamList } from '~types/navigation';
+import { HomeScreenScreenNavigationProps, HomeStackParamList } from '~types/navigation.type';
 
 const Stack = createNativeStackNavigator<HomeStackParamList>();
 

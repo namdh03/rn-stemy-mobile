@@ -4,7 +4,7 @@ import type { CompositeScreenProps } from '@react-navigation/native';
 import type { NativeStackNavigationOptions, NativeStackScreenProps } from '@react-navigation/native-stack';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import type { BottomTabParamList, MainStackParamList, RootStackParamList } from '~types/navigation';
+import type { BottomTabParamList, MainStackParamList, RootStackParamList } from '~types/navigation.type';
 
 type CustomStackScreenProps<T extends keyof BottomTabParamList> = CompositeScreenProps<
   NativeStackScreenProps<BottomTabParamList, T>,

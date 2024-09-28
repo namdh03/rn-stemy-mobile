@@ -12,7 +12,7 @@ import { Button } from '~components/ui/button';
 import { Text } from '~components/ui/text';
 import execute from '~graphql/execute';
 import { SendResetPasswordOTPMutation } from '~services/user.serivces';
-import { ForgotPasswordScreenNavigationProps } from '~types/navigation';
+import { ForgotPasswordScreenNavigationProps } from '~types/navigation.type';
 import isErrors from '~utils/responseChecker';
 import showDialogError from '~utils/showDialogError';
 

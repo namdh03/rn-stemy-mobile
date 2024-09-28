@@ -17,7 +17,7 @@ import execute from '~graphql/execute';
 import { useColorScheme } from '~hooks';
 import { GetProductQuery } from '~services/product.services';
 import { useStore } from '~store';
-import { ProductDetailScreenNavigationProps } from '~types/navigation';
+import { ProductDetailScreenNavigationProps } from '~types/navigation.type';
 
 import AddCartBottomSheet from './components/AddCartBottomSheet';
 import CategoryList from './components/CategoryList';

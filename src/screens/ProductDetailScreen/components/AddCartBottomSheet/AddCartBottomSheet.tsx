@@ -15,7 +15,7 @@ import constants from '~constants';
 import execute from '~graphql/execute';
 import { useColorScheme } from '~hooks';
 import { AddToCartMutation } from '~services/cart.services';
-import { ProductDetailStackParamList } from '~types/navigation';
+import { ProductDetailStackParamList } from '~types/navigation.type';
 import isErrors from '~utils/responseChecker';
 import showDialogError from '~utils/showDialogError';
 import showDialogSuccess from '~utils/showDialogSuccess';
