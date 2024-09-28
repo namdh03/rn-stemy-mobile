@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 
-import InputPassword from '~components/customs/InputPassword/InputPassword';
+import InputPassword from '~components/customs/InputPassword';
 import Pressable from '~components/customs/Pressable';
 import { Form, FormField, FormInput } from '~components/deprecated-ui/form';
 import { Button } from '~components/ui/button';
@@ -13,7 +13,7 @@ import { Text } from '~components/ui/text';
 import execute from '~graphql/execute';
 import AuthLayout from '~layouts/AuthLayout';
 import { LoginMutation } from '~services/user.serivces';
-import { LoginScreenNavigationProps } from '~types/navigation';
+import { LoginScreenNavigationProps } from '~types/navigation.type';
 import isErrors from '~utils/responseChecker';
 import showDialogError from '~utils/showDialogError';
 
@@ -47,9 +47,9 @@ const LoginScreen = ({ navigation }: LoginScreenNavigationProps) => {
             form.setError('email', { message: error.message });
             form.setError('password', { message: error.message });
           }
+        } else {
+          showDialogError({ textBody: errors.message });
         }
-
-        showDialogError({ textBody: errors.message });
       },
     });
   };

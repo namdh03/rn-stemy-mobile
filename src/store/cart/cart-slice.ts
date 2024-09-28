@@ -14,8 +14,18 @@ export const createCartSlice: StateCreator<CartSlice, [['zustand/immer', never]]
   ...initialState,
   setCart: (cart: GetCartQuery['carts']) =>
     set((state) => {
-      state.cart = cart;
-      state.total = cart?.reduce((acc, cur) => acc + cur.product.price, 0) || 0;
+      state.cart = cart.map((cartItem) => {
+        const newCartItem = { ...cartItem };
+
+        if (newCartItem.hasLab) {
+          newCartItem.product = {
+            ...newCartItem.product,
+            price: newCartItem.product.price + (newCartItem.product.lab?.price || 0),
+          };
+        }
+
+        return newCartItem;
+      });
     }),
   setSelectedCart: (cart: GetCartQuery['carts'][number]) =>
     set((state) => {
@@ -27,7 +37,48 @@ export const createCartSlice: StateCreator<CartSlice, [['zustand/immer', never]]
         selectedCart[cart.id] = cart;
       }
 
+      const total = Object.values(selectedCart).reduce((acc, cur) => acc + cur.product.price * cur.quantity, 0);
+
       state.selectedCart = selectedCart;
+      state.total = total;
+    }),
+  updateCartItemQuantity: (id: string, quantity: number) =>
+    set((state) => {
+      const cart = state.cart;
+
+      const cartItemIndex = cart.findIndex((item) => item.id === id);
+
+      if (cartItemIndex !== -1) {
+        cart[cartItemIndex].quantity = quantity;
+
+        const selectedCart = state.selectedCart || {};
+        if (selectedCart[id]) {
+          selectedCart[id].quantity = quantity;
+        }
+
+        const total = Object.values(selectedCart).reduce((acc, cur) => acc + cur.product.price * cur.quantity, 0);
+
+        state.cart = [...cart];
+        state.selectedCart = selectedCart;
+        state.total = total;
+      }
+    }),
+  removeCartItem: (id: string) =>
+    set((state) => {
+      const selectedCart = state.selectedCart || {};
+      const cart = state.cart;
+
+      if (selectedCart[id]) {
+        delete selectedCart[id];
+      }
+
+      const updatedCart = cart.filter((cartItem) => cartItem.id !== id);
+
+      const total = Object.values(selectedCart).reduce((acc, cur) => acc + cur.product.price * cur.quantity, 0);
+
+      state.cart = updatedCart;
+      state.selectedCart = selectedCart;
+      state.total = total;
     }),
   reset: () => set(initialState),
 });

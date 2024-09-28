@@ -1,5 +1,5 @@
-import React, { forwardRef, useCallback, useMemo, useState } from 'react';
-import { ActivityIndicator, Text as RNText, View } from 'react-native';
+import { forwardRef, useCallback, useMemo, useState } from 'react';
+import { ActivityIndicator, Keyboard, Pressable as RNPressable, Text as RNText, View } from 'react-native';
 
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { RouteProp, useRoute } from '@react-navigation/native';
@@ -15,32 +15,43 @@ import constants from '~constants';
 import execute from '~graphql/execute';
 import { useColorScheme } from '~hooks';
 import { AddToCartMutation } from '~services/cart.services';
-import { ProductDetailStackParamList } from '~types/navigation';
+import { ProductDetailStackParamList } from '~types/navigation.type';
 import isErrors from '~utils/responseChecker';
 import showDialogError from '~utils/showDialogError';
 import showDialogSuccess from '~utils/showDialogSuccess';
 
 interface AddCartBottomSheetProps {
   defaultPrice: number;
+  labPrice: number;
   onFocus: () => void;
   onClose: () => void;
 }
 
 type LabOption = 'lab' | 'no-lab';
 
+const DEFAULT_QUANTITY_CART = 1;
 const MAX_QUANTITY_CART = 99;
+const DEFAULT_SELECTED_OPTION = 'lab';
 
 const AddCartBottomSheet = forwardRef<BottomSheet, AddCartBottomSheetProps>(
-  ({ defaultPrice, onFocus, onClose }, ref) => {
+  ({ defaultPrice, labPrice, onFocus, onClose }, ref) => {
     const route: RouteProp<ProductDetailStackParamList, 'ProductDetailScreen'> = useRoute();
-    const [quantity, setQuantity] = useState(1);
-    const [selectedOption, setSelectedOption] = useState<LabOption>('lab');
+    const [quantity, setQuantity] = useState(DEFAULT_QUANTITY_CART);
+    const [selectedOption, setSelectedOption] = useState<LabOption>(DEFAULT_SELECTED_OPTION);
     const { isDarkColorScheme } = useColorScheme();
-    const priceByQuantity = useMemo(() => defaultPrice * quantity, [defaultPrice, quantity]);
-
+    const priceByQuantity = useMemo(
+      () => (selectedOption === DEFAULT_SELECTED_OPTION ? defaultPrice + labPrice : defaultPrice) * quantity,
+      [defaultPrice, quantity, selectedOption],
+    );
     const { mutate, isPending } = useMutation({
-      mutationFn: (productId: number) => execute(AddToCartMutation, { productId, quantity }),
+      mutationFn: (productId: number) =>
+        execute(AddToCartMutation, { productId, quantity, hasLab: selectedOption === DEFAULT_SELECTED_OPTION }),
     });
+
+    const handleBottomSheetClose = () => {
+      if (quantity !== DEFAULT_QUANTITY_CART) setQuantity(DEFAULT_QUANTITY_CART);
+      if (selectedOption !== DEFAULT_SELECTED_OPTION) setSelectedOption(DEFAULT_SELECTED_OPTION);
+    };
 
     const handleQuantityChange = useCallback((newQuantity: number) => {
       setQuantity(newQuantity);
@@ -78,93 +89,103 @@ const AddCartBottomSheet = forwardRef<BottomSheet, AddCartBottomSheetProps>(
     }, [route.params.id, mutate, onClose]);
 
     return (
-      <BottomSheet ref={ref} snapPoints={['66%', '66%']} enablePanDownToClose index={-1}>
+      <BottomSheet
+        ref={ref}
+        snapPoints={['66%', '66%']}
+        enablePanDownToClose
+        index={-1}
+        onClose={handleBottomSheetClose}
+      >
         <BottomSheetView
           className='flex-1 pt-[20px] pb-[25px]'
           style={{ backgroundColor: isDarkColorScheme ? 'black' : 'white' }}
         >
-          <View className='flex-row items-center justify-between px-[25px] pb-[20px]'>
-            <Text className='font-inter-bold text-foreground text-[18px] leading-[24px] tracking-[0.2px]'>
-              Add to Cart
-            </Text>
-            <Pressable onPress={onClose}>
-              <CircleX size={24} className='text-foreground' />
-            </Pressable>
-          </View>
+          <RNPressable onPress={Keyboard.dismiss}>
+            <View className='flex-row items-center justify-between px-[25px] pb-[20px]'>
+              <Text className='font-inter-bold text-foreground text-[18px] leading-[24px] tracking-[0.2px]'>
+                Add to Cart
+              </Text>
+              <Pressable onPress={onClose}>
+                <CircleX size={24} className='text-foreground' />
+              </Pressable>
+            </View>
 
-          <Separator />
+            <Separator className='bg-muted' />
 
-          <View className='px-[25px] py-[20px]'>
-            <View className='flex-row items-center justify-between'>
-              <Text className='font-inter-medium text-foreground text-[16px]'>Quantity</Text>
+            <View className='px-[25px] py-[20px]'>
+              <View className='flex-row items-center justify-between'>
+                <Text className='font-inter-medium text-foreground text-[16px]'>Quantity</Text>
 
-              <View className='flex-row items-center gap-[8px]'>
-                <Pressable onPress={handleDecreaseQuantity} disabled={quantity <= 1}>
-                  <Minus className={quantity <= 1 ? 'text-muted-foreground' : 'text-primary'} size={24} />
-                </Pressable>
-                <InputPositiveNumber
-                  className='font-inter-medium text-foreground text-[16px] border-transparent'
-                  value={quantity}
-                  onChange={handleQuantityChange}
-                  onFocus={onFocus}
-                />
-                <Pressable onPress={handleIncreaseQuantity} disabled={quantity >= MAX_QUANTITY_CART}>
-                  <Plus
-                    className={quantity >= MAX_QUANTITY_CART ? 'text-muted-foreground' : 'text-primary'}
-                    size={24}
+                <View className='flex-row items-center gap-[8px]'>
+                  <Pressable onPress={handleDecreaseQuantity} disabled={quantity <= 1}>
+                    <Minus className={quantity <= 1 ? 'text-muted-foreground' : 'text-primary'} size={24} />
+                  </Pressable>
+                  <InputPositiveNumber
+                    className='font-inter-medium text-foreground px-[4px] text-[16px] border-transparent'
+                    value={quantity}
+                    onChange={handleQuantityChange}
+                    onFocus={onFocus}
                   />
-                </Pressable>
-              </View>
-            </View>
-
-            <Separator className='my-[20px]' />
-
-            <View className='gap-[14px]'>
-              <Text className='font-inter-medium text-foreground text-[16px]'>Variant</Text>
-
-              <View className='flex-row gap-[10px]'>
-                <Pressable
-                  className={`px-[18px] py-[6px] border border-transparent rounded-[10px] ${selectedOption === 'lab' ? 'bg-[#16a34a1a] text-background' : 'bg-transparent border-accent'}`}
-                  onPress={() => handleOptionSelect('lab')}
-                >
-                  <Text
-                    className={`font-inter-medium text-[14px] leading-[20px] ${selectedOption === 'lab' ? 'text-primary' : 'text-foreground'}`}
-                  >
-                    Lab included
-                  </Text>
-                </Pressable>
-
-                <Pressable
-                  className={`px-[18px] py-[6px] border border-transparent rounded-[10px] ${selectedOption === 'no-lab' ? 'bg-[#16a34a1a] text-background' : 'bg-transparent border-accent'}`}
-                  onPress={() => handleOptionSelect('no-lab')}
-                >
-                  <Text
-                    className={`font-inter-medium text-[14px] leading-[20px] ${selectedOption === 'no-lab' ? 'text-primary' : 'text-foreground'}`}
-                  >
-                    No Lab
-                  </Text>
-                </Pressable>
-              </View>
-            </View>
-
-            <Separator className='my-[20px]' />
-
-            <View className='gap-[10px]'>
-              <Text className='font-inter-regular text-muted-foreground text-[16px] tracking-[0.2px]'>Total</Text>
-              <Text className='font-inter-bold text-foreground text-[16px]'>{priceByQuantity.toLocaleString()} ₫</Text>
-            </View>
-
-            <Button size='lg' className='mt-[22px]' onPress={handleAddToCart}>
-              {isPending ? (
-                <View className='flex-row items-center justify-center gap-[6px]'>
-                  <ActivityIndicator className='text-secondary' />
-                  <RNText className='font-inter-medium text-background text-[16px] leading-[20px]'>Loading...</RNText>
+                  <Pressable onPress={handleIncreaseQuantity} disabled={quantity >= MAX_QUANTITY_CART}>
+                    <Plus
+                      className={quantity >= MAX_QUANTITY_CART ? 'text-muted-foreground' : 'text-primary'}
+                      size={24}
+                    />
+                  </Pressable>
                 </View>
-              ) : (
-                <RNText className='font-inter-medium text-background text-[16px] leading-[20px]'>Add to Cart</RNText>
-              )}
-            </Button>
-          </View>
+              </View>
+
+              <Separator className='my-[20px] bg-muted' />
+
+              <View className='gap-[14px]'>
+                <Text className='font-inter-medium text-foreground text-[16px]'>Variant</Text>
+
+                <View className='flex-row gap-[10px]'>
+                  <Pressable
+                    className={`px-[18px] py-[6px] border border-transparent rounded-[10px] ${selectedOption === DEFAULT_SELECTED_OPTION ? 'bg-[#16a34a1a] text-background' : 'bg-transparent border-accent'}`}
+                    onPress={() => handleOptionSelect(DEFAULT_SELECTED_OPTION)}
+                  >
+                    <Text
+                      className={`font-inter-medium text-[14px] leading-[20px] ${selectedOption === DEFAULT_SELECTED_OPTION ? 'text-primary' : 'text-foreground'}`}
+                    >
+                      Lab included
+                    </Text>
+                  </Pressable>
+
+                  <Pressable
+                    className={`px-[18px] py-[6px] border border-transparent rounded-[10px] ${selectedOption === 'no-lab' ? 'bg-[#16a34a1a] text-background' : 'bg-transparent border-accent'}`}
+                    onPress={() => handleOptionSelect('no-lab')}
+                  >
+                    <Text
+                      className={`font-inter-medium text-[14px] leading-[20px] ${selectedOption === 'no-lab' ? 'text-primary' : 'text-foreground'}`}
+                    >
+                      No Lab
+                    </Text>
+                  </Pressable>
+                </View>
+              </View>
+
+              <Separator className='my-[20px] bg-muted' />
+
+              <View className='gap-[10px]'>
+                <Text className='font-inter-regular text-muted-foreground text-[16px] tracking-[0.2px]'>Total</Text>
+                <Text className='font-inter-bold text-foreground text-[16px]'>
+                  {priceByQuantity.toLocaleString()} ₫
+                </Text>
+              </View>
+
+              <Button size='lg' className='mt-[22px]' onPress={handleAddToCart}>
+                {isPending ? (
+                  <View className='flex-row items-center justify-center gap-[6px]'>
+                    <ActivityIndicator className='text-secondary' />
+                    <RNText className='font-inter-medium text-background text-[16px] leading-[20px]'>Loading...</RNText>
+                  </View>
+                ) : (
+                  <RNText className='font-inter-medium text-background text-[16px] leading-[20px]'>Add to Cart</RNText>
+                )}
+              </Button>
+            </View>
+          </RNPressable>
         </BottomSheetView>
       </BottomSheet>
     );

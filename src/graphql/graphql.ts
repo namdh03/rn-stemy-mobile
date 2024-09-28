@@ -28,10 +28,11 @@ export type AccessTokenResponse = {
 export type Cart = {
   __typename?: 'Cart';
   createdAt: Scalars['DateTimeISO']['output'];
+  hasLab: Scalars['Boolean']['output'];
   id: Scalars['ID']['output'];
   product: Product;
   quantity: Scalars['Int']['output'];
-  updatedAt: Scalars['DateTimeISO']['output'];
+  updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
   user: User;
 };
 
@@ -64,7 +65,7 @@ export type Feedback = {
   orderItem: OrderItem;
   product: Product;
   rating: Scalars['Int']['output'];
-  updatedAt: Scalars['DateTimeISO']['output'];
+  updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
   user: User;
 };
 
@@ -74,7 +75,9 @@ export type Mutation = {
   checkoutOrder: Scalars['Boolean']['output'];
   createOrder: Scalars['String']['output'];
   createProduct: Product;
-  deleteCart: Scalars['String']['output'];
+  createTicket: Ticket;
+  deleteCarts: Scalars['String']['output'];
+  deleteProduct: Product;
   getTokenResetPassword: Scalars['String']['output'];
   login: AccessTokenResponse;
   loginWithGoogle: AccessTokenResponse;
@@ -87,6 +90,7 @@ export type Mutation = {
 
 
 export type MutationAddToCartArgs = {
+  hasLab: Scalars['Boolean']['input'];
   productId: Scalars['Float']['input'];
   quantity: Scalars['Float']['input'];
 };
@@ -99,7 +103,7 @@ export type MutationCheckoutOrderArgs = {
 
 export type MutationCreateOrderArgs = {
   address: Scalars['String']['input'];
-  cartIds: Scalars['Int']['input'];
+  cartIds: Array<Scalars['Int']['input']>;
   paymentProvider: PaymentProvider;
   phone: Scalars['String']['input'];
 };
@@ -112,8 +116,21 @@ export type MutationCreateProductArgs = {
 };
 
 
-export type MutationDeleteCartArgs = {
-  productId: Scalars['Float']['input'];
+export type MutationCreateTicketArgs = {
+  categoryId: Scalars['Float']['input'];
+  comment: Scalars['String']['input'];
+  orderId: Scalars['Float']['input'];
+  title: Scalars['String']['input'];
+};
+
+
+export type MutationDeleteCartsArgs = {
+  cartId: Array<Scalars['Int']['input']>;
+};
+
+
+export type MutationDeleteProductArgs = {
+  id: Scalars['Float']['input'];
 };
 
 
@@ -159,7 +176,7 @@ export type MutationSendResetPasswordOtpArgs = {
 
 
 export type MutationUpdateCartArgs = {
-  productId: Scalars['Float']['input'];
+  cartId: Scalars['Float']['input'];
   quantity: Scalars['Float']['input'];
 };
 
@@ -167,18 +184,20 @@ export type Order = {
   __typename?: 'Order';
   createdAt: Scalars['DateTimeISO']['output'];
   id: Scalars['ID']['output'];
-  updatedAt: Scalars['DateTimeISO']['output'];
+  updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
 };
 
 export type OrderItem = {
   __typename?: 'OrderItem';
   createdAt: Scalars['DateTimeISO']['output'];
+  hasLab: Scalars['Boolean']['output'];
   id: Scalars['ID']['output'];
+  labPrice: Scalars['Int']['output'];
   order: Order;
   product: Product;
+  productPrice: Scalars['Int']['output'];
   quantity: Scalars['Int']['output'];
-  unitPrice: Scalars['Int']['output'];
-  updatedAt: Scalars['DateTimeISO']['output'];
+  updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
 };
 
 export enum PaymentProvider {
@@ -193,11 +212,12 @@ export type Product = {
   feedbacks: Array<Feedback>;
   id: Scalars['ID']['output'];
   images: Array<ProductImage>;
+  lab?: Maybe<ProductLab>;
   name: Scalars['String']['output'];
   price: Scalars['Int']['output'];
   rating: Scalars['Int']['output'];
   sold: Scalars['Int']['output'];
-  updatedAt: Scalars['DateTimeISO']['output'];
+  updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
 };
 
 export type ProductCategory = {
@@ -208,22 +228,32 @@ export type ProductCategory = {
   products: Array<Product>;
   title: Scalars['String']['output'];
   type: Array<CategoryType>;
-  updatedAt: Scalars['DateTimeISO']['output'];
+  updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
 };
 
 export type ProductImage = {
   __typename?: 'ProductImage';
   createdAt: Scalars['DateTimeISO']['output'];
   id: Scalars['ID']['output'];
-  updatedAt: Scalars['DateTimeISO']['output'];
+  updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
   url: Scalars['String']['output'];
 };
 
 export type ProductInput = {
   categoryIds: Array<Scalars['Int']['input']>;
   description: Scalars['String']['input'];
+  labPrice: Scalars['Int']['input'];
   name: Scalars['String']['input'];
   price: Scalars['Int']['input'];
+};
+
+export type ProductLab = {
+  __typename?: 'ProductLab';
+  createdAt: Scalars['DateTimeISO']['output'];
+  id: Scalars['ID']['output'];
+  price: Scalars['Int']['output'];
+  updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
+  url: Scalars['String']['output'];
 };
 
 export type ProductsWithPaginationResponse = {
@@ -274,8 +304,39 @@ export enum SortOrder {
   Desc = 'DESC'
 }
 
+export type Ticket = {
+  __typename?: 'Ticket';
+  category: TicketCategory;
+  closedAt?: Maybe<Scalars['DateTimeISO']['output']>;
+  createdAt: Scalars['DateTimeISO']['output'];
+  id: Scalars['ID']['output'];
+  order: Order;
+  replier?: Maybe<User>;
+  replierComment?: Maybe<Scalars['String']['output']>;
+  sender: User;
+  senderComment: Scalars['String']['output'];
+  status: TicketStatus;
+  title: Scalars['String']['output'];
+  updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
+};
+
+export type TicketCategory = {
+  __typename?: 'TicketCategory';
+  createdAt: Scalars['DateTimeISO']['output'];
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  tickets: Array<Ticket>;
+  updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
+};
+
+export enum TicketStatus {
+  Close = 'CLOSE',
+  Open = 'OPEN'
+}
+
 export type User = {
   __typename?: 'User';
+  address?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['DateTimeISO']['output'];
   email: Scalars['String']['output'];
   fullName: Scalars['String']['output'];
@@ -283,7 +344,7 @@ export type User = {
   phone?: Maybe<Scalars['String']['output']>;
   role: Role;
   status: UserStatus;
-  updatedAt: Scalars['DateTimeISO']['output'];
+  updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
 };
 
 export enum UserStatus {
@@ -300,6 +361,7 @@ export type E = {
 };
 
 export type AddToCartMutationVariables = Exact<{
+  hasLab: Scalars['Boolean']['input'];
   productId: Scalars['Float']['input'];
   quantity: Scalars['Float']['input'];
 }>;
@@ -310,14 +372,29 @@ export type AddToCartMutation = { __typename?: 'Mutation', addToCart: { __typena
 export type GetCartQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetCartQuery = { __typename?: 'Query', carts: Array<{ __typename?: 'Cart', id: string, quantity: number, product: { __typename?: 'Product', name: string, price: number, images: Array<{ __typename?: 'ProductImage', url: string }> } }> };
+export type GetCartQuery = { __typename?: 'Query', carts: Array<{ __typename?: 'Cart', id: string, hasLab: boolean, quantity: number, product: { __typename?: 'Product', id: string, name: string, price: number, images: Array<{ __typename?: 'ProductImage', url: string }>, lab?: { __typename?: 'ProductLab', price: number } | null } }> };
+
+export type DeleteCartsMutationVariables = Exact<{
+  cartId: Array<Scalars['Int']['input']> | Scalars['Int']['input'];
+}>;
+
+
+export type DeleteCartsMutation = { __typename?: 'Mutation', deleteCarts: string };
+
+export type UpdateCartMutationVariables = Exact<{
+  cartId: Scalars['Float']['input'];
+  quantity: Scalars['Float']['input'];
+}>;
+
+
+export type UpdateCartMutation = { __typename?: 'Mutation', updateCart: { __typename?: 'Cart', id: string } };
 
 export type GetProductQueryVariables = Exact<{
   id: Scalars['Float']['input'];
 }>;
 
 
-export type GetProductQuery = { __typename?: 'Query', product: { __typename?: 'Product', description: string, id: string, name: string, price: number, rating: number, sold: number, categories: Array<{ __typename?: 'ProductCategory', name: string }>, images: Array<{ __typename?: 'ProductImage', id: string, url: string }>, feedbacks: Array<{ __typename?: 'Feedback', comment: string, createdAt: any, id: string, rating: number, user: { __typename?: 'User', fullName: string } }> }, products: { __typename?: 'ProductsWithPaginationResponse', items: Array<{ __typename?: 'Product', id: string, price: number, name: string, rating: number, images: Array<{ __typename?: 'ProductImage', url: string }>, feedbacks: Array<{ __typename?: 'Feedback', id: string }> }> } };
+export type GetProductQuery = { __typename?: 'Query', product: { __typename?: 'Product', description: string, id: string, name: string, price: number, rating: number, sold: number, categories: Array<{ __typename?: 'ProductCategory', name: string }>, images: Array<{ __typename?: 'ProductImage', id: string, url: string }>, feedbacks: Array<{ __typename?: 'Feedback', comment: string, createdAt: any, id: string, rating: number, user: { __typename?: 'User', fullName: string } }>, lab?: { __typename?: 'ProductLab', price: number } | null }, products: { __typename?: 'ProductsWithPaginationResponse', items: Array<{ __typename?: 'Product', id: string, price: number, name: string, rating: number, images: Array<{ __typename?: 'ProductImage', url: string }>, feedbacks: Array<{ __typename?: 'Feedback', id: string }> }> } };
 
 export type LoginMutationVariables = Exact<{
   email: Scalars['String']['input'];
@@ -370,7 +447,7 @@ export type LoginWithGoogleMutation = { __typename?: 'Mutation', loginWithGoogle
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', createdAt: any, email: string, fullName: string, id: string, phone?: string | null, role: Role, status: UserStatus, updatedAt: any } };
+export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', createdAt: any, email: string, fullName: string, id: string, phone?: string | null, role: Role, status: UserStatus, updatedAt?: any | null, address?: string | null } };
 
 export class TypedDocumentString<TResult, TVariables>
   extends String
@@ -388,8 +465,8 @@ export class TypedDocumentString<TResult, TVariables>
 }
 
 export const AddToCartDocument = new TypedDocumentString(`
-    mutation AddToCart($productId: Float!, $quantity: Float!) {
-  addToCart(productId: $productId, quantity: $quantity) {
+    mutation AddToCart($hasLab: Boolean!, $productId: Float!, $quantity: Float!) {
+  addToCart(hasLab: $hasLab, productId: $productId, quantity: $quantity) {
     id
   }
 }
@@ -398,17 +475,34 @@ export const GetCartDocument = new TypedDocumentString(`
     query GetCart {
   carts {
     id
-    quantity
+    hasLab
     product {
+      id
       name
       price
       images {
         url
       }
+      lab {
+        price
+      }
     }
+    quantity
   }
 }
     `) as unknown as TypedDocumentString<GetCartQuery, GetCartQueryVariables>;
+export const DeleteCartsDocument = new TypedDocumentString(`
+    mutation DeleteCarts($cartId: [Int!]!) {
+  deleteCarts(cartId: $cartId)
+}
+    `) as unknown as TypedDocumentString<DeleteCartsMutation, DeleteCartsMutationVariables>;
+export const UpdateCartDocument = new TypedDocumentString(`
+    mutation UpdateCart($cartId: Float!, $quantity: Float!) {
+  updateCart(cartId: $cartId, quantity: $quantity) {
+    id
+  }
+}
+    `) as unknown as TypedDocumentString<UpdateCartMutation, UpdateCartMutationVariables>;
 export const GetProductDocument = new TypedDocumentString(`
     query GetProduct($id: Float!) {
   product(id: $id) {
@@ -433,6 +527,9 @@ export const GetProductDocument = new TypedDocumentString(`
       user {
         fullName
       }
+    }
+    lab {
+      price
     }
   }
   products(currentItem: 10, order: ASC, sort: "price") {
@@ -498,6 +595,7 @@ export const MeDocument = new TypedDocumentString(`
     role
     status
     updatedAt
+    address
   }
 }
     `) as unknown as TypedDocumentString<MeQuery, MeQueryVariables>;

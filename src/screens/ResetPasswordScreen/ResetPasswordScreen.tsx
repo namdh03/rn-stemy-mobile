@@ -5,12 +5,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 
 import images from '~assets/images';
-import InputPassword from '~components/customs/InputPassword/InputPassword';
+import InputPassword from '~components/customs/InputPassword';
 import { Form, FormField } from '~components/deprecated-ui/form';
 import { Button } from '~components/ui/button';
 import execute from '~graphql/execute';
 import { ResetPasswordMutation } from '~services/user.serivces';
-import { ResetPasswordScreenNavigationProps } from '~types/navigation';
+import { ResetPasswordScreenNavigationProps } from '~types/navigation.type';
 import isErrors from '~utils/responseChecker';
 import showDialogError from '~utils/showDialogError';
 
@@ -39,16 +39,16 @@ const ResetPasswordScreen = ({ route, navigation }: ResetPasswordScreenNavigatio
           if (error?.message) {
             form.setError('password', { message: error.message });
           }
+        } else {
+          showDialogError({ textBody: errors.message });
         }
-
-        showDialogError({ textBody: errors.message });
       },
     });
   };
 
   return (
     <ScrollView
-      contentContainerClassName='items-center p-[24px] py-[38px] mx-auto w-full max-w-xl'
+      contentContainerClassName='items-center px-[24px] py-[38px] mx-auto w-full max-w-xl'
       showsVerticalScrollIndicator={false}
       automaticallyAdjustContentInsets={false}
     >

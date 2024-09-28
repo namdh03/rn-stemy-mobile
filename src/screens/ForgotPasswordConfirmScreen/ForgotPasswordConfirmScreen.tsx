@@ -4,12 +4,12 @@ import { Image, ScrollView, Text } from 'react-native';
 import images from '~assets/images';
 import { Mail } from '~components/icons';
 import { Button } from '~components/ui/button';
-import { ForgotPasswordConfirmScreenNavigationProps } from '~types/navigation';
+import { ForgotPasswordConfirmScreenNavigationProps } from '~types/navigation.type';
 
 const ForgotPasswordConfirmScreen = ({ route, navigation }: ForgotPasswordConfirmScreenNavigationProps) => {
   return (
     <ScrollView
-      contentContainerClassName='items-center p-[24px] py-[38px] mx-auto w-full max-w-xl'
+      contentContainerClassName='items-center px-[24px] py-[38px] mx-auto w-full max-w-xl'
       showsVerticalScrollIndicator={false}
       automaticallyAdjustContentInsets={false}
     >

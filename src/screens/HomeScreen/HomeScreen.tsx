@@ -38,7 +38,9 @@ const HomeScreen = ({ navigation, route }: HomeScreenNavigationProps) => {
   // };
 
   const handlePress = () => {
-    navigation.navigate('StoresScreen');
+    navigation.navigate('BottomTabStack', {
+      screen: 'StoresScreen',
+    });
   };
 
   const renderCategory = (type: string, name: string) => {

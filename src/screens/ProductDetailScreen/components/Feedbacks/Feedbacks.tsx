@@ -8,7 +8,7 @@ import { Star } from '~components/icons';
 import { Button } from '~components/ui/button';
 import { Text } from '~components/ui/text';
 import { useStore } from '~store';
-import { ProductDetailStackParamList } from '~types/navigation';
+import { ProductDetailStackParamList } from '~types/navigation.type';
 
 import FeedbackItem from '../FeedbackItem';
 

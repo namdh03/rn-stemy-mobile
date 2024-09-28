@@ -13,6 +13,8 @@ export type CartState = {
 export type CartActions = {
   setCart: (carts: GetCartQuery['carts']) => void;
   setSelectedCart: (cart: GetCartQuery['carts'][number]) => void;
+  updateCartItemQuantity: (id: string, quantity: number) => void;
+  removeCartItem: (id: string) => void;
   reset: () => void;
 };
 

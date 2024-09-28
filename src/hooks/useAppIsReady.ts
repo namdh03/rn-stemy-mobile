@@ -67,7 +67,7 @@ export default function useAppIsReady() {
       // Load user
       if (accessToken) {
         const { data } = await refetch();
-        if (data) authenticate(data);
+        if (data) authenticate(data.me);
       }
     })().finally(() => {
       setAppIsReady(true);
@@ -77,7 +77,7 @@ export default function useAppIsReady() {
   // Listen accessToken change
   useEffect(() => {
     if (accessToken && data) {
-      authenticate(data);
+      authenticate(data.me);
     }
   }, [accessToken, data]);
 

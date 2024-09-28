@@ -12,7 +12,7 @@ import { Button } from '~components/ui/button';
 import { Text } from '~components/ui/text';
 import execute from '~graphql/execute';
 import { SendResetPasswordOTPMutation } from '~services/user.serivces';
-import { ForgotPasswordScreenNavigationProps } from '~types/navigation';
+import { ForgotPasswordScreenNavigationProps } from '~types/navigation.type';
 import isErrors from '~utils/responseChecker';
 import showDialogError from '~utils/showDialogError';
 
@@ -37,21 +37,21 @@ const ForgotPasswordScreen = ({ navigation }: ForgotPasswordScreenNavigationProp
       },
       onError: (errors) => {
         if (isErrors(errors)) {
-          const error = errors.find((error) => error.path.includes('forgotPassword'));
+          const error = errors.find((error) => error.path.includes('sendResetPasswordOTP'));
 
           if (error?.message) {
             form.setError('email', { message: error.message });
           }
+        } else {
+          showDialogError({ textBody: errors.message });
         }
-
-        showDialogError({ textBody: errors.message });
       },
     });
   };
 
   return (
     <ScrollView
-      contentContainerClassName='items-center p-[24px] py-[38px] mx-auto w-full max-w-xl'
+      contentContainerClassName='items-center px-[24px] py-[38px] mx-auto w-full max-w-xl'
       showsVerticalScrollIndicator={false}
       automaticallyAdjustContentInsets={false}
     >

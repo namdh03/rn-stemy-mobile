@@ -25,6 +25,9 @@ export const GetProductQuery = graphql(`
           fullName
         }
       }
+      lab {
+        price
+      }
     }
     products(currentItem: 10, order: ASC, sort: "price") {
       items {

@@ -13,7 +13,7 @@ import {
   ProductDetailScreenNavigationProps,
   ProductDetailStackParamList,
   ProductFeedbackScreenNavigationProps,
-} from '~types/navigation';
+} from '~types/navigation.type';
 
 const ProductDetailStack = createNativeStackNavigator<ProductDetailStackParamList>();
 
@@ -31,12 +31,12 @@ const ProductDetailNavigator = () => (
         },
         headerLeft: ({ canGoBack }) => (
           <Pressable onPress={useThrottle(() => canGoBack && navigation.goBack(), 500)}>
-            <ChevronLeft className='text-foreground' size={28} />
+            <ChevronLeft className='text-foreground' size={30} />
           </Pressable>
         ),
         headerRight: () => (
           <Pressable onPress={() => navigation.navigate('CartScreen')}>
-            <ShoppingCart className='text-foreground' size={24} />
+            <ShoppingCart className='text-foreground' size={28} />
           </Pressable>
         ),
       })}

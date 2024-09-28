@@ -10,7 +10,7 @@ import { Form, FormField, FormMessage } from '~components/deprecated-ui/form';
 import { Button } from '~components/ui/button';
 import execute from '~graphql/execute';
 import { GetTokenResetPasswordMutation, SendResetPasswordOTPMutation } from '~services/user.serivces';
-import { OTPScreenNavigationProps } from '~types/navigation';
+import { OTPScreenNavigationProps } from '~types/navigation.type';
 import isErrors from '~utils/responseChecker';
 import showDialogError from '~utils/showDialogError';
 
@@ -68,16 +68,16 @@ const OTPScreen = ({ route, navigation }: OTPScreenNavigationProps) => {
           if (error?.message) {
             form.setError('OTPCode', { message: error.message });
           }
+        } else {
+          showDialogError({ textBody: errors.message });
         }
-
-        showDialogError({ textBody: errors.message });
       },
     });
   };
 
   return (
     <ScrollView
-      contentContainerClassName='flex-1 items-center p-[24px] py-[38px] mx-auto w-full max-w-xl'
+      contentContainerClassName='flex-1 items-center px-[24px] py-[38px] mx-auto w-full max-w-xl'
       showsVerticalScrollIndicator={false}
       automaticallyAdjustContentInsets={false}
     >
