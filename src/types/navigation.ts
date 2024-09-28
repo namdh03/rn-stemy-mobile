@@ -35,9 +35,13 @@ export type AuthStackParamList = {
   ResetPasswordScreen: { token: string };
 };
 
+export type HomeStackParamList = {
+  HomeScreen: undefined;
+};
+
 // Bottom Tab
 export type BottomTabParamList = {
-  HomeScreen: undefined;
+  HomeStack: NavigatorScreenParams<HomeStackParamList>;
   StoresScreen: undefined;
   MeScreen: undefined;
 };
@@ -61,11 +65,6 @@ export type RootStackParamList = {
   AuthStack: NavigatorScreenParams<AuthStackParamList>;
   MainStack: NavigatorScreenParams<MainStackParamList>;
 };
-
-export type HomeScreenNavigationProps = CompositeScreenProps<
-  NativeStackScreenProps<BottomTabParamList, 'HomeScreen'>,
-  NativeStackScreenProps<MainStackParamList>
->;
 
 export type LoginScreenNavigationProps = CompositeScreenProps<
   NativeStackScreenProps<AuthStackParamList, 'LoginScreen'>,
@@ -95,6 +94,16 @@ export type OTPScreenNavigationProps = CompositeScreenProps<
 export type ResetPasswordScreenNavigationProps = CompositeScreenProps<
   NativeStackScreenProps<AuthStackParamList, 'ResetPasswordScreen'>,
   NativeStackScreenProps<RootStackParamList>
+>;
+
+export type HomeScreenScreenNavigationProps = CompositeScreenProps<
+  NativeStackScreenProps<HomeStackParamList, 'HomeScreen'>,
+  CompositeScreenProps<NativeStackScreenProps<BottomTabParamList>, NativeStackScreenProps<MainStackParamList>>
+>;
+
+export type StoresScreenNavigationProps = CompositeScreenProps<
+  NativeStackScreenProps<BottomTabParamList, 'StoresScreen'>,
+  NativeStackScreenProps<MainStackParamList>
 >;
 
 export type ProductDetailScreenNavigationProps = CompositeScreenProps<

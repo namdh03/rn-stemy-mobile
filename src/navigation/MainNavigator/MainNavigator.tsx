@@ -1,9 +1,11 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import Pressable from '~components/customs/Pressable';
+import { ChevronLeft } from '~components/icons';
 import BottomTabNavigator from '~navigation/BottomTabNavigator';
 import ProductDetailNavigator from '~navigation/ProductDetailNavigator';
 import CartScreen from '~screens/CartScreen';
-import { MainStackParamList } from '~types/navigation';
+import { CartScreenNavigationProps, MainStackParamList } from '~types/navigation';
 
 const MainStack = createNativeStackNavigator<MainStackParamList>();
 
@@ -14,14 +16,19 @@ const MainNavigator = () => (
     <MainStack.Screen
       name='CartScreen'
       component={CartScreen}
-      options={{
+      options={({ navigation }: CartScreenNavigationProps) => ({
         title: 'Your cart',
         headerTitleAlign: 'center',
         headerTitleStyle: {
           fontFamily: 'Inter_18pt-ExtraBold',
           fontSize: 18,
         },
-      }}
+        headerLeft: () => (
+          <Pressable onPress={() => navigation.goBack()}>
+            <ChevronLeft className='text-primary' size={30} />
+          </Pressable>
+        ),
+      })}
     />
   </MainStack.Navigator>
 );

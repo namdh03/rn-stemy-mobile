@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useLayoutEffect, useState } from 'react';
 
 import { Input } from '~components/ui/input';
 
@@ -21,14 +21,14 @@ const InputPositiveNumber: FC<InputPositiveNumberProps> = ({
 }) => {
   const [inputValue, setInputValue] = useState(value.toString());
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     // Only update inputValue if it's different from the current value
     if (inputValue !== value.toString()) {
-      setInputValue(value.toString());
+      handleInputChange(value.toString());
     }
   }, [value]);
 
-  const handleQuantityChange = useCallback(
+  const handleValueChange = useCallback(
     (newValue: number) => {
       const clampedValue = Math.min(Math.max(newValue, min), max);
       onChange(clampedValue);
@@ -47,19 +47,19 @@ const InputPositiveNumber: FC<InputPositiveNumberProps> = ({
       }
 
       const newValue = parseInt(numericValue, 10);
-      handleQuantityChange(newValue);
+      handleValueChange(newValue);
     },
-    [handleQuantityChange],
+    [handleValueChange],
   );
 
   const handleEndEditing = useCallback(() => {
     if (inputValue === '' || parseInt(inputValue, 10) === 0) {
-      handleQuantityChange(min);
+      handleValueChange(min);
     } else {
       const finalValue = parseInt(inputValue, 10);
-      handleQuantityChange(finalValue);
+      handleValueChange(finalValue);
     }
-  }, [inputValue, handleQuantityChange, min]);
+  }, [inputValue, handleValueChange, min]);
 
   return (
     <Input
