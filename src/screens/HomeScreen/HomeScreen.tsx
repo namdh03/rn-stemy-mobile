@@ -16,10 +16,10 @@ import Wrench from '~components/icons/Wrench';
 import { Button } from '~components/ui/button';
 import { Text } from '~components/ui/text';
 import { useStore } from '~store';
-import { HomeScreenNavigationProps } from '~types/navigation';
+import { HomeScreenScreenNavigationProps } from '~types/navigation';
 import { removeAccessToken } from '~utils/token-storage';
 
-const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
+const HomeScreen = ({ navigation }: HomeScreenScreenNavigationProps) => {
   const unAuthenticate = useStore(useShallow((state) => state.unAuthenticate));
 
   const goToProductDetail = () => {
@@ -36,7 +36,9 @@ const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
   };
 
   const handlePress = () => {
-    navigation.navigate('StoresScreen');
+    navigation.navigate('BottomTabStack', {
+      screen: 'StoresScreen',
+    });
   };
 
   const renderCategory = (type: string, name: string) => {
@@ -54,7 +56,7 @@ const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
     }
   };
   return (
-    <ScrollView className='px-[25px]'>
+    <ScrollView className='p-[25px]'>
       <Button onPress={logout}>
         <Text>Logout</Text>
       </Button>

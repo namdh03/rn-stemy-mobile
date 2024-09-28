@@ -1,5 +1,7 @@
+export { default as Bell } from './Bell';
 export { default as Bot } from './Bot';
 export { default as ChevronLeft } from './ChevronLeft';
+export { default as CircleUser } from './CircleUser';
 export { default as CircleX } from './CircleX ';
 export { default as EllipsisVertical } from './EllipsisVertical';
 export { default as Eye } from './Eye';
@@ -14,6 +16,7 @@ export { default as Search } from './Search';
 export { default as ShoppingCart } from './ShoppingCart';
 export { default as SlidersVertical } from './SlidersVertical';
 export { default as Star } from './Star';
+export { default as Store } from './Store';
 export { default as Sun } from './Sun';
 export { default as Wrench } from './Wrench';
 export { default as X } from './X';

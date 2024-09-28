@@ -32,7 +32,7 @@ export default function AuthNavigator() {
           headerBackVisible: false,
           headerLeft: () => (
             <Pressable onPress={() => navigation.goBack()}>
-              <ChevronLeft className='text-primary' size={24} />
+              <ChevronLeft className='text-primary' size={30} />
             </Pressable>
           ),
         })}
@@ -46,7 +46,7 @@ export default function AuthNavigator() {
           headerBackVisible: false,
           headerLeft: () => (
             <Pressable onPress={() => navigation.goBack()}>
-              <ChevronLeft className='text-primary' size={24} />
+              <ChevronLeft className='text-primary' size={30} />
             </Pressable>
           ),
         })}
@@ -60,7 +60,7 @@ export default function AuthNavigator() {
           headerBackVisible: false,
           headerLeft: () => (
             <Pressable onPress={() => navigation.goBack()}>
-              <ChevronLeft className='text-primary' size={24} />
+              <ChevronLeft className='text-primary' size={30} />
             </Pressable>
           ),
         })}
@@ -74,7 +74,7 @@ export default function AuthNavigator() {
           headerBackVisible: false,
           headerLeft: () => (
             <Pressable onPress={() => navigation.goBack()}>
-              <ChevronLeft className='text-primary' size={24} />
+              <ChevronLeft className='text-primary' size={30} />
             </Pressable>
           ),
         })}

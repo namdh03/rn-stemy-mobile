@@ -1,81 +1,74 @@
-import React from 'react';
-import { FlatList, View } from 'react-native';
+import React, { useLayoutEffect } from 'react';
+import { FlatList, Keyboard, Pressable, Text as RNText, View } from 'react-native';
+import { useShallow } from 'zustand/react/shallow';
 
+import { useQuery } from '@tanstack/react-query';
+
+import LoadingOverlay from '~components/customs/LoadingOverlay';
+import { Button } from '~components/ui/button';
 import { Separator } from '~components/ui/separator';
+import { Text } from '~components/ui/text';
+import { GET_CART_QUERY_KEY } from '~constants/cart-query-key';
+import execute from '~graphql/execute';
+import { useRefreshByUser } from '~hooks';
+import { GetCartQuery } from '~services/cart.services';
+import { useStore } from '~store';
 
 import CartItem from './components/CartItem';
 
 const CartScreen = () => {
-  const data = [
-    {
-      id: '1',
-      quantity: 2,
-      product: {
-        name: 'Wireless Headphones',
-        price: 59.99,
-        images: [
-          {
-            url: 'https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-1/449398803_2093052561080477_2300978068388066873_n.jpg?stp=dst-jpg_s200x200&_nc_cat=108&ccb=1-7&_nc_sid=0ecb9b&_nc_eui2=AeFaztWFMtjQ0vXL4EiPeGuOwvgrnrYy5wTC-CuetjLnBG8Lav48hpnFw7cir5h7_JFP5j4YoKBvlsTGi2Lx75Iv&_nc_ohc=hropB7U5nBUQ7kNvgEXsGFA&_nc_ht=scontent.fsgn2-7.fna&oh=00_AYBGmH7U_55PbisqMx78koomWZ7-4X99jnxNS1I8BFwoDA&oe=66FC273A',
-          },
-          {
-            url: 'https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-1/449398803_2093052561080477_2300978068388066873_n.jpg?stp=dst-jpg_s200x200&_nc_cat=108&ccb=1-7&_nc_sid=0ecb9b&_nc_eui2=AeFaztWFMtjQ0vXL4EiPeGuOwvgrnrYy5wTC-CuetjLnBG8Lav48hpnFw7cir5h7_JFP5j4YoKBvlsTGi2Lx75Iv&_nc_ohc=hropB7U5nBUQ7kNvgEXsGFA&_nc_ht=scontent.fsgn2-7.fna&oh=00_AYBGmH7U_55PbisqMx78koomWZ7-4X99jnxNS1I8BFwoDA&oe=66FC273A',
-          },
-        ],
-      },
-    },
-    {
-      id: '2',
-      quantity: 1,
-      product: {
-        name: 'Smartphone',
-        price: 499.99,
-        images: [
-          {
-            url: 'https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-1/449398803_2093052561080477_2300978068388066873_n.jpg?stp=dst-jpg_s200x200&_nc_cat=108&ccb=1-7&_nc_sid=0ecb9b&_nc_eui2=AeFaztWFMtjQ0vXL4EiPeGuOwvgrnrYy5wTC-CuetjLnBG8Lav48hpnFw7cir5h7_JFP5j4YoKBvlsTGi2Lx75Iv&_nc_ohc=hropB7U5nBUQ7kNvgEXsGFA&_nc_ht=scontent.fsgn2-7.fna&oh=00_AYBGmH7U_55PbisqMx78koomWZ7-4X99jnxNS1I8BFwoDA&oe=66FC273A',
-          },
-        ],
-      },
-    },
-    {
-      id: '3',
-      quantity: 3,
-      product: {
-        name: 'Laptop',
-        price: 899.99,
-        images: [
-          {
-            url: 'https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-1/449398803_2093052561080477_2300978068388066873_n.jpg?stp=dst-jpg_s200x200&_nc_cat=108&ccb=1-7&_nc_sid=0ecb9b&_nc_eui2=AeFaztWFMtjQ0vXL4EiPeGuOwvgrnrYy5wTC-CuetjLnBG8Lav48hpnFw7cir5h7_JFP5j4YoKBvlsTGi2Lx75Iv&_nc_ohc=hropB7U5nBUQ7kNvgEXsGFA&_nc_ht=scontent.fsgn2-7.fna&oh=00_AYBGmH7U_55PbisqMx78koomWZ7-4X99jnxNS1I8BFwoDA&oe=66FC273A',
-          },
-          {
-            url: 'https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-1/449398803_2093052561080477_2300978068388066873_n.jpg?stp=dst-jpg_s200x200&_nc_cat=108&ccb=1-7&_nc_sid=0ecb9b&_nc_eui2=AeFaztWFMtjQ0vXL4EiPeGuOwvgrnrYy5wTC-CuetjLnBG8Lav48hpnFw7cir5h7_JFP5j4YoKBvlsTGi2Lx75Iv&_nc_ohc=hropB7U5nBUQ7kNvgEXsGFA&_nc_ht=scontent.fsgn2-7.fna&oh=00_AYBGmH7U_55PbisqMx78koomWZ7-4X99jnxNS1I8BFwoDA&oe=66FC273A',
-          },
-        ],
-      },
-    },
-    {
-      id: '4',
-      quantity: 4,
-      product: {
-        name: 'Bluetooth Speaker',
-        price: 29.99,
-        images: [
-          {
-            url: 'https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-1/449398803_2093052561080477_2300978068388066873_n.jpg?stp=dst-jpg_s200x200&_nc_cat=108&ccb=1-7&_nc_sid=0ecb9b&_nc_eui2=AeFaztWFMtjQ0vXL4EiPeGuOwvgrnrYy5wTC-CuetjLnBG8Lav48hpnFw7cir5h7_JFP5j4YoKBvlsTGi2Lx75Iv&_nc_ohc=hropB7U5nBUQ7kNvgEXsGFA&_nc_ht=scontent.fsgn2-7.fna&oh=00_AYBGmH7U_55PbisqMx78koomWZ7-4X99jnxNS1I8BFwoDA&oe=66FC273A',
-          },
-        ],
-      },
-    },
-  ];
+  const { total, cart, setCart } = useStore(
+    useShallow((state) => ({
+      total: state.total,
+      cart: state.cart,
+      setCart: state.setCart,
+    })),
+  );
+  const { data, refetch, isFetching } = useQuery({
+    queryKey: [GET_CART_QUERY_KEY],
+    queryFn: () => execute(GetCartQuery),
+    select: (data) => data.data.carts,
+  });
+  useRefreshByUser(refetch);
+
+  useLayoutEffect(() => {
+    if (data) setCart(data);
+
+    return () => {
+      setCart([]);
+    };
+  }, [data]);
+
+  const handleCheckout = () => {
+    console.log('CHECKOUT');
+  };
+
+  if (isFetching) {
+    return <LoadingOverlay loop />;
+  }
 
   return (
-    <View style={{ padding: 24 }}>
+    <Pressable className='flex-1 pl-[24px] py-[24px]' onPress={Keyboard.dismiss}>
       <FlatList
-        data={data}
+        data={cart}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <CartItem item={item} />}
-        ItemSeparatorComponent={() => <Separator className='my-[12px]' />}
+        ItemSeparatorComponent={() => <Separator className='my-[14px]' />}
+        className='flex-1'
+        contentContainerStyle={{ paddingBottom: 140 }}
       />
-    </View>
+
+      <View className='absolute left-0 right-0 bottom-0 px-[24px] pt-[12px] pb-[24px] bg-card'>
+        <View className='flex-row items-center justify-between px-[12px] py-[8px]'>
+          <Text className='font-inter-regular text-muted-foreground text-[16px] leading-[20px]'>Total</Text>
+          <Text className='font-inter-extraBold text-foreground text-[16px]'>{total.toLocaleString()} ₫</Text>
+        </View>
+
+        <Button size='lg' className='mt-[16px]' onPress={handleCheckout}>
+          <RNText className='font-inter-medium text-background text-[16px] leading-[20px]'>Checkout</RNText>
+        </Button>
+      </View>
+    </Pressable>
   );
 };
 

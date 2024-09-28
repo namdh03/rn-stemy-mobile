@@ -37,6 +37,7 @@ const LoginWithGoogle = () => {
         // sign in was cancelled by user
       }
     } catch (error) {
+      console.log(JSON.stringify(error));
       if (isErrorWithCode(error)) {
         switch (error.code) {
           case statusCodes.IN_PROGRESS:
