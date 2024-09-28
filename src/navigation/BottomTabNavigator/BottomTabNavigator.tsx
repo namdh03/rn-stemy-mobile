@@ -7,7 +7,7 @@ import { ChevronLeft, CircleUser, Store } from '~components/icons';
 import House from '~components/icons/House';
 import MeScreen from '~screens/MeScreen';
 import StoresScreen from '~screens/StoresScreen';
-import { BottomTabParamList, StoresScreenNavigationProps } from '~types/navigation';
+import { BottomTabParamList, StoresScreenNavigationProps } from '~types/navigation.type';
 
 import HomeStack from './stack/HomeStackScreen';
 

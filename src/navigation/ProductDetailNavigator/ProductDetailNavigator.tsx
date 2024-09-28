@@ -13,7 +13,7 @@ import {
   ProductDetailScreenNavigationProps,
   ProductDetailStackParamList,
   ProductFeedbackScreenNavigationProps,
-} from '~types/navigation';
+} from '~types/navigation.type';
 
 const ProductDetailStack = createNativeStackNavigator<ProductDetailStackParamList>();
 

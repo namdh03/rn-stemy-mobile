@@ -16,7 +16,7 @@ import Wrench from '~components/icons/Wrench';
 import { Button } from '~components/ui/button';
 import { Text } from '~components/ui/text';
 import { useStore } from '~store';
-import { HomeScreenScreenNavigationProps } from '~types/navigation';
+import { HomeScreenScreenNavigationProps } from '~types/navigation.type';
 import { removeAccessToken } from '~utils/token-storage';
 
 const HomeScreen = ({ navigation }: HomeScreenScreenNavigationProps) => {

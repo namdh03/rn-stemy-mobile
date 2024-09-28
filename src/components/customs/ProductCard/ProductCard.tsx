@@ -7,7 +7,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { EllipsisVertical, Star } from '~components/icons';
 import { Text } from '~components/ui/text';
 import constants from '~constants';
-import { MainStackParamList, ProductDetailStackParamList } from '~types/navigation';
+import { MainStackParamList, ProductDetailStackParamList } from '~types/navigation.type';
 
 import Pressable from '../Pressable';
 

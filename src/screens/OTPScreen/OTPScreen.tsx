@@ -10,7 +10,7 @@ import { Form, FormField, FormMessage } from '~components/deprecated-ui/form';
 import { Button } from '~components/ui/button';
 import execute from '~graphql/execute';
 import { GetTokenResetPasswordMutation, SendResetPasswordOTPMutation } from '~services/user.serivces';
-import { OTPScreenNavigationProps } from '~types/navigation';
+import { OTPScreenNavigationProps } from '~types/navigation.type';
 import isErrors from '~utils/responseChecker';
 import showDialogError from '~utils/showDialogError';
 

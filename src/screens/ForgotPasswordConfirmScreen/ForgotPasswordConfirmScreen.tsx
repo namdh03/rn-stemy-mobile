@@ -4,7 +4,7 @@ import { Image, ScrollView, Text } from 'react-native';
 import images from '~assets/images';
 import { Mail } from '~components/icons';
 import { Button } from '~components/ui/button';
-import { ForgotPasswordConfirmScreenNavigationProps } from '~types/navigation';
+import { ForgotPasswordConfirmScreenNavigationProps } from '~types/navigation.type';
 
 const ForgotPasswordConfirmScreen = ({ route, navigation }: ForgotPasswordConfirmScreenNavigationProps) => {
   return (

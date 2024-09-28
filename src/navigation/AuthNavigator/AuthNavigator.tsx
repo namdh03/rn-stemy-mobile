@@ -14,7 +14,7 @@ import {
   ForgotPasswordScreenNavigationProps,
   OTPScreenNavigationProps,
   ResetPasswordScreenNavigationProps,
-} from '~types/navigation';
+} from '~types/navigation.type';
 
 const AuthStack = createNativeStackNavigator<AuthStackParamList>();
 
