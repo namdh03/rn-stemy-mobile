@@ -97,7 +97,7 @@ export type ResetPasswordScreenNavigationProps = CompositeScreenProps<
   NativeStackScreenProps<RootStackParamList>
 >;
 
-export type HomeScreenScreenNavigationProps = CompositeScreenProps<
+export type HomeScreenNavigationProps = CompositeScreenProps<
   NativeStackScreenProps<HomeStackParamList, 'HomeScreen'>,
   CompositeScreenProps<NativeStackScreenProps<BottomTabParamList>, NativeStackScreenProps<MainStackParamList>>
 >;
