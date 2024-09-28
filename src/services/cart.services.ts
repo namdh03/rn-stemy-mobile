@@ -14,6 +14,7 @@ export const GetCartQuery = graphql(`
       id
       hasLab
       product {
+        id
         name
         price
         images {

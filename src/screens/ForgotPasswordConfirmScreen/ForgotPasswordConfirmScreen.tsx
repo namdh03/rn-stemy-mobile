@@ -9,7 +9,7 @@ import { ForgotPasswordConfirmScreenNavigationProps } from '~types/navigation.ty
 const ForgotPasswordConfirmScreen = ({ route, navigation }: ForgotPasswordConfirmScreenNavigationProps) => {
   return (
     <ScrollView
-      contentContainerClassName='items-center p-[24px] py-[38px] mx-auto w-full max-w-xl'
+      contentContainerClassName='items-center px-[24px] py-[38px] mx-auto w-full max-w-xl'
       showsVerticalScrollIndicator={false}
       automaticallyAdjustContentInsets={false}
     >

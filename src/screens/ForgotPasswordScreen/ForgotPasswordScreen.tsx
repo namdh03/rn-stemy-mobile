@@ -37,21 +37,21 @@ const ForgotPasswordScreen = ({ navigation }: ForgotPasswordScreenNavigationProp
       },
       onError: (errors) => {
         if (isErrors(errors)) {
-          const error = errors.find((error) => error.path.includes('forgotPassword'));
+          const error = errors.find((error) => error.path.includes('sendResetPasswordOTP'));
 
           if (error?.message) {
             form.setError('email', { message: error.message });
           }
+        } else {
+          showDialogError({ textBody: errors.message });
         }
-
-        showDialogError({ textBody: errors.message });
       },
     });
   };
 
   return (
     <ScrollView
-      contentContainerClassName='items-center p-[24px] py-[38px] mx-auto w-full max-w-xl'
+      contentContainerClassName='items-center px-[24px] py-[38px] mx-auto w-full max-w-xl'
       showsVerticalScrollIndicator={false}
       automaticallyAdjustContentInsets={false}
     >

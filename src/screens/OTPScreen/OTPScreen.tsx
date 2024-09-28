@@ -68,16 +68,16 @@ const OTPScreen = ({ route, navigation }: OTPScreenNavigationProps) => {
           if (error?.message) {
             form.setError('OTPCode', { message: error.message });
           }
+        } else {
+          showDialogError({ textBody: errors.message });
         }
-
-        showDialogError({ textBody: errors.message });
       },
     });
   };
 
   return (
     <ScrollView
-      contentContainerClassName='flex-1 items-center p-[24px] py-[38px] mx-auto w-full max-w-xl'
+      contentContainerClassName='flex-1 items-center px-[24px] py-[38px] mx-auto w-full max-w-xl'
       showsVerticalScrollIndicator={false}
       automaticallyAdjustContentInsets={false}
     >

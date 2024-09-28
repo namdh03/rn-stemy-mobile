@@ -35,7 +35,7 @@ const ProductFeedbackScreen = () => {
           </Text>
         </View>
 
-        <Separator orientation='vertical' className='ml-[18px] mr-[10px]' />
+        <Separator orientation='vertical' className='ml-[18px] mr-[10px] bg-muted' />
 
         <View className='flex-1 gap-[9px]'>
           {calculateStarRatings(feedbacks)
