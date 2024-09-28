@@ -67,10 +67,11 @@ scalar File
 type Mutation {
   addToCart(hasLab: Boolean!, productId: Float!, quantity: Float!): Cart!
   checkoutOrder(input: CheckoutOrderInput!): Boolean!
-  createOrder(address: String!, cartIds: Int!, paymentProvider: PaymentProvider!, phone: String!): String!
+  createOrder(address: String!, cartIds: [Int!]!, paymentProvider: PaymentProvider!, phone: String!): String!
   createProduct(images: [File!]!, input: ProductInput!, lab: File!): Product!
   createTicket(categoryId: Float!, comment: String!, orderId: Float!, title: String!): Ticket!
   deleteCarts(cartId: [Int!]!): String!
+  deleteProduct(id: Float!): Product!
   getTokenResetPassword(OTPCode: String!, email: String!): String!
   login(email: String!, password: String!): AccessTokenResponse!
   loginWithGoogle(code: String!): AccessTokenResponse!
@@ -110,7 +111,7 @@ type Product {
   feedbacks: [Feedback!]!
   id: ID!
   images: [ProductImage!]!
-  lab: ProductLab!
+  lab: ProductLab
   name: String!
   price: Int!
   rating: Int!
@@ -138,6 +139,7 @@ type ProductImage {
 input ProductInput {
   categoryIds: [Int!]!
   description: String!
+  labPrice: Int!
   name: String!
   price: Int!
 }
@@ -212,6 +214,7 @@ enum TicketStatus {
 }
 
 type User {
+  address: String
   createdAt: DateTimeISO!
   email: String!
   fullName: String!

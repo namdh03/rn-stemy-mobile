@@ -77,6 +77,7 @@ export type Mutation = {
   createProduct: Product;
   createTicket: Ticket;
   deleteCarts: Scalars['String']['output'];
+  deleteProduct: Product;
   getTokenResetPassword: Scalars['String']['output'];
   login: AccessTokenResponse;
   loginWithGoogle: AccessTokenResponse;
@@ -99,7 +100,7 @@ export type MutationCheckoutOrderArgs = {
 
 export type MutationCreateOrderArgs = {
   address: Scalars['String']['input'];
-  cartIds: Scalars['Int']['input'];
+  cartIds: Array<Scalars['Int']['input']>;
   paymentProvider: PaymentProvider;
   phone: Scalars['String']['input'];
 };
@@ -119,6 +120,10 @@ export type MutationCreateTicketArgs = {
 
 export type MutationDeleteCartsArgs = {
   cartId: Array<Scalars['Int']['input']>;
+};
+
+export type MutationDeleteProductArgs = {
+  id: Scalars['Float']['input'];
 };
 
 export type MutationGetTokenResetPasswordArgs = {
@@ -192,7 +197,7 @@ export type Product = {
   feedbacks: Array<Feedback>;
   id: Scalars['ID']['output'];
   images: Array<ProductImage>;
-  lab: ProductLab;
+  lab?: Maybe<ProductLab>;
   name: Scalars['String']['output'];
   price: Scalars['Int']['output'];
   rating: Scalars['Int']['output'];
@@ -222,6 +227,7 @@ export type ProductImage = {
 export type ProductInput = {
   categoryIds: Array<Scalars['Int']['input']>;
   description: Scalars['String']['input'];
+  labPrice: Scalars['Int']['input'];
   name: Scalars['String']['input'];
   price: Scalars['Int']['input'];
 };
@@ -312,6 +318,7 @@ export enum TicketStatus {
 
 export type User = {
   __typename?: 'User';
+  address?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['DateTimeISO']['output'];
   email: Scalars['String']['output'];
   fullName: Scalars['String']['output'];
@@ -354,10 +361,11 @@ export type GetCartQuery = {
     quantity: number;
     product: {
       __typename?: 'Product';
+      id: string;
       name: string;
       price: number;
       images: Array<{ __typename?: 'ProductImage'; url: string }>;
-      lab: { __typename?: 'ProductLab'; price: number };
+      lab?: { __typename?: 'ProductLab'; price: number } | null;
     };
   }>;
 };
@@ -399,7 +407,7 @@ export type GetProductQuery = {
       rating: number;
       user: { __typename?: 'User'; fullName: string };
     }>;
-    lab: { __typename?: 'ProductLab'; price: number };
+    lab?: { __typename?: 'ProductLab'; price: number } | null;
   };
   products: {
     __typename?: 'ProductsWithPaginationResponse';
@@ -480,6 +488,7 @@ export type MeQuery = {
     role: Role;
     status: UserStatus;
     updatedAt?: any | null;
+    address?: string | null;
   };
 };
 
@@ -514,6 +523,7 @@ export const GetCartDocument = new TypedDocumentString(`
     id
     hasLab
     product {
+      id
       name
       price
       images {
@@ -631,6 +641,7 @@ export const MeDocument = new TypedDocumentString(`
     role
     status
     updatedAt
+    address
   }
 }
     `) as unknown as TypedDocumentString<MeQuery, MeQueryVariables>;

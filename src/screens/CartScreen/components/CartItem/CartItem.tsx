@@ -4,19 +4,23 @@ import { Swipeable } from 'react-native-gesture-handler';
 import { Image } from 'expo-image';
 import { useShallow } from 'zustand/react/shallow';
 
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useMutation } from '@tanstack/react-query';
 
 import InputPositiveNumber from '~components/customs/InputPositiveNumber';
 import Pressable from '~components/customs/Pressable';
-import { Minus, Plus } from '~components/icons';
+import { Info, Minus, Plus } from '~components/icons';
 import { Checkbox } from '~components/ui/checkbox';
 import { Text } from '~components/ui/text';
+import { Tooltip, TooltipContent, TooltipTrigger } from '~components/ui/tooltip';
 import constants from '~constants';
 import execute from '~graphql/execute';
 import { GetCartQuery } from '~graphql/graphql';
 import { useDebounce } from '~hooks';
 import { DeleteCartsMutation, UpdateCartMutation } from '~services/cart.services';
 import { useStore } from '~store';
+import { MainStackParamList } from '~types/navigation.type';
 import isErrors from '~utils/responseChecker';
 import showDialogError from '~utils/showDialogError';
 
@@ -27,6 +31,7 @@ interface CartItemProps {
 const MAX_QUANTITY_CART = 99;
 
 const CartItem = memo(({ item }: CartItemProps) => {
+  const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
   const { selectedCart, setSelectedCart, updateCartItemQuantity, removeCartItem } = useStore(
     useShallow((state) => ({
       selectedCart: state.selectedCart,
@@ -52,6 +57,7 @@ const CartItem = memo(({ item }: CartItemProps) => {
         { cartId: Number(item.id), quantity: quantityDebounce },
         {
           onError: (errors) => {
+            updateCartItemQuantity(item.id, quantityRef.current);
             if (isErrors(errors)) {
               const error = errors.find((error) => error.path.includes('updateCart'));
               if (error?.message) {
@@ -104,6 +110,15 @@ const CartItem = memo(({ item }: CartItemProps) => {
     }
   };
 
+  const handleNavigationToProductDetail = () => {
+    navigation.navigate('ProductDetailStack', {
+      screen: 'ProductDetailScreen',
+      params: {
+        id: item.product.id,
+      },
+    });
+  };
+
   // Render right swipe action (Delete button)
   const renderRightActions = (
     progressAnimatedValue: Animated.AnimatedInterpolation<number>,
@@ -136,21 +151,31 @@ const CartItem = memo(({ item }: CartItemProps) => {
             onCheckedChange={handleSelectedChange}
             className='mr-[12px]'
           />
-          <Image
-            source={item.product.images[0]?.url}
-            placeholder={{ blurhash: constants.EXPO_IMAGE.BLUR_HASH }}
-            style={{ width: 110, height: 110, alignSelf: 'center', borderRadius: 4 }}
-            contentFit='cover'
-          />
+          <Pressable onPress={handleNavigationToProductDetail}>
+            <Image
+              source={item.product.images[0]?.url}
+              placeholder={{ blurhash: constants.EXPO_IMAGE.BLUR_HASH }}
+              style={{ width: 90, height: 90, alignSelf: 'center', borderRadius: 4 }}
+              contentFit='cover'
+            />
+          </Pressable>
           <View className='flex-1 items-start gap-[10px] ml-[14px]'>
             <Text numberOfLines={1} className='font-inter-bold text-foreground text-[14px]'>
               {item.product.name}
             </Text>
 
             {item.hasLab ? (
-              <View className='px-[8px] py-[2px] rounded-md bg-green-50 border border-green-500'>
-                <Text className='font-inter-medium text-green-600 text-[12px]'>Lab included</Text>
-              </View>
+              <Tooltip delayDuration={150}>
+                <TooltipTrigger className='active:opacity-50'>
+                  <View className='flex-row items-center gap-[4px] px-[8px] py-[2px] rounded-md bg-green-50 border border-green-500'>
+                    <Text className='font-inter-medium text-green-600 text-[12px]'>Lab included</Text>
+                    <Info size={14} strokeWidth={2.5} className='w-4 h-4 text-green-600' />
+                  </View>
+                </TooltipTrigger>
+                <TooltipContent className='py-2 px-4 shadow'>
+                  <Text className='font-inter-regular text-[16px]'>Only 1 unit with lab included</Text>
+                </TooltipContent>
+              </Tooltip>
             ) : (
               <View className='px-[8px] py-[2px] rounded-md bg-red-50 border border-red-500'>
                 <Text className='font-inter-medium text-red-600 text-[12px]'>No Lab</Text>
@@ -172,12 +197,14 @@ const CartItem = memo(({ item }: CartItemProps) => {
                   onChange={handleQuantityChange}
                 />
                 <Pressable
-                  className={`p-[7px] rounded-full bg-[#16a34a1a] ${item.quantity >= MAX_QUANTITY_CART && 'bg-muted'}`}
+                  className={`p-[7px] rounded-full bg-[#16a34a1a] ${(item.quantity >= MAX_QUANTITY_CART || item.hasLab) && 'bg-muted'}`}
                   onPress={handleIncreaseQuantity}
-                  disabled={item.quantity >= MAX_QUANTITY_CART}
+                  disabled={item.quantity >= MAX_QUANTITY_CART || item.hasLab}
                 >
                   <Plus
-                    className={item.quantity >= MAX_QUANTITY_CART ? 'text-muted-foreground' : 'text-primary'}
+                    className={
+                      item.quantity >= MAX_QUANTITY_CART || item.hasLab ? 'text-muted-foreground' : 'text-primary'
+                    }
                     size={16}
                   />
                 </Pressable>

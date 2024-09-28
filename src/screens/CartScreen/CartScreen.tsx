@@ -13,14 +13,16 @@ import execute from '~graphql/execute';
 import { useRefreshByUser } from '~hooks';
 import { GetCartQuery } from '~services/cart.services';
 import { useStore } from '~store';
+import { CartScreenNavigationProps } from '~types/navigation.type';
 
 import CartItem from './components/CartItem';
 
-const CartScreen = () => {
-  const { total, cart, setCart } = useStore(
+const CartScreen = ({ navigation }: CartScreenNavigationProps) => {
+  const { total, cart, selectedCart, setCart } = useStore(
     useShallow((state) => ({
       total: state.total,
       cart: state.cart,
+      selectedCart: state.selectedCart,
       setCart: state.setCart,
     })),
   );
@@ -40,7 +42,7 @@ const CartScreen = () => {
   }, [data]);
 
   const handleCheckout = () => {
-    console.log('CHECKOUT');
+    navigation.navigate('CheckoutScreen');
   };
 
   if (isFetching) {
@@ -53,7 +55,7 @@ const CartScreen = () => {
         data={cart}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <CartItem item={item} />}
-        ItemSeparatorComponent={() => <Separator className='my-[14px]' />}
+        ItemSeparatorComponent={() => <Separator className='bg-muted my-[14px]' />}
         className='flex-1'
         contentContainerStyle={{ paddingBottom: 140 }}
       />
@@ -64,7 +66,12 @@ const CartScreen = () => {
           <Text className='font-inter-extraBold text-foreground text-[16px]'>{total.toLocaleString()} ₫</Text>
         </View>
 
-        <Button size='lg' className='mt-[16px]' onPress={handleCheckout}>
+        <Button
+          size='lg'
+          className='mt-[16px]'
+          onPress={handleCheckout}
+          disabled={!Object.values(selectedCart || {}).length}
+        >
           <RNText className='font-inter-medium text-background text-[16px] leading-[20px]'>Checkout</RNText>
         </Button>
       </View>

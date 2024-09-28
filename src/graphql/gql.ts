@@ -14,7 +14,7 @@ import * as types from './graphql';
 const documents = {
   '\n  mutation AddToCart($hasLab: Boolean!, $productId: Float!, $quantity: Float!) {\n    addToCart(hasLab: $hasLab, productId: $productId, quantity: $quantity) {\n      id\n    }\n  }\n':
     types.AddToCartDocument,
-  '\n  query GetCart {\n    carts {\n      id\n      hasLab\n      product {\n        name\n        price\n        images {\n          url\n        }\n        lab {\n          price\n        }\n      }\n      quantity\n    }\n  }\n':
+  '\n  query GetCart {\n    carts {\n      id\n      hasLab\n      product {\n        id\n        name\n        price\n        images {\n          url\n        }\n        lab {\n          price\n        }\n      }\n      quantity\n    }\n  }\n':
     types.GetCartDocument,
   '\n  mutation DeleteCarts($cartId: [Int!]!) {\n    deleteCarts(cartId: $cartId)\n  }\n': types.DeleteCartsDocument,
   '\n  mutation UpdateCart($cartId: Float!, $quantity: Float!) {\n    updateCart(cartId: $cartId, quantity: $quantity) {\n      id\n    }\n  }\n':
@@ -33,7 +33,7 @@ const documents = {
     types.ResetPasswordDocument,
   '\n  mutation LoginWithGoogle($code: String!) {\n    loginWithGoogle(code: $code) {\n      access_token\n    }\n  }\n':
     types.LoginWithGoogleDocument,
-  '\n  query Me {\n    me {\n      createdAt\n      email\n      fullName\n      id\n      phone\n      role\n      status\n      updatedAt\n    }\n  }\n':
+  '\n  query Me {\n    me {\n      createdAt\n      email\n      fullName\n      id\n      phone\n      role\n      status\n      updatedAt\n      address\n    }\n  }\n':
     types.MeDocument,
 };
 
@@ -47,7 +47,7 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query GetCart {\n    carts {\n      id\n      hasLab\n      product {\n        name\n        price\n        images {\n          url\n        }\n        lab {\n          price\n        }\n      }\n      quantity\n    }\n  }\n',
+  source: '\n  query GetCart {\n    carts {\n      id\n      hasLab\n      product {\n        id\n        name\n        price\n        images {\n          url\n        }\n        lab {\n          price\n        }\n      }\n      quantity\n    }\n  }\n',
 ): typeof import('./graphql').GetCartDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
@@ -107,7 +107,7 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query Me {\n    me {\n      createdAt\n      email\n      fullName\n      id\n      phone\n      role\n      status\n      updatedAt\n    }\n  }\n',
+  source: '\n  query Me {\n    me {\n      createdAt\n      email\n      fullName\n      id\n      phone\n      role\n      status\n      updatedAt\n      address\n    }\n  }\n',
 ): typeof import('./graphql').MeDocument;
 
 export function graphql(source: string) {

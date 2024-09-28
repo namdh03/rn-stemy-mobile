@@ -90,7 +90,7 @@ const ProductDetailScreen = ({ route }: ProductDetailScreenNavigationProps) => {
 
             {data?.product.categories && <CategoryList categories={data.product.categories || []} />}
 
-            <Separator className='mt-[30px] mb-[20px]' />
+            <Separator className='mt-[30px] mb-[20px] bg-muted' />
 
             <View className='gap-[15px]'>
               <Text className='font-inter-bold text-foreground text-[16px] leading-[24px] tracking-[0.2px]'>
@@ -117,7 +117,7 @@ const ProductDetailScreen = ({ route }: ProductDetailScreenNavigationProps) => {
               </Text>
             </View>
 
-            <Separator className='mt-[40px] mb-[30px]' />
+            <Separator className='mt-[40px] mb-[30px] bg-muted' />
 
             <Feedbacks />
           </View>
@@ -141,7 +141,7 @@ const ProductDetailScreen = ({ route }: ProductDetailScreenNavigationProps) => {
       <AddCartBottomSheet
         ref={bottomSheetRef}
         defaultPrice={data?.product.price || 0}
-        labPrice={data?.product.lab.price || 0}
+        labPrice={data?.product.lab?.price || 0}
         onFocus={handleExpanseFullBottomSheet}
         onClose={handleCloseAddToCart}
       />

@@ -53,6 +53,7 @@ export const GetMeQuery = graphql(`
       role
       status
       updatedAt
+      address
     }
   }
 `);

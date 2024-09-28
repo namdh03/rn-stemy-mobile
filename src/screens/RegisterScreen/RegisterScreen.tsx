@@ -48,9 +48,9 @@ const RegisterScreen = ({ navigation }: RegisterScreenNavigationProps) => {
           if (error?.message) {
             form.setError('email', { message: error.message });
           }
+        } else {
+          showDialogError({ textBody: errors.message });
         }
-
-        showDialogError({ textBody: errors.message });
       },
     });
   };

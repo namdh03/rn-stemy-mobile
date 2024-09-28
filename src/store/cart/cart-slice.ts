@@ -20,7 +20,7 @@ export const createCartSlice: StateCreator<CartSlice, [['zustand/immer', never]]
         if (newCartItem.hasLab) {
           newCartItem.product = {
             ...newCartItem.product,
-            price: newCartItem.product.price + newCartItem.product.lab.price,
+            price: newCartItem.product.price + (newCartItem.product.lab?.price || 0),
           };
         }
 

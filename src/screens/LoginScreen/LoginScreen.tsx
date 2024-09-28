@@ -47,9 +47,9 @@ const LoginScreen = ({ navigation }: LoginScreenNavigationProps) => {
             form.setError('email', { message: error.message });
             form.setError('password', { message: error.message });
           }
+        } else {
+          showDialogError({ textBody: errors.message });
         }
-
-        showDialogError({ textBody: errors.message });
       },
     });
   };

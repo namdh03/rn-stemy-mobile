@@ -11,12 +11,12 @@ const initialState: AuthState = {
 
 export const createAuthSlice: StateCreator<AuthSlice, [['zustand/immer', never]], [], AuthSlice> = (set) => ({
   ...initialState,
-  initialize: (isAuthenticated: boolean, user?: MeQuery) =>
+  initialize: (isAuthenticated: boolean, user?: MeQuery['me']) =>
     set((state) => {
       state.isAuthenticated = isAuthenticated;
       state.user = user;
     }),
-  authenticate: (user: MeQuery) =>
+  authenticate: (user: MeQuery['me']) =>
     set((state) => {
       state.isAuthenticated = true;
       state.user = user;

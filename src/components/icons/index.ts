@@ -1,6 +1,8 @@
 export { default as Bell } from './Bell';
 export { default as Bot } from './Bot';
 export { default as ChevronLeft } from './ChevronLeft';
+export { default as ChevronRight } from './ChevronRight';
+export { default as CircleDollarSign } from './CircleDollarSign';
 export { default as CircleUser } from './CircleUser';
 export { default as CircleX } from './CircleX ';
 export { default as EllipsisVertical } from './EllipsisVertical';
@@ -9,6 +11,7 @@ export { default as EyeOff } from './EyeOff';
 export { default as Info } from './Info';
 export { default as Laptop } from './Laptop';
 export { default as Mail } from './Mail';
+export { default as MapPin } from './MapPin';
 export { default as Minus } from './Minus';
 export { default as MoonStar } from './MoonStar';
 export { default as Plus } from './Plus';
