@@ -5,6 +5,10 @@ const resetPassword = require('~assets/images/reset-password.png');
 const carousel1 = require('~assets/images/carousel1.png');
 const bannerA = require('~assets/images/bannerA.png');
 const bannerB = require('~assets/images/bannerB.png');
+const robot1 = require('~assets/images/robot1.png');
+const robot2 = require('~assets/images/robot2.png');
+const robot3 = require('~assets/images/robot3.png');
+const robot4 = require('~assets/images/robot4.png');
 
 const images = {
   forgotPassword,
@@ -13,6 +17,10 @@ const images = {
   carousel1,
   bannerA,
   bannerB,
+  robot1,
+  robot2,
+  robot3,
+  robot4,
 };
 
 export default images;
