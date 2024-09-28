@@ -1,4 +1,4 @@
-import { FlatList, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { execute } from 'graphql';
 
 import { useQuery } from '@tanstack/react-query';
@@ -13,7 +13,7 @@ import { Bot, CircleX, Laptop, SlidersVertical, Wrench } from '~components/icons
 import { Text } from '~components/ui/text';
 import { GET_PRODUCT_QUERY_KEY } from '~constants/product-query-key';
 import { GetProductQuery } from '~services/product.services';
-import { HomeScreenNavigationProps } from '~types/navigation';
+import { HomeScreenNavigationProps } from '~types/navigation.type';
 // import { removeAccessToken } from '~utils/token-storage';
 
 const HomeScreen = ({ navigation, route }: HomeScreenNavigationProps) => {
@@ -22,20 +22,7 @@ const HomeScreen = ({ navigation, route }: HomeScreenNavigationProps) => {
     queryFn: () => execute(GetProductQuery, { id: Number(route.params.id) }),
     select: (data) => data.data,
   });
-  // const unAuthenticate = useStore(useShallow((state) => state.unAuthenticate));
 
-  // const goToProductDetail = () => {
-  //   navigation.navigate('ProductDetailStack', {
-  //     screen: 'ProductDetailScreen',
-  //     params: { id: '1' },
-  //   });
-  // };
-
-  // const logout = async () => {
-  //   unAuthenticate();
-  //   removeAccessToken();
-  //   await GoogleSignin.signOut();
-  // };
 
   const handlePress = () => {
     navigation.navigate('BottomTabStack', {
