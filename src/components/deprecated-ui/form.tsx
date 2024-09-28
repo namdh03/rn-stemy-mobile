@@ -15,6 +15,7 @@ import { cn } from '~lib/utils';
 
 import { Input } from './input';
 import { Label } from './label';
+import { Textarea } from './textarea';
 
 const Form = FormProvider;
 
@@ -208,4 +209,52 @@ const FormInput = React.forwardRef<React.ElementRef<typeof Input>, FormItemProps
 
 FormInput.displayName = 'FormInput';
 
-export { Form, FormField, FormInput, FormMessage };
+const FormTextarea = React.forwardRef<React.ElementRef<typeof Textarea>, FormItemProps<typeof Textarea, string>>(
+  ({ label, description, onChange, ...props }, ref) => {
+    const textareaRef = React.useRef<React.ComponentRef<typeof Textarea>>(null);
+    const { error, formItemNativeID, formDescriptionNativeID, formMessageNativeID } = useFormField();
+
+    React.useImperativeHandle(ref, () => {
+      if (!textareaRef.current) {
+        return {} as React.ComponentRef<typeof Textarea>;
+      }
+      return textareaRef.current;
+    }, [textareaRef.current]);
+
+    function handleOnLabelPress() {
+      if (!textareaRef.current) {
+        return;
+      }
+      if (textareaRef.current.isFocused()) {
+        textareaRef.current?.blur();
+      } else {
+        textareaRef.current?.focus();
+      }
+    }
+
+    return (
+      <FormItem>
+        {!!label && (
+          <FormLabel nativeID={formItemNativeID} onPress={handleOnLabelPress}>
+            {label}
+          </FormLabel>
+        )}
+
+        <Textarea
+          ref={textareaRef}
+          aria-labelledby={formItemNativeID}
+          aria-describedby={!error ? `${formDescriptionNativeID}` : `${formDescriptionNativeID} ${formMessageNativeID}`}
+          aria-invalid={!!error}
+          onChangeText={onChange}
+          {...props}
+        />
+        {!!description && <FormDescription>{description}</FormDescription>}
+        <FormMessage />
+      </FormItem>
+    );
+  },
+);
+
+FormTextarea.displayName = 'FormTextarea';
+
+export { Form, FormField, FormInput, FormMessage, FormTextarea };

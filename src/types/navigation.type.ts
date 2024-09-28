@@ -58,6 +58,7 @@ export type MainStackParamList = {
   ProductDetailStack: NavigatorScreenParams<ProductDetailStackParamList>;
   CartScreen: undefined;
   CheckoutScreen: undefined;
+  PhoneAndAddressScreen: undefined;
 };
 
 // Root Stack
@@ -123,5 +124,10 @@ export type CartScreenNavigationProps = CompositeScreenProps<
 
 export type CheckoutScreenNavigationProps = CompositeScreenProps<
   NativeStackScreenProps<MainStackParamList, 'CheckoutScreen'>,
+  NativeStackScreenProps<RootStackParamList>
+>;
+
+export type PhoneAndAddressScreenNavigationProps = CompositeScreenProps<
+  NativeStackScreenProps<MainStackParamList, 'PhoneAndAddressScreen'>,
   NativeStackScreenProps<RootStackParamList>
 >;

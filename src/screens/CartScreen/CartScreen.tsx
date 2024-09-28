@@ -18,12 +18,13 @@ import { CartScreenNavigationProps } from '~types/navigation.type';
 import CartItem from './components/CartItem';
 
 const CartScreen = ({ navigation }: CartScreenNavigationProps) => {
-  const { total, cart, selectedCart, setCart } = useStore(
+  const { total, cart, selectedCart, setCart, setCheckoutData } = useStore(
     useShallow((state) => ({
       total: state.total,
       cart: state.cart,
       selectedCart: state.selectedCart,
       setCart: state.setCart,
+      setCheckoutData: state.setCheckoutData,
     })),
   );
   const { data, refetch, isFetching } = useQuery({
@@ -43,6 +44,7 @@ const CartScreen = ({ navigation }: CartScreenNavigationProps) => {
 
   const handleCheckout = () => {
     navigation.navigate('CheckoutScreen');
+    setCheckoutData({ cartIds: Object.keys(selectedCart || {}).map(Number) });
   };
 
   if (isFetching) {
@@ -55,15 +57,15 @@ const CartScreen = ({ navigation }: CartScreenNavigationProps) => {
         data={cart}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <CartItem item={item} />}
-        ItemSeparatorComponent={() => <Separator className='bg-muted my-[14px]' />}
+        ItemSeparatorComponent={() => <Separator className='bg-muted my-[12px]' />}
         className='flex-1'
         contentContainerStyle={{ paddingBottom: 140 }}
       />
 
       <View className='absolute left-0 right-0 bottom-0 px-[24px] pt-[12px] pb-[24px] bg-card'>
         <View className='flex-row items-center justify-between px-[12px] py-[8px]'>
-          <Text className='font-inter-regular text-muted-foreground text-[16px] leading-[20px]'>Total</Text>
-          <Text className='font-inter-extraBold text-foreground text-[16px]'>{total.toLocaleString()} ₫</Text>
+          <Text className='font-inter-regular text-muted-foreground text-[14px] leading-[20px]'>Total</Text>
+          <Text className='font-inter-extraBold text-foreground text-[14px]'>{total.toLocaleString()} ₫</Text>
         </View>
 
         <Button
