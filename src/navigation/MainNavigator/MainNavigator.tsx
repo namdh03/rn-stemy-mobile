@@ -6,7 +6,13 @@ import BottomTabNavigator from '~navigation/BottomTabNavigator';
 import ProductDetailNavigator from '~navigation/ProductDetailNavigator';
 import CartScreen from '~screens/CartScreen';
 import CheckoutScreen from '~screens/CheckoutScreen';
-import { CartScreenNavigationProps, CheckoutScreenNavigationProps, MainStackParamList } from '~types/navigation.type';
+import PhoneAndAddressScreen from '~screens/PhoneAndAddressScreen';
+import {
+  CartScreenNavigationProps,
+  CheckoutScreenNavigationProps,
+  MainStackParamList,
+  PhoneAndAddressScreenNavigationProps,
+} from '~types/navigation.type';
 
 const MainStack = createNativeStackNavigator<MainStackParamList>();
 
@@ -36,6 +42,23 @@ const MainNavigator = () => (
       component={CheckoutScreen}
       options={({ navigation }: CheckoutScreenNavigationProps) => ({
         title: 'Checkout',
+        headerTitleAlign: 'center',
+        headerTitleStyle: {
+          fontFamily: 'Inter_18pt-ExtraBold',
+          fontSize: 18,
+        },
+        headerLeft: () => (
+          <Pressable onPress={() => navigation.goBack()}>
+            <ChevronLeft className='text-primary' size={30} />
+          </Pressable>
+        ),
+      })}
+    />
+    <MainStack.Screen
+      name='PhoneAndAddressScreen'
+      component={PhoneAndAddressScreen}
+      options={({ navigation }: PhoneAndAddressScreenNavigationProps) => ({
+        title: '',
         headerTitleAlign: 'center',
         headerTitleStyle: {
           fontFamily: 'Inter_18pt-ExtraBold',

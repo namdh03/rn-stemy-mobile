@@ -23,7 +23,6 @@ const HomeScreen = ({ navigation, route }: HomeScreenNavigationProps) => {
     select: (data) => data.data,
   });
 
-
   const handlePress = () => {
     navigation.navigate('BottomTabStack', {
       screen: 'StoresScreen',

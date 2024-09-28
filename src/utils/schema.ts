@@ -18,3 +18,12 @@ export const emailSchema = z.string().email({
 export const passwordSchema = z.string().min(8, {
   message: constants.MESSAGES.AUTH_MESSAGES.PASSWORD_VALIDATE,
 });
+
+export const addressSchema = z
+  .string()
+  .min(1, {
+    message: constants.MESSAGES.AUTH_MESSAGES.ADDRESS_MIN_VALIDATE,
+  })
+  .max(255, {
+    message: constants.MESSAGES.AUTH_MESSAGES.ADDRESS_MAX_VALIDATE,
+  });

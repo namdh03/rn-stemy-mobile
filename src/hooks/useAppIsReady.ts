@@ -29,7 +29,12 @@ export default function useAppIsReady() {
     enabled: !!accessToken,
     select: (data) => data.data,
   });
-  const authenticate = useStore(useShallow((state) => state.authenticate));
+  const { authenticate, setCheckoutData } = useStore(
+    useShallow((state) => ({
+      authenticate: state.authenticate,
+      setCheckoutData: state.setCheckoutData,
+    })),
+  );
 
   useEffect(() => {
     (async () => {
@@ -67,7 +72,10 @@ export default function useAppIsReady() {
       // Load user
       if (accessToken) {
         const { data } = await refetch();
-        if (data) authenticate(data.me);
+        if (data) {
+          authenticate(data.me);
+          setCheckoutData({ address: data.me.address, phone: data.me.phone });
+        }
       }
     })().finally(() => {
       setAppIsReady(true);
@@ -78,6 +86,7 @@ export default function useAppIsReady() {
   useEffect(() => {
     if (accessToken && data) {
       authenticate(data.me);
+      setCheckoutData({ address: data.me.address, phone: data.me.phone });
     }
   }, [accessToken, data]);
 

@@ -4,6 +4,7 @@ export const SYSTEM_MESSAGES = {
   SUCCESS_TITLE: 'Success',
   ERROR_TITLE: 'Error',
   SOMETHING_WENT_WRONG: 'Something went wrong!',
+  MISSING_INFORMATION: 'Missing Information',
 };
 
 export const AUTH_MESSAGES = {
@@ -13,6 +14,8 @@ export const AUTH_MESSAGES = {
   PASSWORD_VALIDATE: 'Password must be at least 8 characters.',
   CONFIRM_PASSWORD_VALIDATE: 'Passwords do not match. Please try again.',
   OTP_CODE_VALIDATE: 'Please enter a valid OTP code.',
+  ADDRESS_MIN_VALIDATE: 'Address must be at least 1 character long.',
+  ADDRESS_MAX_VALIDATE: 'Address must not exceed 255 characters.',
 };
 
 export const CART_MESSAGES = {

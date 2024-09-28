@@ -3,25 +3,36 @@ import { FlatList, Text as RNText, View } from 'react-native';
 import { useShallow } from 'zustand/react/shallow';
 
 import BottomSheet from '@gorhom/bottom-sheet';
+import { useMutation } from '@tanstack/react-query';
 
 import { CircleDollarSign } from '~components/icons';
 import { Button } from '~components/ui/button';
 import { Separator } from '~components/ui/separator';
 import { Text } from '~components/ui/text';
+import constants from '~constants';
+import execute from '~graphql/execute';
+import { CreateOrderMutation } from '~services/checkout.services';
 import { useStore } from '~store';
+import { CheckoutDataStrict } from '~store/checkout/checkout.type';
+import { CheckoutScreenNavigationProps } from '~types/navigation.type';
+import showDialogError from '~utils/showDialogError';
 
 import CheckoutItem from './components/CheckoutItem';
 import CheckoutUserInfo from './components/CheckoutUserInfo';
 import PaymentMethodBottomSheet from './components/PaymentMethodBottomSheet';
 
-const CheckoutScreen = () => {
-  const { total, selectedCart } = useStore(
+const CheckoutScreen = ({ navigation }: CheckoutScreenNavigationProps) => {
+  const { total, selectedCart, checkoutData } = useStore(
     useShallow((state) => ({
       total: state.total,
       selectedCart: state.selectedCart,
+      checkoutData: state.checkoutData,
     })),
   );
   const bottomSheetRef = useRef<BottomSheet>(null);
+  const { mutate } = useMutation({
+    mutationFn: (data: CheckoutDataStrict) => execute(CreateOrderMutation, data),
+  });
 
   const handleCloseChoosePayment = () => {
     bottomSheetRef.current?.close();
@@ -29,6 +40,32 @@ const CheckoutScreen = () => {
 
   const handleOpenPaymentMethod = () => {
     bottomSheetRef.current?.expand();
+  };
+
+  const handlePlaceOrder = () => {
+    if (!checkoutData.phone || !checkoutData.address) {
+      return showDialogError({
+        title: constants.MESSAGES.SYSTEM_MESSAGES.MISSING_INFORMATION,
+        textBody: 'Please provide your phone number and address to complete your order.',
+        button: 'Go to Update',
+        onHide: () => navigation.navigate('PhoneAndAddressScreen'),
+      });
+    }
+
+    if (checkoutData) {
+      mutate(
+        {
+          phone: checkoutData.phone,
+          address: checkoutData.address,
+          cartIds: checkoutData.cartIds,
+          paymentProvider: checkoutData.paymentProvider,
+        },
+        {
+          onSuccess: () => {},
+          onError: () => {},
+        },
+      );
+    }
   };
 
   return (
@@ -59,13 +96,13 @@ const CheckoutScreen = () => {
 
         <View className='px-[24px] pb-[24px] mt-[14px]'>
           <View className='flex-row items-center justify-between px-[12px] py-[8px]'>
-            <Text className='font-inter-regular text-muted-foreground text-[16px] leading-[20px]'>
+            <Text className='font-inter-regular text-muted-foreground text-[14px] leading-[20px]'>
               Order payment ({Object.values(selectedCart || {}).length} item)
             </Text>
-            <Text className='font-inter-extraBold text-foreground text-[16px]'>{total.toLocaleString()} ₫</Text>
+            <Text className='font-inter-extraBold text-foreground text-[14px]'>{total.toLocaleString()} ₫</Text>
           </View>
 
-          <Button size='lg' className='mt-[16px]'>
+          <Button size='lg' className='mt-[16px]' onPress={handlePlaceOrder}>
             <RNText className='font-inter-medium text-background text-[16px] leading-[20px]'>Place Order</RNText>
           </Button>
         </View>
