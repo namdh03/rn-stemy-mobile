@@ -1,39 +1,41 @@
-import { ScrollView, View } from 'react-native';
-import { useShallow } from 'zustand/react/shallow';
+import { FlatList, ScrollView, View } from 'react-native';
+import { execute } from 'graphql';
 
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { useQuery } from '@tanstack/react-query';
 
 import images from '~assets/images';
 import Banner from '~components/customs/Banner';
 import Carousel from '~components/customs/Carousel';
 import Category from '~components/customs/Category';
-import ProductCard from '~components/customs/ProductCard';
-import Bot from '~components/icons/Bot';
-import CircleX from '~components/icons/CircleX';
-import Laptop from '~components/icons/Laptop';
-import SlidersVertical from '~components/icons/SlidersVertical';
-import Wrench from '~components/icons/Wrench';
-import { Button } from '~components/ui/button';
+import ProductList from '~components/customs/ProductList';
+import SearchName from '~components/customs/SearchName';
+import { Bot, CircleX, Laptop, SlidersVertical, Wrench } from '~components/icons';
 import { Text } from '~components/ui/text';
-import { useStore } from '~store';
+import { GET_PRODUCT_QUERY_KEY } from '~constants/product-query-key';
+import { GetProductQuery } from '~services/product.services';
 import { HomeScreenNavigationProps } from '~types/navigation';
-import { removeAccessToken } from '~utils/token-storage';
+// import { removeAccessToken } from '~utils/token-storage';
 
-const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
-  const unAuthenticate = useStore(useShallow((state) => state.unAuthenticate));
+const HomeScreen = ({ navigation, route }: HomeScreenNavigationProps) => {
+  const { data, isFetching } = useQuery({
+    queryKey: [GET_PRODUCT_QUERY_KEY],
+    queryFn: () => execute(GetProductQuery, { id: Number(route.params.id) }),
+    select: (data) => data.data,
+  });
+  // const unAuthenticate = useStore(useShallow((state) => state.unAuthenticate));
 
-  const goToProductDetail = () => {
-    navigation.navigate('ProductDetailStack', {
-      screen: 'ProductDetailScreen',
-      params: { id: '1' },
-    });
-  };
+  // const goToProductDetail = () => {
+  //   navigation.navigate('ProductDetailStack', {
+  //     screen: 'ProductDetailScreen',
+  //     params: { id: '1' },
+  //   });
+  // };
 
-  const logout = async () => {
-    unAuthenticate();
-    removeAccessToken();
-    await GoogleSignin.signOut();
-  };
+  // const logout = async () => {
+  //   unAuthenticate();
+  //   removeAccessToken();
+  //   await GoogleSignin.signOut();
+  // };
 
   const handlePress = () => {
     navigation.navigate('StoresScreen');
@@ -55,39 +57,34 @@ const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
   };
   return (
     <ScrollView className='px-[25px]'>
-      <Button onPress={logout}>
-        <Text>Logout</Text>
-      </Button>
-      <Button className='mt-[4px]' onPress={() => goToProductDetail()}>
-        <Text>Product Detail</Text>
-      </Button>
-
+      <SearchName />
       <Carousel />
-      <ProductCard
-        {...{
-          id: '1',
-          imageUrl:
-            'https://megatoys.vn/thumb_1000_1000_2/data/images/products/2022/06/10/cb70c3ee7716ec96598c129232ec4526_1654828014.jpg',
-          numOfReviews: 10,
-          price: 1500000,
-          rating: 4.3,
-          title: 'TMA-2 HD Wireless',
-        }}
-      />
+
+      <View className='mb-[50px]'>
+        <Text className='mt-[17px] font-inter-medium text-[16px] color-foreground leading-[25px] tracking-[0.061px]'>
+          Categories
+        </Text>
+        <View className='flex-row inline-flex items-center justify-between pt-[15px]'>
+          {renderCategory('Toy', 'Robot')}
+          {renderCategory('Toy', 'Programming')}
+          {renderCategory('Toy', 'Module')}
+          {renderCategory('Toy', 'Accessory')}
+        </View>
+      </View>
+
+      <ProductList title='Featured Product' data={data?.products.items || []} />
 
       <Banner imageUrl={images.bannerA} onPress={handlePress} />
 
-      <Text className='mt-[17px] font-inter-medium text-[16px] color-foreground leading-[25px] tracking-[0.061px]'>
-        Categories
-      </Text>
-      <View className='flex-row inline-flex items-center justify-between pt-[15px]'>
-        {renderCategory('Toy', 'Robot')}
-        {renderCategory('Toy', 'Programming')}
-        {renderCategory('Toy', 'Module')}
-        {renderCategory('Toy', 'Accessory')}
-      </View>
+      <ProductList title='Best Sellers' data={data?.products.items || []} />
 
       <Banner imageUrl={images.bannerB} onPress={handlePress} />
+
+      <ProductList title='New Arrivals' data={data?.products.items || []} />
+
+      <ProductList title='Top Rated Product' data={data?.products.items || []} />
+
+      <ProductList title='Special Offers' data={data?.products.items || []} />
     </ScrollView>
   );
 };
