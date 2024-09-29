@@ -14,6 +14,11 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean };
   Int: { input: number; output: number };
   Float: { input: number; output: number };
+  ID: { input: string; output: string };
+  String: { input: string; output: string };
+  Boolean: { input: boolean; output: boolean };
+  Int: { input: number; output: number };
+  Float: { input: number; output: number };
   /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.This scalar is serialized to a string in ISO 8601 format and parsed from a string in ISO 8601 format. */
   DateTimeISO: { input: any; output: any };
   /** File upload scalar type */
@@ -383,6 +388,15 @@ export type UpdateCartMutationVariables = Exact<{
 
 export type UpdateCartMutation = { __typename?: 'Mutation'; updateCart: { __typename?: 'Cart'; id: string } };
 
+export type CreateOrderMutationVariables = Exact<{
+  address: Scalars['String']['input'];
+  cartIds: Array<Scalars['Int']['input']> | Scalars['Int']['input'];
+  paymentProvider: PaymentProvider;
+  phone: Scalars['String']['input'];
+}>;
+
+export type CreateOrderMutation = { __typename?: 'Mutation'; createOrder: string };
+
 export type GetRatedQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetRatedQuery = {
@@ -633,6 +647,16 @@ export const UpdateCartDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<UpdateCartMutation, UpdateCartMutationVariables>;
+export const CreateOrderDocument = new TypedDocumentString(`
+    mutation CreateOrder($address: String!, $cartIds: [Int!]!, $paymentProvider: PaymentProvider!, $phone: String!) {
+  createOrder(
+    address: $address
+    cartIds: $cartIds
+    paymentProvider: $paymentProvider
+    phone: $phone
+  )
+}
+    `) as unknown as TypedDocumentString<CreateOrderMutation, CreateOrderMutationVariables>;
 export const GetRatedDocument = new TypedDocumentString(`
     query GetRated {
   featuredProduct: products(currentItem: 10, order: DESC, sort: "rating") {

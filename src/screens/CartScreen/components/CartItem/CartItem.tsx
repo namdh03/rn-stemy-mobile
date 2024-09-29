@@ -10,10 +10,9 @@ import { useMutation } from '@tanstack/react-query';
 
 import InputPositiveNumber from '~components/customs/InputPositiveNumber';
 import Pressable from '~components/customs/Pressable';
-import { Info, Minus, Plus } from '~components/icons';
+import { Minus, Plus } from '~components/icons';
 import { Checkbox } from '~components/ui/checkbox';
 import { Text } from '~components/ui/text';
-import { Tooltip, TooltipContent, TooltipTrigger } from '~components/ui/tooltip';
 import constants from '~constants';
 import execute from '~graphql/execute';
 import { GetCartQuery } from '~graphql/graphql';
@@ -133,10 +132,10 @@ const CartItem = memo(({ item }: CartItemProps) => {
     return (
       <Animated.View style={{ opacity }}>
         <Pressable
-          className='justify-center items-center bg-destructive w-[80px] h-full'
+          className='justify-center items-center bg-destructive w-[70px] h-full'
           onPress={() => handleDeleteCartItem(swipeable)}
         >
-          <Text className='font-inter-bold text-background text-pretty'>Delete</Text>
+          <Text className='font-inter-regular text-background text-pretty text-[14px]'>Delete</Text>
         </Pressable>
       </Animated.View>
     );
@@ -155,47 +154,47 @@ const CartItem = memo(({ item }: CartItemProps) => {
             <Image
               source={item.product.images[0]?.url}
               placeholder={{ blurhash: constants.EXPO_IMAGE.BLUR_HASH }}
-              style={{ width: 90, height: 90, alignSelf: 'center', borderRadius: 4 }}
+              style={{ width: 80, height: 80, alignSelf: 'center', borderRadius: 4 }}
               contentFit='cover'
             />
           </Pressable>
-          <View className='flex-1 items-start gap-[10px] ml-[14px]'>
-            <Text numberOfLines={1} className='font-inter-bold text-foreground text-[14px]'>
+          <View className='flex-1 items-start ml-[16px]'>
+            <Text numberOfLines={1} className='font-inter-bold text-foreground text-[12px]'>
               {item.product.name}
             </Text>
 
             {item.hasLab ? (
-              <Tooltip delayDuration={150}>
-                <TooltipTrigger className='active:opacity-50'>
-                  <View className='flex-row items-center gap-[4px] px-[8px] py-[2px] rounded-md bg-green-50 border border-green-500'>
-                    <Text className='font-inter-medium text-green-600 text-[12px]'>Lab included</Text>
-                    <Info size={14} strokeWidth={2.5} className='w-4 h-4 text-green-600' />
-                  </View>
-                </TooltipTrigger>
-                <TooltipContent className='py-2 px-4 shadow'>
-                  <Text className='font-inter-regular text-[16px]'>Only 1 unit with lab included</Text>
-                </TooltipContent>
-              </Tooltip>
+              <Text className='font-inter-medium text-[12px] text-muted-foreground leading-[16px] tracking-[0.12px]'>
+                Lab included
+              </Text>
             ) : (
-              <View className='px-[8px] py-[2px] rounded-md bg-red-50 border border-red-500'>
-                <Text className='font-inter-medium text-red-600 text-[12px]'>No Lab</Text>
-              </View>
+              <Text className='font-inter-medium text-[12px] text-muted-foreground leading-[16px] tracking-[0.12px]'>
+                No Lab
+              </Text>
             )}
 
-            <View className='flex-row items-center gap-[26px]'>
-              <View className='flex-row items-center gap-[2px]'>
+            <View className='flex-row items-center gap-[27px] mt-[14px]'>
+              <View className='flex-row items-center'>
                 <Pressable
                   className={`p-[7px] rounded-full bg-[#16a34a1a] ${item.quantity <= 1 && 'bg-muted'}`}
                   onPress={handleDecreaseQuantity}
                   disabled={item.quantity <= 1}
                 >
-                  <Minus className={item.quantity <= 1 ? 'text-muted-foreground' : 'text-primary'} size={16} />
+                  <Minus className={item.quantity <= 1 ? 'text-muted-foreground' : 'text-primary'} size={10} />
                 </Pressable>
-                <InputPositiveNumber
-                  className='font-inter-medium min-w-[30px] px-[4px] text-center text-foreground text-[14px] border-transparent'
-                  value={item.quantity}
-                  onChange={handleQuantityChange}
-                />
+
+                {item.hasLab ? (
+                  <Text className='font-inter-medium px-[12px] text-foreground text-[16px] leading-[20px]'>
+                    {item.quantity}
+                  </Text>
+                ) : (
+                  <InputPositiveNumber
+                    className='font-inter-medium min-w-[30px] px-[4px] py-[6px] border-transparent text-center text-foreground text-[14px] leading-[20px]'
+                    value={item.quantity}
+                    onChange={handleQuantityChange}
+                  />
+                )}
+
                 <Pressable
                   className={`p-[7px] rounded-full bg-[#16a34a1a] ${(item.quantity >= MAX_QUANTITY_CART || item.hasLab) && 'bg-muted'}`}
                   onPress={handleIncreaseQuantity}
@@ -205,12 +204,12 @@ const CartItem = memo(({ item }: CartItemProps) => {
                     className={
                       item.quantity >= MAX_QUANTITY_CART || item.hasLab ? 'text-muted-foreground' : 'text-primary'
                     }
-                    size={16}
+                    size={10}
                   />
                 </Pressable>
               </View>
 
-              <Text className='font-inter-extraBold text-left text-foreground text-[14px] break-words flex-shrink'>
+              <Text className='font-inter-extraBold text-left text-foreground text-[14px] break-words flex-shrink pr-[24px]'>
                 {(item.product.price * item.quantity).toLocaleString()} ₫
               </Text>
             </View>

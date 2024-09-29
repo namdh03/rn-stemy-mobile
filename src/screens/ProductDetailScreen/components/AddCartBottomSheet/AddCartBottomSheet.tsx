@@ -91,7 +91,7 @@ const AddCartBottomSheet = forwardRef<BottomSheet, AddCartBottomSheetProps>(
     return (
       <BottomSheet
         ref={ref}
-        snapPoints={['66%', '66%']}
+        snapPoints={['70%', '70%']}
         enablePanDownToClose
         index={-1}
         onClose={handleBottomSheetClose}
@@ -142,7 +142,7 @@ const AddCartBottomSheet = forwardRef<BottomSheet, AddCartBottomSheetProps>(
 
                 <View className='flex-row gap-[10px]'>
                   <Pressable
-                    className={`px-[18px] py-[6px] border border-transparent rounded-[10px] ${selectedOption === DEFAULT_SELECTED_OPTION ? 'bg-[#16a34a1a] text-background' : 'bg-transparent border-accent'}`}
+                    className={`px-[18px] py-[6px] rounded-[10px] ${selectedOption === DEFAULT_SELECTED_OPTION ? 'bg-[#16a34a1a] text-background' : 'bg-transparent border border-muted'}`}
                     onPress={() => handleOptionSelect(DEFAULT_SELECTED_OPTION)}
                   >
                     <Text
@@ -153,7 +153,7 @@ const AddCartBottomSheet = forwardRef<BottomSheet, AddCartBottomSheetProps>(
                   </Pressable>
 
                   <Pressable
-                    className={`px-[18px] py-[6px] border border-transparent rounded-[10px] ${selectedOption === 'no-lab' ? 'bg-[#16a34a1a] text-background' : 'bg-transparent border-accent'}`}
+                    className={`px-[18px] py-[6px] rounded-[10px] ${selectedOption === 'no-lab' ? 'bg-[#16a34a1a] text-background' : 'bg-transparent  border border-muted'}`}
                     onPress={() => handleOptionSelect('no-lab')}
                   >
                     <Text
@@ -163,13 +163,17 @@ const AddCartBottomSheet = forwardRef<BottomSheet, AddCartBottomSheetProps>(
                     </Text>
                   </Pressable>
                 </View>
+
+                <Text className='font-inter-regular text-[14px] text-muted-foreground tracking-[0.2px]'>
+                  You can only buy 1 lab per kit
+                </Text>
               </View>
 
               <Separator className='my-[20px] bg-muted' />
 
               <View className='gap-[10px]'>
-                <Text className='font-inter-regular text-muted-foreground text-[16px] tracking-[0.2px]'>Total</Text>
-                <Text className='font-inter-bold text-foreground text-[16px]'>
+                <Text className='font-inter-regular text-muted-foreground text-[14px] tracking-[0.2px]'>Total</Text>
+                <Text className='font-inter-bold text-foreground text-[14px]'>
                   {priceByQuantity.toLocaleString()} ₫
                 </Text>
               </View>
