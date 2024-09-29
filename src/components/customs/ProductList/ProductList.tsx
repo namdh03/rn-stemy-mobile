@@ -3,7 +3,6 @@ import { Dimensions, FlatList, View } from 'react-native';
 
 import { Text } from '~components/ui/text';
 import { GetProductQuery } from '~graphql/graphql';
-import { useColorScheme } from '~hooks';
 
 import Pressable from '../Pressable';
 import ProductCard from '../ProductCard';
@@ -18,7 +17,6 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const ITEM_WIDTH = SCREEN_WIDTH * 0.55;
 
 export default function ProductList({ title, data, onPress }: ProductListProps) {
-  const { isDarkColorScheme } = useColorScheme();
 
   const renderItem = ({ item }: { item: GetProductQuery['products']['items'][number] }) => {
     return (
@@ -36,9 +34,7 @@ export default function ProductList({ title, data, onPress }: ProductListProps) 
   };
 
   return (
-    <View
-      className={`px-[25px] py-[20px] rounded-t-[10px] ${isDarkColorScheme ? 'bg-secondary' : 'bg-destructive-foreground'}`}
-    >
+    <View className={'px-[25px] py-[20px] rounded-t-[10px] '}>
       <View className='flex-row items-center justify-between mb-[24px]'>
         <Text className='font-inter-medium text-foreground text-[17px] leading-[25px] tracking-[0.061px]'>{title}</Text>
         <Pressable onPress={onPress}>

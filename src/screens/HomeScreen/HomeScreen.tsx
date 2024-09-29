@@ -13,10 +13,12 @@ import { Bot, CircleX, Laptop, SlidersVertical, Wrench } from '~components/icons
 import { Text } from '~components/ui/text';
 import { GET_HOME_QUERY_KEY } from '~constants/home-query-key';
 import execute from '~graphql/execute';
+import { useColorScheme } from '~hooks';
 import { GetHomeQuery } from '~services/home.services';
 import { HomeScreenNavigationProps } from '~types/navigation.type';
 
 const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
+  const { isDarkColorScheme } = useColorScheme();
   const { data, isFetching } = useQuery({
     queryKey: [GET_HOME_QUERY_KEY],
     queryFn: () => execute(GetHomeQuery),
@@ -64,19 +66,21 @@ const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
           {renderCategory('Toy', 'Accessory')}
         </View>
       </View>
-      <ProductList title='Featured Product' data={data?.featuredProduct.items || []} />
+      <View className={`${isDarkColorScheme ? 'bg-secondary' : 'bg-destructive-foreground'}`}>
+        <ProductList title='Featured Product' data={data?.featuredProduct.items || []} />
 
-      <Banner imageUrl={images.bannerA} onPress={handlePress} />
+        <Banner imageUrl={images.bannerA} onPress={handlePress} />
 
-      <ProductList title='Best Sellers' data={data?.bestSellers.items || []} />
+        <ProductList title='Best Sellers' data={data?.bestSellers.items || []} />
 
-      <Banner imageUrl={images.bannerB} onPress={handlePress} />
+        <Banner imageUrl={images.bannerB} onPress={handlePress} />
 
-      <ProductList title='New Arrivals' data={data?.newArrivals.items || []} />
+        <ProductList title='New Arrivals' data={data?.newArrivals.items || []} />
 
-      <ProductList title='Top Rated Product' data={data?.topRatedProduct.items || []} />
+        <ProductList title='Top Rated Product' data={data?.topRatedProduct.items || []} />
 
-      <ProductList title='Special Offers' data={data?.specialOffers.items || []} />
+        <ProductList title='Special Offers' data={data?.specialOffers.items || []} />
+      </View>
     </ScrollView>
   );
 };
