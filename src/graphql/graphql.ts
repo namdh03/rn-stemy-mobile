@@ -397,6 +397,90 @@ export type CreateOrderMutationVariables = Exact<{
 
 export type CreateOrderMutation = { __typename?: 'Mutation'; createOrder: string };
 
+export type GetRatedQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetRatedQuery = {
+  __typename?: 'Query';
+  featuredProduct: {
+    __typename?: 'ProductsWithPaginationResponse';
+    items: Array<{
+      __typename?: 'Product';
+      id: string;
+      name: string;
+      price: number;
+      rating: number;
+      images: Array<{ __typename?: 'ProductImage'; url: string }>;
+      feedbacks: Array<{ __typename?: 'Feedback'; id: string }>;
+    }>;
+  };
+  topRatedProduct: {
+    __typename?: 'ProductsWithPaginationResponse';
+    items: Array<{
+      __typename?: 'Product';
+      id: string;
+      name: string;
+      price: number;
+      rating: number;
+      images: Array<{ __typename?: 'ProductImage'; url: string }>;
+      feedbacks: Array<{ __typename?: 'Feedback'; id: string }>;
+    }>;
+  };
+};
+
+export type GetSoldQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetSoldQuery = {
+  __typename?: 'Query';
+  bestSellers: {
+    __typename?: 'ProductsWithPaginationResponse';
+    items: Array<{
+      __typename?: 'Product';
+      id: string;
+      name: string;
+      price: number;
+      rating: number;
+      images: Array<{ __typename?: 'ProductImage'; url: string }>;
+      feedbacks: Array<{ __typename?: 'Feedback'; id: string }>;
+    }>;
+  };
+};
+
+export type GetCreatedAtQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetCreatedAtQuery = {
+  __typename?: 'Query';
+  newArrivals: {
+    __typename?: 'ProductsWithPaginationResponse';
+    items: Array<{
+      __typename?: 'Product';
+      id: string;
+      name: string;
+      price: number;
+      rating: number;
+      feedbacks: Array<{ __typename?: 'Feedback'; id: string }>;
+      images: Array<{ __typename?: 'ProductImage'; url: string }>;
+    }>;
+  };
+};
+
+export type GetPriceQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetPriceQuery = {
+  __typename?: 'Query';
+  specialOffers: {
+    __typename?: 'ProductsWithPaginationResponse';
+    items: Array<{
+      __typename?: 'Product';
+      id: string;
+      name: string;
+      price: number;
+      rating: number;
+      feedbacks: Array<{ __typename?: 'Feedback'; id: string }>;
+      images: Array<{ __typename?: 'ProductImage'; url: string }>;
+    }>;
+  };
+};
+
 export type GetProductQueryVariables = Exact<{
   id: Scalars['Float']['input'];
 }>;
@@ -573,6 +657,92 @@ export const CreateOrderDocument = new TypedDocumentString(`
   )
 }
     `) as unknown as TypedDocumentString<CreateOrderMutation, CreateOrderMutationVariables>;
+export const GetRatedDocument = new TypedDocumentString(`
+    query GetRated {
+  featuredProduct: products(currentItem: 10, order: DESC, sort: "rating") {
+    items {
+      id
+      images {
+        url
+      }
+      name
+      price
+      rating
+      feedbacks {
+        id
+      }
+    }
+  }
+  topRatedProduct: products(currentItem: 10, order: DESC, sort: "rating") {
+    items {
+      id
+      images {
+        url
+      }
+      name
+      price
+      rating
+      feedbacks {
+        id
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<GetRatedQuery, GetRatedQueryVariables>;
+export const GetSoldDocument = new TypedDocumentString(`
+    query GetSold {
+  bestSellers: products(currentItem: 10, order: DESC, sort: "sold") {
+    items {
+      id
+      images {
+        url
+      }
+      name
+      price
+      rating
+      feedbacks {
+        id
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<GetSoldQuery, GetSoldQueryVariables>;
+export const GetCreatedAtDocument = new TypedDocumentString(`
+    query GetCreatedAt {
+  newArrivals: products(currentItem: 10, order: DESC, sort: "createdAt") {
+    items {
+      id
+      feedbacks {
+        id
+      }
+      images {
+        url
+      }
+      name
+      price
+      rating
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<GetCreatedAtQuery, GetCreatedAtQueryVariables>;
+export const GetPriceDocument = new TypedDocumentString(`
+    query GetPrice {
+  specialOffers: products(order: ASC, sort: "price", currentItem: 10) {
+    items {
+      id
+      feedbacks {
+        id
+      }
+      images {
+        url
+      }
+      name
+      price
+      rating
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<GetPriceQuery, GetPriceQueryVariables>;
 export const GetProductDocument = new TypedDocumentString(`
     query GetProduct($id: Float!) {
   product(id: $id) {
