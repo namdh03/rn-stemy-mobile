@@ -71,10 +71,12 @@ const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
     }
   };
   return (
-    <ScrollView className='px-[25px]'>
-      <SearchName />
+    <ScrollView>
+      <View className='w-full px-[25px]'>
+        <SearchName />
+      </View>
       <Carousel />
-      <View className='mb-[50px]'>
+      <View className='mb-[50px] px-[25px]'>
         <Text className='mt-[17px] font-inter-medium text-[16px] color-foreground leading-[25px] tracking-[0.061px]'>
           Categories
         </Text>
