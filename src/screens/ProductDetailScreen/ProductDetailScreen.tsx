@@ -122,7 +122,9 @@ const ProductDetailScreen = ({ route }: ProductDetailScreenNavigationProps) => {
             <Feedbacks />
           </View>
 
-          <ProductList title='Featured Product' data={data?.products.items || []} />
+          <View className={`${isDarkColorScheme ? 'bg-secondary' : 'bg-destructive-foreground'}`}>
+            <ProductList title='Featured Product' data={data?.products.items || []} />
+          </View>
 
           <View
             className={`flex-row gap-[20px] px-[25px] pt-[12px] pb-[25px] ${isDarkColorScheme ? 'bg-secondary' : 'bg-destructive-foreground'}`}
