@@ -69,7 +69,7 @@ type Mutation {
   checkoutOrder(input: CheckoutOrderInput!): Boolean!
   createOrder(address: String!, cartIds: [Int!]!, paymentProvider: PaymentProvider!, phone: String!): String!
   createProduct(images: [File!]!, input: ProductInput!, lab: File!): Product!
-  createTicket(categoryId: Float!, comment: String!, orderId: Float!, title: String!): Ticket!
+  createTicket(categoryId: Float!, comment: String!, orderItemId: Float!, title: String!): Ticket!
   deleteCarts(cartId: [Int!]!): String!
   deleteProduct(id: Float!): Product!
   getTokenResetPassword(OTPCode: String!, email: String!): String!
@@ -77,14 +77,21 @@ type Mutation {
   loginWithGoogle(code: String!): AccessTokenResponse!
   register(email: String!, fullName: String!, password: String!, phone: String!): AccessTokenResponse!
   repayOrder(orderId: Float!): String!
+  replyTicket(comment: String!, ticketId: Float!): Ticket!
   resetPassword(password: String!, token: String!): String!
   sendResetPasswordOTP(email: String!): String!
   updateCart(cartId: Float!, quantity: Float!): Cart!
 }
 
 type Order {
+  address: String!
   createdAt: DateTimeISO!
   id: ID!
+  orderItems: [OrderItem!]!
+  payment: OrderPaymentEmbeddable!
+  phone: String!
+  status: OrderStatus!
+  totalPrice: Int!
   updatedAt: DateTimeISO
 }
 
@@ -98,6 +105,18 @@ type OrderItem {
   productPrice: Int!
   quantity: Int!
   updatedAt: DateTimeISO
+}
+
+type OrderPaymentEmbeddable {
+  id: String!
+  provider: PaymentProvider!
+}
+
+enum OrderStatus {
+  DELIVERED
+  DELIVERING
+  PAID
+  UNPAID
 }
 
 enum PaymentProvider {
@@ -169,6 +188,7 @@ type Query {
     order: SortOrder! = ASC
     sort: String! = "id"
   ): ProductsWithPaginationResponse!
+  searchOrder(search: String!): [Order!]!
   user(id: Int!): User
   users: [User!]!
 }
@@ -190,7 +210,7 @@ type Ticket {
   closedAt: DateTimeISO
   createdAt: DateTimeISO!
   id: ID!
-  order: Order!
+  orderItem: OrderItem!
   replier: User
   replierComment: String
   sender: User!

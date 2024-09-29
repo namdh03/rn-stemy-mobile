@@ -7,7 +7,7 @@ interface BannerProps {
 
 const Banner = ({ onPress, imageUrl }: BannerProps) => {
   return (
-    <TouchableOpacity onPress={onPress} className='pb-[20px] pt-[41px]'>
+    <TouchableOpacity onPress={onPress} className='pb-[20px] pt-[41px] px-[25px]'>
       <Image
         source={typeof imageUrl === 'string' ? { uri: imageUrl } : imageUrl}
         resizeMode='cover'

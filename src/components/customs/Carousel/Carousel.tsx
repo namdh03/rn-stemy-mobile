@@ -10,7 +10,7 @@ const Carousel = () => {
     { id: '4', imageUrl: images.robot4 },
   ];
   return (
-    <View>
+    <View className='px-[25px]'>
       <FlatList
         data={data}
         keyExtractor={(item) => item.id}

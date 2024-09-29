@@ -1,16 +1,55 @@
 import { ScrollView, View } from 'react-native';
 
+import { useQuery } from '@tanstack/react-query';
+
 import images from '~assets/images';
 import Banner from '~components/customs/Banner';
 import Carousel from '~components/customs/Carousel';
 import Category from '~components/customs/Category';
+import LoadingOverlay from '~components/customs/LoadingOverlay';
+import ProductList from '~components/customs/ProductList';
 import SearchName from '~components/customs/SearchName';
 import { Bot, CircleX, Laptop, SlidersVertical, Wrench } from '~components/icons';
 import { Text } from '~components/ui/text';
+import {
+  GET_CREATED_AT_QUERY_KEY,
+  GET_PRICE_QUERY_KEY,
+  GET_RATE_QUERY_KEY,
+  GET_SOLD_QUERY_KEY,
+} from '~constants/home-query-key';
+import execute from '~graphql/execute';
+import { GetCreatedAtQuery, GetPriceQuery, GetRateQuery, GetSoldQuery } from '~services/home.services';
 import { HomeScreenNavigationProps } from '~types/navigation.type';
-// import { removeAccessToken } from '~utils/token-storage';
 
 const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
+  const { data: dataRate, isFetching: isFetchingRate } = useQuery({
+    queryKey: [GET_RATE_QUERY_KEY],
+    queryFn: () => execute(GetRateQuery),
+    select: (data) => data.data,
+  });
+
+  const { data: dataSold, isFetching: isFetchingSold } = useQuery({
+    queryKey: [GET_SOLD_QUERY_KEY],
+    queryFn: () => execute(GetSoldQuery),
+    select: (data) => data.data,
+  });
+
+  const { data: dataCreatedAt, isFetching: isFetchingCreatedAt } = useQuery({
+    queryKey: [GET_CREATED_AT_QUERY_KEY],
+    queryFn: () => execute(GetCreatedAtQuery),
+    select: (data) => data.data,
+  });
+
+  const { data: dataPrice, isFetching: isFetchingPrice } = useQuery({
+    queryKey: [GET_PRICE_QUERY_KEY],
+    queryFn: () => execute(GetPriceQuery),
+    select: (data) => data.data,
+  });
+
+  if (isFetchingRate || isFetchingSold || isFetchingCreatedAt || isFetchingPrice) {
+    return <LoadingOverlay loop />;
+  }
+
   const handlePress = () => {
     navigation.navigate('BottomTabStack', {
       screen: 'StoresScreen',
@@ -32,11 +71,12 @@ const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
     }
   };
   return (
-    <ScrollView className='px-[25px]'>
-      <SearchName />
+    <ScrollView>
+      <View className='w-full px-[25px]'>
+        <SearchName />
+      </View>
       <Carousel />
-
-      <View className='mb-[50px]'>
+      <View className='mb-[50px] px-[25px]'>
         <Text className='mt-[17px] font-inter-medium text-[16px] color-foreground leading-[25px] tracking-[0.061px]'>
           Categories
         </Text>
@@ -47,10 +87,19 @@ const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
           {renderCategory('Toy', 'Accessory')}
         </View>
       </View>
+      <ProductList title='Featured Product' data={dataRate?.featuredProduct.items || []} />
 
       <Banner imageUrl={images.bannerA} onPress={handlePress} />
 
+      <ProductList title='Best Sellers' data={dataSold?.bestSellers.items || []} />
+
       <Banner imageUrl={images.bannerB} onPress={handlePress} />
+
+      <ProductList title='New Arrivals' data={dataCreatedAt?.newArrivals.items || []} />
+
+      <ProductList title='Top Rated Product' data={dataRate?.topRatedProduct.items || []} />
+
+      <ProductList title='Special Offers' data={dataPrice?.specialOffers.items || []} />
     </ScrollView>
   );
 };

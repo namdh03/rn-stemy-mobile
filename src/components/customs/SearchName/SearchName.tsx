@@ -12,7 +12,7 @@ const SearchName = () => {
   };
 
   return (
-    <View className='relative w-[325px] h-[50px] mt-[25px]'>
+    <View className='relative w-[335px] h-[50px] mt-[25px]'>
       <Input
         placeholder='Search Product Name'
         value={value}
