@@ -17,7 +17,10 @@ const OrderProgressScreen = ({ route, navigation }: OrderProgressScreenNavigatio
     if (route.params) {
       mutate(route.params, {
         onSuccess: () => {
-          return navigation.navigate('OrderSuccessScreen');
+          return navigation.replace('OrderSuccessScreen', { totalPrice: Number(route.params?.vnp_Amount) });
+        },
+        onError: () => {
+          return navigation.replace('OrderErrorScreen');
         },
       });
     }

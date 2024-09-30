@@ -16,6 +16,7 @@ import { CreateOrderMutation } from '~services/checkout.services';
 import { useStore } from '~store';
 import { CheckoutDataStrict } from '~store/checkout/checkout.type';
 import { CheckoutScreenNavigationProps } from '~types/navigation.type';
+import isErrors from '~utils/responseChecker';
 import showDialogError from '~utils/showDialogError';
 
 import CheckoutItem from './components/CheckoutItem';
@@ -68,7 +69,13 @@ const CheckoutScreen = ({ navigation }: CheckoutScreenNavigationProps) => {
             await WebBrowser.openBrowserAsync(data.data.createOrder);
           },
           onError: (errors) => {
-            console.log(JSON.stringify(errors));
+            if (isErrors(errors)) {
+              const error = errors.find((error) => error.path.includes('createOrder'));
+              if (error?.message) {
+                return showDialogError({ textBody: error.message });
+              }
+            }
+            showDialogError();
           },
         },
       );

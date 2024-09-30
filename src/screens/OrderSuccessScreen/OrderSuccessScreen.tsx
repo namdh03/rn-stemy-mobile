@@ -9,7 +9,6 @@ import constants from '~constants';
 import { OrderSuccessScreenNavigationProps } from '~types/navigation.type';
 
 const OrderSuccessScreen = ({ route, navigation }: OrderSuccessScreenNavigationProps) => {
-  console.log('HIHIHI', route);
   return (
     <ScrollView
       contentContainerClassName='flex-1 justify-center p-[24px] py-[50px] mx-auto w-full max-w-xl'
@@ -25,7 +24,7 @@ const OrderSuccessScreen = ({ route, navigation }: OrderSuccessScreenNavigationP
             contentFit='cover'
           />
           <Text className='font-inter-semiBold text-foreground text-[16px] leading-[18px] tracking-[-0.112px]'>
-            You paid 88.000đ
+            You paid {route.params.totalPrice.toLocaleString()} ₫
           </Text>
           <Text className='font-inter-regular text-muted-foreground text-[12px] leading-[14px]'>
             Keep track your order at <Text className='text-primary text-[12px]'>My Purchases</Text>
