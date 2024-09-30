@@ -1,5 +1,6 @@
 import { useRef } from 'react';
-import { FlatList, Text as RNText, View } from 'react-native';
+import { ActivityIndicator, FlatList, Text as RNText, View } from 'react-native';
+import * as WebBrowser from 'expo-web-browser';
 import { useShallow } from 'zustand/react/shallow';
 
 import BottomSheet from '@gorhom/bottom-sheet';
@@ -15,6 +16,7 @@ import { CreateOrderMutation } from '~services/checkout.services';
 import { useStore } from '~store';
 import { CheckoutDataStrict } from '~store/checkout/checkout.type';
 import { CheckoutScreenNavigationProps } from '~types/navigation.type';
+import isErrors from '~utils/responseChecker';
 import showDialogError from '~utils/showDialogError';
 
 import CheckoutItem from './components/CheckoutItem';
@@ -22,15 +24,16 @@ import CheckoutUserInfo from './components/CheckoutUserInfo';
 import PaymentMethodBottomSheet from './components/PaymentMethodBottomSheet';
 
 const CheckoutScreen = ({ navigation }: CheckoutScreenNavigationProps) => {
-  const { total, selectedCart, checkoutData } = useStore(
+  const { total, selectedCart, clearSelectedCart, checkoutData } = useStore(
     useShallow((state) => ({
       total: state.total,
       selectedCart: state.selectedCart,
+      clearSelectedCart: state.clearSelectedCart,
       checkoutData: state.checkoutData,
     })),
   );
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const { mutate } = useMutation({
+  const { mutate: createOrderMutate, isPending: isCreateOrderPending } = useMutation({
     mutationFn: (data: CheckoutDataStrict) => execute(CreateOrderMutation, data),
   });
 
@@ -53,16 +56,27 @@ const CheckoutScreen = ({ navigation }: CheckoutScreenNavigationProps) => {
     }
 
     if (checkoutData) {
-      mutate(
+      createOrderMutate(
         {
           phone: checkoutData.phone,
           address: checkoutData.address,
-          cartIds: checkoutData.cartIds,
+          cartIds: [...checkoutData.cartIds],
           paymentProvider: checkoutData.paymentProvider,
         },
         {
-          onSuccess: () => {},
-          onError: () => {},
+          onSuccess: async (data) => {
+            clearSelectedCart();
+            await WebBrowser.openBrowserAsync(data.data.createOrder);
+          },
+          onError: (errors) => {
+            if (isErrors(errors)) {
+              const error = errors.find((error) => error.path.includes('createOrder'));
+              if (error?.message) {
+                return showDialogError({ textBody: error.message });
+              }
+            }
+            showDialogError();
+          },
         },
       );
     }
@@ -102,8 +116,15 @@ const CheckoutScreen = ({ navigation }: CheckoutScreenNavigationProps) => {
             <Text className='font-inter-extraBold text-foreground text-[14px]'>{total.toLocaleString()} ₫</Text>
           </View>
 
-          <Button size='lg' className='mt-[16px]' onPress={handlePlaceOrder}>
-            <RNText className='font-inter-medium text-background text-[16px] leading-[20px]'>Place Order</RNText>
+          <Button disabled={isCreateOrderPending} size='lg' className='mt-[16px]' onPress={handlePlaceOrder}>
+            {isCreateOrderPending ? (
+              <View className='flex-row items-center justify-center gap-[6px]'>
+                <ActivityIndicator className='text-secondary' />
+                <RNText className='font-inter-medium text-background text-[16px] leading-[20px]'>Loading...</RNText>
+              </View>
+            ) : (
+              <RNText className='font-inter-medium text-background text-[16px] leading-[20px]'>Place Order</RNText>
+            )}
           </Button>
         </View>
       </View>

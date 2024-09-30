@@ -5,3 +5,9 @@ export const CreateOrderMutation = graphql(`
     createOrder(address: $address, cartIds: $cartIds, paymentProvider: $paymentProvider, phone: $phone)
   }
 `);
+
+export const CheckoutOrderMutation = graphql(`
+  mutation CheckoutOrder($input: CheckoutOrderInput!) {
+    checkoutOrder(input: $input)
+  }
+`);

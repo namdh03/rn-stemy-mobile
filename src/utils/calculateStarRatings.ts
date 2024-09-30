@@ -1,6 +1,6 @@
-import { ProductFeedbackType } from '~types/feedback.type';
+import { GetProductQuery } from '~graphql/graphql';
 
-const calculateStarRatings = (feedbacks: ProductFeedbackType[]) => {
+const calculateStarRatings = (feedbacks: GetProductQuery['product']['feedbacks']) => {
   const starCounts: { [key: string]: number } = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
   const totalFeedbacks = feedbacks.length;
 

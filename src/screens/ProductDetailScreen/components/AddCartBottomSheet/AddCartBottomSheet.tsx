@@ -178,7 +178,7 @@ const AddCartBottomSheet = forwardRef<BottomSheet, AddCartBottomSheetProps>(
                 </Text>
               </View>
 
-              <Button size='lg' className='mt-[22px]' onPress={handleAddToCart}>
+              <Button disabled={isPending} size='lg' className='mt-[22px]' onPress={handleAddToCart}>
                 {isPending ? (
                   <View className='flex-row items-center justify-center gap-[6px]'>
                     <ActivityIndicator className='text-secondary' />

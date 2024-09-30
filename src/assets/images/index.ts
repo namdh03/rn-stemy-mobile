@@ -10,6 +10,7 @@ const robot2 = require('~assets/images/robot2.png');
 const robot3 = require('~assets/images/robot3.png');
 const robot4 = require('~assets/images/robot4.png');
 const vnpay = require('~assets/images/vnpay.png');
+const orderSuccess = require('~assets/images/order-success.png');
 
 const images = {
   forgotPassword,
@@ -23,6 +24,7 @@ const images = {
   robot3,
   robot4,
   vnpay,
+  orderSuccess,
 };
 
 export default images;

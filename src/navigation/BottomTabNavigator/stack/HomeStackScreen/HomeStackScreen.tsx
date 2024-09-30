@@ -8,7 +8,7 @@ import Pressable from '~components/customs/Pressable';
 import { Bell, ShoppingCart } from '~components/icons';
 import { Text } from '~components/ui/text';
 import HomeScreen from '~screens/HomeScreen';
-import { HomeScreenScreenNavigationProps, HomeStackParamList } from '~types/navigation.type';
+import { HomeScreenNavigationProps, HomeStackParamList } from '~types/navigation.type';
 
 const Stack = createNativeStackNavigator<HomeStackParamList>();
 
@@ -18,7 +18,7 @@ const HomeStack = () => {
       <Stack.Screen
         name='HomeScreen'
         component={HomeScreen}
-        options={({ navigation }: HomeScreenScreenNavigationProps) => ({
+        options={({ navigation }: HomeScreenNavigationProps) => ({
           headerLeft: () => (
             <View className='flex-row gap-[16px] items-center'>
               <Logo className='w-[33px] h-[33px]' />
@@ -30,10 +30,10 @@ const HomeStack = () => {
           headerRight: () => (
             <View className='flex-row gap-[20px]'>
               <Pressable>
-                <Bell className='text-foreground' size={28} />
+                <Bell className='text-foreground' size={26} />
               </Pressable>
               <Pressable onPress={() => navigation.navigate('CartScreen')}>
-                <ShoppingCart className='text-foreground' size={28} />
+                <ShoppingCart className='text-foreground' size={26} />
               </Pressable>
             </View>
           ),

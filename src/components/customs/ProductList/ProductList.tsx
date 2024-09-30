@@ -17,7 +17,6 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const ITEM_WIDTH = SCREEN_WIDTH * 0.55;
 
 export default function ProductList({ title, data, onPress }: ProductListProps) {
-
   const renderItem = ({ item }: { item: GetProductQuery['products']['items'][number] }) => {
     return (
       <View style={{ width: ITEM_WIDTH, marginRight: 15 }}>

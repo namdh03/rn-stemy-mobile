@@ -36,7 +36,7 @@ const ProductDetailNavigator = () => (
         ),
         headerRight: () => (
           <Pressable onPress={() => navigation.navigate('CartScreen')}>
-            <ShoppingCart className='text-foreground' size={28} />
+            <ShoppingCart className='text-foreground' size={26} />
           </Pressable>
         ),
       })}
@@ -53,7 +53,7 @@ const ProductDetailNavigator = () => (
         },
         headerLeft: () => (
           <Pressable onPress={() => navigation.goBack()}>
-            <ChevronLeft className='text-foreground' size={28} />
+            <ChevronLeft className='text-foreground' size={30} />
           </Pressable>
         ),
         headerRight: () => (

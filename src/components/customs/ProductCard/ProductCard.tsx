@@ -4,7 +4,7 @@ import { Image } from 'expo-image';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { EllipsisVertical, Star } from '~components/icons';
+import { Star } from '~components/icons';
 import { Text } from '~components/ui/text';
 import constants from '~constants';
 import { MainStackParamList, ProductDetailStackParamList } from '~types/navigation.type';
@@ -60,7 +60,6 @@ const ProductCard = ({ id, imageUrl, title, price, rating, numOfReviews }: Produ
           <Text className='font-inter-regular text-[12px] tracking-[0.2px]'>{rating}</Text>
         </View>
         <Text className='font-inter-regular ml-[12px] text-[12px] tracking-[0.2px]'>{numOfReviews} Reviews</Text>
-        <EllipsisVertical size={20} className='ml-auto text-muted-foreground' />
       </View>
     </Pressable>
   );

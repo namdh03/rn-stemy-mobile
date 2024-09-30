@@ -20,7 +20,25 @@
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.namdh03.rnstemymobile"
+      "package": "com.namdh03.rnstemymobile",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "stemy"
+            },
+            {
+              "scheme": "com.namdh03.rnstemymobile"
+            },
+            {
+              "scheme": "exp+rn-stemy-mobile"
+            }
+          ],
+          "category": ["DEFAULT", "BROWSABLE"]
+        }
+      ]
     },
     "web": {
       "favicon": "./src/assets/favicon.png",

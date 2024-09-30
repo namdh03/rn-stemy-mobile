@@ -29,7 +29,7 @@ export default function FlexibleImage({ source, style, fallbackSource }: Flexibl
   if (isLoading) {
     return (
       <View style={[styles.container, style]}>
-        <ActivityIndicator size='large' color='#0000ff' />
+        <ActivityIndicator size='large' className='text-primary' />
       </View>
     );
   }
