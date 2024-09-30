@@ -11,19 +11,24 @@
  *  │
  *  └── Main Stack
  *      ├── Bottom Tab
- *      │   ├── Home Screen
+ *      │   ├── Home Stack
+ *      │   │   └── Home Screen
  *      │   ├── Stores Screen
  *      │   └── Me Screen
  *      ├── Product Detail Stack
  *      │   ├── Product Detail Screen
  *      │   └── Product Feedback Screen
  *      ├── Cart Screen
- *      └── Checkout Screen
+ *      ├── Checkout Screen
+ *      ├── Phone And Address Screen
+ *      └── Order Result Screen
  */
 
 // import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import type { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+
+import { CheckoutOrderInput } from '~graphql/graphql';
 
 // Auth Stack
 export type AuthStackParamList = {
@@ -59,6 +64,8 @@ export type MainStackParamList = {
   CartScreen: undefined;
   CheckoutScreen: undefined;
   PhoneAndAddressScreen: undefined;
+  OrderProgressScreen: CheckoutOrderInput | undefined;
+  OrderSuccessScreen: undefined;
 };
 
 // Root Stack
@@ -130,4 +137,14 @@ export type CheckoutScreenNavigationProps = CompositeScreenProps<
 export type PhoneAndAddressScreenNavigationProps = CompositeScreenProps<
   NativeStackScreenProps<MainStackParamList, 'PhoneAndAddressScreen'>,
   NativeStackScreenProps<RootStackParamList>
+>;
+
+export type OrderProgressScreenNavigationProps = CompositeScreenProps<
+  NativeStackScreenProps<MainStackParamList, 'OrderProgressScreen'>,
+  NativeStackScreenProps<RootStackParamList>
+>;
+
+export type OrderSuccessScreenNavigationProps = CompositeScreenProps<
+  NativeStackScreenProps<MainStackParamList, 'OrderSuccessScreen'>,
+  NativeStackScreenProps<BottomTabParamList>
 >;

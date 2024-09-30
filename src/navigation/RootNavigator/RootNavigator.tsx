@@ -47,6 +47,7 @@ const RootNavigator = () => {
             <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
             <SafeAreaView style={{ flex: 1 }}>
               <NavigationContainer
+                linking={configs.linking}
                 onReady={onLayoutRootView}
                 theme={isDarkColorScheme ? constants.THEME.DARK_THEME : constants.THEME.LIGHT_THEME}
               >

@@ -14,11 +14,6 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean };
   Int: { input: number; output: number };
   Float: { input: number; output: number };
-  ID: { input: string; output: string };
-  String: { input: string; output: string };
-  Boolean: { input: boolean; output: boolean };
-  Int: { input: number; output: number };
-  Float: { input: number; output: number };
   /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.This scalar is serialized to a string in ISO 8601 format and parsed from a string in ISO 8601 format. */
   DateTimeISO: { input: any; output: any };
   /** File upload scalar type */
@@ -88,6 +83,7 @@ export type Mutation = {
   loginWithGoogle: AccessTokenResponse;
   register: AccessTokenResponse;
   repayOrder: Scalars['String']['output'];
+  replyTicket: Ticket;
   resetPassword: Scalars['String']['output'];
   sendResetPasswordOTP: Scalars['String']['output'];
   updateCart: Cart;
@@ -119,7 +115,8 @@ export type MutationCreateProductArgs = {
 export type MutationCreateTicketArgs = {
   categoryId: Scalars['Float']['input'];
   comment: Scalars['String']['input'];
-  orderId: Scalars['Float']['input'];
+  images?: Array<Scalars['File']['input']>;
+  orderItemId: Scalars['Float']['input'];
   title: Scalars['String']['input'];
 };
 
@@ -156,6 +153,12 @@ export type MutationRepayOrderArgs = {
   orderId: Scalars['Float']['input'];
 };
 
+export type MutationReplyTicketArgs = {
+  comment: Scalars['String']['input'];
+  images?: Array<Scalars['File']['input']>;
+  ticketId: Scalars['Float']['input'];
+};
+
 export type MutationResetPasswordArgs = {
   password: Scalars['String']['input'];
   token: Scalars['String']['input'];
@@ -172,8 +175,14 @@ export type MutationUpdateCartArgs = {
 
 export type Order = {
   __typename?: 'Order';
+  address: Scalars['String']['output'];
   createdAt: Scalars['DateTimeISO']['output'];
   id: Scalars['ID']['output'];
+  orderItems: Array<OrderItem>;
+  payment: OrderPaymentEmbeddable;
+  phone: Scalars['String']['output'];
+  status: OrderStatus;
+  totalPrice: Scalars['Int']['output'];
   updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
 };
 
@@ -189,6 +198,19 @@ export type OrderItem = {
   quantity: Scalars['Int']['output'];
   updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
 };
+
+export type OrderPaymentEmbeddable = {
+  __typename?: 'OrderPaymentEmbeddable';
+  id: Scalars['String']['output'];
+  provider: PaymentProvider;
+};
+
+export enum OrderStatus {
+  Delivered = 'DELIVERED',
+  Delivering = 'DELIVERING',
+  Paid = 'PAID',
+  Unpaid = 'UNPAID',
+}
 
 export enum PaymentProvider {
   Vnpay = 'VNPAY',
@@ -260,6 +282,7 @@ export type Query = {
   product: Product;
   productCategories: Array<ProductCategory>;
   products: ProductsWithPaginationResponse;
+  searchOrder: Array<Order>;
   user?: Maybe<User>;
   users: Array<User>;
 };
@@ -273,6 +296,10 @@ export type QueryProductsArgs = {
   currentPage?: Scalars['Int']['input'];
   order?: SortOrder;
   sort?: Scalars['String']['input'];
+};
+
+export type QuerySearchOrderArgs = {
+  search: Scalars['String']['input'];
 };
 
 export type QueryUserArgs = {
@@ -297,7 +324,8 @@ export type Ticket = {
   closedAt?: Maybe<Scalars['DateTimeISO']['output']>;
   createdAt: Scalars['DateTimeISO']['output'];
   id: Scalars['ID']['output'];
-  order: Order;
+  images: Array<TicketImage>;
+  orderItem: OrderItem;
   replier?: Maybe<User>;
   replierComment?: Maybe<Scalars['String']['output']>;
   sender: User;
@@ -314,6 +342,16 @@ export type TicketCategory = {
   name: Scalars['String']['output'];
   tickets: Array<Ticket>;
   updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
+};
+
+export type TicketImage = {
+  __typename?: 'TicketImage';
+  createdAt: Scalars['DateTimeISO']['output'];
+  id: Scalars['ID']['output'];
+  owner: Role;
+  ticket: Ticket;
+  updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
+  url: Scalars['String']['output'];
 };
 
 export enum TicketStatus {
@@ -396,6 +434,12 @@ export type CreateOrderMutationVariables = Exact<{
 }>;
 
 export type CreateOrderMutation = { __typename?: 'Mutation'; createOrder: string };
+
+export type CheckoutOrderMutationVariables = Exact<{
+  input: CheckoutOrderInput;
+}>;
+
+export type CheckoutOrderMutation = { __typename?: 'Mutation'; checkoutOrder: boolean };
 
 export type GetRatedQueryVariables = Exact<{ [key: string]: never }>;
 
@@ -657,6 +701,11 @@ export const CreateOrderDocument = new TypedDocumentString(`
   )
 }
     `) as unknown as TypedDocumentString<CreateOrderMutation, CreateOrderMutationVariables>;
+export const CheckoutOrderDocument = new TypedDocumentString(`
+    mutation CheckoutOrder($input: CheckoutOrderInput!) {
+  checkoutOrder(input: $input)
+}
+    `) as unknown as TypedDocumentString<CheckoutOrderMutation, CheckoutOrderMutationVariables>;
 export const GetRatedDocument = new TypedDocumentString(`
     query GetRated {
   featuredProduct: products(currentItem: 10, order: DESC, sort: "rating") {

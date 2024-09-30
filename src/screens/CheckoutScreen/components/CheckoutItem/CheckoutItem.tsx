@@ -36,7 +36,7 @@ const CheckoutItem = ({ item }: CheckoutItemProps) => {
         />
       </Pressable>
       <View className='flex-1 items-start ml-[16px]'>
-        <Text numberOfLines={1} className='font-inter-bold text-foreground text-[12px]'>
+        <Text numberOfLines={1} className='font-inter-bold text-foreground text-[14px]'>
           {item.product.name}
         </Text>
 

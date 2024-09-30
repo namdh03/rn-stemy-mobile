@@ -1,4 +1,4 @@
-import { ActivityIndicator, Image, ScrollView, Text, View } from 'react-native';
+import { ActivityIndicator, Image, ScrollView, View } from 'react-native';
 import { useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -8,6 +8,7 @@ import images from '~assets/images';
 import InputPassword from '~components/customs/InputPassword';
 import { Form, FormField } from '~components/deprecated-ui/form';
 import { Button } from '~components/ui/button';
+import { Text } from '~components/ui/text';
 import execute from '~graphql/execute';
 import { ResetPasswordMutation } from '~services/user.serivces';
 import { ResetPasswordScreenNavigationProps } from '~types/navigation.type';

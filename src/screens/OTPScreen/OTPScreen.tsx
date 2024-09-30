@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
 import { OtpInput } from 'react-native-otp-entry';
 import { useForm } from 'react-hook-form';
 
@@ -8,6 +8,7 @@ import { useMutation } from '@tanstack/react-query';
 
 import { Form, FormField, FormMessage } from '~components/deprecated-ui/form';
 import { Button } from '~components/ui/button';
+import { Text } from '~components/ui/text';
 import execute from '~graphql/execute';
 import { GetTokenResetPasswordMutation, SendResetPasswordOTPMutation } from '~services/user.serivces';
 import { OTPScreenNavigationProps } from '~types/navigation.type';
@@ -124,7 +125,7 @@ const OTPScreen = ({ route, navigation }: OTPScreenNavigationProps) => {
             </Text>
           </Button>
 
-          <Button className='min-h-[44px]' onPress={form.handleSubmit(onSubmit)}>
+          <Button disabled={isSendOTPPending} className='min-h-[44px]' onPress={form.handleSubmit(onSubmit)}>
             {isSendOTPPending ? (
               <View className='flex-row items-center justify-center gap-[6px]'>
                 <ActivityIndicator className='text-secondary' />

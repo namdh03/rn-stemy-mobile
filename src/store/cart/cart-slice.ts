@@ -42,6 +42,11 @@ export const createCartSlice: StateCreator<CartSlice, [['zustand/immer', never]]
       state.selectedCart = selectedCart;
       state.total = total;
     }),
+  clearSelectedCart: () =>
+    set((state) => {
+      state.selectedCart = undefined;
+      state.total = 0;
+    }),
   updateCartItemQuantity: (id: string, quantity: number) =>
     set((state) => {
       const cart = state.cart;
