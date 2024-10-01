@@ -9,6 +9,8 @@ import RootNavigator from '~navigation/RootNavigator';
 
 import './global.css';
 import { enableScreens } from 'react-native-screens';
+import { useKeepAwake } from 'expo-keep-awake';
+import { useOnlineManager } from '~hooks';
 
 // Config react query
 const queryClient = new QueryClient({
@@ -24,6 +26,9 @@ GoogleSignin.configure({
 enableScreens();
 
 export default function App() {
+  useKeepAwake();
+  useOnlineManager();
+
   return (
     <QueryClientProvider client={queryClient}>
       <RootNavigator />

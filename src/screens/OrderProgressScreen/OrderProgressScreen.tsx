@@ -14,7 +14,7 @@ const OrderProgressScreen = ({ route, navigation }: OrderProgressScreenNavigatio
   });
 
   useEffect(() => {
-    if (route.params) {
+    if (route.params && Object.keys(route.params).length > 0) {
       mutate(route.params, {
         onSuccess: () => {
           return navigation.replace('OrderSuccessScreen', { totalPrice: Number(route.params?.vnp_Amount) });
@@ -23,6 +23,8 @@ const OrderProgressScreen = ({ route, navigation }: OrderProgressScreenNavigatio
           return navigation.replace('OrderErrorScreen');
         },
       });
+    } else {
+      navigation.replace('OrderErrorScreen');
     }
   }, [route.params]);
 

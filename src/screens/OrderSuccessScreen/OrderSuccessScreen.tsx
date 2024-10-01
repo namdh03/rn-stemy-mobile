@@ -23,8 +23,8 @@ const OrderSuccessScreen = ({ route, navigation }: OrderSuccessScreenNavigationP
             style={{ width: 184, height: 125 }}
             contentFit='cover'
           />
-          <Text className='font-inter-semiBold text-foreground text-[16px] leading-[18px] tracking-[-0.112px]'>
-            You paid {route.params.totalPrice.toLocaleString()} ₫
+          <Text className='font-inter-semiBold text-center text-foreground text-[16px] leading-[18px] tracking-[-0.112px]'>
+            You paid {(route.params.totalPrice / 100).toLocaleString()} ₫
           </Text>
           <Text className='font-inter-regular text-muted-foreground text-[12px] leading-[14px]'>
             Keep track your order at <Text className='text-primary text-[12px]'>My Purchases</Text>

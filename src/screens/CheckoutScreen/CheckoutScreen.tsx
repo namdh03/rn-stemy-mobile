@@ -13,7 +13,7 @@ import { Text } from '~components/ui/text';
 import constants from '~constants';
 import execute from '~graphql/execute';
 import { CreateOrderMutation } from '~services/checkout.services';
-import { useStore } from '~store';
+import { useCartStore, useStore } from '~store';
 import { CheckoutDataStrict } from '~store/checkout/checkout.type';
 import { CheckoutScreenNavigationProps } from '~types/navigation.type';
 import isErrors from '~utils/responseChecker';
@@ -24,14 +24,14 @@ import CheckoutUserInfo from './components/CheckoutUserInfo';
 import PaymentMethodBottomSheet from './components/PaymentMethodBottomSheet';
 
 const CheckoutScreen = ({ navigation }: CheckoutScreenNavigationProps) => {
-  const { total, selectedCart, clearSelectedCart, checkoutData } = useStore(
+  const { total, selectedCart, clearSelectedCart } = useCartStore(
     useShallow((state) => ({
       total: state.total,
       selectedCart: state.selectedCart,
       clearSelectedCart: state.clearSelectedCart,
-      checkoutData: state.checkoutData,
     })),
   );
+  const checkoutData = useStore(useShallow((state) => state.checkoutData));
   const bottomSheetRef = useRef<BottomSheet>(null);
   const { mutate: createOrderMutate, isPending: isCreateOrderPending } = useMutation({
     mutationFn: (data: CheckoutDataStrict) => execute(CreateOrderMutation, data),
@@ -65,7 +65,6 @@ const CheckoutScreen = ({ navigation }: CheckoutScreenNavigationProps) => {
         },
         {
           onSuccess: async (data) => {
-            clearSelectedCart();
             await WebBrowser.openBrowserAsync(data.data.createOrder);
           },
           onError: (errors) => {
@@ -76,6 +75,9 @@ const CheckoutScreen = ({ navigation }: CheckoutScreenNavigationProps) => {
               }
             }
             showDialogError();
+          },
+          onSettled: () => {
+            clearSelectedCart();
           },
         },
       );
