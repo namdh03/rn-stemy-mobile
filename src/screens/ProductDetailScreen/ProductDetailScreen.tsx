@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Keyboard, Pressable, ScrollView, View } from 'react-native';
+import { Keyboard, Pressable, RefreshControl, ScrollView, View } from 'react-native';
 import { useShallow } from 'zustand/react/shallow';
 
 import BottomSheet from '@gorhom/bottom-sheet';
@@ -14,7 +14,7 @@ import { Separator } from '~components/ui/separator';
 import { Text } from '~components/ui/text';
 import { GET_PRODUCT_QUERY_KEY } from '~constants/product-query-key';
 import execute from '~graphql/execute';
-import { useColorScheme } from '~hooks';
+import { useColorScheme, useRefreshByUser } from '~hooks';
 import { GetProductQuery } from '~services/product.services';
 import { useStore } from '~store';
 import { ProductDetailScreenNavigationProps } from '~types/navigation.type';
@@ -27,12 +27,13 @@ import ImageCarousel from './components/ImageCarousel';
 const ProductDetailScreen = ({ route }: ProductDetailScreenNavigationProps) => {
   const { isDarkColorScheme } = useColorScheme();
   const setFeedbacks = useStore(useShallow((state) => state.setFeedbacks));
-  const { data, isFetching } = useQuery({
+  const { data, refetch, isFetching } = useQuery({
     queryKey: [GET_PRODUCT_QUERY_KEY],
     queryFn: () => execute(GetProductQuery, { id: Number(route.params.id) }),
     select: (data) => data.data,
   });
   const bottomSheetRef = useRef<BottomSheet>(null);
+  const { isRefetchingByUser, refetchByUser } = useRefreshByUser(refetch);
 
   useEffect(() => {
     if (data) {
@@ -62,6 +63,7 @@ const ProductDetailScreen = ({ route }: ProductDetailScreenNavigationProps) => {
         contentContainerClassName='pt-[25px] mx-auto w-full max-w-xl'
         showsVerticalScrollIndicator={false}
         automaticallyAdjustContentInsets={false}
+        refreshControl={<RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} />}
       >
         <Pressable onPress={Keyboard.dismiss}>
           <View className='px-[25px]'>
@@ -123,7 +125,10 @@ const ProductDetailScreen = ({ route }: ProductDetailScreenNavigationProps) => {
           </View>
 
           <View className={`${isDarkColorScheme ? 'bg-secondary' : 'bg-destructive-foreground'}`}>
-            <ProductList title='Featured Product' data={data?.products.items || []} />
+            <ProductList
+              title='Featured Product'
+              data={data?.products.items.filter((product) => product.id !== route.params.id) || []}
+            />
           </View>
 
           <View

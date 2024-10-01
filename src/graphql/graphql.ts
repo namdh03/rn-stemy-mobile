@@ -59,12 +59,12 @@ export type CheckoutOrderInput = {
 
 export type Feedback = {
   __typename?: 'Feedback';
-  comment: Scalars['String']['output'];
   createdAt: Scalars['DateTimeISO']['output'];
   id: Scalars['ID']['output'];
+  note: Scalars['String']['output'];
   orderItem: OrderItem;
   product: Product;
-  rating: Scalars['Int']['output'];
+  rating: Scalars['Float']['output'];
   updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
   user: User;
 };
@@ -73,6 +73,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   addToCart: Cart;
   checkoutOrder: Scalars['Boolean']['output'];
+  createFeedback: Feedback;
   createOrder: Scalars['String']['output'];
   createProduct: Product;
   createTicket: Ticket;
@@ -97,6 +98,12 @@ export type MutationAddToCartArgs = {
 
 export type MutationCheckoutOrderArgs = {
   input: CheckoutOrderInput;
+};
+
+export type MutationCreateFeedbackArgs = {
+  note: Scalars['String']['input'];
+  orderItemId: Scalars['Int']['input'];
+  rating: Scalars['Float']['input'];
 };
 
 export type MutationCreateOrderArgs = {
@@ -227,7 +234,7 @@ export type Product = {
   lab?: Maybe<ProductLab>;
   name: Scalars['String']['output'];
   price: Scalars['Int']['output'];
-  rating: Scalars['Int']['output'];
+  rating: Scalars['Float']['output'];
   sold: Scalars['Int']['output'];
   updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
 };
@@ -239,7 +246,7 @@ export type ProductCategory = {
   name: Scalars['String']['output'];
   products: Array<Product>;
   title: Scalars['String']['output'];
-  type: Array<CategoryType>;
+  type: CategoryType;
   updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
 };
 
@@ -292,9 +299,15 @@ export type QueryProductArgs = {
 };
 
 export type QueryProductsArgs = {
+  categoryIds?: Array<Scalars['Int']['input']>;
   currentItem?: Scalars['Int']['input'];
   currentPage?: Scalars['Int']['input'];
+  maxPrice?: Scalars['Int']['input'];
+  maxRating?: Scalars['Int']['input'];
+  minPrice?: Scalars['Int']['input'];
+  minRating?: Scalars['Int']['input'];
   order?: SortOrder;
+  search?: Scalars['String']['input'];
   sort?: Scalars['String']['input'];
 };
 
@@ -521,11 +534,11 @@ export type GetProductQuery = {
     price: number;
     rating: number;
     sold: number;
-    categories: Array<{ __typename?: 'ProductCategory'; name: string }>;
+    categories: Array<{ __typename?: 'ProductCategory'; id: string; name: string; type: CategoryType; title: string }>;
     images: Array<{ __typename?: 'ProductImage'; id: string; url: string }>;
     feedbacks: Array<{
       __typename?: 'Feedback';
-      comment: string;
+      note: string;
       createdAt: any;
       id: string;
       rating: number;
@@ -766,7 +779,10 @@ export const GetProductDocument = new TypedDocumentString(`
     query GetProduct($id: Float!) {
   product(id: $id) {
     categories {
+      id
       name
+      type
+      title
     }
     images {
       id
@@ -779,7 +795,7 @@ export const GetProductDocument = new TypedDocumentString(`
     rating
     sold
     feedbacks {
-      comment
+      note
       createdAt
       id
       rating

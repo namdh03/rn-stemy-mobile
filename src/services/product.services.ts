@@ -4,7 +4,10 @@ export const GetProductQuery = graphql(`
   query GetProduct($id: Float!) {
     product(id: $id) {
       categories {
+        id
         name
+        type
+        title
       }
       images {
         id
@@ -17,7 +20,7 @@ export const GetProductQuery = graphql(`
       rating
       sold
       feedbacks {
-        comment
+        note
         createdAt
         id
         rating

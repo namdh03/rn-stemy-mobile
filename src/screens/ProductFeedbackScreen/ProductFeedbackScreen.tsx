@@ -68,7 +68,7 @@ const ProductFeedbackScreen = () => {
             name={feedback.user.fullName}
             time={feedback.createdAt}
             rating={feedback.rating}
-            comment={feedback.comment}
+            note={feedback.note}
             nonFillColor='text-muted'
           />
         ))}

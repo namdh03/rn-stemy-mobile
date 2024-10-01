@@ -49,12 +49,12 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `dat
 scalar DateTimeISO
 
 type Feedback {
-  comment: String!
   createdAt: DateTimeISO!
   id: ID!
+  note: String!
   orderItem: OrderItem!
   product: Product!
-  rating: Int!
+  rating: Float!
   updatedAt: DateTimeISO
   user: User!
 }
@@ -67,6 +67,7 @@ scalar File
 type Mutation {
   addToCart(hasLab: Boolean!, productId: Float!, quantity: Float!): Cart!
   checkoutOrder(input: CheckoutOrderInput!): Boolean!
+  createFeedback(note: String!, orderItemId: Int!, rating: Float!): Feedback!
   createOrder(address: String!, cartIds: [Int!]!, paymentProvider: PaymentProvider!, phone: String!): String!
   createProduct(images: [File!]!, input: ProductInput!, lab: File!): Product!
   createTicket(
@@ -139,7 +140,7 @@ type Product {
   lab: ProductLab
   name: String!
   price: Int!
-  rating: Int!
+  rating: Float!
   sold: Int!
   updatedAt: DateTimeISO
 }
@@ -150,7 +151,7 @@ type ProductCategory {
   name: String!
   products: [Product!]!
   title: String!
-  type: [CategoryType!]!
+  type: CategoryType!
   updatedAt: DateTimeISO
 }
 
@@ -189,9 +190,15 @@ type Query {
   product(id: Float!): Product!
   productCategories: [ProductCategory!]!
   products(
+    categoryIds: [Int!]! = []
     currentItem: Int! = 9
     currentPage: Int! = 1
+    maxPrice: Int! = 10000000
+    maxRating: Int! = 5
+    minPrice: Int! = 0
+    minRating: Int! = 0
     order: SortOrder! = ASC
+    search: String! = ""
     sort: String! = "id"
   ): ProductsWithPaginationResponse!
   searchOrder(search: String!): [Order!]!

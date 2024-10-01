@@ -13,6 +13,7 @@ import execute from '~graphql/execute';
 import { GetMeQuery } from '~services/user.serivces';
 import { useStore } from '~store';
 import { storage } from '~utils/mmkv-storage';
+import { getAccessToken, removeAccessToken } from '~utils/token-storage';
 
 import useColorScheme from './useColorScheme';
 
@@ -70,21 +71,23 @@ export default function useAppIsReady() {
       });
 
       // Load user
-      if (accessToken) {
+      if (getAccessToken()) {
         const { data } = await refetch();
         if (data) {
           authenticate(data.me);
           setCheckoutData({ address: data.me.address, phone: data.me.phone });
         }
       }
-    })().finally(() => {
-      setAppIsReady(true);
-    });
+    })()
+      .catch(() => removeAccessToken())
+      .finally(() => {
+        setAppIsReady(true);
+      });
   }, []);
 
   // Listen accessToken change
   useEffect(() => {
-    if (accessToken && data) {
+    if (appIsReady && accessToken && data) {
       authenticate(data.me);
       setCheckoutData({ address: data.me.address, phone: data.me.phone });
     }

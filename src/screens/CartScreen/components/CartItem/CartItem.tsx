@@ -18,7 +18,7 @@ import execute from '~graphql/execute';
 import { GetCartQuery } from '~graphql/graphql';
 import { useDebounce } from '~hooks';
 import { DeleteCartsMutation, UpdateCartMutation } from '~services/cart.services';
-import { useStore } from '~store';
+import { useCartStore } from '~store';
 import { MainStackParamList } from '~types/navigation.type';
 import isErrors from '~utils/responseChecker';
 import showDialogError from '~utils/showDialogError';
@@ -31,7 +31,7 @@ const MAX_QUANTITY_CART = 99;
 
 const CartItem = memo(({ item }: CartItemProps) => {
   const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
-  const { selectedCart, setSelectedCart, updateCartItemQuantity, removeCartItem } = useStore(
+  const { selectedCart, setSelectedCart, updateCartItemQuantity, removeCartItem } = useCartStore(
     useShallow((state) => ({
       selectedCart: state.selectedCart,
       setSelectedCart: state.setSelectedCart,

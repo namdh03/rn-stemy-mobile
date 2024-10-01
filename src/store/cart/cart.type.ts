@@ -5,12 +5,14 @@ type SelectedCart = {
 };
 
 export type CartState = {
+  isActive: boolean;
   cart: GetCartQuery['carts'];
   selectedCart?: SelectedCart;
   total: number;
 };
 
 export type CartActions = {
+  toggleActive: () => void;
   setCart: (carts: GetCartQuery['carts']) => void;
   setSelectedCart: (cart: GetCartQuery['carts'][number]) => void;
   clearSelectedCart: () => void;

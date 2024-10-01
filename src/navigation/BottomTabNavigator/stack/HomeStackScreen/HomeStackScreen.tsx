@@ -33,6 +33,7 @@ const HomeStack = () => {
                 <Bell className='text-foreground' size={26} />
               </Pressable>
               <Pressable onPress={() => navigation.navigate('CartScreen')}>
+                <View className='absolute top-[4px] right-[-1px] z-10 w-[10px] h-[10px] bg-destructive rounded-full' />
                 <ShoppingCart className='text-foreground' size={26} />
               </Pressable>
             </View>
