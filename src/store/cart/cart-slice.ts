@@ -1,7 +1,5 @@
 import { StateCreator } from 'zustand';
 
-import { GetCartQuery } from '~graphql/graphql';
-
 import { CartSlice, CartState } from './cart.type';
 
 const initialState: CartState = {
@@ -17,7 +15,7 @@ export const createCartSlice: StateCreator<CartSlice, [['zustand/immer', never]]
     set((state) => {
       state.isActive = !state.isActive;
     }),
-  setCart: (cart: GetCartQuery['carts']) =>
+  setCart: (cart) =>
     set((state) => {
       state.cart = cart.map((cartItem) => {
         const newCartItem = { ...cartItem };
@@ -32,7 +30,7 @@ export const createCartSlice: StateCreator<CartSlice, [['zustand/immer', never]]
         return newCartItem;
       });
     }),
-  setSelectedCart: (cart: GetCartQuery['carts'][number]) =>
+  setSelectedCart: (cart) =>
     set((state) => {
       const selectedCart = state.selectedCart || {};
 
@@ -56,7 +54,7 @@ export const createCartSlice: StateCreator<CartSlice, [['zustand/immer', never]]
       state.selectedCart = undefined;
       state.total = 0;
     }),
-  updateCartItemQuantity: (id: string, quantity: number) =>
+  updateCartItemQuantity: (id, quantity) =>
     set((state) => {
       const cart = state.cart;
 
@@ -77,7 +75,7 @@ export const createCartSlice: StateCreator<CartSlice, [['zustand/immer', never]]
         state.total = total;
       }
     }),
-  removeCartItem: (id: string) =>
+  removeCartItem: (id) =>
     set((state) => {
       const selectedCart = state.selectedCart || {};
       const cart = state.cart;

@@ -12,11 +12,13 @@ import CheckoutUserInformationScreen from '~screens/CheckoutUserInformationScree
 import OrderErrorScreen from '~screens/OrderErrorScreen';
 import OrderProgressScreen from '~screens/OrderProgressScreen';
 import OrderSuccessScreen from '~screens/OrderSuccessScreen';
+import SearchProductScreen from '~screens/SearchProductScreen';
 import {
   CartScreenNavigationProps,
   CheckoutScreenNavigationProps,
   CheckoutUserInformationScreenNavigationProps,
   MainStackParamList,
+  SearchProductScreenNavigationProps,
 } from '~types/navigation.type';
 
 const MainStack = createNativeStackNavigator<MainStackParamList>();
@@ -105,6 +107,23 @@ const MainNavigator = () => (
         headerRightContainerStyle: {
           paddingRight: 24,
         },
+      })}
+    />
+    <MainStack.Screen
+      name='SearchProductScreen'
+      component={SearchProductScreen}
+      options={({ navigation }: SearchProductScreenNavigationProps) => ({
+        title: 'Search',
+        headerTitleAlign: 'center',
+        headerTitleStyle: {
+          fontFamily: 'Inter_18pt-Medium',
+          fontSize: 18,
+        },
+        headerLeft: () => (
+          <Pressable onPress={() => navigation.goBack()}>
+            <ChevronLeft className='text-foreground' size={30} />
+          </Pressable>
+        ),
       })}
     />
   </MainStack.Navigator>

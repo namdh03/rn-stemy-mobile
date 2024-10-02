@@ -109,6 +109,7 @@ export type MutationCreateFeedbackArgs = {
 export type MutationCreateOrderArgs = {
   address: Scalars['String']['input'];
   cartIds: Array<Scalars['Int']['input']>;
+  fullName: Scalars['String']['input'];
   paymentProvider: PaymentProvider;
   phone: Scalars['String']['input'];
 };
@@ -184,6 +185,7 @@ export type Order = {
   __typename?: 'Order';
   address: Scalars['String']['output'];
   createdAt: Scalars['DateTimeISO']['output'];
+  fullName: Scalars['String']['output'];
   id: Scalars['ID']['output'];
   orderItems: Array<OrderItem>;
   payment: OrderPaymentEmbeddable;
@@ -458,6 +460,7 @@ export type GetCartCountQueryVariables = Exact<{ [key: string]: never }>;
 export type GetCartCountQuery = { __typename?: 'Query'; countCart: number };
 
 export type CreateOrderMutationVariables = Exact<{
+  fullName: Scalars['String']['input'];
   address: Scalars['String']['input'];
   cartIds: Array<Scalars['Int']['input']> | Scalars['Int']['input'];
   paymentProvider: PaymentProvider;
@@ -575,6 +578,36 @@ export type GetProductQuery = {
       images: Array<{ __typename?: 'ProductImage'; url: string }>;
       feedbacks: Array<{ __typename?: 'Feedback'; id: string }>;
     }>;
+  };
+};
+
+export type GetFeaturedProductQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetFeaturedProductQuery = {
+  __typename?: 'Query';
+  products: {
+    __typename?: 'ProductsWithPaginationResponse';
+    items: Array<{
+      __typename?: 'Product';
+      id: string;
+      price: number;
+      name: string;
+      rating: number;
+      images: Array<{ __typename?: 'ProductImage'; url: string }>;
+      feedbacks: Array<{ __typename?: 'Feedback'; id: string }>;
+    }>;
+  };
+};
+
+export type SearchProductByNameQueryVariables = Exact<{
+  search: Scalars['String']['input'];
+}>;
+
+export type SearchProductByNameQuery = {
+  __typename?: 'Query';
+  products: {
+    __typename?: 'ProductsWithPaginationResponse';
+    items: Array<{ __typename?: 'Product'; id: string; name: string }>;
   };
 };
 
@@ -710,8 +743,9 @@ export const GetCartCountDocument = new TypedDocumentString(`
 }
     `) as unknown as TypedDocumentString<GetCartCountQuery, GetCartCountQueryVariables>;
 export const CreateOrderDocument = new TypedDocumentString(`
-    mutation CreateOrder($address: String!, $cartIds: [Int!]!, $paymentProvider: PaymentProvider!, $phone: String!) {
+    mutation CreateOrder($fullName: String!, $address: String!, $cartIds: [Int!]!, $paymentProvider: PaymentProvider!, $phone: String!) {
   createOrder(
+    fullName: $fullName
     address: $address
     cartIds: $cartIds
     paymentProvider: $paymentProvider
@@ -846,6 +880,34 @@ export const GetProductDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<GetProductQuery, GetProductQueryVariables>;
+export const GetFeaturedProductDocument = new TypedDocumentString(`
+    query GetFeaturedProduct {
+  products(currentItem: 10, order: ASC, sort: "price") {
+    items {
+      id
+      images {
+        url
+      }
+      price
+      name
+      rating
+      feedbacks {
+        id
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<GetFeaturedProductQuery, GetFeaturedProductQueryVariables>;
+export const SearchProductByNameDocument = new TypedDocumentString(`
+    query SearchProductByName($search: String!) {
+  products(search: $search) {
+    items {
+      id
+      name
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<SearchProductByNameQuery, SearchProductByNameQueryVariables>;
 export const LoginDocument = new TypedDocumentString(`
     mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {

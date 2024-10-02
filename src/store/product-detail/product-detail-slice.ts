@@ -1,7 +1,5 @@
 import { StateCreator } from 'zustand';
 
-import { GetProductQuery } from '~graphql/graphql';
-
 import { ProductDetailSlice, ProductDetailState } from './product-detail.type';
 
 const initialState: ProductDetailState = {
@@ -16,7 +14,7 @@ export const createProductDetailSlice: StateCreator<
   ProductDetailSlice
 > = (set) => ({
   ...initialState,
-  setFeedbacks: (rating: number, feedbacks: GetProductQuery['product']['feedbacks']) =>
+  setFeedbacks: (rating, feedbacks) =>
     set((state) => {
       state.rating = rating;
       state.feedbacks = feedbacks;
