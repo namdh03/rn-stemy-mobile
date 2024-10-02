@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Animated, View } from 'react-native';
 
 interface LoadingOverlayProps {
@@ -7,47 +7,48 @@ interface LoadingOverlayProps {
 }
 
 function LoadingOverlay({ message, loop = false }: LoadingOverlayProps) {
-  const animatedValues = useRef<Animated.Value[]>([]).current;
-
-  if (animatedValues.length === 0 && message) {
-    message.split('').forEach(() => {
-      animatedValues.push(new Animated.Value(0));
-    });
-  }
+  const [animatedValues, setAnimatedValues] = useState<Animated.Value[]>([]);
 
   useEffect(() => {
+    if (message) {
+      const newAnimatedValues = message.split('').map(() => new Animated.Value(1));
+      setAnimatedValues(newAnimatedValues);
+    } else {
+      setAnimatedValues([]);
+    }
+  }, [message]);
+
+  useEffect(() => {
+    if (!message || animatedValues.length === 0) return;
+
     const animations = animatedValues.map((animatedValue, index) =>
-      Animated.timing(animatedValue, {
-        toValue: 1,
-        duration: 500,
-        delay: index * 100,
-        useNativeDriver: true,
-      }),
+      Animated.sequence([
+        Animated.timing(animatedValue, {
+          toValue: 0,
+          duration: 500,
+          delay: index * 100,
+          useNativeDriver: true,
+        }),
+        Animated.timing(animatedValue, {
+          toValue: 1,
+          duration: 500,
+          useNativeDriver: true,
+        }),
+      ]),
     );
 
     const animationSequence = Animated.stagger(100, animations);
 
     if (loop) {
-      Animated.loop(
-        Animated.sequence([
-          animationSequence,
-          Animated.delay(500),
-          Animated.stagger(
-            100,
-            animatedValues.map((animatedValue) =>
-              Animated.timing(animatedValue, {
-                toValue: 0,
-                duration: 500,
-                useNativeDriver: true,
-              }),
-            ),
-          ),
-        ]),
-      ).start();
+      Animated.loop(animationSequence).start();
     } else {
       animationSequence.start();
     }
-  }, [message, loop]);
+
+    return () => {
+      animations.forEach((anim) => anim.stop());
+    };
+  }, [message, loop, animatedValues]);
 
   return (
     <View className='bg-card flex-1 gap-[8px] justify-center items-center'>
@@ -61,10 +62,12 @@ function LoadingOverlay({ message, loop = false }: LoadingOverlayProps) {
                 opacity: animatedValues[index],
                 transform: [
                   {
-                    translateY: animatedValues[index].interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [10, 0],
-                    }),
+                    translateY: animatedValues[index]
+                      ? animatedValues[index].interpolate({
+                          inputRange: [0, 1],
+                          outputRange: [10, 0],
+                        })
+                      : 0,
                   },
                 ],
               }}

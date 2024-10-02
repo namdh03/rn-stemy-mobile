@@ -7,8 +7,9 @@ import { zustandStorage } from '~utils/mmkv-storage';
 import { createAuthSlice } from './auth/auth-slice';
 import { createCartSlice } from './cart/cart-slice';
 import { createCheckoutSlice } from './checkout/checkout-slice';
+import { createHistorySearchProductSlice } from './history-search-product/history-search-product.slice';
 import { createProductDetailSlice } from './product-detail/product-detail-slice';
-import { Cart, Store } from './store.type';
+import { CartStore, HistorySearchProductStore, Store } from './store.type';
 
 export const useStore = create<Store>()(
   devtools(
@@ -22,7 +23,7 @@ export const useStore = create<Store>()(
   ),
 );
 
-export const useCartStore = create<Cart>()(
+export const useCartStore = create<CartStore>()(
   devtools(
     persist(
       subscribeWithSelector(
@@ -32,6 +33,22 @@ export const useCartStore = create<Cart>()(
       ),
       {
         name: 'cart-storage',
+        storage: createJSONStorage(() => zustandStorage),
+      },
+    ),
+  ),
+);
+
+export const useHistorySearchProductStore = create<HistorySearchProductStore>()(
+  devtools(
+    persist(
+      subscribeWithSelector(
+        immer((...a) => ({
+          ...createHistorySearchProductSlice(...a),
+        })),
+      ),
+      {
+        name: 'history-search-product-storage',
         storage: createJSONStorage(() => zustandStorage),
       },
     ),

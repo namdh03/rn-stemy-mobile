@@ -33,11 +33,11 @@ export default function ProductList({ title, data, hiddenProductId, onPress }: P
   };
 
   return (
-    <View className={'px-[25px] py-[20px] rounded-t-[10px] '}>
+    <View className={'px-[25px] py-[20px] rounded-t-[10px]'}>
       <View className='flex-row items-center justify-between mb-[24px]'>
-        <Text className='font-inter-medium text-foreground text-[17px] leading-[25px] tracking-[0.061px]'>{title}</Text>
+        <Text className='font-inter-medium text-foreground text-[16px] leading-[25px] tracking-[0.061px]'>{title}</Text>
         <Pressable onPress={onPress}>
-          <Text className='font-inter-medium text-primary text-[16px] leading-[22px] tracking-[0.048px]'>See All</Text>
+          <Text className='font-inter-medium text-primary text-[14px] leading-[22px] tracking-[0.048px]'>See All</Text>
         </Pressable>
       </View>
 

@@ -127,7 +127,7 @@ const ProductDetailScreen = ({ route }: ProductDetailScreenNavigationProps) => {
             <Feedbacks />
           </View>
 
-          <View className={`${isDarkColorScheme ? 'bg-secondary' : 'bg-destructive-foreground'}`}>
+          <View className={`rounded-t-[10px] ${isDarkColorScheme ? 'bg-secondary' : 'bg-destructive-foreground'}`}>
             <ProductList hiddenProductId={route.params.id} title='Featured Product' data={data?.products.items || []} />
           </View>
 

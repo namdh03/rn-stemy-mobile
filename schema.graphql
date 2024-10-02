@@ -68,7 +68,13 @@ type Mutation {
   addToCart(hasLab: Boolean!, productId: Float!, quantity: Float!): Cart!
   checkoutOrder(input: CheckoutOrderInput!): Boolean!
   createFeedback(note: String!, orderItemId: Int!, rating: Float!): Feedback!
-  createOrder(address: String!, cartIds: [Int!]!, paymentProvider: PaymentProvider!, phone: String!): String!
+  createOrder(
+    address: String!
+    cartIds: [Int!]!
+    fullName: String!
+    paymentProvider: PaymentProvider!
+    phone: String!
+  ): String!
   createProduct(images: [File!]!, input: ProductInput!, lab: File!): Product!
   createTicket(
     categoryId: Float!
@@ -93,6 +99,7 @@ type Mutation {
 type Order {
   address: String!
   createdAt: DateTimeISO!
+  fullName: String!
   id: ID!
   orderItems: [OrderItem!]!
   payment: OrderPaymentEmbeddable!

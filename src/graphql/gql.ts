@@ -20,7 +20,7 @@ const documents = {
   '\n  mutation UpdateCart($cartId: Float!, $quantity: Float!) {\n    updateCart(cartId: $cartId, quantity: $quantity) {\n      id\n    }\n  }\n':
     types.UpdateCartDocument,
   '\n  query GetCartCount {\n    countCart\n  }\n': types.GetCartCountDocument,
-  '\n  mutation CreateOrder($address: String!, $cartIds: [Int!]!, $paymentProvider: PaymentProvider!, $phone: String!) {\n    createOrder(address: $address, cartIds: $cartIds, paymentProvider: $paymentProvider, phone: $phone)\n  }\n':
+  '\n  mutation CreateOrder(\n    $fullName: String!\n    $address: String!\n    $cartIds: [Int!]!\n    $paymentProvider: PaymentProvider!\n    $phone: String!\n  ) {\n    createOrder(\n      fullName: $fullName\n      address: $address\n      cartIds: $cartIds\n      paymentProvider: $paymentProvider\n      phone: $phone\n    )\n  }\n':
     types.CreateOrderDocument,
   '\n  mutation CheckoutOrder($input: CheckoutOrderInput!) {\n    checkoutOrder(input: $input)\n  }\n':
     types.CheckoutOrderDocument,
@@ -28,6 +28,10 @@ const documents = {
     types.GetHomeDocument,
   '\n  query GetProduct($id: Float!) {\n    product(id: $id) {\n      categories {\n        id\n        name\n        type\n        title\n      }\n      images {\n        id\n        url\n      }\n      description\n      id\n      name\n      price\n      rating\n      sold\n      feedbacks {\n        note\n        createdAt\n        id\n        rating\n        user {\n          fullName\n        }\n      }\n      lab {\n        price\n      }\n    }\n    products(currentItem: 10, order: ASC, sort: "price") {\n      items {\n        id\n        images {\n          url\n        }\n        price\n        name\n        rating\n        feedbacks {\n          id\n        }\n      }\n    }\n  }\n':
     types.GetProductDocument,
+  '\n  query GetFeaturedProduct {\n    products(currentItem: 10, order: ASC, sort: "price") {\n      items {\n        id\n        images {\n          url\n        }\n        price\n        name\n        rating\n        feedbacks {\n          id\n        }\n      }\n    }\n  }\n':
+    types.GetFeaturedProductDocument,
+  '\n  query SearchProductByName($search: String!) {\n    products(search: $search) {\n      items {\n        id\n        name\n      }\n    }\n  }\n':
+    types.SearchProductByNameDocument,
   '\n  mutation Login($email: String!, $password: String!) {\n    login(email: $email, password: $password) {\n      access_token\n    }\n  }\n':
     types.LoginDocument,
   '\n  mutation Register($email: String!, $fullName: String!, $password: String!, $phone: String!) {\n    register(email: $email, fullName: $fullName, password: $password, phone: $phone) {\n      access_token\n    }\n  }\n':
@@ -78,7 +82,7 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  mutation CreateOrder($address: String!, $cartIds: [Int!]!, $paymentProvider: PaymentProvider!, $phone: String!) {\n    createOrder(address: $address, cartIds: $cartIds, paymentProvider: $paymentProvider, phone: $phone)\n  }\n',
+  source: '\n  mutation CreateOrder(\n    $fullName: String!\n    $address: String!\n    $cartIds: [Int!]!\n    $paymentProvider: PaymentProvider!\n    $phone: String!\n  ) {\n    createOrder(\n      fullName: $fullName\n      address: $address\n      cartIds: $cartIds\n      paymentProvider: $paymentProvider\n      phone: $phone\n    )\n  }\n',
 ): typeof import('./graphql').CreateOrderDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
@@ -98,6 +102,18 @@ export function graphql(
 export function graphql(
   source: '\n  query GetProduct($id: Float!) {\n    product(id: $id) {\n      categories {\n        id\n        name\n        type\n        title\n      }\n      images {\n        id\n        url\n      }\n      description\n      id\n      name\n      price\n      rating\n      sold\n      feedbacks {\n        note\n        createdAt\n        id\n        rating\n        user {\n          fullName\n        }\n      }\n      lab {\n        price\n      }\n    }\n    products(currentItem: 10, order: ASC, sort: "price") {\n      items {\n        id\n        images {\n          url\n        }\n        price\n        name\n        rating\n        feedbacks {\n          id\n        }\n      }\n    }\n  }\n',
 ): typeof import('./graphql').GetProductDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query GetFeaturedProduct {\n    products(currentItem: 10, order: ASC, sort: "price") {\n      items {\n        id\n        images {\n          url\n        }\n        price\n        name\n        rating\n        feedbacks {\n          id\n        }\n      }\n    }\n  }\n',
+): typeof import('./graphql').GetFeaturedProductDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query SearchProductByName($search: String!) {\n    products(search: $search) {\n      items {\n        id\n        name\n      }\n    }\n  }\n',
+): typeof import('./graphql').SearchProductByNameDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

@@ -52,7 +52,7 @@ const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
   return (
     <ScrollView showsVerticalScrollIndicator={false} automaticallyAdjustContentInsets={false}>
       <View className='w-full px-[25px]'>
-        <SearchName />
+        <SearchName editable={false} onPress={() => navigation.navigate('SearchProductScreen')} />
       </View>
       <Carousel />
       <View className='mb-[50px] px-[25px]'>

@@ -23,7 +23,8 @@
  *      ├── Checkout User Information Screen
  *      ├── Order Progress Screen
  *      ├── Order Success Screen
- *      └── Order Error Screen
+ *      ├── Order Error Screen
+ *      └── Search Product Screen
  */
 
 // import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
@@ -69,6 +70,7 @@ export type MainStackParamList = {
   OrderProgressScreen: CheckoutOrderInput | undefined;
   OrderSuccessScreen: { totalPrice: number };
   OrderErrorScreen: undefined;
+  SearchProductScreen: undefined;
 };
 
 // Root Stack
@@ -154,5 +156,10 @@ export type OrderSuccessScreenNavigationProps = CompositeScreenProps<
 
 export type OrderErrorScreenNavigationProps = CompositeScreenProps<
   NativeStackScreenProps<MainStackParamList, 'OrderErrorScreen'>,
+  NativeStackScreenProps<BottomTabParamList>
+>;
+
+export type SearchProductScreenNavigationProps = CompositeScreenProps<
+  NativeStackScreenProps<MainStackParamList, 'SearchProductScreen'>,
   NativeStackScreenProps<BottomTabParamList>
 >;
