@@ -1,4 +1,4 @@
-import { ScrollView, View } from 'react-native';
+import { ScrollView, Text as RNText, View } from 'react-native';
 import { Image } from 'expo-image';
 
 import images from '~assets/images';
@@ -11,11 +11,11 @@ import { OrderSuccessScreenNavigationProps } from '~types/navigation.type';
 const OrderSuccessScreen = ({ route, navigation }: OrderSuccessScreenNavigationProps) => {
   return (
     <ScrollView
-      contentContainerClassName='flex-1 justify-center p-[24px] py-[50px] mx-auto w-full max-w-xl'
+      contentContainerClassName='p-[24px] py-[50px] mx-auto w-full max-w-xl'
       showsVerticalScrollIndicator={false}
       automaticallyAdjustContentInsets={false}
     >
-      <Card className='px-[45px] pt-[24px] pb-[16px]'>
+      <Card className='mt-[124px] px-[45px] pt-[24px] pb-[16px]'>
         <View className='gap-[17px] items-center'>
           <Image
             source={images.orderSuccess}
@@ -27,24 +27,28 @@ const OrderSuccessScreen = ({ route, navigation }: OrderSuccessScreenNavigationP
             You paid {(route.params.totalPrice / 100).toLocaleString()} ₫
           </Text>
           <Text className='font-inter-regular text-muted-foreground text-[12px] leading-[14px]'>
-            Keep track your order at <Text className='text-primary text-[12px]'>My Purchases</Text>
+            Keep track your order at
+            <Text className='font-inter-regular text-primary text-[12px] leading-[14px]'> My Purchases</Text>
           </Text>
         </View>
 
         <View className='flex-row items-center gap-[18px] mt-[16px]'>
           <Button
-            className='flex-1'
+            className='w-1/2'
             variant='outline'
             onPress={() =>
-              navigation.navigate('HomeStack', {
-                screen: 'HomeScreen',
+              navigation.navigate('BottomTabStack', {
+                screen: 'HomeStack',
+                params: {
+                  screen: 'HomeScreen',
+                },
               })
             }
           >
-            <Text>Home</Text>
+            <RNText className='text-foreground text-[14px]'>Home</RNText>
           </Button>
-          <Button>
-            <Text className='flex-1'>My Purchase</Text>
+          <Button className='w-1/2'>
+            <RNText className='text-muted text-[14px]'>My Purchase</RNText>
           </Button>
         </View>
       </Card>

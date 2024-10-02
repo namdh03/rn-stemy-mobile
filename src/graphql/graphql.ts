@@ -290,6 +290,7 @@ export type Query = {
   productCategories: Array<ProductCategory>;
   products: ProductsWithPaginationResponse;
   searchOrder: Array<Order>;
+  tickets: TicketsWithPaginationResponse;
   user?: Maybe<User>;
   users: Array<User>;
 };
@@ -313,6 +314,13 @@ export type QueryProductsArgs = {
 
 export type QuerySearchOrderArgs = {
   search: Scalars['String']['input'];
+};
+
+export type QueryTicketsArgs = {
+  currentItem?: Scalars['Int']['input'];
+  currentPage?: Scalars['Int']['input'];
+  order?: SortOrder;
+  sort?: Scalars['String']['input'];
 };
 
 export type QueryUserArgs = {
@@ -371,6 +379,12 @@ export enum TicketStatus {
   Close = 'CLOSE',
   Open = 'OPEN',
 }
+
+export type TicketsWithPaginationResponse = {
+  __typename?: 'TicketsWithPaginationResponse';
+  items: Array<Ticket>;
+  pageInfo: E;
+};
 
 export type User = {
   __typename?: 'User';
@@ -438,6 +452,10 @@ export type UpdateCartMutationVariables = Exact<{
 }>;
 
 export type UpdateCartMutation = { __typename?: 'Mutation'; updateCart: { __typename?: 'Cart'; id: string } };
+
+export type GetCartCountQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetCartCountQuery = { __typename?: 'Query'; countCart: number };
 
 export type CreateOrderMutationVariables = Exact<{
   address: Scalars['String']['input'];
@@ -686,6 +704,11 @@ export const UpdateCartDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<UpdateCartMutation, UpdateCartMutationVariables>;
+export const GetCartCountDocument = new TypedDocumentString(`
+    query GetCartCount {
+  countCart
+}
+    `) as unknown as TypedDocumentString<GetCartCountQuery, GetCartCountQueryVariables>;
 export const CreateOrderDocument = new TypedDocumentString(`
     mutation CreateOrder($address: String!, $cartIds: [Int!]!, $paymentProvider: PaymentProvider!, $phone: String!) {
   createOrder(

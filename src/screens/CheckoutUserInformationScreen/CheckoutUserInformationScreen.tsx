@@ -13,21 +13,23 @@ import { Text } from '~components/ui/text';
 import { useStore } from '~store';
 import { MainStackParamList } from '~types/navigation.type';
 
-import schema, { PhoneAndAddressFormType } from './schema';
+import schema, { CheckoutUserInformationFormType } from './schema';
 
-const PhoneAndAddressScreen = () => {
+const CheckoutUserInformationScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
-  const { phone, address, setCheckoutData } = useStore(
+  const { fullName, phone, address, setCheckoutData } = useStore(
     useShallow((state) => ({
+      fullName: state.checkoutData.fullName,
       phone: state.checkoutData.phone,
       address: state.checkoutData.address,
       setCheckoutData: state.setCheckoutData,
     })),
   );
-  const form = useForm<PhoneAndAddressFormType>({
+  const form = useForm<CheckoutUserInformationFormType>({
     mode: 'onBlur',
     resolver: zodResolver(schema),
     defaultValues: {
+      fullName: fullName || '',
       phone: phone || '',
       address: address || '',
     },
@@ -35,12 +37,12 @@ const PhoneAndAddressScreen = () => {
 
   // TODO: Call API Update User
   // const { mutate, isPending } = useMutation({
-  //   mutationFn: (values: PhoneAndAddressFormType) => {
+  //   mutationFn: (values: CheckoutUserInformationFormType) => {
   //     console.log(values);
   //   },
   // });
 
-  const onSubmit = (values: PhoneAndAddressFormType) => {
+  const onSubmit = (values: CheckoutUserInformationFormType) => {
     setCheckoutData(values);
     navigation.goBack();
     // mutate(values, {
@@ -62,6 +64,18 @@ const PhoneAndAddressScreen = () => {
 
       <Form {...form}>
         <View className='gap-[16px] mt-[40px] w-full'>
+          <FormField
+            control={form.control}
+            name='fullName'
+            render={({ field }) => (
+              <FormInput
+                className='font-inter-regular h-[48px] px-[16px] py-[12px]'
+                placeholder='Full Name'
+                {...field}
+              />
+            )}
+          />
+
           <FormField
             control={form.control}
             name='phone'
@@ -97,4 +111,4 @@ const PhoneAndAddressScreen = () => {
   );
 };
 
-export default PhoneAndAddressScreen;
+export default CheckoutUserInformationScreen;

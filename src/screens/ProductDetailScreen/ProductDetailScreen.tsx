@@ -28,7 +28,7 @@ const ProductDetailScreen = ({ route }: ProductDetailScreenNavigationProps) => {
   const { isDarkColorScheme } = useColorScheme();
   const setFeedbacks = useStore(useShallow((state) => state.setFeedbacks));
   const { data, refetch, isFetching } = useQuery({
-    queryKey: [GET_PRODUCT_QUERY_KEY],
+    queryKey: [GET_PRODUCT_QUERY_KEY, route.params.id],
     queryFn: () => execute(GetProductQuery, { id: Number(route.params.id) }),
     select: (data) => data.data,
   });
@@ -63,7 +63,9 @@ const ProductDetailScreen = ({ route }: ProductDetailScreenNavigationProps) => {
         contentContainerClassName='pt-[25px] mx-auto w-full max-w-xl'
         showsVerticalScrollIndicator={false}
         automaticallyAdjustContentInsets={false}
-        refreshControl={<RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} />}
+        refreshControl={
+          <RefreshControl className='text-primary' refreshing={isRefetchingByUser} onRefresh={refetchByUser} />
+        }
       >
         <Pressable onPress={Keyboard.dismiss}>
           <View className='px-[25px]'>
@@ -90,14 +92,15 @@ const ProductDetailScreen = ({ route }: ProductDetailScreenNavigationProps) => {
               </View>
             </View>
 
-            {data?.product.categories && <CategoryList categories={data.product.categories || []} />}
-
             <Separator className='mt-[30px] mb-[20px] bg-muted' />
 
             <View className='gap-[15px]'>
               <Text className='font-inter-bold text-foreground text-[16px] leading-[24px] tracking-[0.2px]'>
                 Description Product
               </Text>
+
+              {data?.product.categories && <CategoryList categories={data.product.categories || []} />}
+
               <Text className='font-inter-regular text-foreground text-[14px] leading-[22px] tracking-[0.2px]'>
                 {data?.product.description}
               </Text>
@@ -125,10 +128,7 @@ const ProductDetailScreen = ({ route }: ProductDetailScreenNavigationProps) => {
           </View>
 
           <View className={`${isDarkColorScheme ? 'bg-secondary' : 'bg-destructive-foreground'}`}>
-            <ProductList
-              title='Featured Product'
-              data={data?.products.items.filter((product) => product.id !== route.params.id) || []}
-            />
+            <ProductList hiddenProductId={route.params.id} title='Featured Product' data={data?.products.items || []} />
           </View>
 
           <View

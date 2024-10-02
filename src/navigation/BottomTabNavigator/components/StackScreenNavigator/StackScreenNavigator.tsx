@@ -1,5 +1,3 @@
-import React from 'react';
-
 import type { CompositeScreenProps } from '@react-navigation/native';
 import type { NativeStackNavigationOptions, NativeStackScreenProps } from '@react-navigation/native-stack';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';

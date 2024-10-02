@@ -50,7 +50,9 @@ const ProductCard = ({ id, imageUrl, title, price, rating, numOfReviews }: Produ
         style={{ width: '100%', height: 155, alignSelf: 'center', borderRadius: 4 }}
         contentFit='cover'
       />
-      <Text className='font-inter-medium mt-[20px] text-[16px] tracking-[0.2px]'>{title}</Text>
+      <Text numberOfLines={1} className='font-inter-medium mt-[20px] text-[16px] tracking-[0.2px]'>
+        {title}
+      </Text>
       <Text className='font-inter-bold mt-[4px] text-[14px] tracking-[0.2px] text-[#FE3A30]'>
         {price.toLocaleString()} ₫
       </Text>

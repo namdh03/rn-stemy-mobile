@@ -20,7 +20,7 @@
  *      │   └── Product Feedback Screen
  *      ├── Cart Screen
  *      ├── Checkout Screen
- *      ├── Phone And Address Screen
+ *      ├── Checkout User Information Screen
  *      ├── Order Progress Screen
  *      ├── Order Success Screen
  *      └── Order Error Screen
@@ -65,7 +65,7 @@ export type MainStackParamList = {
   ProductDetailStack: NavigatorScreenParams<ProductDetailStackParamList>;
   CartScreen: undefined;
   CheckoutScreen: undefined;
-  PhoneAndAddressScreen: undefined;
+  CheckoutUserInformationScreen: undefined;
   OrderProgressScreen: CheckoutOrderInput | undefined;
   OrderSuccessScreen: { totalPrice: number };
   OrderErrorScreen: undefined;
@@ -137,8 +137,8 @@ export type CheckoutScreenNavigationProps = CompositeScreenProps<
   NativeStackScreenProps<RootStackParamList>
 >;
 
-export type PhoneAndAddressScreenNavigationProps = CompositeScreenProps<
-  NativeStackScreenProps<MainStackParamList, 'PhoneAndAddressScreen'>,
+export type CheckoutUserInformationScreenNavigationProps = CompositeScreenProps<
+  NativeStackScreenProps<MainStackParamList, 'CheckoutUserInformationScreen'>,
   NativeStackScreenProps<RootStackParamList>
 >;
 

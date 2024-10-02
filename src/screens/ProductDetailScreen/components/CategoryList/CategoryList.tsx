@@ -1,6 +1,5 @@
 import { ScrollView, View } from 'react-native';
 
-import { Button } from '~components/ui/button';
 import { Text } from '~components/ui/text';
 import { GetProductQuery } from '~graphql/graphql';
 
@@ -26,29 +25,26 @@ const CategoryList = ({ categories }: CategoryListProps) => {
   const groupedCategories = groupCategoriesByTitle(categories);
 
   return (
-    <View className='mt-[20px]'>
-      <Text className='font-inter-bold text-foreground text-[16px] leading-[24px] tracking-[0.2px] mb-[10px]'>
-        Categories
-      </Text>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerClassName='gap-y-[16px]'>
+    <View>
+      <View className='flex-row items-center'>
+        <View className='flex-1 px-[7px] py-[10px] bg-[#16A34A1A] border border-accent'>
+          <Text className='font-inter-semiBold text-foreground text-[14px]'>Categories</Text>
+        </View>
+        <View className='flex-1 px-[7px] py-[10px] bg-[#16A34A1A] border border-accent'>
+          <Text className='font-inter-semiBold text-foreground text-[14px]'>Description</Text>
+        </View>
+      </View>
+      <ScrollView showsVerticalScrollIndicator={false}>
         {Object.entries(groupedCategories).map(([title, categoryGroup], index) => (
-          <View key={index} className='gap-[8px]'>
-            <Text className='font-inter-medium text-foreground text-[14px]'>{title}</Text>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              {categoryGroup.map((category, index) => (
-                <Button
-                  key={index}
-                  variant='outline'
-                  size='sm'
-                  onPress={() => {
-                    console.log(`Selected Category: ${category.name}`);
-                  }}
-                  style={{ marginRight: 8 }}
-                >
-                  <Text className='font-inter-medium text-foreground text-[14px]'>{category.name}</Text>
-                </Button>
-              ))}
-            </ScrollView>
+          <View key={index} className='flex-row items-center'>
+            <View className='flex-1 px-[7px] py-[10px] border border-accent'>
+              <Text className='font-inter-regular text-foreground text-[12px]'>{title}</Text>
+            </View>
+            <View className='flex-1 px-[7px] py-[10px] border border-accent'>
+              <Text className='font-inter-regular text-foreground text-[12px]'>
+                {categoryGroup.map((category) => category.name).join(', ')}
+              </Text>
+            </View>
           </View>
         ))}
       </ScrollView>

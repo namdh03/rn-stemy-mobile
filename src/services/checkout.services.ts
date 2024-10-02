@@ -1,8 +1,20 @@
 import { graphql } from '~graphql';
 
 export const CreateOrderMutation = graphql(`
-  mutation CreateOrder($address: String!, $cartIds: [Int!]!, $paymentProvider: PaymentProvider!, $phone: String!) {
-    createOrder(address: $address, cartIds: $cartIds, paymentProvider: $paymentProvider, phone: $phone)
+  mutation CreateOrder(
+    $fullName: String!
+    $address: String!
+    $cartIds: [Int!]!
+    $paymentProvider: PaymentProvider!
+    $phone: String!
+  ) {
+    createOrder(
+      fullName: $fullName
+      address: $address
+      cartIds: $cartIds
+      paymentProvider: $paymentProvider
+      phone: $phone
+    )
   }
 `);
 

@@ -19,6 +19,7 @@ const documents = {
   '\n  mutation DeleteCarts($cartId: [Int!]!) {\n    deleteCarts(cartId: $cartId)\n  }\n': types.DeleteCartsDocument,
   '\n  mutation UpdateCart($cartId: Float!, $quantity: Float!) {\n    updateCart(cartId: $cartId, quantity: $quantity) {\n      id\n    }\n  }\n':
     types.UpdateCartDocument,
+  '\n  query GetCartCount {\n    countCart\n  }\n': types.GetCartCountDocument,
   '\n  mutation CreateOrder($address: String!, $cartIds: [Int!]!, $paymentProvider: PaymentProvider!, $phone: String!) {\n    createOrder(address: $address, cartIds: $cartIds, paymentProvider: $paymentProvider, phone: $phone)\n  }\n':
     types.CreateOrderDocument,
   '\n  mutation CheckoutOrder($input: CheckoutOrderInput!) {\n    checkoutOrder(input: $input)\n  }\n':
@@ -67,6 +68,12 @@ export function graphql(
 export function graphql(
   source: '\n  mutation UpdateCart($cartId: Float!, $quantity: Float!) {\n    updateCart(cartId: $cartId, quantity: $quantity) {\n      id\n    }\n  }\n',
 ): typeof import('./graphql').UpdateCartDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query GetCartCount {\n    countCart\n  }\n',
+): typeof import('./graphql').GetCartCountDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

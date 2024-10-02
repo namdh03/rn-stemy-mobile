@@ -50,7 +50,7 @@ const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
     }
   };
   return (
-    <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false} automaticallyAdjustContentInsets={false}>
       <View className='w-full px-[25px]'>
         <SearchName />
       </View>

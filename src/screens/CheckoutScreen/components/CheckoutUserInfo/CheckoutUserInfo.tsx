@@ -12,9 +12,9 @@ import { MainStackParamList } from '~types/navigation.type';
 
 const CheckoutUserInfo = () => {
   const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
-  const { user, phone, address } = useStore(
+  const { fullName, phone, address } = useStore(
     useShallow((state) => ({
-      user: state.user,
+      fullName: state.checkoutData.fullName,
       phone: state.checkoutData.phone,
       address: state.checkoutData.address,
     })),
@@ -27,12 +27,12 @@ const CheckoutUserInfo = () => {
         <View className='flex-1'>
           <Text className='font-inter-semiBold text-[14px] text-foreground'>Delivery Address</Text>
           <Text className='font-inter-regular mt-[6px] text-[14px] text-foreground'>
-            {user?.fullName} {phone && `| (+84) ${phone.slice(1)}`}
+            {fullName} {phone && `| (+84) ${phone.slice(1)}`}
           </Text>
           {address && <Text className='font-inter-light mt-[8px] text-[14px] text-foreground'>{address}</Text>}
         </View>
 
-        <Pressable onPress={() => navigation.navigate('PhoneAndAddressScreen')}>
+        <Pressable onPress={() => navigation.navigate('CheckoutUserInformationScreen')}>
           <ChevronRight className='flex-shrink-0 text-muted-foreground' size={30} />
         </Pressable>
       </View>

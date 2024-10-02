@@ -42,3 +42,9 @@ export const UpdateCartMutation = graphql(`
     }
   }
 `);
+
+export const GetCartCountQuery = graphql(`
+  query GetCartCount {
+    countCart
+  }
+`);

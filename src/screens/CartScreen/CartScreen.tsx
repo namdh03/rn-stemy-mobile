@@ -66,7 +66,9 @@ const CartScreen = ({ navigation }: CartScreenNavigationProps) => {
             ItemSeparatorComponent={() => <Separator className='bg-muted my-[12px]' />}
             className='flex-1'
             contentContainerStyle={{ paddingBottom: 140 }}
-            refreshControl={<RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} />}
+            refreshControl={
+              <RefreshControl className='text-primary' refreshing={isRefetchingByUser} onRefresh={refetchByUser} />
+            }
           />
 
           <View className='absolute left-0 right-0 bottom-0 px-[24px] pt-[12px] pb-[24px] bg-card'>

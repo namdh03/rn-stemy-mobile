@@ -47,8 +47,12 @@ export const createCartSlice: StateCreator<CartSlice, [['zustand/immer', never]]
       state.selectedCart = selectedCart;
       state.total = total;
     }),
-  clearSelectedCart: () =>
+  clearOrderedCart: () =>
     set((state) => {
+      const selectedCart = state.selectedCart || {};
+      const updatedCart = state.cart.filter((cartItem) => !selectedCart[cartItem.id]);
+
+      state.cart = updatedCart;
       state.selectedCart = undefined;
       state.total = 0;
     }),

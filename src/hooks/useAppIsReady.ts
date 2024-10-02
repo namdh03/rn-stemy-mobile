@@ -30,9 +30,10 @@ export default function useAppIsReady() {
     enabled: !!accessToken,
     select: (data) => data.data,
   });
-  const { authenticate, setCheckoutData } = useStore(
+  const { authenticate, unAuthenticate, setCheckoutData } = useStore(
     useShallow((state) => ({
       authenticate: state.authenticate,
+      unAuthenticate: state.unAuthenticate,
       setCheckoutData: state.setCheckoutData,
     })),
   );
@@ -75,7 +76,7 @@ export default function useAppIsReady() {
         const { data } = await refetch();
         if (data) {
           authenticate(data.me);
-          setCheckoutData({ address: data.me.address, phone: data.me.phone });
+          setCheckoutData({ fullName: data.me.fullName, phone: data.me.phone, address: data.me.address });
         }
       }
     })()
@@ -89,8 +90,12 @@ export default function useAppIsReady() {
   useEffect(() => {
     if (appIsReady && accessToken && data) {
       authenticate(data.me);
-      setCheckoutData({ address: data.me.address, phone: data.me.phone });
+      setCheckoutData({ fullName: data.me.fullName, phone: data.me.phone, address: data.me.address });
+
+      return;
     }
+
+    if (!accessToken) return unAuthenticate();
   }, [accessToken, data]);
 
   const onLayoutRootView = useCallback(async () => {

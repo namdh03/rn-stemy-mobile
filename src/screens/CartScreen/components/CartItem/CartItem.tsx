@@ -1,12 +1,13 @@
 import { memo, useCallback, useEffect, useRef } from 'react';
 import { Animated, Pressable as RNPressable, View } from 'react-native';
+import { I18nManager } from 'react-native';
 import { Swipeable } from 'react-native-gesture-handler';
 import { Image } from 'expo-image';
 import { useShallow } from 'zustand/react/shallow';
 
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import InputPositiveNumber from '~components/customs/InputPositiveNumber';
 import Pressable from '~components/customs/Pressable';
@@ -14,6 +15,7 @@ import { Minus, Plus } from '~components/icons';
 import { Checkbox } from '~components/ui/checkbox';
 import { Text } from '~components/ui/text';
 import constants from '~constants';
+import { GET_CART_COUNT_QUERY_KEY } from '~constants/cart-query-key';
 import execute from '~graphql/execute';
 import { GetCartQuery } from '~graphql/graphql';
 import { useDebounce } from '~hooks';
@@ -31,6 +33,7 @@ const MAX_QUANTITY_CART = 99;
 
 const CartItem = memo(({ item }: CartItemProps) => {
   const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
+  const queryClient = useQueryClient();
   const { selectedCart, setSelectedCart, updateCartItemQuantity, removeCartItem } = useCartStore(
     useShallow((state) => ({
       selectedCart: state.selectedCart,
@@ -48,7 +51,7 @@ const CartItem = memo(({ item }: CartItemProps) => {
     mutationFn: ({ cartId, quantity }: { cartId: number; quantity: number }) =>
       execute(UpdateCartMutation, { cartId, quantity }),
   });
-  const swipeableRef = useRef<Swipeable>(null);
+  const swipeableRowRef = useRef<Swipeable>(null);
 
   useEffect(() => {
     if (quantityDebounce && quantityDebounce !== quantityRef.current) {
@@ -84,10 +87,11 @@ const CartItem = memo(({ item }: CartItemProps) => {
     handleQuantityChange(item.quantity - 1);
   }, [item.quantity, handleQuantityChange]);
 
-  const handleDeleteCartItem = (swipeable: Swipeable) => {
-    swipeable.close();
+  const handleDeleteCartItem = () => {
+    swipeableRowRef.current?.close();
     deleteCartItem(Number(item.id), {
       onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: [GET_CART_COUNT_QUERY_KEY] });
         removeCartItem(item.id);
       },
       onError: (errors) => {
@@ -102,13 +106,6 @@ const CartItem = memo(({ item }: CartItemProps) => {
     });
   };
 
-  const handleLongPress = () => {
-    // Open the swipeable item when long pressed
-    if (swipeableRef.current) {
-      swipeableRef.current.openRight();
-    }
-  };
-
   const handleNavigationToProductDetail = () => {
     navigation.navigate('ProductDetailStack', {
       screen: 'ProductDetailScreen',
@@ -118,32 +115,43 @@ const CartItem = memo(({ item }: CartItemProps) => {
     });
   };
 
-  // Render right swipe action (Delete button)
-  const renderRightActions = (
-    progressAnimatedValue: Animated.AnimatedInterpolation<number>,
-    _dragAnimatedValue: Animated.AnimatedInterpolation<number>,
-    swipeable: Swipeable,
-  ) => {
-    const opacity = progressAnimatedValue.interpolate({
+  const renderRightAction = (text: string, x: number, progress: Animated.AnimatedInterpolation<number>) => {
+    const trans = progress.interpolate({
       inputRange: [0, 1],
-      outputRange: [0, 1],
+      outputRange: [x, 0],
     });
 
     return (
-      <Animated.View style={{ opacity }}>
-        <Pressable
-          className='justify-center items-center bg-destructive w-[70px] h-full'
-          onPress={() => handleDeleteCartItem(swipeable)}
-        >
-          <Text className='font-inter-regular text-background text-pretty text-[14px]'>Delete</Text>
+      <Animated.View style={{ flex: 1, transform: [{ translateX: trans }] }}>
+        <Pressable className='flex-1 items-center justify-center bg-destructive' onPress={handleDeleteCartItem}>
+          <Text className='font-inter-regular text-background text-pretty text-[14px]'>{text}</Text>
         </Pressable>
       </Animated.View>
     );
   };
 
+  const renderRightActions = (progress: Animated.AnimatedInterpolation<number>) => (
+    <View
+      style={{
+        width: 66,
+        flexDirection: I18nManager.isRTL ? 'row-reverse' : 'row',
+      }}
+    >
+      {renderRightAction('Delete', 66, progress)}
+    </View>
+  );
+
   return (
-    <Swipeable ref={swipeableRef} renderRightActions={renderRightActions}>
-      <RNPressable onLongPress={handleLongPress}>
+    <Swipeable
+      ref={swipeableRowRef}
+      friction={2}
+      enableTrackpadTwoFingerGesture
+      leftThreshold={30}
+      rightThreshold={40}
+      renderRightActions={renderRightActions}
+      overshootRight={false}
+    >
+      <RNPressable>
         <View className='flex-row items-center'>
           <Checkbox
             checked={selectedCart ? item.id in selectedCart : false}

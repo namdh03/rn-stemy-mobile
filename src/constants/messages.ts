@@ -1,5 +1,7 @@
 export const TOKEN_NOT_FOUND = 'Token not found';
 
+export const TOKEN_NOT_VALID = 'Token not valid';
+
 export const SYSTEM_MESSAGES = {
   SUCCESS_TITLE: 'Success',
   ERROR_TITLE: 'Error',
