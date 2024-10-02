@@ -1,4 +1,3 @@
-import React from 'react';
 import { Dimensions, FlatList, View } from 'react-native';
 
 import { Text } from '~components/ui/text';
@@ -10,13 +9,14 @@ import ProductCard from '../ProductCard';
 interface ProductListProps {
   title: string;
   data: GetProductQuery['products']['items'];
+  hiddenProductId?: string;
   onPress?: () => void;
 }
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const ITEM_WIDTH = SCREEN_WIDTH * 0.55;
 
-export default function ProductList({ title, data, onPress }: ProductListProps) {
+export default function ProductList({ title, data, hiddenProductId, onPress }: ProductListProps) {
   const renderItem = ({ item }: { item: GetProductQuery['products']['items'][number] }) => {
     return (
       <View style={{ width: ITEM_WIDTH, marginRight: 15 }}>
@@ -42,7 +42,7 @@ export default function ProductList({ title, data, onPress }: ProductListProps) 
       </View>
 
       <FlatList
-        data={data}
+        data={hiddenProductId ? data.filter((item) => item.id !== hiddenProductId) : data}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         horizontal

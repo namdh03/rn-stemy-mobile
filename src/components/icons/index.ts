@@ -14,7 +14,6 @@ export { default as Mail } from './Mail';
 export { default as MapPin } from './MapPin';
 export { default as Minus } from './Minus';
 export { default as MoonStar } from './MoonStar';
-export { default as OctagonX } from './OctagonX';
 export { default as Plus } from './Plus';
 export { default as Search } from './Search';
 export { default as ShoppingCart } from './ShoppingCart';

@@ -60,7 +60,9 @@ class Http {
 
         if (isErrorResponse(response)) {
           const isUnAuthenticated = response.data.errors.some((error) =>
-            error.message.includes(constants.MESSAGES.TOKEN_NOT_FOUND),
+            [constants.MESSAGES.TOKEN_NOT_FOUND, constants.MESSAGES.TOKEN_NOT_VALID].some((message) =>
+              error.message.includes(message),
+            ),
           );
 
           if (isUnAuthenticated) removeAccessToken();

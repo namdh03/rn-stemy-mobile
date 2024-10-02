@@ -202,6 +202,12 @@ type Query {
     sort: String! = "id"
   ): ProductsWithPaginationResponse!
   searchOrder(search: String!): [Order!]!
+  tickets(
+    currentItem: Int! = 9
+    currentPage: Int! = 1
+    order: SortOrder! = ASC
+    sort: String! = "id"
+  ): TicketsWithPaginationResponse!
   user(id: Int!): User
   users: [User!]!
 }
@@ -254,6 +260,11 @@ type TicketImage {
 enum TicketStatus {
   CLOSE
   OPEN
+}
+
+type TicketsWithPaginationResponse {
+  items: [Ticket!]!
+  pageInfo: e!
 }
 
 type User {

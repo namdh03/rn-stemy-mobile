@@ -1,6 +1,7 @@
 import { PaymentProvider } from '~graphql/graphql';
 
 export interface CheckoutData {
+  fullName?: string | null;
   phone?: string | null;
   address?: string | null;
   cartIds: number[];
@@ -8,6 +9,7 @@ export interface CheckoutData {
 }
 
 export interface CheckoutDataStrict {
+  fullName: string;
   phone: string;
   address: string;
   cartIds: number[];

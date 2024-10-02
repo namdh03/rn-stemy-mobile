@@ -3,7 +3,7 @@ import { ActivityIndicator, Keyboard, Pressable as RNPressable, Text as RNText, 
 
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { RouteProp, useRoute } from '@react-navigation/native';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import InputPositiveNumber from '~components/customs/InputPositiveNumber/InputPositiveNumber';
 import Pressable from '~components/customs/Pressable';
@@ -12,6 +12,7 @@ import { Button } from '~components/ui/button';
 import { Separator } from '~components/ui/separator';
 import { Text } from '~components/ui/text';
 import constants from '~constants';
+import { GET_CART_COUNT_QUERY_KEY, GET_CART_QUERY_KEY } from '~constants/cart-query-key';
 import execute from '~graphql/execute';
 import { useColorScheme } from '~hooks';
 import { AddToCartMutation } from '~services/cart.services';
@@ -36,9 +37,10 @@ const DEFAULT_SELECTED_OPTION = 'lab';
 const AddCartBottomSheet = forwardRef<BottomSheet, AddCartBottomSheetProps>(
   ({ defaultPrice, labPrice, onFocus, onClose }, ref) => {
     const route: RouteProp<ProductDetailStackParamList, 'ProductDetailScreen'> = useRoute();
+    const { isDarkColorScheme } = useColorScheme();
+    const queryClient = useQueryClient();
     const [quantity, setQuantity] = useState(DEFAULT_QUANTITY_CART);
     const [selectedOption, setSelectedOption] = useState<LabOption>(DEFAULT_SELECTED_OPTION);
-    const { isDarkColorScheme } = useColorScheme();
     const priceByQuantity = useMemo(
       () => (selectedOption === DEFAULT_SELECTED_OPTION ? defaultPrice + labPrice : defaultPrice) * quantity,
       [defaultPrice, quantity, selectedOption],
@@ -73,6 +75,8 @@ const AddCartBottomSheet = forwardRef<BottomSheet, AddCartBottomSheetProps>(
       if (!route.params.id) return;
       mutate(Number(route.params.id), {
         onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: [GET_CART_QUERY_KEY] });
+          queryClient.invalidateQueries({ queryKey: [GET_CART_COUNT_QUERY_KEY] });
           showDialogSuccess({ textBody: constants.MESSAGES.CART_MESSAGES.ADD_TO_CART_SUCCESSFULLY });
           onClose();
         },
@@ -91,7 +95,7 @@ const AddCartBottomSheet = forwardRef<BottomSheet, AddCartBottomSheetProps>(
     return (
       <BottomSheet
         ref={ref}
-        snapPoints={['70%', '70%']}
+        snapPoints={['75%', '75%']}
         enablePanDownToClose
         index={-1}
         onClose={handleBottomSheetClose}

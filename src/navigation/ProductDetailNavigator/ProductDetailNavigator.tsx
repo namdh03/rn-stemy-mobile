@@ -1,10 +1,10 @@
-import React from 'react';
 import { View } from 'react-native';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import MainHeaderRight from '~components/customs/MainHeaderRight';
 import Pressable from '~components/customs/Pressable';
-import { ChevronLeft, ShoppingCart, Star } from '~components/icons';
+import { ChevronLeft, Star } from '~components/icons';
 import { Text } from '~components/ui/text';
 import { useThrottle } from '~hooks';
 import ProductDetailScreen from '~screens/ProductDetailScreen';
@@ -34,11 +34,7 @@ const ProductDetailNavigator = () => (
             <ChevronLeft className='text-foreground' size={30} />
           </Pressable>
         ),
-        headerRight: () => (
-          <Pressable onPress={() => navigation.navigate('CartScreen')}>
-            <ShoppingCart className='text-foreground' size={26} />
-          </Pressable>
-        ),
+        headerRight: () => <MainHeaderRight />,
       })}
     />
     <ProductDetailStack.Screen

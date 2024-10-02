@@ -4,13 +4,14 @@ import * as WebBrowser from 'expo-web-browser';
 import { useShallow } from 'zustand/react/shallow';
 
 import BottomSheet from '@gorhom/bottom-sheet';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { CircleDollarSign } from '~components/icons';
 import { Button } from '~components/ui/button';
 import { Separator } from '~components/ui/separator';
 import { Text } from '~components/ui/text';
 import constants from '~constants';
+import { GET_CART_COUNT_QUERY_KEY } from '~constants/cart-query-key';
 import execute from '~graphql/execute';
 import { CreateOrderMutation } from '~services/checkout.services';
 import { useCartStore, useStore } from '~store';
@@ -24,11 +25,12 @@ import CheckoutUserInfo from './components/CheckoutUserInfo';
 import PaymentMethodBottomSheet from './components/PaymentMethodBottomSheet';
 
 const CheckoutScreen = ({ navigation }: CheckoutScreenNavigationProps) => {
-  const { total, selectedCart, clearSelectedCart } = useCartStore(
+  const queryClient = useQueryClient();
+  const { total, selectedCart, clearOrderedCart } = useCartStore(
     useShallow((state) => ({
       total: state.total,
       selectedCart: state.selectedCart,
-      clearSelectedCart: state.clearSelectedCart,
+      clearOrderedCart: state.clearOrderedCart,
     })),
   );
   const checkoutData = useStore(useShallow((state) => state.checkoutData));
@@ -46,18 +48,19 @@ const CheckoutScreen = ({ navigation }: CheckoutScreenNavigationProps) => {
   };
 
   const handlePlaceOrder = () => {
-    if (!checkoutData.phone || !checkoutData.address) {
+    if (!checkoutData.fullName || !checkoutData.phone || !checkoutData.address) {
       return showDialogError({
         title: constants.MESSAGES.SYSTEM_MESSAGES.MISSING_INFORMATION,
         textBody: 'Please provide your phone number and address to complete your order.',
         button: 'Go to Update',
-        onHide: () => navigation.navigate('PhoneAndAddressScreen'),
+        onHide: () => navigation.navigate('CheckoutUserInformationScreen'),
       });
     }
 
     if (checkoutData) {
       createOrderMutate(
         {
+          fullName: checkoutData.fullName,
           phone: checkoutData.phone,
           address: checkoutData.address,
           cartIds: [...checkoutData.cartIds],
@@ -65,7 +68,9 @@ const CheckoutScreen = ({ navigation }: CheckoutScreenNavigationProps) => {
         },
         {
           onSuccess: async (data) => {
-            await WebBrowser.openBrowserAsync(data.data.createOrder);
+            queryClient.invalidateQueries({ queryKey: [GET_CART_COUNT_QUERY_KEY] });
+            clearOrderedCart();
+            await WebBrowser.openAuthSessionAsync(data.data.createOrder);
           },
           onError: (errors) => {
             if (isErrors(errors)) {
@@ -75,9 +80,6 @@ const CheckoutScreen = ({ navigation }: CheckoutScreenNavigationProps) => {
               }
             }
             showDialogError();
-          },
-          onSettled: () => {
-            clearSelectedCart();
           },
         },
       );

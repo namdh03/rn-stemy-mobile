@@ -5,6 +5,7 @@ import { PaymentProvider } from '~graphql/graphql';
 import { CheckoutData, CheckoutSlice } from './checkout.type';
 
 const initialCheckoutData: CheckoutData = {
+  fullName: undefined,
   phone: undefined,
   address: undefined,
   cartIds: [],
