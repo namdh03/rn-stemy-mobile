@@ -1,9 +1,16 @@
+import { Product } from '~graphql/graphql';
+
+export type HistoryList = {
+  [key: string]: Pick<Product, 'id' | 'name'>;
+};
+
 export type HistorySearchProductState = {
-  list: string[];
+  list?: HistoryList;
 };
 
 export type HistorySearchProductActions = {
-  setItem: (value: string) => void;
+  setItem: (item: Pick<Product, 'id' | 'name'>) => void;
+  removeItem: (id: string) => void;
   reset: () => void;
 };
 
