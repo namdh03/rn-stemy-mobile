@@ -53,7 +53,7 @@ const SearchProductScreen = ({ navigation }: SearchProductScreenNavigationProps)
   }, []);
 
   const handleSearchIconPress = useCallback(() => {
-    setHistorySearchItem({ id: new Date().getTime().toString(), name: debouncedSearchValue });
+    if (debouncedSearchValue) setHistorySearchItem({ id: new Date().getTime().toString(), name: debouncedSearchValue });
     setFilterStoring({ search: debouncedSearchValue });
     navigation.push('BottomTabStack', {
       screen: 'StoresStack',

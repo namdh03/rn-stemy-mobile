@@ -18,7 +18,7 @@ const SearchName = forwardRef<TextInput, SearchNameProps>(
     const [isFocused, setIsFocused] = useState(false);
 
     return (
-      <Pressable className='relative w-[335px] h-[50px] mt-[25px]' onPress={onContainerPress}>
+      <Pressable className='relative w-full h-[50px] mt-[25px]' onPress={onContainerPress}>
         <Input
           ref={ref}
           editable={editable}

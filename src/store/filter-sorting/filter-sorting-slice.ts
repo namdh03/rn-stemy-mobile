@@ -1,5 +1,6 @@
 import { StateCreator } from 'zustand';
 
+import constants from '~constants';
 import { SortOrder } from '~graphql/graphql';
 
 import { FilterSortingSlice, FilterSortingState } from './filter-sorting.type';
@@ -7,11 +8,11 @@ import { FilterSortingSlice, FilterSortingState } from './filter-sorting.type';
 const initialState: FilterSortingState = {
   storesFilterSorting: {
     categoryIds: [],
-    currentItem: 12,
-    currentPage: 1,
+    currentItem: constants.FILTER_SORTING.DEFAULT_CURRENT_ITEM,
+    currentPage: constants.FILTER_SORTING.DEFAULT_CURRENT_PAGE,
     order: SortOrder.Asc,
     search: '',
-    sort: 'name',
+    sort: constants.FILTER_SORTING.DEFAULT_SORT_BY_FIELD,
   },
 };
 
