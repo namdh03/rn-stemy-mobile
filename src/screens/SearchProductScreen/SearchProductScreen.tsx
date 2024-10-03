@@ -12,13 +12,14 @@ import execute from '~graphql/execute';
 import { Product } from '~graphql/graphql';
 import { useColorScheme, useDebounce } from '~hooks';
 import { GetFeaturedProductQuery, SearchProductByNameQuery } from '~services/product.services';
-import { useHistorySearchProductStore } from '~store';
+import { useHistorySearchProductStore, useStore } from '~store';
+import { SearchProductScreenNavigationProps } from '~types/navigation.type';
 
 import NoResultsMessage from './components/NoResultsMessage';
 import RecentlySearched from './components/RecentlySearched';
 import SearchSuggestions from './components/SearchSuggestions';
 
-const SearchProductScreen = () => {
+const SearchProductScreen = ({ navigation }: SearchProductScreenNavigationProps) => {
   const { isDarkColorScheme } = useColorScheme();
   const [searchValue, setSearchValue] = useState('');
   const debouncedSearchValue = useDebounce(searchValue);
@@ -29,10 +30,11 @@ const SearchProductScreen = () => {
   });
   const { data: searchProductNameList, isFetching: isSearchProductNameListFetching } = useQuery({
     queryKey: [SEARCH_PRODUCT_BY_NAME_QUERY_KEY, debouncedSearchValue],
-    queryFn: () => execute(SearchProductByNameQuery, { search: debouncedSearchValue }),
+    queryFn: () => execute(SearchProductByNameQuery, { search: debouncedSearchValue.trim() }),
     enabled: !!debouncedSearchValue,
     select: (data) => data.data.products.items,
   });
+  const setFilterStoring = useStore(useShallow((state) => state.setFilterStoring));
   const setHistorySearchItem = useHistorySearchProductStore(useShallow((state) => state.setItem));
 
   const handleSearchValueChange = (text: string) => {
@@ -41,7 +43,25 @@ const SearchProductScreen = () => {
 
   const handleSearchResultItemPress = useCallback((product: Pick<Product, 'id' | 'name'>) => {
     setHistorySearchItem(product);
+    setFilterStoring({ search: product.name });
+    navigation.push('BottomTabStack', {
+      screen: 'StoresStack',
+      params: {
+        screen: 'StoresScreen',
+      },
+    });
   }, []);
+
+  const handleSearchIconPress = useCallback(() => {
+    setHistorySearchItem({ id: new Date().getTime().toString(), name: debouncedSearchValue });
+    setFilterStoring({ search: debouncedSearchValue });
+    navigation.push('BottomTabStack', {
+      screen: 'StoresStack',
+      params: {
+        screen: 'StoresScreen',
+      },
+    });
+  }, [debouncedSearchValue]);
 
   return (
     <ScrollView
@@ -52,7 +72,11 @@ const SearchProductScreen = () => {
     >
       <RNPressable className='flex-1 pb-[14px]' onPress={Keyboard.dismiss}>
         <View className='flex-1 px-[25px]'>
-          <SearchName value={searchValue} onChangeText={handleSearchValueChange} />
+          <SearchName
+            value={searchValue}
+            onChangeText={handleSearchValueChange}
+            onSearchPress={handleSearchIconPress}
+          />
 
           <View className='mt-[25px] pb-[50px]'>
             {isSearchProductNameListFetching ? (

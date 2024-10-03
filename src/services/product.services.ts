@@ -78,3 +78,44 @@ export const SearchProductByNameQuery = graphql(`
     }
   }
 `);
+
+export const FilterAndSortingProductQuery = graphql(`
+  query FilterAndSortingProduct(
+    $categoryIds: [Int!]!
+    $currentItem: Int!
+    $currentPage: Int!
+    $maxPrice: Int
+    $maxRating: Int
+    $minPrice: Int
+    $minRating: Int
+    $order: SortOrder!
+    $search: String!
+    $sort: String!
+  ) {
+    products(
+      categoryIds: $categoryIds
+      currentItem: $currentItem
+      currentPage: $currentPage
+      maxPrice: $maxPrice
+      maxRating: $maxRating
+      minPrice: $minPrice
+      minRating: $minRating
+      order: $order
+      search: $search
+      sort: $sort
+    ) {
+      items {
+        id
+        images {
+          url
+        }
+        price
+        name
+        rating
+        feedbacks {
+          id
+        }
+      }
+    }
+  }
+`);

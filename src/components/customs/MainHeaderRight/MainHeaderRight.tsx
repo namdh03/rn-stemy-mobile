@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useQuery } from '@tanstack/react-query';
 
-import { Bell, ShoppingCart } from '~components/icons';
+import { ShoppingCart } from '~components/icons';
 import { Badge } from '~components/ui/badge';
 import { Text } from '~components/ui/text';
 import { GET_CART_COUNT_QUERY_KEY } from '~constants/cart-query-key';
@@ -24,9 +24,9 @@ const MainHeaderRight = () => {
 
   return (
     <View className='flex-row gap-[18px]'>
-      <Pressable>
+      {/* <Pressable>
         <Bell className='text-foreground' size={26} />
-      </Pressable>
+      </Pressable> */}
       <Pressable onPress={() => navigation.navigate('CartScreen')}>
         <ShoppingCart className='text-foreground' size={26} />
         <Badge

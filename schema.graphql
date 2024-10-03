@@ -197,13 +197,13 @@ type Query {
   product(id: Float!): Product!
   productCategories: [ProductCategory!]!
   products(
-    categoryIds: [Int!]! = []
+    categoryIds: [Int!] = []
     currentItem: Int! = 9
     currentPage: Int! = 1
-    maxPrice: Int! = 10000000
-    maxRating: Int! = 5
-    minPrice: Int! = 0
-    minRating: Int! = 0
+    maxPrice: Int = 10000000
+    maxRating: Int = 5
+    minPrice: Int = 0
+    minRating: Int = 0
     order: SortOrder! = ASC
     search: String! = ""
     sort: String! = "id"

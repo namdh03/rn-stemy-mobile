@@ -13,7 +13,8 @@
  *      ├── Bottom Tab
  *      │   ├── Home Stack
  *      │   │   └── Home Screen
- *      │   ├── Stores Screen
+ *      │   ├── Stores Stack
+ *      │   │   ├── Stores Screen
  *      │   └── Me Screen
  *      ├── Product Detail Stack
  *      │   ├── Product Detail Screen
@@ -25,6 +26,7 @@
  *      ├── Order Success Screen
  *      ├── Order Error Screen
  *      └── Search Product Screen
+ *
  */
 
 // import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
@@ -47,10 +49,14 @@ export type HomeStackParamList = {
   HomeScreen: undefined;
 };
 
+export type StoresStackParamList = {
+  StoresScreen: undefined;
+};
+
 // Bottom Tab
 export type BottomTabParamList = {
   HomeStack: NavigatorScreenParams<HomeStackParamList>;
-  StoresScreen: undefined;
+  StoresStack: NavigatorScreenParams<StoresStackParamList>;
   MeScreen: undefined;
 };
 
@@ -115,8 +121,8 @@ export type HomeScreenNavigationProps = CompositeScreenProps<
 >;
 
 export type StoresScreenNavigationProps = CompositeScreenProps<
-  NativeStackScreenProps<BottomTabParamList, 'StoresScreen'>,
-  NativeStackScreenProps<MainStackParamList>
+  NativeStackScreenProps<StoresStackParamList, 'StoresScreen'>,
+  CompositeScreenProps<NativeStackScreenProps<BottomTabParamList>, NativeStackScreenProps<MainStackParamList>>
 >;
 
 export type ProductDetailScreenNavigationProps = CompositeScreenProps<

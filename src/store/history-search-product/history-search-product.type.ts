@@ -1,11 +1,9 @@
 import { Product } from '~graphql/graphql';
 
-export type HistoryList = {
-  [key: string]: Pick<Product, 'id' | 'name'>;
-};
+export type HistoryList = Array<Pick<Product, 'id' | 'name'>>;
 
 export type HistorySearchProductState = {
-  list?: HistoryList;
+  list: HistoryList;
 };
 
 export type HistorySearchProductActions = {

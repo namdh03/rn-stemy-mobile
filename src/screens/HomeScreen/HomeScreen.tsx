@@ -30,7 +30,7 @@ const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
   }
 
   const handlePress = () => {
-    navigation.navigate('BottomTabStack', {
+    navigation.navigate('StoresStack', {
       screen: 'StoresScreen',
     });
   };
@@ -52,7 +52,12 @@ const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
   return (
     <ScrollView showsVerticalScrollIndicator={false} automaticallyAdjustContentInsets={false}>
       <View className='w-full px-[25px]'>
-        <SearchName editable={false} onPress={() => navigation.navigate('SearchProductScreen')} />
+        <SearchName
+          editable={false}
+          onContainerPress={() => {
+            navigation.push('SearchProductScreen');
+          }}
+        />
       </View>
       <Carousel />
       <View className='mb-[50px] px-[25px]'>
