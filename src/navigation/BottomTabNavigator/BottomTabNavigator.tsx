@@ -1,18 +1,18 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import Pressable from '~components/customs/Pressable';
-import { ChevronLeft, CircleUser, Store } from '~components/icons';
+import { CircleUser, Store } from '~components/icons';
 import House from '~components/icons/House';
 import MeScreen from '~screens/MeScreen';
-import StoresScreen from '~screens/StoresScreen';
-import { BottomTabParamList, StoresScreenNavigationProps } from '~types/navigation.type';
+import { BottomTabParamList } from '~types/navigation.type';
 
-import HomeStack from './stack/HomeStackScreen';
+import HomeStack from './stack/HomeStack';
+import StoresStack from './stack/StoresStack';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
 const BottomTabNavigator = () => (
   <BottomTab.Navigator
+    backBehavior='history'
     detachInactiveScreens={false}
     screenOptions={{
       headerShown: false,
@@ -36,24 +36,18 @@ const BottomTabNavigator = () => (
       options={{
         tabBarLabel: 'Home',
         tabBarIcon: ({ color, size }) => <House color={color} size={size} />,
-        headerShown: false,
       }}
     />
     <BottomTab.Screen
-      name='StoresScreen'
-      component={StoresScreen}
-      options={({ navigation }: StoresScreenNavigationProps) => ({
+      name='StoresStack'
+      component={StoresStack}
+      options={{
+        tabBarLabel: 'Stores',
         tabBarStyle: {
           display: 'none',
         },
-        tabBarLabel: 'Stores',
         tabBarIcon: ({ color, size }) => <Store color={color} size={size} />,
-        headerLeft: () => (
-          <Pressable onPress={() => navigation.goBack()}>
-            <ChevronLeft className='text-primary' size={30} />
-          </Pressable>
-        ),
-      })}
+      }}
     />
     <BottomTab.Screen
       name='MeScreen'

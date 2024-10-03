@@ -302,13 +302,13 @@ export type QueryProductArgs = {
 };
 
 export type QueryProductsArgs = {
-  categoryIds?: Array<Scalars['Int']['input']>;
+  categoryIds?: InputMaybe<Array<Scalars['Int']['input']>>;
   currentItem?: Scalars['Int']['input'];
   currentPage?: Scalars['Int']['input'];
-  maxPrice?: Scalars['Int']['input'];
-  maxRating?: Scalars['Int']['input'];
-  minPrice?: Scalars['Int']['input'];
-  minRating?: Scalars['Int']['input'];
+  maxPrice?: InputMaybe<Scalars['Int']['input']>;
+  maxRating?: InputMaybe<Scalars['Int']['input']>;
+  minPrice?: InputMaybe<Scalars['Int']['input']>;
+  minRating?: InputMaybe<Scalars['Int']['input']>;
   order?: SortOrder;
   search?: Scalars['String']['input'];
   sort?: Scalars['String']['input'];
@@ -611,6 +611,35 @@ export type SearchProductByNameQuery = {
   };
 };
 
+export type FilterAndSortingProductQueryVariables = Exact<{
+  categoryIds: Array<Scalars['Int']['input']> | Scalars['Int']['input'];
+  currentItem: Scalars['Int']['input'];
+  currentPage: Scalars['Int']['input'];
+  maxPrice?: InputMaybe<Scalars['Int']['input']>;
+  maxRating?: InputMaybe<Scalars['Int']['input']>;
+  minPrice?: InputMaybe<Scalars['Int']['input']>;
+  minRating?: InputMaybe<Scalars['Int']['input']>;
+  order: SortOrder;
+  search: Scalars['String']['input'];
+  sort: Scalars['String']['input'];
+}>;
+
+export type FilterAndSortingProductQuery = {
+  __typename?: 'Query';
+  products: {
+    __typename?: 'ProductsWithPaginationResponse';
+    items: Array<{
+      __typename?: 'Product';
+      id: string;
+      price: number;
+      name: string;
+      rating: number;
+      images: Array<{ __typename?: 'ProductImage'; url: string }>;
+      feedbacks: Array<{ __typename?: 'Feedback'; id: string }>;
+    }>;
+  };
+};
+
 export type LoginMutationVariables = Exact<{
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -908,6 +937,35 @@ export const SearchProductByNameDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<SearchProductByNameQuery, SearchProductByNameQueryVariables>;
+export const FilterAndSortingProductDocument = new TypedDocumentString(`
+    query FilterAndSortingProduct($categoryIds: [Int!]!, $currentItem: Int!, $currentPage: Int!, $maxPrice: Int, $maxRating: Int, $minPrice: Int, $minRating: Int, $order: SortOrder!, $search: String!, $sort: String!) {
+  products(
+    categoryIds: $categoryIds
+    currentItem: $currentItem
+    currentPage: $currentPage
+    maxPrice: $maxPrice
+    maxRating: $maxRating
+    minPrice: $minPrice
+    minRating: $minRating
+    order: $order
+    search: $search
+    sort: $sort
+  ) {
+    items {
+      id
+      images {
+        url
+      }
+      price
+      name
+      rating
+      feedbacks {
+        id
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<FilterAndSortingProductQuery, FilterAndSortingProductQueryVariables>;
 export const LoginDocument = new TypedDocumentString(`
     mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {

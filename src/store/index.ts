@@ -7,6 +7,7 @@ import { zustandStorage } from '~utils/mmkv-storage';
 import { createAuthSlice } from './auth/auth-slice';
 import { createCartSlice } from './cart/cart-slice';
 import { createCheckoutSlice } from './checkout/checkout-slice';
+import { createFilterSortingSlice } from './filter-sorting/filter-sorting-slice';
 import { createHistorySearchProductSlice } from './history-search-product/history-search-product.slice';
 import { createProductDetailSlice } from './product-detail/product-detail-slice';
 import { CartStore, HistorySearchProductStore, Store } from './store.type';
@@ -18,6 +19,7 @@ export const useStore = create<Store>()(
         ...createAuthSlice(...a),
         ...createProductDetailSlice(...a),
         ...createCheckoutSlice(...a),
+        ...createFilterSortingSlice(...a),
       })),
     ),
   ),

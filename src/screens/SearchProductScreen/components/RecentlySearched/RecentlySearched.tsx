@@ -21,13 +21,13 @@ const RecentlySearched = ({ onItemPress }: RecentlySearchedProps) => {
   );
 
   return (
-    Object.keys(historySearchProductStore.list || {}).length !== 0 && (
+    historySearchProductStore.list.length !== 0 && (
       <View className='gap-[20px]'>
         <Text className='font-inter-medium text-foreground text-[14px] leading-[20px] tracking-[0.2px]'>
           Recently Searched
         </Text>
         <View className='gap-[25px]'>
-          {Object.values(historySearchProductStore.list || {}).map((item) => (
+          {historySearchProductStore.list.map((item) => (
             <View key={item.id} className='flex-row items-center'>
               <Pressable key={item.id} className='flex-1' onPress={() => onItemPress(item)}>
                 <View className='flex-row items-center gap-[10px]'>

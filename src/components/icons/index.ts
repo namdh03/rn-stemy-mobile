@@ -12,6 +12,7 @@ export { default as EyeOff } from './EyeOff';
 export { default as Inbox } from './Inbox';
 export { default as Info } from './Info';
 export { default as Laptop } from './Laptop';
+export { default as ListFilter } from './ListFilter';
 export { default as Mail } from './Mail';
 export { default as MapPin } from './MapPin';
 export { default as Minus } from './Minus';

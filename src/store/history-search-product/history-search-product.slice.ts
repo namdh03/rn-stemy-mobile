@@ -1,9 +1,9 @@
 import { StateCreator } from 'zustand';
 
-import { HistoryList, HistorySearchProductSlice, HistorySearchProductState } from './history-search-product.type';
+import { HistorySearchProductSlice, HistorySearchProductState } from './history-search-product.type';
 
 const initialState: HistorySearchProductState = {
-  list: undefined,
+  list: [],
 };
 
 export const createHistorySearchProductSlice: StateCreator<
@@ -15,30 +15,21 @@ export const createHistorySearchProductSlice: StateCreator<
   ...initialState,
   setItem: (item) =>
     set((state) => {
-      const newList = {
-        ...state.list,
-        [item.id]: item,
-      };
+      // Find index of the item if it exists
+      const index = state.list.findIndex((product) => product.id === item.id);
 
-      // Directly check if we need to limit the list
-      if (Object.keys(newList).length > 10) {
-        state.list = Object.keys(newList)
-          .slice(0, 10)
-          .reduce((acc, key) => {
-            acc[key] = newList[key];
-            return acc;
-          }, {} as HistoryList);
-      } else {
-        state.list = newList;
+      if (index !== -1) {
+        // If item exists, remove it from current position
+        state.list.splice(index, 1);
       }
+
+      // Add item to the front of the list
+      state.list.unshift(item);
     }),
   removeItem: (id) =>
     set((state) => {
-      if (state.list) {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { [id]: _, ...rest } = state.list;
-        state.list = rest;
-      }
+      // Filter the list to remove the item by id
+      state.list = state.list.filter((product) => product.id !== id);
     }),
   reset: () => set(initialState),
 });
