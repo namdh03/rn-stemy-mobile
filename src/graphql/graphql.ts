@@ -61,12 +61,21 @@ export type Feedback = {
   __typename?: 'Feedback';
   createdAt: Scalars['DateTimeISO']['output'];
   id: Scalars['ID']['output'];
+  images?: Maybe<Array<FeedbackImage>>;
   note: Scalars['String']['output'];
   orderItem: OrderItem;
   product: Product;
   rating: Scalars['Float']['output'];
   updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
   user: User;
+};
+
+export type FeedbackImage = {
+  __typename?: 'FeedbackImage';
+  createdAt: Scalars['DateTimeISO']['output'];
+  id: Scalars['ID']['output'];
+  updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
+  url: Scalars['String']['output'];
 };
 
 export type Mutation = {
@@ -87,7 +96,9 @@ export type Mutation = {
   replyTicket: Ticket;
   resetPassword: Scalars['String']['output'];
   sendResetPasswordOTP: Scalars['String']['output'];
+  updateAvatar: User;
   updateCart: Cart;
+  updateUser: User;
 };
 
 export type MutationAddToCartArgs = {
@@ -101,6 +112,7 @@ export type MutationCheckoutOrderArgs = {
 };
 
 export type MutationCreateFeedbackArgs = {
+  images?: InputMaybe<Array<Scalars['File']['input']>>;
   note: Scalars['String']['input'];
   orderItemId: Scalars['Int']['input'];
   rating: Scalars['Float']['input'];
@@ -176,9 +188,19 @@ export type MutationSendResetPasswordOtpArgs = {
   email: Scalars['String']['input'];
 };
 
+export type MutationUpdateAvatarArgs = {
+  image: Scalars['File']['input'];
+};
+
 export type MutationUpdateCartArgs = {
   cartId: Scalars['Float']['input'];
   quantity: Scalars['Float']['input'];
+};
+
+export type MutationUpdateUserArgs = {
+  email?: InputMaybe<Scalars['String']['input']>;
+  fullName?: InputMaybe<Scalars['String']['input']>;
+  phone?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type Order = {
@@ -391,6 +413,7 @@ export type TicketsWithPaginationResponse = {
 export type User = {
   __typename?: 'User';
   address?: Maybe<Scalars['String']['output']>;
+  avatar?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['DateTimeISO']['output'];
   email: Scalars['String']['output'];
   fullName: Scalars['String']['output'];

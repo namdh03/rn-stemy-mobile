@@ -51,12 +51,20 @@ scalar DateTimeISO
 type Feedback {
   createdAt: DateTimeISO!
   id: ID!
+  images: [FeedbackImage!]
   note: String!
   orderItem: OrderItem!
   product: Product!
   rating: Float!
   updatedAt: DateTimeISO
   user: User!
+}
+
+type FeedbackImage {
+  createdAt: DateTimeISO!
+  id: ID!
+  updatedAt: DateTimeISO
+  url: String!
 }
 
 """
@@ -67,7 +75,7 @@ scalar File
 type Mutation {
   addToCart(hasLab: Boolean!, productId: Float!, quantity: Float!): Cart!
   checkoutOrder(input: CheckoutOrderInput!): Boolean!
-  createFeedback(note: String!, orderItemId: Int!, rating: Float!): Feedback!
+  createFeedback(images: [File!], note: String!, orderItemId: Int!, rating: Float!): Feedback!
   createOrder(
     address: String!
     cartIds: [Int!]!
@@ -93,7 +101,9 @@ type Mutation {
   replyTicket(comment: String!, images: [File!]! = [], ticketId: Float!): Ticket!
   resetPassword(password: String!, token: String!): String!
   sendResetPasswordOTP(email: String!): String!
+  updateAvatar(image: File!): User!
   updateCart(cartId: Float!, quantity: Float!): Cart!
+  updateUser(email: String, fullName: String, phone: String): User!
 }
 
 type Order {
@@ -276,6 +286,7 @@ type TicketsWithPaginationResponse {
 
 type User {
   address: String
+  avatar: String
   createdAt: DateTimeISO!
   email: String!
   fullName: String!
