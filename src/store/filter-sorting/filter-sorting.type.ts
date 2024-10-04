@@ -6,6 +6,7 @@ export type FilterSortingState = {
 
 export type FilterSortingActions = {
   setFilterStoring: (data: Partial<FilterAndSortingProductQueryVariables>) => void;
+  clearFilterStoring: () => void;
   reset: () => void;
 };
 

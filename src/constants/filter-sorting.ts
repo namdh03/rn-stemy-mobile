@@ -1,3 +1,10 @@
 export const DEFAULT_CURRENT_PAGE = 1;
 export const DEFAULT_CURRENT_ITEM = 12;
 export const DEFAULT_SORT_BY_FIELD = 'name';
+export const DEFAULT_MIN_PRICE = 0;
+export const DEFAULT_MAX_PRICE = 10000000;
+export const SLIDER_DISPLAY_MIN_PRICE = 0;
+export const SLIDER_DISPLAY_MAX_PRICE = 4000000;
+export const SLIDER_STEP_VALUE = 100000;
+export const MIN_RATING_VALUE = 0;
+export const MAX_RATING_VALUE = 5;

@@ -482,6 +482,19 @@ export type GetCartCountQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetCartCountQuery = { __typename?: 'Query'; countCart: number };
 
+export type GetProductCategoriesQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetProductCategoriesQuery = {
+  __typename?: 'Query';
+  productCategories: Array<{
+    __typename?: 'ProductCategory';
+    id: string;
+    name: string;
+    title: string;
+    type: CategoryType;
+  }>;
+};
+
 export type CreateOrderMutationVariables = Exact<{
   fullName: Scalars['String']['input'];
   address: Scalars['String']['input'];
@@ -794,6 +807,16 @@ export const GetCartCountDocument = new TypedDocumentString(`
   countCart
 }
     `) as unknown as TypedDocumentString<GetCartCountQuery, GetCartCountQueryVariables>;
+export const GetProductCategoriesDocument = new TypedDocumentString(`
+    query GetProductCategories {
+  productCategories {
+    id
+    name
+    title
+    type
+  }
+}
+    `) as unknown as TypedDocumentString<GetProductCategoriesQuery, GetProductCategoriesQueryVariables>;
 export const CreateOrderDocument = new TypedDocumentString(`
     mutation CreateOrder($fullName: String!, $address: String!, $cartIds: [Int!]!, $paymentProvider: PaymentProvider!, $phone: String!) {
   createOrder(
