@@ -8,13 +8,14 @@ import { cn } from '~lib/utils';
 interface SearchNameProps {
   value?: string;
   onChangeText?: (text: string) => void;
+  placeholder?: string;
   editable?: boolean;
   onSearchPress?: () => void;
   onContainerPress?: () => void;
 }
 
 const SearchName = forwardRef<TextInput, SearchNameProps>(
-  ({ value, onChangeText, editable, onSearchPress, onContainerPress }: SearchNameProps, ref) => {
+  ({ value, onChangeText, placeholder, editable, onSearchPress, onContainerPress }: SearchNameProps, ref) => {
     const [isFocused, setIsFocused] = useState(false);
 
     return (
@@ -22,7 +23,7 @@ const SearchName = forwardRef<TextInput, SearchNameProps>(
         <Input
           ref={ref}
           editable={editable}
-          placeholder='Search Product Name'
+          placeholder={placeholder}
           aria-labelledby='inputLabel'
           pointerEvents='auto'
           style={{ opacity: 1 }}

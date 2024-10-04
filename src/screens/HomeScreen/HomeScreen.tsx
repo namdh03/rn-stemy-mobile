@@ -49,11 +49,13 @@ const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
         return <Category id={0} title='Not found' bgColor='#fecaca' icon={CircleX} colorIcon='#dc2626' />;
     }
   };
+
   return (
     <ScrollView showsVerticalScrollIndicator={false} automaticallyAdjustContentInsets={false}>
       <View className='w-full px-[25px]'>
         <SearchName
           editable={false}
+          placeholder='Search Product Name'
           onContainerPress={() => {
             navigation.push('SearchProductScreen');
           }}
