@@ -13,6 +13,7 @@ import { Separator } from '~components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~components/ui/tabs';
 import { Text } from '~components/ui/text';
 import constants from '~constants';
+import { SortOrder } from '~graphql/graphql';
 import { cn } from '~lib/utils';
 import schema, { CategoriesFormType } from '~navigation/BottomTabNavigator/stack/StoresStack/data/schema';
 import { useStore } from '~store';
@@ -45,6 +46,7 @@ const DrawerFilterSortingContent = ({ onClose }: DrawerFilterSortingContent) => 
         storesFilterSorting.maxPrice || constants.FILTER_SORTING.SLIDER_DISPLAY_MAX_PRICE,
       ],
       rating: storesFilterSorting.minRating || constants.FILTER_SORTING.MIN_RATING_VALUE,
+      order: storesFilterSorting.order || SortOrder.Asc,
     },
   });
   const [value, setValue] = useState('filter');
@@ -63,6 +65,7 @@ const DrawerFilterSortingContent = ({ onClose }: DrawerFilterSortingContent) => 
 
   const onReset = () => {
     form.reset();
+    onClose();
     clearFilterStoring();
   };
 

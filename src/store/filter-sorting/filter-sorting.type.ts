@@ -1,6 +1,7 @@
 import { FilterAndSortingProductQueryVariables } from '~graphql/graphql';
 
 export type FilterSortingState = {
+  isFilterSortingActive: boolean;
   storesFilterSorting: FilterAndSortingProductQueryVariables;
 };
 
