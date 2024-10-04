@@ -7,7 +7,7 @@ const schema = z.object({
   rating: z.number(),
   categoryIds: z.array(z.number()),
   order: z.enum([SortOrder.Asc, SortOrder.Desc]),
-  sort: z.enum(['name', 'price']),
+  sort: z.enum(['name', 'price', 'id']).optional().default('id'),
 });
 
 export type CategoriesFormType = z.infer<typeof schema>;
