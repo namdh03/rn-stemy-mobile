@@ -10,6 +10,7 @@ import CartScreen from '~screens/CartScreen';
 import CheckoutScreen from '~screens/CheckoutScreen';
 import CheckoutUserInformationScreen from '~screens/CheckoutUserInformationScreen';
 import MyOrdersScreen from '~screens/MyOrdersScreen';
+import MyPurchasesScreen from '~screens/MyPurchasesScreen';
 import OrderErrorScreen from '~screens/OrderErrorScreen';
 import OrderProgressScreen from '~screens/OrderProgressScreen';
 import OrderSuccessScreen from '~screens/OrderSuccessScreen';
@@ -20,6 +21,7 @@ import {
   CheckoutUserInformationScreenNavigationProps,
   MainStackParamList,
   MyOrdersScreenNavigationProps,
+  MyPurchasesScreenNavigationProps,
   SearchProductScreenNavigationProps,
 } from '~types/navigation.type';
 
@@ -141,6 +143,24 @@ const MainNavigator = () => (
         headerLeft: () => (
           <Pressable onPress={() => navigation.goBack()}>
             <ChevronLeft className='text-primary' size={30} />
+          </Pressable>
+        ),
+      })}
+    />
+
+    <MainStack.Screen
+      name='MyPurchasesScreen'
+      component={MyPurchasesScreen}
+      options={({ navigation }: MyPurchasesScreenNavigationProps) => ({
+        title: 'My Purchases',
+        headerTitleAlign: 'center',
+        headerTitleStyle: {
+          fontFamily: 'Inter_18pt-Medium',
+          fontSize: 18,
+        },
+        headerLeft: () => (
+          <Pressable onPress={() => navigation.goBack()}>
+            <ChevronLeft className='text-foreground' size={30} />
           </Pressable>
         ),
       })}
