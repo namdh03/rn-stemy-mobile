@@ -13,6 +13,8 @@ const initialState: FilterSortingState = {
     order: SortOrder.Asc,
     search: '',
     sort: constants.FILTER_SORTING.DEFAULT_SORT_BY_FIELD,
+    maxRating: constants.FILTER_SORTING.MAX_RATING_VALUE,
+    minRating: constants.FILTER_SORTING.MIN_RATING_VALUE,
   },
 };
 
@@ -24,8 +26,12 @@ export const createFilterSortingSlice: StateCreator<
 > = (set) => ({
   ...initialState,
   setFilterStoring: (newData) =>
-    set((state) => ({
-      storesFilterSorting: { ...state.storesFilterSorting, ...newData },
-    })),
-  reset: () => set(initialState),
+    set((state) => {
+      state.storesFilterSorting = { ...state.storesFilterSorting, ...newData };
+    }),
+  clearFilterStoring: () =>
+    set((state) => {
+      state.storesFilterSorting = { ...initialState.storesFilterSorting };
+    }),
+  reset: () => set(() => ({ ...initialState })),
 });

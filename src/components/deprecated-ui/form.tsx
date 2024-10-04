@@ -13,6 +13,7 @@ import {
 
 import { cn } from '~lib/utils';
 
+import { Checkbox } from './checkbox';
 import { Input } from './input';
 import { Label } from './label';
 import { Textarea } from './textarea';
@@ -257,4 +258,49 @@ const FormTextarea = React.forwardRef<React.ElementRef<typeof Textarea>, FormIte
 
 FormTextarea.displayName = 'FormTextarea';
 
-export { Form, FormField, FormInput, FormMessage, FormTextarea };
+const FormCheckbox = React.forwardRef<React.ElementRef<typeof Checkbox>, FormItemProps<typeof Checkbox, boolean>>(
+  ({ label, description, value, onChange, ...props }, ref) => {
+    const checkboxRef = React.useRef<React.ComponentRef<typeof Checkbox>>(null);
+    const { error, formItemNativeID, formDescriptionNativeID, formMessageNativeID } = useFormField();
+
+    React.useImperativeHandle(ref, () => {
+      if (!checkboxRef.current) {
+        return {} as React.ComponentRef<typeof Checkbox>;
+      }
+      return checkboxRef.current;
+    }, [checkboxRef.current]);
+
+    function handleOnLabelPress() {
+      onChange?.(!value);
+    }
+
+    return (
+      <FormItem className='px-1'>
+        <View className='flex-row gap-3 items-center'>
+          <Checkbox
+            ref={checkboxRef}
+            aria-labelledby={formItemNativeID}
+            aria-describedby={
+              !error ? `${formDescriptionNativeID}` : `${formDescriptionNativeID} ${formMessageNativeID}`
+            }
+            aria-invalid={!!error}
+            onChange={onChange}
+            value={value}
+            {...props}
+          />
+          {!!label && (
+            <FormLabel nativeID={formItemNativeID} onPress={handleOnLabelPress}>
+              {label}
+            </FormLabel>
+          )}
+        </View>
+        {!!description && <FormDescription>{description}</FormDescription>}
+        <FormMessage />
+      </FormItem>
+    );
+  },
+);
+
+FormCheckbox.displayName = 'FormCheckbox';
+
+export { Form, FormCheckbox, FormField, FormInput, FormItem, FormMessage, FormTextarea };
