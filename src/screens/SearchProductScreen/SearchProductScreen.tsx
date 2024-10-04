@@ -74,6 +74,7 @@ const SearchProductScreen = ({ navigation }: SearchProductScreenNavigationProps)
         <View className='flex-1 px-[25px]'>
           <SearchName
             value={searchValue}
+            placeholder='Search Product Name'
             onChangeText={handleSearchValueChange}
             onSearchPress={handleSearchIconPress}
           />

@@ -39,7 +39,7 @@ const StoresScreen = ({ navigation }: StoresScreenNavigationProps) => {
   });
   const { isRefetchingByUser, refetchByUser } = useRefreshByUser(refetch);
 
-  const handleNavigateToSearchProductScreen = () => {
+  const handleNavigateToSearchProduct = () => {
     navigation.navigate('SearchProductScreen');
   };
 
@@ -50,11 +50,12 @@ const StoresScreen = ({ navigation }: StoresScreenNavigationProps) => {
   };
 
   return (
-    <View className='flex-1 gap-[20px] px-[25px] mx-auto w-full max-w-xl'>
+    <View className='flex-1 gap-[28px] px-[25px] mx-auto w-full max-w-xl'>
       <SearchName
         editable={false}
+        placeholder='Search Product Name'
         value={storesFilterSorting.search}
-        onContainerPress={handleNavigateToSearchProductScreen}
+        onContainerPress={handleNavigateToSearchProduct}
       />
       {isLoading ? (
         <FlatList
