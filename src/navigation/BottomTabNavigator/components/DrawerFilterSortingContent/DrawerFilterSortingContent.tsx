@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, useWindowDimensions, View } from 'react-native';
 import { useForm } from 'react-hook-form';
 import { useShallow } from 'zustand/react/shallow';
 
@@ -18,12 +18,15 @@ import schema, { CategoriesFormType } from '~navigation/BottomTabNavigator/stack
 import { useStore } from '~store';
 
 import TabFilterContent from '../TabFilterContent';
+import TabSortingContent from '../TabSortingContent';
 
 interface DrawerFilterSortingContent {
   onClose: () => void;
 }
 
 const DrawerFilterSortingContent = ({ onClose }: DrawerFilterSortingContent) => {
+  const { height } = useWindowDimensions();
+  const calculatedTopPosition = height - 100;
   const { storesFilterSorting, setFilterStoring, clearFilterStoring } = useStore(
     useShallow((state) => ({
       storesFilterSorting: state.storesFilterSorting,
@@ -52,6 +55,8 @@ const DrawerFilterSortingContent = ({ onClose }: DrawerFilterSortingContent) => 
       minPrice: values.priceRange[0],
       maxPrice: values.priceRange[1],
       minRating: values.rating,
+      order: values.order,
+      sort: values.sort,
     });
     onClose();
   };
@@ -62,7 +67,7 @@ const DrawerFilterSortingContent = ({ onClose }: DrawerFilterSortingContent) => 
   };
 
   return (
-    <View className='flex-grow'>
+    <View className='flex-grow pb-[140px]'>
       <View className='flex-row justify-between items-center px-[33px] py-[15px] shadow'>
         <Text className='font-inter-bold text-foreground text-[16px] leading-[24px] tracking-[0.2px]'>
           Filter & Sorting
@@ -72,53 +77,58 @@ const DrawerFilterSortingContent = ({ onClose }: DrawerFilterSortingContent) => 
         </Pressable>
       </View>
 
-      <View className='flex-grow px-[33px] pb-[100px]'>
-        <ScrollView className='flex-grow' showsVerticalScrollIndicator={false} automaticallyAdjustContentInsets={false}>
-          <Tabs value={value} onValueChange={setValue}>
-            <TabsList className='flex-row justify-start gap-[20px] p-0 native:p-0 bg-transparent'>
-              <View>
-                <TabsTrigger value='filter' className='px-0 native:px-0'>
-                  <Text className='font-inter-regular text-foreground text-[14px] leading-[20px] tracking-[0.2px]'>
-                    Filter
-                  </Text>
-                </TabsTrigger>
-                <View
-                  className={cn('border-t-2', {
-                    'border-primary': value === 'filter',
-                    'border-transparent': value !== 'filter',
-                  })}
-                />
-              </View>
-              <View>
-                <TabsTrigger value='sorting' className='px-0 native:px-0'>
-                  <Text className='font-inter-regular text-foreground text-[14px] leading-[20px] tracking-[0.2px]'>
-                    Sorting
-                  </Text>
-                </TabsTrigger>
-                <View
-                  className={cn('border-t-2', {
-                    'border-primary': value === 'sorting',
-                    'border-transparent': value !== 'sorting',
-                  })}
-                />
-              </View>
-            </TabsList>
+      <ScrollView
+        className='flex-grow px-[33px]'
+        showsVerticalScrollIndicator={false}
+        automaticallyAdjustContentInsets={false}
+      >
+        <Tabs value={value} onValueChange={setValue}>
+          <TabsList className='flex-row justify-start gap-[20px] p-0 native:p-0 bg-transparent'>
+            <View>
+              <TabsTrigger value='filter' className='px-0 native:px-0'>
+                <Text className='font-inter-regular text-foreground text-[14px] leading-[20px] tracking-[0.2px]'>
+                  Filter
+                </Text>
+              </TabsTrigger>
+              <View
+                className={cn('border-t-2', {
+                  'border-primary': value === 'filter',
+                  'border-transparent': value !== 'filter',
+                })}
+              />
+            </View>
+            <View>
+              <TabsTrigger value='sorting' className='px-0 native:px-0'>
+                <Text className='font-inter-regular text-foreground text-[14px] leading-[20px] tracking-[0.2px]'>
+                  Sorting
+                </Text>
+              </TabsTrigger>
+              <View
+                className={cn('border-t-2', {
+                  'border-primary': value === 'sorting',
+                  'border-transparent': value !== 'sorting',
+                })}
+              />
+            </View>
+          </TabsList>
 
-            <Separator className='my-[20px] bg-transparent border-dashed border-t border-primary' />
+          <Separator className='my-[20px] bg-transparent border-dashed border-t border-primary' />
 
+          <Form {...form}>
             <TabsContent value='filter'>
-              <Form {...form}>
-                <TabFilterContent form={form} />
-              </Form>
+              <TabFilterContent form={form} />
             </TabsContent>
             <TabsContent value='sorting'>
-              <Text>SORTING</Text>
+              <TabSortingContent form={form} />
             </TabsContent>
-          </Tabs>
-        </ScrollView>
-      </View>
+          </Form>
+        </Tabs>
+      </ScrollView>
 
-      <View className='absolute bottom-0 left-0 right-0 z-10 flex-row gap-[15px] pt-[15px] pb-[70px] px-[12px] bg-background shadow'>
+      <View
+        style={{ position: 'absolute', top: calculatedTopPosition, left: 0, right: 0, zIndex: 10 }}
+        className='flex-row gap-[15px] px-[12px] pb-[100px] bg-background shadow'
+      >
         <Button variant='outline' className='flex-1' onPress={onReset}>
           <Text>Reset</Text>
         </Button>

@@ -68,7 +68,7 @@ const TabFilterContent = ({ form }: TabFilterContentProps) => {
   };
 
   return (
-    <View className='gap-[16px] pb-[110px]'>
+    <View className='gap-[16px]'>
       {/* Price Slider */}
       <View>
         <Text className='font-inter-regular text-foreground text-[14px] leading-[20px]'>Price</Text>
