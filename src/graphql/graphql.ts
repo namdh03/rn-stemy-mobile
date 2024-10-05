@@ -612,6 +612,31 @@ export type SearchOrderQuery = {
   }>;
 };
 
+export type GetOrderByStatusQueryVariables = Exact<{
+  status: OrderStatus;
+}>;
+
+export type GetOrderByStatusQuery = {
+  __typename?: 'Query';
+  searchOrder: Array<{
+    __typename?: 'Order';
+    id: string;
+    createdAt: any;
+    updatedAt?: any | null;
+    totalPrice: number;
+    status: OrderStatus;
+    orderItems: Array<{
+      __typename?: 'OrderItem';
+      hasLab: boolean;
+      id: string;
+      labPrice: number;
+      productPrice: number;
+      quantity: number;
+      product: { __typename?: 'Product'; name: string; images: Array<{ __typename?: 'ProductImage'; url: string }> };
+    }>;
+  }>;
+};
+
 export type RepayOrderMutationVariables = Exact<{
   orderId: Scalars['Float']['input'];
 }>;
@@ -972,6 +997,30 @@ export const SearchOrderDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<SearchOrderQuery, SearchOrderQueryVariables>;
+export const GetOrderByStatusDocument = new TypedDocumentString(`
+    query GetOrderByStatus($status: OrderStatus!) {
+  searchOrder(search: "", status: $status) {
+    id
+    createdAt
+    updatedAt
+    totalPrice
+    status
+    orderItems {
+      hasLab
+      id
+      labPrice
+      productPrice
+      quantity
+      product {
+        name
+        images {
+          url
+        }
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<GetOrderByStatusQuery, GetOrderByStatusQueryVariables>;
 export const RepayOrderDocument = new TypedDocumentString(`
     mutation RepayOrder($orderId: Float!) {
   repayOrder(orderId: $orderId)
