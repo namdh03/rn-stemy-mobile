@@ -19,11 +19,6 @@ import TabButton from './components/TabButton';
 
 const MyOrdersScreen = ({ route, navigation }: MyOrdersScreenNavigationProps) => {
   const [tab, setTab] = useState(route.params.orderStatus);
-
-  const handleNavigateToSearchOrder = useCallback(() => {
-    navigation.navigate('SearchOrdersScreen');
-  }, [navigation]);
-
   const {
     data: orderListByStatus,
     refetch: orderListByOrderRefetch,
@@ -33,7 +28,6 @@ const MyOrdersScreen = ({ route, navigation }: MyOrdersScreenNavigationProps) =>
     queryFn: () => execute(GetOrderByStatusQuery, { status: tab }),
     select: (data) => data.data.searchOrder,
   });
-
   const { isRefetchingByUser, refetchByUser } = useRefreshByUser(orderListByOrderRefetch);
   const orderListByStatusSorted = useMemo(() => {
     return [...(orderListByStatus || [])].sort((a, b) => {
@@ -42,6 +36,10 @@ const MyOrdersScreen = ({ route, navigation }: MyOrdersScreenNavigationProps) =>
       return dateA - dateB;
     });
   }, [orderListByStatus]);
+
+  const handleNavigateToSearchOrder = useCallback(() => {
+    navigation.navigate('SearchOrdersScreen');
+  }, [navigation]);
 
   const handleSetTab = useCallback((text: string) => {
     setTab(text as OrderStatus);
@@ -102,6 +100,12 @@ const MyOrdersScreen = ({ route, navigation }: MyOrdersScreenNavigationProps) =>
           }
           className='flex-1'
           contentContainerStyle={{ gap: 16, paddingBottom: 50 }}
+          removeClippedSubviews={true}
+          initialNumToRender={10}
+          maxToRenderPerBatch={5}
+          updateCellsBatchingPeriod={50}
+          windowSize={21}
+          onEndReachedThreshold={0.5}
         />
       )}
     </View>

@@ -44,6 +44,10 @@ const MeScreen = ({ navigation }: MeScreenNavigationProps) => {
         <Button size='lg' onPress={() => handleNavigateToMyOrders(OrderStatus.Delivered)}>
           <Text className='font-inter-medium text-background text-[16px] leading-[20px]'>My Orders (to rate)</Text>
         </Button>
+
+        <Button size='lg' onPress={() => navigation.navigate('OrderHistoryScreen')}>
+          <Text className='font-inter-medium text-background text-[16px] leading-[20px]'>My Orders History</Text>
+        </Button>
       </View>
     </View>
   );

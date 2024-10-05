@@ -24,3 +24,7 @@ export const AUTH_MESSAGES = {
 export const CART_MESSAGES = {
   ADD_TO_CART_SUCCESSFULLY: 'Add to cart successfully!',
 };
+
+export const ORDER_MESSAGES = {
+  COPY_ORDER_ID: 'Order ID copied! You can now create a support ticket if needed.',
+};

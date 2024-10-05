@@ -12,6 +12,7 @@ import CheckoutUserInformationScreen from '~screens/CheckoutUserInformationScree
 import MyOrdersScreen from '~screens/MyOrdersScreen';
 import OrderDetailScreen from '~screens/OrderDetailScreen';
 import OrderErrorScreen from '~screens/OrderErrorScreen';
+import OrderHistoryScreen from '~screens/OrderHistoryScreen';
 import OrderProgressScreen from '~screens/OrderProgressScreen';
 import OrderSuccessScreen from '~screens/OrderSuccessScreen';
 import SearchOrdersScreen from '~screens/SearchOrdersScreen';
@@ -23,6 +24,7 @@ import {
   MainStackParamList,
   MyOrdersScreenNavigationProps,
   OrderDetailScreenNavigationProps,
+  OrderHistoryScreenNavigationProps,
   SearchOrdersScreenNavigationProps,
   SearchProductScreenNavigationProps,
 } from '~types/navigation.type';
@@ -153,7 +155,7 @@ const MainNavigator = () => (
       name='SearchOrdersScreen'
       component={SearchOrdersScreen}
       options={({ navigation }: SearchOrdersScreenNavigationProps) => ({
-        title: 'Search Order',
+        title: 'Search order',
         headerTitleAlign: 'center',
         headerTitleStyle: {
           fontFamily: 'Inter_18pt-SemiBold',
@@ -170,7 +172,24 @@ const MainNavigator = () => (
       name='OrderDetailScreen'
       component={OrderDetailScreen}
       options={({ navigation }: OrderDetailScreenNavigationProps) => ({
-        title: 'Order Detail',
+        title: 'Order detail',
+        headerTitleAlign: 'center',
+        headerTitleStyle: {
+          fontFamily: 'Inter_18pt-SemiBold',
+          fontSize: 18,
+        },
+        headerLeft: () => (
+          <Pressable onPress={() => navigation.goBack()}>
+            <ChevronLeft className='text-primary' size={30} />
+          </Pressable>
+        ),
+      })}
+    />
+    <MainStack.Screen
+      name='OrderHistoryScreen'
+      component={OrderHistoryScreen}
+      options={({ navigation }: OrderHistoryScreenNavigationProps) => ({
+        title: 'My orders history',
         headerTitleAlign: 'center',
         headerTitleStyle: {
           fontFamily: 'Inter_18pt-SemiBold',
