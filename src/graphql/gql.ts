@@ -30,6 +30,7 @@ const documents = {
     types.GetHomeDocument,
   '\n  query SearchOrder($search: String!) {\n    searchOrder(search: $search) {\n      id\n      createdAt\n      updatedAt\n      totalPrice\n      status\n      orderItems {\n        hasLab\n        id\n        labPrice\n        productPrice\n        quantity\n        product {\n          name\n          images {\n            url\n          }\n        }\n      }\n    }\n  }\n':
     types.SearchOrderDocument,
+  '\n  mutation RepayOrder($orderId: Float!) {\n    repayOrder(orderId: $orderId)\n  }\n': types.RepayOrderDocument,
   '\n  query GetProduct($id: Float!) {\n    product(id: $id) {\n      categories {\n        id\n        name\n        type\n        title\n      }\n      images {\n        id\n        url\n      }\n      description\n      id\n      name\n      price\n      rating\n      sold\n      feedbacks {\n        note\n        createdAt\n        id\n        rating\n        user {\n          fullName\n        }\n      }\n      lab {\n        price\n      }\n    }\n    products(currentItem: 10, order: ASC, sort: "price") {\n      items {\n        id\n        images {\n          url\n        }\n        price\n        name\n        rating\n        feedbacks {\n          id\n        }\n      }\n    }\n  }\n':
     types.GetProductDocument,
   '\n  query GetFeaturedProduct {\n    products(currentItem: 10, order: ASC, sort: "price") {\n      items {\n        id\n        images {\n          url\n        }\n        price\n        name\n        rating\n        feedbacks {\n          id\n        }\n      }\n    }\n  }\n':
@@ -114,6 +115,12 @@ export function graphql(
 export function graphql(
   source: '\n  query SearchOrder($search: String!) {\n    searchOrder(search: $search) {\n      id\n      createdAt\n      updatedAt\n      totalPrice\n      status\n      orderItems {\n        hasLab\n        id\n        labPrice\n        productPrice\n        quantity\n        product {\n          name\n          images {\n            url\n          }\n        }\n      }\n    }\n  }\n',
 ): typeof import('./graphql').SearchOrderDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation RepayOrder($orderId: Float!) {\n    repayOrder(orderId: $orderId)\n  }\n',
+): typeof import('./graphql').RepayOrderDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

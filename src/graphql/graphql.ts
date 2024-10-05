@@ -57,12 +57,19 @@ export type CheckoutOrderInput = {
   vnp_TxnRef: Scalars['String']['input'];
 };
 
+export type CreateFeedbackInput = {
+  images?: InputMaybe<Array<Scalars['File']['input']>>;
+  note?: InputMaybe<Scalars['String']['input']>;
+  orderItemId: Scalars['Int']['input'];
+  rating: Scalars['Float']['input'];
+};
+
 export type Feedback = {
   __typename?: 'Feedback';
   createdAt: Scalars['DateTimeISO']['output'];
   id: Scalars['ID']['output'];
   images?: Maybe<Array<FeedbackImage>>;
-  note: Scalars['String']['output'];
+  note?: Maybe<Scalars['String']['output']>;
   orderItem: OrderItem;
   product: Product;
   rating: Scalars['Float']['output'];
@@ -82,7 +89,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   addToCart: Cart;
   checkoutOrder: Scalars['Boolean']['output'];
-  createFeedback: Feedback;
+  createFeedback: Scalars['Boolean']['output'];
   createOrder: Scalars['String']['output'];
   createProduct: Product;
   createTicket: Ticket;
@@ -112,10 +119,8 @@ export type MutationCheckoutOrderArgs = {
 };
 
 export type MutationCreateFeedbackArgs = {
-  images?: InputMaybe<Array<Scalars['File']['input']>>;
-  note: Scalars['String']['input'];
-  orderItemId: Scalars['Int']['input'];
-  rating: Scalars['Float']['input'];
+  input: Array<CreateFeedbackInput>;
+  orderId: Scalars['Float']['input'];
 };
 
 export type MutationCreateOrderArgs = {
@@ -209,9 +214,11 @@ export type Order = {
   createdAt: Scalars['DateTimeISO']['output'];
   fullName: Scalars['String']['output'];
   id: Scalars['ID']['output'];
+  isAllowRating: Scalars['Boolean']['output'];
   orderItems: Array<OrderItem>;
   payment: OrderPaymentEmbeddable;
   phone: Scalars['String']['output'];
+  shipTime: Scalars['DateTimeISO']['output'];
   status: OrderStatus;
   totalPrice: Scalars['Int']['output'];
   updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
@@ -234,12 +241,14 @@ export type OrderPaymentEmbeddable = {
   __typename?: 'OrderPaymentEmbeddable';
   id: Scalars['String']['output'];
   provider: PaymentProvider;
+  time: Scalars['DateTimeISO']['output'];
 };
 
 export enum OrderStatus {
   Delivered = 'DELIVERED',
   Delivering = 'DELIVERING',
   Paid = 'PAID',
+  Rated = 'RATED',
   Unpaid = 'UNPAID',
 }
 
@@ -338,6 +347,7 @@ export type QueryProductsArgs = {
 
 export type QuerySearchOrderArgs = {
   search: Scalars['String']['input'];
+  status?: InputMaybe<OrderStatus>;
 };
 
 export type QueryTicketsArgs = {
@@ -602,6 +612,12 @@ export type SearchOrderQuery = {
   }>;
 };
 
+export type RepayOrderMutationVariables = Exact<{
+  orderId: Scalars['Float']['input'];
+}>;
+
+export type RepayOrderMutation = { __typename?: 'Mutation'; repayOrder: string };
+
 export type GetProductQueryVariables = Exact<{
   id: Scalars['Float']['input'];
 }>;
@@ -620,7 +636,7 @@ export type GetProductQuery = {
     images: Array<{ __typename?: 'ProductImage'; id: string; url: string }>;
     feedbacks: Array<{
       __typename?: 'Feedback';
-      note: string;
+      note?: string | null;
       createdAt: any;
       id: string;
       rating: number;
@@ -956,6 +972,11 @@ export const SearchOrderDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<SearchOrderQuery, SearchOrderQueryVariables>;
+export const RepayOrderDocument = new TypedDocumentString(`
+    mutation RepayOrder($orderId: Float!) {
+  repayOrder(orderId: $orderId)
+}
+    `) as unknown as TypedDocumentString<RepayOrderMutation, RepayOrderMutationVariables>;
 export const GetProductDocument = new TypedDocumentString(`
     query GetProduct($id: Float!) {
   product(id: $id) {

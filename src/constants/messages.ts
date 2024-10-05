@@ -5,6 +5,7 @@ export const TOKEN_NOT_VALID = 'Token not valid';
 export const SYSTEM_MESSAGES = {
   SUCCESS_TITLE: 'Success',
   ERROR_TITLE: 'Error',
+  WARNING_TITLE: 'Warning',
   SOMETHING_WENT_WRONG: 'Something went wrong!',
   MISSING_INFORMATION: 'Missing Information',
 };
