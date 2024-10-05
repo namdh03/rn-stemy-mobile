@@ -4,9 +4,9 @@ import { useShallow } from 'zustand/react/shallow';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 import { Button } from '~components/ui/button';
+import { OrderStatus } from '~graphql/graphql';
 import { useStore } from '~store';
 import { MeScreenNavigationProps } from '~types/navigation.type';
-import { OrderTab } from '~utils/enum';
 import { removeAccessToken } from '~utils/token-storage';
 
 const MeScreen = ({ navigation }: MeScreenNavigationProps) => {
@@ -18,8 +18,8 @@ const MeScreen = ({ navigation }: MeScreenNavigationProps) => {
     await GoogleSignin.signOut();
   };
 
-  const handleNavigateToMyOrders = (tab: OrderTab) => {
-    navigation.navigate('MyOrdersScreen', { tab });
+  const handleNavigateToMyOrders = (orderStatus: OrderStatus) => {
+    navigation.navigate('MyOrdersScreen', { orderStatus });
   };
 
   return (
@@ -29,19 +29,19 @@ const MeScreen = ({ navigation }: MeScreenNavigationProps) => {
       </Button>
 
       <View className='gap-[8px] mt-[8px]'>
-        <Button size='lg' onPress={() => handleNavigateToMyOrders(OrderTab.Pay)}>
+        <Button size='lg' onPress={() => handleNavigateToMyOrders(OrderStatus.Unpaid)}>
           <Text className='font-inter-medium text-background text-[16px] leading-[20px]'>My Orders (to pay)</Text>
         </Button>
 
-        <Button size='lg' onPress={() => handleNavigateToMyOrders(OrderTab.Ship)}>
+        <Button size='lg' onPress={() => handleNavigateToMyOrders(OrderStatus.Paid)}>
           <Text className='font-inter-medium text-background text-[16px] leading-[20px]'>My Orders (to ship)</Text>
         </Button>
 
-        <Button size='lg' onPress={() => handleNavigateToMyOrders(OrderTab.Receive)}>
+        <Button size='lg' onPress={() => handleNavigateToMyOrders(OrderStatus.Delivering)}>
           <Text className='font-inter-medium text-background text-[16px] leading-[20px]'>My Orders (to receive)</Text>
         </Button>
 
-        <Button size='lg' onPress={() => handleNavigateToMyOrders(OrderTab.Rate)}>
+        <Button size='lg' onPress={() => handleNavigateToMyOrders(OrderStatus.Delivered)}>
           <Text className='font-inter-medium text-background text-[16px] leading-[20px]'>My Orders (to rate)</Text>
         </Button>
       </View>

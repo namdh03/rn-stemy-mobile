@@ -35,8 +35,7 @@
 import type { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-import { CheckoutOrderInput } from '~graphql/graphql';
-import { OrderTab } from '~utils/enum';
+import { CheckoutOrderInput, OrderStatus } from '~graphql/graphql';
 
 // Auth Stack
 export type AuthStackParamList = {
@@ -84,7 +83,7 @@ export type MainStackParamList = {
   OrderSuccessScreen: { totalPrice: number };
   OrderErrorScreen: undefined;
   SearchProductScreen: undefined;
-  MyOrdersScreen: { tab: OrderTab };
+  MyOrdersScreen: { orderStatus: OrderStatus };
   SearchOrdersScreen: undefined;
   OrderDetailScreen: undefined;
 };
