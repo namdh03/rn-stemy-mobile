@@ -1,14 +1,16 @@
 import { useCallback } from 'react';
 import { FlatList, ScrollView, View } from 'react-native';
-import { Dialog } from 'react-native-alert-notification';
+import { ALERT_TYPE, Dialog, Toast } from 'react-native-alert-notification';
 import dayjs from 'dayjs';
 import * as WebBrowser from 'expo-web-browser';
 
+import Clipboard from '@react-native-clipboard/clipboard';
 import { useMutation } from '@tanstack/react-query';
 
 import Pressable from '~components/customs/Pressable';
 import { CircleDollarSign } from '~components/icons';
 import { Text } from '~components/ui/text';
+import constants from '~constants';
 import execute from '~graphql/execute';
 import { GetOrderByStatusQuery, OrderStatus } from '~graphql/graphql';
 import CheckoutItem from '~screens/CheckoutScreen/components/CheckoutItem';
@@ -21,7 +23,7 @@ import showDialogWarning from '~utils/showDialogWarning';
 import OrderDetailButton from './components/OrderDetailButton';
 import OrderUserInfo from './components/OrderUserInfo';
 
-const OrderDetailScreen = ({ route }: OrderDetailScreenNavigationProps) => {
+const OrderDetailScreen = ({ route, navigation }: OrderDetailScreenNavigationProps) => {
   const { mutate: repayOrderMutate } = useMutation({
     mutationFn: (orderId: number) => execute(RepayOrderMutation, { orderId }),
   });
@@ -84,12 +86,21 @@ const OrderDetailScreen = ({ route }: OrderDetailScreenNavigationProps) => {
       case OrderStatus.Delivering:
         return handleReceiveOrder();
       case OrderStatus.Delivered:
-        return 'Rate';
+        return navigation.navigate('FeedbackProductScreen', { orderId: route.params.id });
       case OrderStatus.Rated:
         return handleRepayOrder();
       default:
         return 'Unknown Status';
     }
+  };
+
+  const handleCopyOrderId = () => {
+    Clipboard.setString(route.params.id);
+    Toast.show({
+      type: ALERT_TYPE.SUCCESS,
+      title: constants.MESSAGES.SYSTEM_MESSAGES.SUCCESS_TITLE,
+      textBody: constants.MESSAGES.ORDER_MESSAGES.COPY_ORDER_ID,
+    });
   };
 
   return (
@@ -123,7 +134,7 @@ const OrderDetailScreen = ({ route }: OrderDetailScreenNavigationProps) => {
         <View className='flex-row items-center w-full'>
           <Text className='font-inter-medium text-foreground text-[12px]'>Order ID</Text>
           <Text className='font-inter-medium ml-auto text-foreground text-[12px]'>{route.params.id}</Text>
-          <Pressable className='ml-[6px]'>
+          <Pressable className='ml-[6px]' onPress={handleCopyOrderId}>
             <Text className='font-inter-medium text-primary text-[12px]'>COPY</Text>
           </Pressable>
         </View>
@@ -143,7 +154,7 @@ const OrderDetailScreen = ({ route }: OrderDetailScreenNavigationProps) => {
               Payment Time
             </Text>
             <Text className='font-inter-regular text-muted-foreground text-[12px] leading-[16px] tracking-[0.12px]'>
-              {dayjs(route.params.createdAt).format('DD-MM-YYYY HH:mm')}
+              {dayjs(route.params.payment.time).format('DD-MM-YYYY HH:mm')}
             </Text>
           </View>
         )}
@@ -154,7 +165,7 @@ const OrderDetailScreen = ({ route }: OrderDetailScreenNavigationProps) => {
               Ship Time
             </Text>
             <Text className='font-inter-regular text-muted-foreground text-[12px] leading-[16px] tracking-[0.12px]'>
-              {dayjs(route.params.createdAt).format('DD-MM-YYYY HH:mm')}
+              {dayjs(route.params.shipTime).format('DD-MM-YYYY HH:mm')}
             </Text>
           </View>
         )}

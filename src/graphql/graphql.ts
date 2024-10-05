@@ -218,7 +218,7 @@ export type Order = {
   orderItems: Array<OrderItem>;
   payment: OrderPaymentEmbeddable;
   phone: Scalars['String']['output'];
-  shipTime: Scalars['DateTimeISO']['output'];
+  shipTime?: Maybe<Scalars['DateTimeISO']['output']>;
   status: OrderStatus;
   totalPrice: Scalars['Int']['output'];
   updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
@@ -239,9 +239,9 @@ export type OrderItem = {
 
 export type OrderPaymentEmbeddable = {
   __typename?: 'OrderPaymentEmbeddable';
-  id: Scalars['String']['output'];
+  id?: Maybe<Scalars['String']['output']>;
   provider: PaymentProvider;
-  time: Scalars['DateTimeISO']['output'];
+  time?: Maybe<Scalars['DateTimeISO']['output']>;
 };
 
 export enum OrderStatus {
@@ -603,7 +603,8 @@ export type SearchOrderQuery = {
     address: string;
     fullName: string;
     phone: string;
-    payment: { __typename?: 'OrderPaymentEmbeddable'; provider: PaymentProvider };
+    shipTime?: any | null;
+    payment: { __typename?: 'OrderPaymentEmbeddable'; provider: PaymentProvider; time?: any | null };
     orderItems: Array<{
       __typename?: 'OrderItem';
       hasLab: boolean;
@@ -639,7 +640,43 @@ export type GetOrderByStatusQuery = {
     address: string;
     fullName: string;
     phone: string;
-    payment: { __typename?: 'OrderPaymentEmbeddable'; provider: PaymentProvider };
+    shipTime?: any | null;
+    payment: { __typename?: 'OrderPaymentEmbeddable'; provider: PaymentProvider; time?: any | null };
+    orderItems: Array<{
+      __typename?: 'OrderItem';
+      hasLab: boolean;
+      id: string;
+      labPrice: number;
+      productPrice: number;
+      quantity: number;
+      product: {
+        __typename?: 'Product';
+        id: string;
+        name: string;
+        price: number;
+        images: Array<{ __typename?: 'ProductImage'; url: string }>;
+        lab?: { __typename?: 'ProductLab'; price: number } | null;
+      };
+    }>;
+  }>;
+};
+
+export type GetHistoryOrderQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetHistoryOrderQuery = {
+  __typename?: 'Query';
+  searchOrder: Array<{
+    __typename?: 'Order';
+    id: string;
+    createdAt: any;
+    updatedAt?: any | null;
+    totalPrice: number;
+    status: OrderStatus;
+    address: string;
+    fullName: string;
+    phone: string;
+    shipTime?: any | null;
+    payment: { __typename?: 'OrderPaymentEmbeddable'; provider: PaymentProvider; time?: any | null };
     orderItems: Array<{
       __typename?: 'OrderItem';
       hasLab: boolean;
@@ -1006,8 +1043,10 @@ export const SearchOrderDocument = new TypedDocumentString(`
     address
     fullName
     phone
+    shipTime
     payment {
       provider
+      time
     }
     orderItems {
       hasLab
@@ -1041,8 +1080,10 @@ export const GetOrderByStatusDocument = new TypedDocumentString(`
     address
     fullName
     phone
+    shipTime
     payment {
       provider
+      time
     }
     orderItems {
       hasLab
@@ -1065,6 +1106,43 @@ export const GetOrderByStatusDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<GetOrderByStatusQuery, GetOrderByStatusQueryVariables>;
+export const GetHistoryOrderDocument = new TypedDocumentString(`
+    query GetHistoryOrder {
+  searchOrder(search: "") {
+    id
+    createdAt
+    updatedAt
+    totalPrice
+    status
+    address
+    fullName
+    phone
+    shipTime
+    payment {
+      provider
+      time
+    }
+    orderItems {
+      hasLab
+      id
+      labPrice
+      productPrice
+      quantity
+      product {
+        id
+        name
+        price
+        images {
+          url
+        }
+        lab {
+          price
+        }
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<GetHistoryOrderQuery, GetHistoryOrderQueryVariables>;
 export const RepayOrderDocument = new TypedDocumentString(`
     mutation RepayOrder($orderId: Float!) {
   repayOrder(orderId: $orderId)

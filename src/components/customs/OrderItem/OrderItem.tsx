@@ -81,7 +81,7 @@ const OrderItem = ({ order }: OrderItemProps) => {
       case OrderStatus.Delivering:
         return handleReceiveOrder();
       case OrderStatus.Delivered:
-        return 'Rate';
+        return navigation.navigate('FeedbackProductScreen', { orderId: order.id });
       case OrderStatus.Rated:
         return;
       default:

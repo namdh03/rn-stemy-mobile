@@ -88,6 +88,12 @@ const SearchOrdersScreen = () => {
             }
             className='flex-1'
             contentContainerClassName='gap-[16px] pb-[50px]'
+            removeClippedSubviews={true}
+            initialNumToRender={10}
+            maxToRenderPerBatch={5}
+            updateCellsBatchingPeriod={50}
+            windowSize={21}
+            onEndReachedThreshold={0.5}
           />
         ) : (
           <RNPressable className='flex-1 gap-[8px] items-center pt-[100px] px-[25px]' onPress={Keyboard.dismiss}>

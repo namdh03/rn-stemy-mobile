@@ -11,8 +11,10 @@ export const SearchOrderQuery = graphql(`
       address
       fullName
       phone
+      shipTime
       payment {
         provider
+        time
       }
       orderItems {
         hasLab
@@ -47,8 +49,48 @@ export const GetOrderByStatusQuery = graphql(`
       address
       fullName
       phone
+      shipTime
       payment {
         provider
+        time
+      }
+      orderItems {
+        hasLab
+        id
+        labPrice
+        productPrice
+        quantity
+        product {
+          id
+          name
+          price
+          images {
+            url
+          }
+          lab {
+            price
+          }
+        }
+      }
+    }
+  }
+`);
+
+export const GetHistoryOrderQuery = graphql(`
+  query GetHistoryOrder {
+    searchOrder(search: "") {
+      id
+      createdAt
+      updatedAt
+      totalPrice
+      status
+      address
+      fullName
+      phone
+      shipTime
+      payment {
+        provider
+        time
       }
       orderItems {
         hasLab
