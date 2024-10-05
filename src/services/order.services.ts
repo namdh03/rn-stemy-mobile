@@ -24,3 +24,9 @@ export const SearchOrderQuery = graphql(`
     }
   }
 `);
+
+export const RepayOrderMutation = graphql(`
+  mutation RepayOrder($orderId: Float!) {
+    repayOrder(orderId: $orderId)
+  }
+`);

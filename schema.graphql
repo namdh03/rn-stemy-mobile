@@ -43,6 +43,13 @@ input CheckoutOrderInput {
   vnp_TxnRef: String!
 }
 
+input CreateFeedbackInput {
+  images: [File!]
+  note: String
+  orderItemId: Int!
+  rating: Float!
+}
+
 """
 A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.This scalar is serialized to a string in ISO 8601 format and parsed from a string in ISO 8601 format.
 """
@@ -52,7 +59,7 @@ type Feedback {
   createdAt: DateTimeISO!
   id: ID!
   images: [FeedbackImage!]
-  note: String!
+  note: String
   orderItem: OrderItem!
   product: Product!
   rating: Float!
@@ -75,7 +82,7 @@ scalar File
 type Mutation {
   addToCart(hasLab: Boolean!, productId: Float!, quantity: Float!): Cart!
   checkoutOrder(input: CheckoutOrderInput!): Boolean!
-  createFeedback(images: [File!], note: String!, orderItemId: Int!, rating: Float!): Feedback!
+  createFeedback(input: [CreateFeedbackInput!]!, orderId: Float!): Boolean!
   createOrder(
     address: String!
     cartIds: [Int!]!
@@ -111,9 +118,11 @@ type Order {
   createdAt: DateTimeISO!
   fullName: String!
   id: ID!
+  isAllowRating: Boolean!
   orderItems: [OrderItem!]!
   payment: OrderPaymentEmbeddable!
   phone: String!
+  shipTime: DateTimeISO!
   status: OrderStatus!
   totalPrice: Int!
   updatedAt: DateTimeISO
@@ -134,12 +143,14 @@ type OrderItem {
 type OrderPaymentEmbeddable {
   id: String!
   provider: PaymentProvider!
+  time: DateTimeISO!
 }
 
 enum OrderStatus {
   DELIVERED
   DELIVERING
   PAID
+  RATED
   UNPAID
 }
 
@@ -218,7 +229,7 @@ type Query {
     search: String! = ""
     sort: String! = "id"
   ): ProductsWithPaginationResponse!
-  searchOrder(search: String!): [Order!]!
+  searchOrder(search: String!, status: OrderStatus): [Order!]!
   tickets(
     currentItem: Int! = 9
     currentPage: Int! = 1

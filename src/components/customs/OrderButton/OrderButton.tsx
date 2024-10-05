@@ -9,22 +9,16 @@ import { getOrderStatusButtonText } from '~utils/getOrderItemText';
 interface OrderButtonProps {
   orderStatus: OrderStatus;
   onPress: () => void;
+  onBuyAgain: () => void;
 }
 
-const OrderButton = ({ orderStatus, onPress }: OrderButtonProps) => {
-  const inactive = useMemo(
-    () => orderStatus === OrderStatus.Paid || orderStatus === OrderStatus.Delivering,
-    [orderStatus],
-  );
-
-  const handleBuyAgainPress = () => {
-    console.log('handleBuyAgainPress');
-  };
+const OrderButton = ({ orderStatus, onPress, onBuyAgain }: OrderButtonProps) => {
+  const inactive = useMemo(() => orderStatus === OrderStatus.Paid, [orderStatus]);
 
   return (
     <View className='w-full flex-row gap-[10px]'>
       {orderStatus === OrderStatus.Delivered && (
-        <Button variant='outline' className='mt-[8px] min-w-[100px]' size='sm' onPress={handleBuyAgainPress}>
+        <Button variant='outline' className='mt-[8px] min-w-[100px]' size='sm' onPress={onBuyAgain}>
           <RNText className='font-inter-semiBold text-muted-foreground text-[12px]'>Buy again</RNText>
         </Button>
       )}
