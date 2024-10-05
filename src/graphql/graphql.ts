@@ -600,6 +600,10 @@ export type SearchOrderQuery = {
     updatedAt?: any | null;
     totalPrice: number;
     status: OrderStatus;
+    address: string;
+    fullName: string;
+    phone: string;
+    payment: { __typename?: 'OrderPaymentEmbeddable'; provider: PaymentProvider };
     orderItems: Array<{
       __typename?: 'OrderItem';
       hasLab: boolean;
@@ -607,7 +611,14 @@ export type SearchOrderQuery = {
       labPrice: number;
       productPrice: number;
       quantity: number;
-      product: { __typename?: 'Product'; name: string; images: Array<{ __typename?: 'ProductImage'; url: string }> };
+      product: {
+        __typename?: 'Product';
+        id: string;
+        name: string;
+        price: number;
+        images: Array<{ __typename?: 'ProductImage'; url: string }>;
+        lab?: { __typename?: 'ProductLab'; price: number } | null;
+      };
     }>;
   }>;
 };
@@ -625,6 +636,10 @@ export type GetOrderByStatusQuery = {
     updatedAt?: any | null;
     totalPrice: number;
     status: OrderStatus;
+    address: string;
+    fullName: string;
+    phone: string;
+    payment: { __typename?: 'OrderPaymentEmbeddable'; provider: PaymentProvider };
     orderItems: Array<{
       __typename?: 'OrderItem';
       hasLab: boolean;
@@ -632,7 +647,14 @@ export type GetOrderByStatusQuery = {
       labPrice: number;
       productPrice: number;
       quantity: number;
-      product: { __typename?: 'Product'; name: string; images: Array<{ __typename?: 'ProductImage'; url: string }> };
+      product: {
+        __typename?: 'Product';
+        id: string;
+        name: string;
+        price: number;
+        images: Array<{ __typename?: 'ProductImage'; url: string }>;
+        lab?: { __typename?: 'ProductLab'; price: number } | null;
+      };
     }>;
   }>;
 };
@@ -981,6 +1003,12 @@ export const SearchOrderDocument = new TypedDocumentString(`
     updatedAt
     totalPrice
     status
+    address
+    fullName
+    phone
+    payment {
+      provider
+    }
     orderItems {
       hasLab
       id
@@ -988,9 +1016,14 @@ export const SearchOrderDocument = new TypedDocumentString(`
       productPrice
       quantity
       product {
+        id
         name
+        price
         images {
           url
+        }
+        lab {
+          price
         }
       }
     }
@@ -1005,6 +1038,12 @@ export const GetOrderByStatusDocument = new TypedDocumentString(`
     updatedAt
     totalPrice
     status
+    address
+    fullName
+    phone
+    payment {
+      provider
+    }
     orderItems {
       hasLab
       id
@@ -1012,9 +1051,14 @@ export const GetOrderByStatusDocument = new TypedDocumentString(`
       productPrice
       quantity
       product {
+        id
         name
+        price
         images {
           url
+        }
+        lab {
+          price
         }
       }
     }

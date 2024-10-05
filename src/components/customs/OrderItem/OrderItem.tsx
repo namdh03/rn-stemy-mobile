@@ -31,12 +31,12 @@ interface OrderItemProps {
 const OrderItem = ({ order }: OrderItemProps) => {
   const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
   const firstOrderItem = useMemo(() => order.orderItems[0], [order]);
-  const { mutate } = useMutation({
+  const { mutate: repayOrderMutate } = useMutation({
     mutationFn: (orderId: number) => execute(RepayOrderMutation, { orderId }),
   });
 
   const handleNavigateToOrderDetail = () => {
-    navigation.navigate('OrderDetailScreen');
+    navigation.navigate('OrderDetailScreen', order);
   };
 
   const handleRepayOrder = () => {
@@ -46,7 +46,7 @@ const OrderItem = ({ order }: OrderItemProps) => {
       textBody: 'Your previous payment failed. Do you want to reorder and try paying again?',
       button: 'Reorder Now',
       onPressButton: () =>
-        mutate(+order.id, {
+        repayOrderMutate(+order.id, {
           onSuccess: async (data) => {
             await WebBrowser.openAuthSessionAsync(data.data.repayOrder);
           },
@@ -68,19 +68,22 @@ const OrderItem = ({ order }: OrderItemProps) => {
     console.log('handleBuyOrderAgain');
   };
 
+  const handleReceiveOrder = () => {
+    console.log('handleReceiveOrder');
+  };
+
   const handleButtonActionPress = () => {
-    console.log('handleButtonActionPress');
     switch (order.status) {
       case OrderStatus.Unpaid:
         return handleRepayOrder();
       case OrderStatus.Paid:
-        return 'Received';
+        return;
       case OrderStatus.Delivering:
-        return 'Received';
+        return handleReceiveOrder();
       case OrderStatus.Delivered:
         return 'Rate';
       case OrderStatus.Rated:
-        return 'Buy again';
+        return;
       default:
         return 'Unknown Status';
     }

@@ -68,6 +68,8 @@ const CartScreen = ({ navigation }: CartScreenNavigationProps) => {
             refreshControl={
               <RefreshControl className='text-primary' refreshing={isRefetchingByUser} onRefresh={refetchByUser} />
             }
+            showsVerticalScrollIndicator={false}
+            automaticallyAdjustContentInsets={false}
           />
 
           <View className='absolute left-0 right-0 bottom-0 px-[24px] pt-[12px] pb-[24px] bg-card'>

@@ -8,6 +8,12 @@ export const SearchOrderQuery = graphql(`
       updatedAt
       totalPrice
       status
+      address
+      fullName
+      phone
+      payment {
+        provider
+      }
       orderItems {
         hasLab
         id
@@ -15,9 +21,14 @@ export const SearchOrderQuery = graphql(`
         productPrice
         quantity
         product {
+          id
           name
+          price
           images {
             url
+          }
+          lab {
+            price
           }
         }
       }
@@ -33,6 +44,12 @@ export const GetOrderByStatusQuery = graphql(`
       updatedAt
       totalPrice
       status
+      address
+      fullName
+      phone
+      payment {
+        provider
+      }
       orderItems {
         hasLab
         id
@@ -40,9 +57,14 @@ export const GetOrderByStatusQuery = graphql(`
         productPrice
         quantity
         product {
+          id
           name
+          price
           images {
             url
+          }
+          lab {
+            price
           }
         }
       }
