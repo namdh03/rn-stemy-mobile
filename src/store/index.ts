@@ -10,6 +10,7 @@ import { createCheckoutSlice } from './checkout/checkout-slice';
 import { createFilterSortingSlice } from './filter-sorting/filter-sorting-slice';
 import { createHistorySearchProductSlice } from './history-search-product/history-search-product.slice';
 import { createProductDetailSlice } from './product-detail/product-detail-slice';
+import { createStoresDrawerSlice } from './stores-drawer/stores-drawer.slice';
 import { CartStore, HistorySearchProductStore, Store } from './store.type';
 
 export const useStore = create<Store>()(
@@ -20,6 +21,7 @@ export const useStore = create<Store>()(
         ...createProductDetailSlice(...a),
         ...createCheckoutSlice(...a),
         ...createFilterSortingSlice(...a),
+        ...createStoresDrawerSlice(...a),
       })),
     ),
   ),

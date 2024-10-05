@@ -21,18 +21,15 @@ import { useStore } from '~store';
 import TabFilterContent from '../TabFilterContent';
 import TabSortingContent from '../TabSortingContent';
 
-interface DrawerFilterSortingContent {
-  onClose: () => void;
-}
-
-const DrawerFilterSortingContent = ({ onClose }: DrawerFilterSortingContent) => {
+const DrawerFilterSortingContent = () => {
   const { height } = useWindowDimensions();
   const calculatedTopPosition = height - 100;
-  const { storesFilterSorting, setFilterStoring, clearFilterStoring } = useStore(
+  const { storesFilterSorting, setFilterStoring, clearFilterStoring, onStoresDrawerClose } = useStore(
     useShallow((state) => ({
       storesFilterSorting: state.storesFilterSorting,
       setFilterStoring: state.setFilterStoring,
       clearFilterStoring: state.clearFilterStoring,
+      onStoresDrawerClose: state.onStoresDrawerClose,
     })),
   );
   const form = useForm<CategoriesFormType>({
@@ -60,22 +57,22 @@ const DrawerFilterSortingContent = ({ onClose }: DrawerFilterSortingContent) => 
       order: values.order,
       sort: values.sort,
     });
-    onClose();
+    onStoresDrawerClose();
   };
 
   const onReset = () => {
     form.reset();
-    onClose();
+    onStoresDrawerClose();
     clearFilterStoring();
   };
 
   return (
-    <View className='flex-grow pb-[140px]'>
+    <View className='flex-grow pb-[130px]'>
       <View className='flex-row justify-between items-center px-[33px] py-[15px] shadow'>
         <Text className='font-inter-bold text-foreground text-[16px] leading-[24px] tracking-[0.2px]'>
           Filter & Sorting
         </Text>
-        <Pressable onPress={onClose}>
+        <Pressable onPress={onStoresDrawerClose}>
           <X className='text-foreground' />
         </Pressable>
       </View>

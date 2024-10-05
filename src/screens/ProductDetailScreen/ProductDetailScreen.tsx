@@ -12,7 +12,7 @@ import { Star } from '~components/icons';
 import { Button } from '~components/ui/button';
 import { Separator } from '~components/ui/separator';
 import { Text } from '~components/ui/text';
-import { GET_PRODUCT_QUERY_KEY } from '~constants/product-query-key';
+import constants from '~constants';
 import execute from '~graphql/execute';
 import { useColorScheme, useRefreshByUser } from '~hooks';
 import { GetProductQuery } from '~services/product.services';
@@ -28,7 +28,7 @@ const ProductDetailScreen = ({ route }: ProductDetailScreenNavigationProps) => {
   const { isDarkColorScheme } = useColorScheme();
   const setFeedbacks = useStore(useShallow((state) => state.setFeedbacks));
   const { data, refetch, isFetching } = useQuery({
-    queryKey: [GET_PRODUCT_QUERY_KEY, route.params.id],
+    queryKey: [constants.PRODUCT_QUERY_KEY.GET_PRODUCT_QUERY_KEY, route.params.id],
     queryFn: () => execute(GetProductQuery, { id: Number(route.params.id) }),
     select: (data) => data.data,
   });

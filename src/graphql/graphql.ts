@@ -577,6 +577,31 @@ export type GetHomeQuery = {
   };
 };
 
+export type SearchOrderQueryVariables = Exact<{
+  search: Scalars['String']['input'];
+}>;
+
+export type SearchOrderQuery = {
+  __typename?: 'Query';
+  searchOrder: Array<{
+    __typename?: 'Order';
+    id: string;
+    createdAt: any;
+    updatedAt?: any | null;
+    totalPrice: number;
+    status: OrderStatus;
+    orderItems: Array<{
+      __typename?: 'OrderItem';
+      hasLab: boolean;
+      id: string;
+      labPrice: number;
+      productPrice: number;
+      quantity: number;
+      product: { __typename?: 'Product'; name: string; images: Array<{ __typename?: 'ProductImage'; url: string }> };
+    }>;
+  }>;
+};
+
 export type GetProductQueryVariables = Exact<{
   id: Scalars['Float']['input'];
 }>;
@@ -907,6 +932,30 @@ export const GetHomeDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<GetHomeQuery, GetHomeQueryVariables>;
+export const SearchOrderDocument = new TypedDocumentString(`
+    query SearchOrder($search: String!) {
+  searchOrder(search: $search) {
+    id
+    createdAt
+    updatedAt
+    totalPrice
+    status
+    orderItems {
+      hasLab
+      id
+      labPrice
+      productPrice
+      quantity
+      product {
+        name
+        images {
+          url
+        }
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<SearchOrderQuery, SearchOrderQueryVariables>;
 export const GetProductDocument = new TypedDocumentString(`
     query GetProduct($id: Float!) {
   product(id: $id) {

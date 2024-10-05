@@ -1,5 +1,5 @@
-import { useCallback, useState } from 'react';
-import { Keyboard, Pressable as RNPressable, ScrollView, View } from 'react-native';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { Keyboard, Pressable as RNPressable, ScrollView, TextInput, View } from 'react-native';
 import { useShallow } from 'zustand/react/shallow';
 
 import { useQuery } from '@tanstack/react-query';
@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import LoadingOverlay from '~components/customs/LoadingOverlay';
 import ProductList from '~components/customs/ProductList';
 import SearchName from '~components/customs/SearchName';
-import { GET_FEATURED_PRODUCT_QUERY_KEY, SEARCH_PRODUCT_BY_NAME_QUERY_KEY } from '~constants/product-query-key';
+import constants from '~constants';
 import execute from '~graphql/execute';
 import { Product } from '~graphql/graphql';
 import { useColorScheme, useDebounce } from '~hooks';
@@ -23,19 +23,26 @@ const SearchProductScreen = ({ navigation }: SearchProductScreenNavigationProps)
   const { isDarkColorScheme } = useColorScheme();
   const [searchValue, setSearchValue] = useState('');
   const debouncedSearchValue = useDebounce(searchValue);
+  const inputRef = useRef<TextInput>(null);
   const { data: featuredProduct } = useQuery({
-    queryKey: [GET_FEATURED_PRODUCT_QUERY_KEY],
+    queryKey: [constants.PRODUCT_QUERY_KEY.GET_FEATURED_PRODUCT_QUERY_KEY],
     queryFn: () => execute(GetFeaturedProductQuery),
     select: (data) => data.data.products.items,
   });
   const { data: searchProductNameList, isFetching: isSearchProductNameListFetching } = useQuery({
-    queryKey: [SEARCH_PRODUCT_BY_NAME_QUERY_KEY, debouncedSearchValue],
+    queryKey: [constants.PRODUCT_QUERY_KEY.SEARCH_PRODUCT_BY_NAME_QUERY_KEY, debouncedSearchValue],
     queryFn: () => execute(SearchProductByNameQuery, { search: debouncedSearchValue.trim() }),
     enabled: !!debouncedSearchValue,
     select: (data) => data.data.products.items,
   });
   const setFilterStoring = useStore(useShallow((state) => state.setFilterStoring));
   const setHistorySearchItem = useHistorySearchProductStore(useShallow((state) => state.setItem));
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
 
   const handleSearchValueChange = (text: string) => {
     setSearchValue(text);
@@ -73,6 +80,7 @@ const SearchProductScreen = ({ navigation }: SearchProductScreenNavigationProps)
       <RNPressable className='flex-1 pb-[14px]' onPress={Keyboard.dismiss}>
         <View className='flex-1 px-[25px]'>
           <SearchName
+            ref={inputRef}
             value={searchValue}
             placeholder='Search Product Name'
             onChangeText={handleSearchValueChange}

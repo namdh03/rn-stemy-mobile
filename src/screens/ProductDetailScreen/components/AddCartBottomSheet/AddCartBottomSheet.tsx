@@ -12,7 +12,6 @@ import { Button } from '~components/ui/button';
 import { Separator } from '~components/ui/separator';
 import { Text } from '~components/ui/text';
 import constants from '~constants';
-import { GET_CART_COUNT_QUERY_KEY, GET_CART_QUERY_KEY } from '~constants/cart-query-key';
 import execute from '~graphql/execute';
 import { useColorScheme } from '~hooks';
 import { AddToCartMutation } from '~services/cart.services';
@@ -75,8 +74,8 @@ const AddCartBottomSheet = forwardRef<BottomSheet, AddCartBottomSheetProps>(
       if (!route.params.id) return;
       mutate(Number(route.params.id), {
         onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: [GET_CART_QUERY_KEY] });
-          queryClient.invalidateQueries({ queryKey: [GET_CART_COUNT_QUERY_KEY] });
+          queryClient.invalidateQueries({ queryKey: [constants.CART_QUERY_KEY.GET_CART_QUERY_KEY] });
+          queryClient.invalidateQueries({ queryKey: [constants.CART_QUERY_KEY.GET_CART_COUNT_QUERY_KEY] });
           showDialogSuccess({ textBody: constants.MESSAGES.CART_MESSAGES.ADD_TO_CART_SUCCESSFULLY });
           onClose();
         },

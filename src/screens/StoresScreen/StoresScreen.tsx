@@ -7,7 +7,6 @@ import ProductCard from '~components/customs/ProductCard';
 import ProductCardSkeleton from '~components/customs/ProductCardSkeleton';
 import SearchName from '~components/customs/SearchName';
 import constants from '~constants';
-import { FILTER_AND_SORTING_PRODUCT_QUERY_KEY } from '~constants/product-query-key';
 import execute from '~graphql/execute';
 import { useRefreshByUser } from '~hooks';
 import { FilterAndSortingProductQuery } from '~services/product.services';
@@ -22,7 +21,7 @@ const StoresScreen = ({ navigation }: StoresScreenNavigationProps) => {
     })),
   );
   const { data, refetch, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteQuery({
-    queryKey: [FILTER_AND_SORTING_PRODUCT_QUERY_KEY, storesFilterSorting],
+    queryKey: [constants.PRODUCT_QUERY_KEY.FILTER_AND_SORTING_PRODUCT_QUERY_KEY, storesFilterSorting],
     queryFn: ({ pageParam = constants.FILTER_SORTING.DEFAULT_CURRENT_PAGE }) =>
       execute(FilterAndSortingProductQuery, {
         ...storesFilterSorting,
