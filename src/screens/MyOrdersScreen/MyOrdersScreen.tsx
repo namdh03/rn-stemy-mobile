@@ -4,6 +4,7 @@ import { FlatList, RefreshControl, View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 
 import OrderItem from '~components/customs/OrderItem';
+import OrderItemSkeleton from '~components/customs/OrderItemSkeleton'; // Import the skeleton component
 import SearchName from '~components/customs/SearchName';
 import { Tabs, TabsList } from '~components/ui/tabs';
 import constants from '~constants';
@@ -13,6 +14,7 @@ import { useRefreshByUser } from '~hooks';
 import { GetOrderByStatusQuery } from '~services/order.services';
 import { MyOrdersScreenNavigationProps } from '~types/navigation.type';
 
+import EmptyOrderList from './components/EmptyOrderList';
 import TabButton from './components/TabButton';
 
 const MyOrdersScreen = ({ route, navigation }: MyOrdersScreenNavigationProps) => {
@@ -22,7 +24,11 @@ const MyOrdersScreen = ({ route, navigation }: MyOrdersScreenNavigationProps) =>
     navigation.navigate('SearchOrdersScreen');
   }, [navigation]);
 
-  const { data: orderListByStatus, refetch: orderListByOrderRefetch } = useQuery({
+  const {
+    data: orderListByStatus,
+    refetch: orderListByOrderRefetch,
+    isLoading,
+  } = useQuery({
     queryKey: [constants.ORDER_QUERY_KEY.GET_ORDER_BY_STATUS_QUERY_KEY, tab],
     queryFn: () => execute(GetOrderByStatusQuery, { status: tab }),
     select: (data) => data.data.searchOrder,
@@ -72,18 +78,32 @@ const MyOrdersScreen = ({ route, navigation }: MyOrdersScreenNavigationProps) =>
         </TabsList>
       </Tabs>
 
-      <FlatList
-        data={orderListByStatusSorted}
-        keyExtractor={keyExtractor}
-        renderItem={renderOrderItem}
-        showsVerticalScrollIndicator={false}
-        automaticallyAdjustContentInsets={false}
-        refreshControl={
-          <RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} tintColor='#your-primary-color' />
-        }
-        className='flex-1'
-        contentContainerStyle={{ gap: 16, paddingBottom: 50 }}
-      />
+      {isLoading ? (
+        <FlatList
+          data={[...Array(5)]}
+          renderItem={() => <OrderItemSkeleton />}
+          keyExtractor={(_, index) => `skeleton-${index}`}
+          showsVerticalScrollIndicator={false}
+          automaticallyAdjustContentInsets={false}
+          className='flex-1'
+          contentContainerStyle={{ gap: 16, paddingBottom: 50 }}
+        />
+      ) : orderListByStatusSorted.length === 0 ? (
+        <EmptyOrderList />
+      ) : (
+        <FlatList
+          data={orderListByStatusSorted}
+          keyExtractor={keyExtractor}
+          renderItem={renderOrderItem}
+          showsVerticalScrollIndicator={false}
+          automaticallyAdjustContentInsets={false}
+          refreshControl={
+            <RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} tintColor='#your-primary-color' />
+          }
+          className='flex-1'
+          contentContainerStyle={{ gap: 16, paddingBottom: 50 }}
+        />
+      )}
     </View>
   );
 };
