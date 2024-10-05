@@ -60,9 +60,9 @@ const CheckoutScreen = ({ navigation }: CheckoutScreenNavigationProps) => {
     if (checkoutData) {
       createOrderMutate(
         {
-          fullName: checkoutData.fullName,
-          phone: checkoutData.phone,
-          address: checkoutData.address,
+          fullName: checkoutData.fullName.trim(),
+          phone: checkoutData.phone.trim(),
+          address: checkoutData.address.trim(),
           cartIds: [...checkoutData.cartIds],
           paymentProvider: checkoutData.paymentProvider,
         },
@@ -95,12 +95,15 @@ const CheckoutScreen = ({ navigation }: CheckoutScreenNavigationProps) => {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <CheckoutItem item={item} />}
         ItemSeparatorComponent={() => <Separator className='bg-muted my-[14px]' />}
+        showsVerticalScrollIndicator={false}
+        automaticallyAdjustContentInsets={false}
         className='flex-1'
-        contentContainerStyle={{ paddingTop: 24, paddingHorizontal: 24, paddingBottom: 220 }}
+        contentContainerStyle={{ paddingBottom: 220 }}
       />
 
       <View className='absolute left-0 right-0 bottom-0 bg-card'>
         <Separator className='bg-muted' />
+
         <View className='px-[24px] py-[12px]'>
           <View className='flex-row items-center'>
             <CircleDollarSign className='text-[#EF4444]' size={24} strokeWidth={1.5} />
@@ -110,6 +113,7 @@ const CheckoutScreen = ({ navigation }: CheckoutScreenNavigationProps) => {
             </Button>
           </View>
         </View>
+
         <Separator className='bg-muted' />
 
         <View className='px-[24px] pb-[24px] mt-[14px]'>
