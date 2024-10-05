@@ -11,7 +11,6 @@ import { FormCheckbox, FormField, FormItem } from '~components/deprecated-ui/for
 import { Separator } from '~components/ui/separator';
 import { Text } from '~components/ui/text';
 import constants from '~constants';
-import { GET_PRODUCT_CATEGORIES_QUERY_KEY } from '~constants/category-query-key';
 import execute from '~graphql/execute';
 import { GetProductCategoriesQuery as GetProductCategoriesQueryType } from '~graphql/graphql';
 import { cn } from '~lib/utils';
@@ -28,7 +27,7 @@ interface TabFilterContentProps {
 const TabFilterContent = ({ form }: TabFilterContentProps) => {
   const [sliderWidth, setSliderWidth] = useState(Dimensions.get('window').width - 40);
   const { data } = useQuery({
-    queryKey: [GET_PRODUCT_CATEGORIES_QUERY_KEY],
+    queryKey: [constants.CATEGORY_QUERY_KEY.GET_PRODUCT_CATEGORIES_QUERY_KEY],
     queryFn: () => execute(GetProductCategoriesQuery),
     select: (data) => data.data.productCategories,
   });

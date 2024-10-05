@@ -26,7 +26,7 @@ const ProductDetailNavigator = () => (
         headerTitle: 'Detail Product',
         headerTitleAlign: 'center',
         headerTitleStyle: {
-          fontFamily: 'Inter_18pt-Medium',
+          fontFamily: 'Inter_18pt-SemiBold',
           fontSize: 18,
         },
         headerLeft: ({ canGoBack }) => (
@@ -44,7 +44,7 @@ const ProductDetailNavigator = () => (
         headerTitle: 'Review Product',
         headerTitleAlign: 'center',
         headerTitleStyle: {
-          fontFamily: 'Inter_18pt-Medium',
+          fontFamily: 'Inter_18pt-SemiBold',
           fontSize: 18,
         },
         headerLeft: () => (

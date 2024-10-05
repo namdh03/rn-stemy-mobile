@@ -10,9 +10,11 @@ import CartScreen from '~screens/CartScreen';
 import CheckoutScreen from '~screens/CheckoutScreen';
 import CheckoutUserInformationScreen from '~screens/CheckoutUserInformationScreen';
 import MyOrdersScreen from '~screens/MyOrdersScreen';
+import OrderDetailScreen from '~screens/OrderDetailScreen';
 import OrderErrorScreen from '~screens/OrderErrorScreen';
 import OrderProgressScreen from '~screens/OrderProgressScreen';
 import OrderSuccessScreen from '~screens/OrderSuccessScreen';
+import SearchOrdersScreen from '~screens/SearchOrdersScreen';
 import SearchProductScreen from '~screens/SearchProductScreen';
 import {
   CartScreenNavigationProps,
@@ -20,6 +22,8 @@ import {
   CheckoutUserInformationScreenNavigationProps,
   MainStackParamList,
   MyOrdersScreenNavigationProps,
+  OrderDetailScreenNavigationProps,
+  SearchOrdersScreenNavigationProps,
   SearchProductScreenNavigationProps,
 } from '~types/navigation.type';
 
@@ -36,7 +40,7 @@ const MainNavigator = () => (
         title: 'Your cart',
         headerTitleAlign: 'center',
         headerTitleStyle: {
-          fontFamily: 'Inter_18pt-ExtraBold',
+          fontFamily: 'Inter_18pt-SemiBold',
           fontSize: 18,
         },
         headerLeft: () => (
@@ -53,7 +57,7 @@ const MainNavigator = () => (
         title: 'Checkout',
         headerTitleAlign: 'center',
         headerTitleStyle: {
-          fontFamily: 'Inter_18pt-ExtraBold',
+          fontFamily: 'Inter_18pt-SemiBold',
           fontSize: 18,
         },
         headerLeft: () => (
@@ -70,7 +74,7 @@ const MainNavigator = () => (
         title: '',
         headerTitleAlign: 'center',
         headerTitleStyle: {
-          fontFamily: 'Inter_18pt-ExtraBold',
+          fontFamily: 'Inter_18pt-SemiBold',
           fontSize: 18,
         },
         headerLeft: () => (
@@ -118,7 +122,7 @@ const MainNavigator = () => (
         title: 'Search',
         headerTitleAlign: 'center',
         headerTitleStyle: {
-          fontFamily: 'Inter_18pt-Medium',
+          fontFamily: 'Inter_18pt-SemiBold',
           fontSize: 18,
         },
         headerLeft: () => (
@@ -135,7 +139,41 @@ const MainNavigator = () => (
         title: 'My orders',
         headerTitleAlign: 'center',
         headerTitleStyle: {
-          fontFamily: 'Inter_18pt-ExtraBold',
+          fontFamily: 'Inter_18pt-SemiBold',
+          fontSize: 18,
+        },
+        headerLeft: () => (
+          <Pressable onPress={() => navigation.goBack()}>
+            <ChevronLeft className='text-primary' size={30} />
+          </Pressable>
+        ),
+      })}
+    />
+    <MainStack.Screen
+      name='SearchOrdersScreen'
+      component={SearchOrdersScreen}
+      options={({ navigation }: SearchOrdersScreenNavigationProps) => ({
+        title: 'Search Order',
+        headerTitleAlign: 'center',
+        headerTitleStyle: {
+          fontFamily: 'Inter_18pt-SemiBold',
+          fontSize: 18,
+        },
+        headerLeft: () => (
+          <Pressable onPress={() => navigation.goBack()}>
+            <ChevronLeft className='text-primary' size={30} />
+          </Pressable>
+        ),
+      })}
+    />
+    <MainStack.Screen
+      name='OrderDetailScreen'
+      component={OrderDetailScreen}
+      options={({ navigation }: OrderDetailScreenNavigationProps) => ({
+        title: 'Order Detail',
+        headerTitleAlign: 'center',
+        headerTitleStyle: {
+          fontFamily: 'Inter_18pt-SemiBold',
           fontSize: 18,
         },
         headerLeft: () => (

@@ -27,7 +27,8 @@
  *      ├── Order Error Screen
  *      ├── Search Product Screen
  *      ├── My Orders Screen
- *      └── Search Order Screen
+ *      ├── Search Orders Screen
+ *      └── Order Detail Screen
  */
 
 // import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
@@ -84,7 +85,8 @@ export type MainStackParamList = {
   OrderErrorScreen: undefined;
   SearchProductScreen: undefined;
   MyOrdersScreen: { tab: OrderTab };
-  SearchOrderScreen: undefined;
+  SearchOrdersScreen: undefined;
+  OrderDetailScreen: undefined;
 };
 
 // Root Stack
@@ -188,7 +190,12 @@ export type MyOrdersScreenNavigationProps = CompositeScreenProps<
   NativeStackScreenProps<BottomTabParamList>
 >;
 
-export type SearchOrderScreenNavigationProps = CompositeScreenProps<
-  NativeStackScreenProps<MainStackParamList, 'SearchOrderScreen'>,
+export type SearchOrdersScreenNavigationProps = CompositeScreenProps<
+  NativeStackScreenProps<MainStackParamList, 'SearchOrdersScreen'>,
+  NativeStackScreenProps<BottomTabParamList>
+>;
+
+export type OrderDetailScreenNavigationProps = CompositeScreenProps<
+  NativeStackScreenProps<MainStackParamList, 'OrderDetailScreen'>,
   NativeStackScreenProps<BottomTabParamList>
 >;

@@ -11,7 +11,7 @@ import ProductList from '~components/customs/ProductList';
 import SearchName from '~components/customs/SearchName';
 import { Bot, CircleX, Laptop, SlidersVertical, Wrench } from '~components/icons';
 import { Text } from '~components/ui/text';
-import { GET_HOME_QUERY_KEY } from '~constants/home-query-key';
+import constants from '~constants';
 import execute from '~graphql/execute';
 import { useColorScheme } from '~hooks';
 import { GetHomeQuery } from '~services/home.services';
@@ -20,7 +20,7 @@ import { HomeScreenNavigationProps } from '~types/navigation.type';
 const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
   const { isDarkColorScheme } = useColorScheme();
   const { data, isFetching } = useQuery({
-    queryKey: [GET_HOME_QUERY_KEY],
+    queryKey: [constants.HOME_QUERY_KEY.GET_HOME_QUERY_KEY],
     queryFn: () => execute(GetHomeQuery),
     select: (data) => data.data,
   });

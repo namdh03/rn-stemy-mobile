@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { View } from 'react-native';
 import { Drawer } from 'react-native-drawer-layout';
 import { useShallow } from 'zustand/react/shallow';
@@ -17,20 +16,22 @@ import { StoresScreenNavigationProps, StoresStackParamList } from '~types/naviga
 const Stack = createNativeStackNavigator<StoresStackParamList>();
 
 const StoresStack = () => {
-  const isFilterSortingActive = useStore(useShallow((state) => state.isFilterSortingActive));
-  const [open, setOpen] = useState(false);
-
-  const handleDrawerOpen = () => setOpen(true);
-
-  const handleDrawerClose = () => setOpen(false);
+  const { isFilterSortingActive, openStoresDrawer, onStoresDrawerOpen, onStoresDrawerClose } = useStore(
+    useShallow((state) => ({
+      isFilterSortingActive: state.isFilterSortingActive,
+      openStoresDrawer: state.openStoresDrawer,
+      onStoresDrawerOpen: state.onStoresDrawerOpen,
+      onStoresDrawerClose: state.onStoresDrawerClose,
+    })),
+  );
 
   return (
     <Drawer
-      open={open}
-      onOpen={handleDrawerOpen}
-      onClose={handleDrawerClose}
+      open={openStoresDrawer}
+      onOpen={onStoresDrawerOpen}
+      onClose={onStoresDrawerClose}
       renderDrawerContent={() => {
-        return <DrawerFilterSortingContent onClose={handleDrawerClose} />;
+        return <DrawerFilterSortingContent />;
       }}
       drawerPosition='right'
     >
@@ -49,7 +50,7 @@ const StoresStack = () => {
             headerRight: () => (
               <View className='flex-row gap-[18px]'>
                 <MainHeaderRight />
-                <Pressable onPress={handleDrawerOpen}>
+                <Pressable onPress={onStoresDrawerOpen}>
                   <ListFilter className='text-foreground' size={26} />
                   {isFilterSortingActive && (
                     <Badge

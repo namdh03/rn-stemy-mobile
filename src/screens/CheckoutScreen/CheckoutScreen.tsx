@@ -115,7 +115,8 @@ const CheckoutScreen = ({ navigation }: CheckoutScreenNavigationProps) => {
         <View className='px-[24px] pb-[24px] mt-[14px]'>
           <View className='flex-row items-center justify-between px-[12px] py-[8px]'>
             <Text className='font-inter-regular text-muted-foreground text-[14px] leading-[20px]'>
-              Order payment ({Object.values(selectedCart || {}).length} item)
+              Order payment ({Object.values(selectedCart || {}).length} item
+              {Object.values(selectedCart || {}).length > 1 ? 's' : ''})
             </Text>
             <Text className='font-inter-extraBold text-foreground text-[14px]'>{total.toLocaleString()} ₫</Text>
           </View>

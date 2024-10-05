@@ -12,7 +12,6 @@ import { Button } from '~components/ui/button';
 import { Separator } from '~components/ui/separator';
 import { Text } from '~components/ui/text';
 import constants from '~constants';
-import { GET_CART_QUERY_KEY } from '~constants/cart-query-key';
 import execute from '~graphql/execute';
 import { useRefreshByUser } from '~hooks';
 import { GetCartQuery } from '~services/cart.services';
@@ -32,7 +31,7 @@ const CartScreen = ({ navigation }: CartScreenNavigationProps) => {
   );
   const setCheckoutData = useStore(useShallow((state) => state.setCheckoutData));
   const { data, refetch, isFetching } = useQuery({
-    queryKey: [GET_CART_QUERY_KEY],
+    queryKey: [constants.CART_QUERY_KEY.GET_CART_QUERY_KEY],
     queryFn: () => execute(GetCartQuery),
     select: (data) => data.data.carts,
   });
