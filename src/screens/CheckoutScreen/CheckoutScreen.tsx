@@ -69,8 +69,8 @@ const CheckoutScreen = ({ navigation }: CheckoutScreenNavigationProps) => {
         {
           onSuccess: async (data) => {
             queryClient.invalidateQueries({ queryKey: [GET_CART_COUNT_QUERY_KEY] });
-            clearOrderedCart();
             await WebBrowser.openAuthSessionAsync(data.data.createOrder);
+            clearOrderedCart();
           },
           onError: (errors) => {
             if (isErrors(errors)) {

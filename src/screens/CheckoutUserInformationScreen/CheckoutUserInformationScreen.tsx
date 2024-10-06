@@ -1,24 +1,32 @@
 import { Text as RNText, View } from 'react-native';
 import { ScrollView } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import { useForm } from 'react-hook-form';
 import { useShallow } from 'zustand/react/shallow';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useMutation } from '@tanstack/react-query';
 
 import { Form, FormField, FormInput, FormTextarea } from '~components/deprecated-ui/form';
 import { Button } from '~components/ui/button';
 import { Text } from '~components/ui/text';
+import execute from '~graphql/execute';
+import { UpdateMeMutationVariables } from '~graphql/graphql';
+import { UpdateMeMutation } from '~services/user.serivces';
 import { useStore } from '~store';
 import { MainStackParamList } from '~types/navigation.type';
+import isErrors from '~utils/responseChecker';
+import showDialogError from '~utils/showDialogError';
 
 import schema, { CheckoutUserInformationFormType } from './schema';
 
 const CheckoutUserInformationScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
-  const { fullName, phone, address, setCheckoutData } = useStore(
+  const { user, fullName, phone, address, setCheckoutData } = useStore(
     useShallow((state) => ({
+      user: state.user,
       fullName: state.checkoutData.fullName,
       phone: state.checkoutData.phone,
       address: state.checkoutData.address,
@@ -34,21 +42,35 @@ const CheckoutUserInformationScreen = () => {
       address: address || '',
     },
   });
-
-  // TODO: Call API Update User
-  // const { mutate, isPending } = useMutation({
-  //   mutationFn: (values: CheckoutUserInformationFormType) => {
-  //     console.log(values);
-  //   },
-  // });
+  const { mutate, isPending } = useMutation({
+    mutationFn: (values: UpdateMeMutationVariables) =>
+      execute(UpdateMeMutation, {
+        ...values,
+      }),
+  });
 
   const onSubmit = (values: CheckoutUserInformationFormType) => {
     setCheckoutData(values);
     navigation.goBack();
-    // mutate(values, {
-    //   onSuccess: () => {},
-    //   onError: (error) => {},
-    // });
+
+    // Update user when empty information
+    const updates = {
+      ...(user?.phone ? {} : { fullName: values.phone }),
+      ...(user?.address ? {} : { fullName: values.address }),
+    };
+    if (Object.keys(updates).length > 0) {
+      mutate(updates, {
+        onError: (errors) => {
+          if (isErrors(errors)) {
+            const error = errors.find((error) => error.path.includes('createOrder'));
+            if (error?.message) {
+              return showDialogError({ textBody: error.message });
+            }
+          }
+          showDialogError();
+        },
+      });
+    }
   };
 
   return (
@@ -102,8 +124,15 @@ const CheckoutUserInformationScreen = () => {
             )}
           />
 
-          <Button size='lg' className='mt-[22px]' onPress={form.handleSubmit(onSubmit)}>
-            <RNText className='font-inter-medium text-background text-[16px] leading-[20px]'>Update</RNText>
+          <Button disabled={isPending} size='lg' className='mt-[16px]' onPress={form.handleSubmit(onSubmit)}>
+            {isPending ? (
+              <View className='flex-row items-center justify-center gap-[6px]'>
+                <ActivityIndicator className='text-secondary' />
+                <RNText className='font-inter-medium text-background text-[16px] leading-[20px]'>Loading...</RNText>
+              </View>
+            ) : (
+              <RNText className='font-inter-medium text-background text-[16px] leading-[20px]'>Place Order</RNText>
+            )}
           </Button>
         </View>
       </Form>
