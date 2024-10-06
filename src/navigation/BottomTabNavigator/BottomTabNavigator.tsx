@@ -2,10 +2,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { CircleUser, Store } from '~components/icons';
 import House from '~components/icons/House';
-import MeScreen from '~screens/MeScreen';
 import { BottomTabParamList } from '~types/navigation.type';
 
 import HomeStack from './stack/HomeStack';
+import MeStack from './stack/MeStack/MeStack';
 import StoresStack from './stack/StoresStack';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
@@ -50,12 +50,9 @@ const BottomTabNavigator = () => (
       }}
     />
     <BottomTab.Screen
-      name='MeScreen'
-      component={MeScreen}
+      name='MeStack'
+      component={MeStack}
       options={{
-        tabBarStyle: {
-          display: 'none',
-        },
         tabBarLabel: 'Me',
         tabBarIcon: ({ color, size }) => <CircleUser color={color} size={size} />,
       }}

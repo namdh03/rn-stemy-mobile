@@ -49,6 +49,10 @@ export type HomeStackParamList = {
   HomeScreen: undefined;
 };
 
+export type MeStackParamList = {
+  MeScreen: undefined;
+};
+
 export type StoresStackParamList = {
   StoresScreen: undefined;
 };
@@ -57,7 +61,7 @@ export type StoresStackParamList = {
 export type BottomTabParamList = {
   HomeStack: NavigatorScreenParams<HomeStackParamList>;
   StoresStack: NavigatorScreenParams<StoresStackParamList>;
-  MeScreen: undefined;
+  MeStack: NavigatorScreenParams<MeStackParamList>;
 };
 
 // Product Detail Stack
