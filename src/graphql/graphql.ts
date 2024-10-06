@@ -57,12 +57,19 @@ export type CheckoutOrderInput = {
   vnp_TxnRef: Scalars['String']['input'];
 };
 
+export type CreateFeedbackInput = {
+  images?: InputMaybe<Array<Scalars['File']['input']>>;
+  note?: InputMaybe<Scalars['String']['input']>;
+  orderItemId: Scalars['Int']['input'];
+  rating: Scalars['Float']['input'];
+};
+
 export type Feedback = {
   __typename?: 'Feedback';
   createdAt: Scalars['DateTimeISO']['output'];
   id: Scalars['ID']['output'];
   images?: Maybe<Array<FeedbackImage>>;
-  note: Scalars['String']['output'];
+  note?: Maybe<Scalars['String']['output']>;
   orderItem: OrderItem;
   product: Product;
   rating: Scalars['Float']['output'];
@@ -82,7 +89,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   addToCart: Cart;
   checkoutOrder: Scalars['Boolean']['output'];
-  createFeedback: Feedback;
+  createFeedback: Scalars['Boolean']['output'];
   createOrder: Scalars['String']['output'];
   createProduct: Product;
   createTicket: Ticket;
@@ -112,10 +119,8 @@ export type MutationCheckoutOrderArgs = {
 };
 
 export type MutationCreateFeedbackArgs = {
-  images?: InputMaybe<Array<Scalars['File']['input']>>;
-  note: Scalars['String']['input'];
-  orderItemId: Scalars['Int']['input'];
-  rating: Scalars['Float']['input'];
+  input: Array<CreateFeedbackInput>;
+  orderId: Scalars['Float']['input'];
 };
 
 export type MutationCreateOrderArgs = {
@@ -209,9 +214,11 @@ export type Order = {
   createdAt: Scalars['DateTimeISO']['output'];
   fullName: Scalars['String']['output'];
   id: Scalars['ID']['output'];
+  isAllowRating: Scalars['Boolean']['output'];
   orderItems: Array<OrderItem>;
   payment: OrderPaymentEmbeddable;
   phone: Scalars['String']['output'];
+  shipTime?: Maybe<Scalars['DateTimeISO']['output']>;
   status: OrderStatus;
   totalPrice: Scalars['Int']['output'];
   updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
@@ -232,14 +239,16 @@ export type OrderItem = {
 
 export type OrderPaymentEmbeddable = {
   __typename?: 'OrderPaymentEmbeddable';
-  id: Scalars['String']['output'];
+  id?: Maybe<Scalars['String']['output']>;
   provider: PaymentProvider;
+  time?: Maybe<Scalars['DateTimeISO']['output']>;
 };
 
 export enum OrderStatus {
   Delivered = 'DELIVERED',
   Delivering = 'DELIVERING',
   Paid = 'PAID',
+  Rated = 'RATED',
   Unpaid = 'UNPAID',
 }
 
@@ -338,6 +347,7 @@ export type QueryProductsArgs = {
 
 export type QuerySearchOrderArgs = {
   search: Scalars['String']['input'];
+  status?: InputMaybe<OrderStatus>;
 };
 
 export type QueryTicketsArgs = {
@@ -577,6 +587,121 @@ export type GetHomeQuery = {
   };
 };
 
+export type SearchOrderQueryVariables = Exact<{
+  search: Scalars['String']['input'];
+}>;
+
+export type SearchOrderQuery = {
+  __typename?: 'Query';
+  searchOrder: Array<{
+    __typename?: 'Order';
+    id: string;
+    createdAt: any;
+    updatedAt?: any | null;
+    totalPrice: number;
+    status: OrderStatus;
+    address: string;
+    fullName: string;
+    phone: string;
+    shipTime?: any | null;
+    payment: { __typename?: 'OrderPaymentEmbeddable'; provider: PaymentProvider; time?: any | null };
+    orderItems: Array<{
+      __typename?: 'OrderItem';
+      hasLab: boolean;
+      id: string;
+      labPrice: number;
+      productPrice: number;
+      quantity: number;
+      product: {
+        __typename?: 'Product';
+        id: string;
+        name: string;
+        price: number;
+        images: Array<{ __typename?: 'ProductImage'; url: string }>;
+        lab?: { __typename?: 'ProductLab'; price: number } | null;
+      };
+    }>;
+  }>;
+};
+
+export type GetOrderByStatusQueryVariables = Exact<{
+  status: OrderStatus;
+}>;
+
+export type GetOrderByStatusQuery = {
+  __typename?: 'Query';
+  searchOrder: Array<{
+    __typename?: 'Order';
+    id: string;
+    createdAt: any;
+    updatedAt?: any | null;
+    totalPrice: number;
+    status: OrderStatus;
+    address: string;
+    fullName: string;
+    phone: string;
+    shipTime?: any | null;
+    payment: { __typename?: 'OrderPaymentEmbeddable'; provider: PaymentProvider; time?: any | null };
+    orderItems: Array<{
+      __typename?: 'OrderItem';
+      hasLab: boolean;
+      id: string;
+      labPrice: number;
+      productPrice: number;
+      quantity: number;
+      product: {
+        __typename?: 'Product';
+        id: string;
+        name: string;
+        price: number;
+        images: Array<{ __typename?: 'ProductImage'; url: string }>;
+        lab?: { __typename?: 'ProductLab'; price: number } | null;
+      };
+    }>;
+  }>;
+};
+
+export type GetHistoryOrderQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetHistoryOrderQuery = {
+  __typename?: 'Query';
+  searchOrder: Array<{
+    __typename?: 'Order';
+    id: string;
+    createdAt: any;
+    updatedAt?: any | null;
+    totalPrice: number;
+    status: OrderStatus;
+    address: string;
+    fullName: string;
+    phone: string;
+    shipTime?: any | null;
+    payment: { __typename?: 'OrderPaymentEmbeddable'; provider: PaymentProvider; time?: any | null };
+    orderItems: Array<{
+      __typename?: 'OrderItem';
+      hasLab: boolean;
+      id: string;
+      labPrice: number;
+      productPrice: number;
+      quantity: number;
+      product: {
+        __typename?: 'Product';
+        id: string;
+        name: string;
+        price: number;
+        images: Array<{ __typename?: 'ProductImage'; url: string }>;
+        lab?: { __typename?: 'ProductLab'; price: number } | null;
+      };
+    }>;
+  }>;
+};
+
+export type RepayOrderMutationVariables = Exact<{
+  orderId: Scalars['Float']['input'];
+}>;
+
+export type RepayOrderMutation = { __typename?: 'Mutation'; repayOrder: string };
+
 export type GetProductQueryVariables = Exact<{
   id: Scalars['Float']['input'];
 }>;
@@ -595,7 +720,7 @@ export type GetProductQuery = {
     images: Array<{ __typename?: 'ProductImage'; id: string; url: string }>;
     feedbacks: Array<{
       __typename?: 'Feedback';
-      note: string;
+      note?: string | null;
       createdAt: any;
       id: string;
       rating: number;
@@ -907,6 +1032,122 @@ export const GetHomeDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<GetHomeQuery, GetHomeQueryVariables>;
+export const SearchOrderDocument = new TypedDocumentString(`
+    query SearchOrder($search: String!) {
+  searchOrder(search: $search) {
+    id
+    createdAt
+    updatedAt
+    totalPrice
+    status
+    address
+    fullName
+    phone
+    shipTime
+    payment {
+      provider
+      time
+    }
+    orderItems {
+      hasLab
+      id
+      labPrice
+      productPrice
+      quantity
+      product {
+        id
+        name
+        price
+        images {
+          url
+        }
+        lab {
+          price
+        }
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<SearchOrderQuery, SearchOrderQueryVariables>;
+export const GetOrderByStatusDocument = new TypedDocumentString(`
+    query GetOrderByStatus($status: OrderStatus!) {
+  searchOrder(search: "", status: $status) {
+    id
+    createdAt
+    updatedAt
+    totalPrice
+    status
+    address
+    fullName
+    phone
+    shipTime
+    payment {
+      provider
+      time
+    }
+    orderItems {
+      hasLab
+      id
+      labPrice
+      productPrice
+      quantity
+      product {
+        id
+        name
+        price
+        images {
+          url
+        }
+        lab {
+          price
+        }
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<GetOrderByStatusQuery, GetOrderByStatusQueryVariables>;
+export const GetHistoryOrderDocument = new TypedDocumentString(`
+    query GetHistoryOrder {
+  searchOrder(search: "") {
+    id
+    createdAt
+    updatedAt
+    totalPrice
+    status
+    address
+    fullName
+    phone
+    shipTime
+    payment {
+      provider
+      time
+    }
+    orderItems {
+      hasLab
+      id
+      labPrice
+      productPrice
+      quantity
+      product {
+        id
+        name
+        price
+        images {
+          url
+        }
+        lab {
+          price
+        }
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<GetHistoryOrderQuery, GetHistoryOrderQueryVariables>;
+export const RepayOrderDocument = new TypedDocumentString(`
+    mutation RepayOrder($orderId: Float!) {
+  repayOrder(orderId: $orderId)
+}
+    `) as unknown as TypedDocumentString<RepayOrderMutation, RepayOrderMutationVariables>;
 export const GetProductDocument = new TypedDocumentString(`
     query GetProduct($id: Float!) {
   product(id: $id) {

@@ -27,7 +27,10 @@
  *      ├── Order Error Screen
  *      ├── Search Product Screen
  *      ├── My Orders Screen
- *      ├── Search Order Screen
+ *      ├── Search Orders Screen
+ *      ├── Order Detail Screen
+ *      ├── Order History Screen
+ *      ├── Feedback Product Screen
  *      └── My Purchases Screen
  */
 
@@ -35,8 +38,7 @@
 import type { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-import { CheckoutOrderInput } from '~graphql/graphql';
-import { OrderTab } from '~utils/enum';
+import { CheckoutOrderInput, GetOrderByStatusQuery, OrderStatus } from '~graphql/graphql';
 
 // Auth Stack
 export type AuthStackParamList = {
@@ -84,8 +86,11 @@ export type MainStackParamList = {
   OrderSuccessScreen: { totalPrice: number };
   OrderErrorScreen: undefined;
   SearchProductScreen: undefined;
-  MyOrdersScreen: { tab: OrderTab };
-  SearchOrderScreen: undefined;
+  MyOrdersScreen: { orderStatus: OrderStatus };
+  SearchOrdersScreen: undefined;
+  OrderDetailScreen: GetOrderByStatusQuery['searchOrder'][number];
+  OrderHistoryScreen: undefined;
+  FeedbackProductScreen: { orderId: string };
   MyPurchasesScreen: undefined;
 };
 
@@ -190,8 +195,23 @@ export type MyOrdersScreenNavigationProps = CompositeScreenProps<
   NativeStackScreenProps<BottomTabParamList>
 >;
 
-export type SearchOrderScreenNavigationProps = CompositeScreenProps<
-  NativeStackScreenProps<MainStackParamList, 'SearchOrderScreen'>,
+export type SearchOrdersScreenNavigationProps = CompositeScreenProps<
+  NativeStackScreenProps<MainStackParamList, 'SearchOrdersScreen'>,
+  NativeStackScreenProps<BottomTabParamList>
+>;
+
+export type OrderDetailScreenNavigationProps = CompositeScreenProps<
+  NativeStackScreenProps<MainStackParamList, 'OrderDetailScreen'>,
+  NativeStackScreenProps<BottomTabParamList>
+>;
+
+export type OrderHistoryScreenNavigationProps = CompositeScreenProps<
+  NativeStackScreenProps<MainStackParamList, 'OrderHistoryScreen'>,
+  NativeStackScreenProps<BottomTabParamList>
+>;
+
+export type FeedbackProductScreenNavigationProps = CompositeScreenProps<
+  NativeStackScreenProps<MainStackParamList, 'FeedbackProductScreen'>,
   NativeStackScreenProps<BottomTabParamList>
 >;
 
