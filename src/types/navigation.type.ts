@@ -53,6 +53,10 @@ export type HomeStackParamList = {
   HomeScreen: undefined;
 };
 
+export type MeStackParamList = {
+  MeScreen: undefined;
+};
+
 export type StoresStackParamList = {
   StoresScreen: undefined;
 };

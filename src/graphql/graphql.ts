@@ -203,6 +203,7 @@ export type MutationUpdateCartArgs = {
 };
 
 export type MutationUpdateUserArgs = {
+  address?: InputMaybe<Scalars['String']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   fullName?: InputMaybe<Scalars['String']['input']>;
   phone?: InputMaybe<Scalars['String']['input']>;

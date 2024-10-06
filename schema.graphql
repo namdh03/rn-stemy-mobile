@@ -110,7 +110,7 @@ type Mutation {
   sendResetPasswordOTP(email: String!): String!
   updateAvatar(image: File!): User!
   updateCart(cartId: Float!, quantity: Float!): Cart!
-  updateUser(email: String, fullName: String, phone: String): User!
+  updateUser(address: String, email: String, fullName: String, phone: String): User!
 }
 
 type Order {

@@ -13,6 +13,7 @@ const vnpay = require('~assets/images/vnpay.png');
 const orderSuccess = require('~assets/images/order-success.png');
 const cartEmpty = require('~assets/images/cart-empty.png');
 const searchOrders = require('~assets/images/search-orders.png');
+const avatar = require('~assets/images/avatar.png');
 
 const images = {
   forgotPassword,
@@ -29,6 +30,7 @@ const images = {
   orderSuccess,
   cartEmpty,
   searchOrders,
+  avatar,
 };
 
 export default images;
