@@ -103,6 +103,7 @@ type Mutation {
   getTokenResetPassword(OTPCode: String!, email: String!): String!
   login(email: String!, password: String!): AccessTokenResponse!
   loginWithGoogle(code: String!): AccessTokenResponse!
+  reOrder(orderId: Float!): [OrderItem!]!
   register(email: String!, fullName: String!, password: String!, phone: String!): AccessTokenResponse!
   repayOrder(orderId: Float!): String!
   replyTicket(comment: String!, images: [File!]! = [], ticketId: Float!): Ticket!
@@ -237,6 +238,7 @@ type Query {
     sort: String! = "id"
   ): TicketsWithPaginationResponse!
   user(id: Int!): User
+  userLabs: [UserLab!]!
   users: [User!]!
 }
 
@@ -306,6 +308,16 @@ type User {
   role: Role!
   status: UserStatus!
   updatedAt: DateTimeISO
+}
+
+type UserLab {
+  createdAt: DateTimeISO!
+  id: ID!
+  isActive: Boolean!
+  orderItem: OrderItem!
+  productLab: ProductLab!
+  updatedAt: DateTimeISO
+  user: User!
 }
 
 enum UserStatus {

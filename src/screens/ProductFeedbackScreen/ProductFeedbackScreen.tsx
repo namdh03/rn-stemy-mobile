@@ -31,7 +31,7 @@ const ProductFeedbackScreen = () => {
             <Text className='font-inter-regular text-foreground text-[14px] tracking-[3px]'>/5</Text>
           </Text>
           <Text className='font-inter-regular text-foreground text-[14px] tracking-[0.2px]'>
-            {feedbacks.length || 0} Reviews
+            {feedbacks.length} {feedbacks.length === 1 || feedbacks.length === 0 ? 'Review' : 'Reviews'}
           </Text>
         </View>
 
@@ -68,7 +68,7 @@ const ProductFeedbackScreen = () => {
             name={feedback.user.fullName}
             time={feedback.createdAt}
             rating={feedback.rating}
-            note={feedback.note}
+            note={feedback.note || ''}
             nonFillColor='text-muted'
           />
         ))}

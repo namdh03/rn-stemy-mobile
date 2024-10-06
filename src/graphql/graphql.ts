@@ -98,6 +98,7 @@ export type Mutation = {
   getTokenResetPassword: Scalars['String']['output'];
   login: AccessTokenResponse;
   loginWithGoogle: AccessTokenResponse;
+  reOrder: Array<OrderItem>;
   register: AccessTokenResponse;
   repayOrder: Scalars['String']['output'];
   replyTicket: Ticket;
@@ -165,6 +166,10 @@ export type MutationLoginArgs = {
 
 export type MutationLoginWithGoogleArgs = {
   code: Scalars['String']['input'];
+};
+
+export type MutationReOrderArgs = {
+  orderId: Scalars['Float']['input'];
 };
 
 export type MutationRegisterArgs = {
@@ -326,6 +331,7 @@ export type Query = {
   searchOrder: Array<Order>;
   tickets: TicketsWithPaginationResponse;
   user?: Maybe<User>;
+  userLabs: Array<UserLab>;
   users: Array<User>;
 };
 
@@ -433,6 +439,17 @@ export type User = {
   role: Role;
   status: UserStatus;
   updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
+};
+
+export type UserLab = {
+  __typename?: 'UserLab';
+  createdAt: Scalars['DateTimeISO']['output'];
+  id: Scalars['ID']['output'];
+  isActive: Scalars['Boolean']['output'];
+  orderItem: OrderItem;
+  productLab: ProductLab;
+  updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
+  user: User;
 };
 
 export enum UserStatus {

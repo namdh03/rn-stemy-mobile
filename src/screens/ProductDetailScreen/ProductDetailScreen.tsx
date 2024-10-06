@@ -84,7 +84,8 @@ const ProductDetailScreen = ({ route }: ProductDetailScreenNavigationProps) => {
                   <Text className='font-inter-regular text-[14px] tracking-[0.2px]'>{data?.product.rating}</Text>
                 </View>
                 <Text className='font-inter-regular ml-[10px] text-[14px] tracking-[0.2px]'>
-                  {data?.product.feedbacks.length || 0} Reviews
+                  {data?.product.feedbacks.length || 0}{' '}
+                  {data?.product.feedbacks.length === 1 || data?.product.feedbacks.length === 0 ? 'Review' : 'Reviews'}
                 </Text>
                 <View className='ml-auto px-[10px] py-[2px] bg-[#EEFAF6] rounded-[10px]'>
                   <Text className='font-inter-medium text-primary text-[12px]'>Sold : {data?.product.sold}</Text>

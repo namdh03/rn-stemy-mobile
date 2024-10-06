@@ -61,7 +61,9 @@ const ProductCard = ({ id, imageUrl, title, price, rating, numOfReviews }: Produ
           <Star color='#FFC120' size={16} className='fill-[#FFC120]' />
           <Text className='font-inter-regular text-[12px] tracking-[0.2px]'>{rating}</Text>
         </View>
-        <Text className='font-inter-regular ml-[12px] text-[12px] tracking-[0.2px]'>{numOfReviews} Reviews</Text>
+        <Text className='font-inter-regular ml-[12px] text-[12px] tracking-[0.2px]'>
+          {numOfReviews} {numOfReviews === 1 || numOfReviews === 0 ? 'Review' : 'Reviews'}
+        </Text>
       </View>
     </Pressable>
   );
