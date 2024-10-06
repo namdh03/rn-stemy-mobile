@@ -86,7 +86,7 @@ const OrderDetailScreen = ({ route, navigation }: OrderDetailScreenNavigationPro
       case OrderStatus.Delivering:
         return handleReceiveOrder();
       case OrderStatus.Delivered:
-        return navigation.navigate('FeedbackProductScreen', { orderId: route.params.id });
+        return navigation.navigate('FeedbackProductScreen', { order: route.params });
       case OrderStatus.Rated:
         return handleRepayOrder();
       default:

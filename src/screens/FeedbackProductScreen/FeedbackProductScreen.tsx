@@ -5,6 +5,8 @@ import { Text } from '~components/ui/text';
 import { FeedbackProductScreenNavigationProps } from '~types/navigation.type';
 
 const FeedbackProductScreen = ({ route, navigation }: FeedbackProductScreenNavigationProps) => {
+  console.log(JSON.stringify(route.params));
+
   return (
     <ScrollView
       contentContainerClassName='flex-row pt-[25px] mx-auto w-full max-w-xl'
@@ -12,7 +14,9 @@ const FeedbackProductScreen = ({ route, navigation }: FeedbackProductScreenNavig
       automaticallyAdjustContentInsets={false}
     >
       <View className='flex-1 justify-center items-center'>
-        <Text>Order ID: {route.params.orderId}</Text>
+        <Text>Order ID: {route.params.order.id}</Text>
+        <Text>Order First Item: {route.params.order.orderItems[0].id}</Text>
+
         <Button onPress={() => navigation.goBack()}>
           <Text>Go Back</Text>
         </Button>
