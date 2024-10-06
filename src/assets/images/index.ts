@@ -12,6 +12,7 @@ const robot4 = require('~assets/images/robot4.png');
 const vnpay = require('~assets/images/vnpay.png');
 const orderSuccess = require('~assets/images/order-success.png');
 const cartEmpty = require('~assets/images/cart-empty.png');
+const searchOrders = require('~assets/images/search-orders.png');
 const avatar = require('~assets/images/avatar.png');
 
 const images = {
@@ -28,6 +29,7 @@ const images = {
   vnpay,
   orderSuccess,
   cartEmpty,
+  searchOrders,
   avatar,
 };
 

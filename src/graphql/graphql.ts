@@ -493,6 +493,19 @@ export type GetCartCountQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetCartCountQuery = { __typename?: 'Query'; countCart: number };
 
+export type GetProductCategoriesQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetProductCategoriesQuery = {
+  __typename?: 'Query';
+  productCategories: Array<{
+    __typename?: 'ProductCategory';
+    id: string;
+    name: string;
+    title: string;
+    type: CategoryType;
+  }>;
+};
+
 export type CreateOrderMutationVariables = Exact<{
   fullName: Scalars['String']['input'];
   address: Scalars['String']['input'];
@@ -574,6 +587,121 @@ export type GetHomeQuery = {
     }>;
   };
 };
+
+export type SearchOrderQueryVariables = Exact<{
+  search: Scalars['String']['input'];
+}>;
+
+export type SearchOrderQuery = {
+  __typename?: 'Query';
+  searchOrder: Array<{
+    __typename?: 'Order';
+    id: string;
+    createdAt: any;
+    updatedAt?: any | null;
+    totalPrice: number;
+    status: OrderStatus;
+    address: string;
+    fullName: string;
+    phone: string;
+    shipTime?: any | null;
+    payment: { __typename?: 'OrderPaymentEmbeddable'; provider: PaymentProvider; time?: any | null };
+    orderItems: Array<{
+      __typename?: 'OrderItem';
+      hasLab: boolean;
+      id: string;
+      labPrice: number;
+      productPrice: number;
+      quantity: number;
+      product: {
+        __typename?: 'Product';
+        id: string;
+        name: string;
+        price: number;
+        images: Array<{ __typename?: 'ProductImage'; url: string }>;
+        lab?: { __typename?: 'ProductLab'; price: number } | null;
+      };
+    }>;
+  }>;
+};
+
+export type GetOrderByStatusQueryVariables = Exact<{
+  status: OrderStatus;
+}>;
+
+export type GetOrderByStatusQuery = {
+  __typename?: 'Query';
+  searchOrder: Array<{
+    __typename?: 'Order';
+    id: string;
+    createdAt: any;
+    updatedAt?: any | null;
+    totalPrice: number;
+    status: OrderStatus;
+    address: string;
+    fullName: string;
+    phone: string;
+    shipTime?: any | null;
+    payment: { __typename?: 'OrderPaymentEmbeddable'; provider: PaymentProvider; time?: any | null };
+    orderItems: Array<{
+      __typename?: 'OrderItem';
+      hasLab: boolean;
+      id: string;
+      labPrice: number;
+      productPrice: number;
+      quantity: number;
+      product: {
+        __typename?: 'Product';
+        id: string;
+        name: string;
+        price: number;
+        images: Array<{ __typename?: 'ProductImage'; url: string }>;
+        lab?: { __typename?: 'ProductLab'; price: number } | null;
+      };
+    }>;
+  }>;
+};
+
+export type GetHistoryOrderQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetHistoryOrderQuery = {
+  __typename?: 'Query';
+  searchOrder: Array<{
+    __typename?: 'Order';
+    id: string;
+    createdAt: any;
+    updatedAt?: any | null;
+    totalPrice: number;
+    status: OrderStatus;
+    address: string;
+    fullName: string;
+    phone: string;
+    shipTime?: any | null;
+    payment: { __typename?: 'OrderPaymentEmbeddable'; provider: PaymentProvider; time?: any | null };
+    orderItems: Array<{
+      __typename?: 'OrderItem';
+      hasLab: boolean;
+      id: string;
+      labPrice: number;
+      productPrice: number;
+      quantity: number;
+      product: {
+        __typename?: 'Product';
+        id: string;
+        name: string;
+        price: number;
+        images: Array<{ __typename?: 'ProductImage'; url: string }>;
+        lab?: { __typename?: 'ProductLab'; price: number } | null;
+      };
+    }>;
+  }>;
+};
+
+export type RepayOrderMutationVariables = Exact<{
+  orderId: Scalars['Float']['input'];
+}>;
+
+export type RepayOrderMutation = { __typename?: 'Mutation'; repayOrder: string };
 
 export type GetProductQueryVariables = Exact<{
   id: Scalars['Float']['input'];
@@ -805,6 +933,16 @@ export const GetCartCountDocument = new TypedDocumentString(`
   countCart
 }
     `) as unknown as TypedDocumentString<GetCartCountQuery, GetCartCountQueryVariables>;
+export const GetProductCategoriesDocument = new TypedDocumentString(`
+    query GetProductCategories {
+  productCategories {
+    id
+    name
+    title
+    type
+  }
+}
+    `) as unknown as TypedDocumentString<GetProductCategoriesQuery, GetProductCategoriesQueryVariables>;
 export const CreateOrderDocument = new TypedDocumentString(`
     mutation CreateOrder($fullName: String!, $address: String!, $cartIds: [Int!]!, $paymentProvider: PaymentProvider!, $phone: String!) {
   createOrder(
@@ -895,6 +1033,122 @@ export const GetHomeDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<GetHomeQuery, GetHomeQueryVariables>;
+export const SearchOrderDocument = new TypedDocumentString(`
+    query SearchOrder($search: String!) {
+  searchOrder(search: $search) {
+    id
+    createdAt
+    updatedAt
+    totalPrice
+    status
+    address
+    fullName
+    phone
+    shipTime
+    payment {
+      provider
+      time
+    }
+    orderItems {
+      hasLab
+      id
+      labPrice
+      productPrice
+      quantity
+      product {
+        id
+        name
+        price
+        images {
+          url
+        }
+        lab {
+          price
+        }
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<SearchOrderQuery, SearchOrderQueryVariables>;
+export const GetOrderByStatusDocument = new TypedDocumentString(`
+    query GetOrderByStatus($status: OrderStatus!) {
+  searchOrder(search: "", status: $status) {
+    id
+    createdAt
+    updatedAt
+    totalPrice
+    status
+    address
+    fullName
+    phone
+    shipTime
+    payment {
+      provider
+      time
+    }
+    orderItems {
+      hasLab
+      id
+      labPrice
+      productPrice
+      quantity
+      product {
+        id
+        name
+        price
+        images {
+          url
+        }
+        lab {
+          price
+        }
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<GetOrderByStatusQuery, GetOrderByStatusQueryVariables>;
+export const GetHistoryOrderDocument = new TypedDocumentString(`
+    query GetHistoryOrder {
+  searchOrder(search: "") {
+    id
+    createdAt
+    updatedAt
+    totalPrice
+    status
+    address
+    fullName
+    phone
+    shipTime
+    payment {
+      provider
+      time
+    }
+    orderItems {
+      hasLab
+      id
+      labPrice
+      productPrice
+      quantity
+      product {
+        id
+        name
+        price
+        images {
+          url
+        }
+        lab {
+          price
+        }
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<GetHistoryOrderQuery, GetHistoryOrderQueryVariables>;
+export const RepayOrderDocument = new TypedDocumentString(`
+    mutation RepayOrder($orderId: Float!) {
+  repayOrder(orderId: $orderId)
+}
+    `) as unknown as TypedDocumentString<RepayOrderMutation, RepayOrderMutationVariables>;
 export const GetProductDocument = new TypedDocumentString(`
     query GetProduct($id: Float!) {
   product(id: $id) {

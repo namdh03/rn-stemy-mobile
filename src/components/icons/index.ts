@@ -1,11 +1,13 @@
 export { default as Bell } from './Bell';
 export { default as Bot } from './Bot';
+export { default as Check } from './Check';
 export { default as Box } from './Box';
 export { default as ChevronLeft } from './ChevronLeft';
 export { default as ChevronRight } from './ChevronRight';
+export { default as CircleCheck } from './CircleCheck';
 export { default as CircleDollarSign } from './CircleDollarSign';
 export { default as CircleUser } from './CircleUser';
-export { default as CircleX } from './CircleX ';
+export { default as CircleX } from './CircleX';
 export { default as Clock } from './Clock';
 export { default as Download } from './Download';
 export { default as EllipsisVertical } from './EllipsisVertical';

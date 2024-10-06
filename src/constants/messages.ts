@@ -5,6 +5,7 @@ export const TOKEN_NOT_VALID = 'Token not valid';
 export const SYSTEM_MESSAGES = {
   SUCCESS_TITLE: 'Success',
   ERROR_TITLE: 'Error',
+  WARNING_TITLE: 'Warning',
   SOMETHING_WENT_WRONG: 'Something went wrong!',
   MISSING_INFORMATION: 'Missing Information',
 };
@@ -22,4 +23,8 @@ export const AUTH_MESSAGES = {
 
 export const CART_MESSAGES = {
   ADD_TO_CART_SUCCESSFULLY: 'Add to cart successfully!',
+};
+
+export const ORDER_MESSAGES = {
+  COPY_ORDER_ID: 'Order ID copied! You can now create a support ticket if needed.',
 };

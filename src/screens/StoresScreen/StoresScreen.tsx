@@ -7,7 +7,6 @@ import ProductCard from '~components/customs/ProductCard';
 import ProductCardSkeleton from '~components/customs/ProductCardSkeleton';
 import SearchName from '~components/customs/SearchName';
 import constants from '~constants';
-import { FILTER_AND_SORTING_PRODUCT_QUERY_KEY } from '~constants/product-query-key';
 import execute from '~graphql/execute';
 import { useRefreshByUser } from '~hooks';
 import { FilterAndSortingProductQuery } from '~services/product.services';
@@ -22,7 +21,7 @@ const StoresScreen = ({ navigation }: StoresScreenNavigationProps) => {
     })),
   );
   const { data, refetch, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteQuery({
-    queryKey: [FILTER_AND_SORTING_PRODUCT_QUERY_KEY, storesFilterSorting],
+    queryKey: [constants.PRODUCT_QUERY_KEY.FILTER_AND_SORTING_PRODUCT_QUERY_KEY, storesFilterSorting],
     queryFn: ({ pageParam = constants.FILTER_SORTING.DEFAULT_CURRENT_PAGE }) =>
       execute(FilterAndSortingProductQuery, {
         ...storesFilterSorting,
@@ -39,7 +38,7 @@ const StoresScreen = ({ navigation }: StoresScreenNavigationProps) => {
   });
   const { isRefetchingByUser, refetchByUser } = useRefreshByUser(refetch);
 
-  const handleNavigateToSearchProductScreen = () => {
+  const handleNavigateToSearchProduct = () => {
     navigation.navigate('SearchProductScreen');
   };
 
@@ -50,11 +49,12 @@ const StoresScreen = ({ navigation }: StoresScreenNavigationProps) => {
   };
 
   return (
-    <View className='flex-1 gap-[20px] px-[25px] mx-auto w-full max-w-xl'>
+    <View className='flex-1 gap-[28px] px-[25px] mx-auto w-full max-w-xl'>
       <SearchName
         editable={false}
+        placeholder='Search Product Name'
         value={storesFilterSorting.search}
-        onContainerPress={handleNavigateToSearchProductScreen}
+        onContainerPress={handleNavigateToSearchProduct}
       />
       {isLoading ? (
         <FlatList
