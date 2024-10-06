@@ -888,6 +888,15 @@ export type MeQuery = {
   };
 };
 
+export type UpdateMeMutationVariables = Exact<{
+  address?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  fullName?: InputMaybe<Scalars['String']['input']>;
+  phone?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+export type UpdateMeMutation = { __typename?: 'Mutation'; updateUser: { __typename?: 'User'; id: string } };
+
 export class TypedDocumentString<TResult, TVariables>
   extends String
   implements DocumentTypeDecoration<TResult, TVariables>
@@ -1322,3 +1331,10 @@ export const MeDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<MeQuery, MeQueryVariables>;
+export const UpdateMeDocument = new TypedDocumentString(`
+    mutation UpdateMe($address: String, $email: String, $fullName: String, $phone: String) {
+  updateUser(address: $address, email: $email, fullName: $fullName, phone: $phone) {
+    id
+  }
+}
+    `) as unknown as TypedDocumentString<UpdateMeMutation, UpdateMeMutationVariables>;
