@@ -69,9 +69,9 @@ const TabFilterContent = ({ form }: TabFilterContentProps) => {
   return (
     <View className='gap-[16px]'>
       {/* Price Slider */}
-      <View>
+      <View className='px-[33px]'>
         <Text className='font-inter-regular text-foreground text-[14px] leading-[20px]'>Price</Text>
-        <View onLayout={onSliderLayout}>
+        <View onLayout={onSliderLayout} className='px-[10px]'>
           <MultiSlider
             values={priceRange}
             onValuesChangeFinish={handlePriceChangeEnd}
@@ -95,7 +95,7 @@ const TabFilterContent = ({ form }: TabFilterContentProps) => {
       <Separator className='bg-transparent border-dashed border-t border-primary' />
 
       {/* Rating Filter */}
-      <View className='gap-[16px]'>
+      <View className='gap-[16px] px-[33px]'>
         <Text className='font-inter-bold text-foreground text-[14px] leading-[20px]'>Rating</Text>
         <View className='flex-row flex-wrap gap-[16px]'>
           {[5, 4, 3, 2, 1].map((star) => (
@@ -108,7 +108,7 @@ const TabFilterContent = ({ form }: TabFilterContentProps) => {
               })}
             >
               <Text className='font-inter-regular text-foreground text-[12px]'>
-                {star !== 5 ? `${star} Stars & Up` : `${star} Stars`}
+                {star !== 1 ? `${star} Stars & Up` : `${star} Star & Up`}
               </Text>
             </Pressable>
           ))}
@@ -118,7 +118,7 @@ const TabFilterContent = ({ form }: TabFilterContentProps) => {
       <Separator className='bg-transparent border-dashed border-t border-primary' />
 
       {/* Categories Filter */}
-      <View>
+      <View className='px-[33px]'>
         <FormField
           control={form.control}
           name='categoryIds'

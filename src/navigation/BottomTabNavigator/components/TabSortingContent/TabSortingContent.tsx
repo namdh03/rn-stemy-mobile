@@ -16,13 +16,13 @@ interface TabSortingContentProps {
 const TabSortingContent = ({ form }: TabSortingContentProps) => {
   const { order, sort } = form.watch();
 
-  const handlePress = (newOrder: SortOrder, newSort: 'name' | 'price') => {
+  const handlePress = (newOrder: SortOrder, newSort: 'name' | 'price' | 'id') => {
     form.setValue('order', newOrder);
     form.setValue('sort', newSort);
   };
 
   return (
-    <View className='gap-[16px] pb-[110px] mt-[10px]'>
+    <View className='gap-[16px] pb-[110px] mt-[10px] px-[33px]'>
       {sortData.map(({ label, order: sortOrder, sort: sortField }, index) => (
         <Pressable key={index} onPress={() => handlePress(sortOrder, sortField)}>
           <View className='flex-row justify-between items-center w-full pb-[20px]'>
