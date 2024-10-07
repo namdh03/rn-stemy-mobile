@@ -23,6 +23,7 @@ import showDialogError from '~utils/showDialogError';
 import showDialogWarning from '~utils/showDialogWarning';
 
 import OrderButton from '../OrderButton';
+import Pressable from '../Pressable';
 
 interface OrderItemProps {
   order: SearchOrderQuery['searchOrder'][number];
@@ -39,6 +40,7 @@ const OrderItem = ({ order }: OrderItemProps) => {
     navigation.navigate('OrderDetailScreen', order);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleRepayOrder = () => {
     if (!order.id) return;
     showDialogWarning({
@@ -75,13 +77,14 @@ const OrderItem = ({ order }: OrderItemProps) => {
   const handleButtonActionPress = () => {
     switch (order.status) {
       case OrderStatus.Unpaid:
-        return handleRepayOrder();
+        // return handleRepayOrder();
+        return navigation.navigate('FeedbackProductScreen', { order });
       case OrderStatus.Paid:
         return;
       case OrderStatus.Delivering:
         return handleReceiveOrder();
       case OrderStatus.Delivered:
-        return navigation.navigate('FeedbackProductScreen', { orderId: order.id });
+        return navigation.navigate('FeedbackProductScreen', { order });
       case OrderStatus.Rated:
         return;
       default:
@@ -90,8 +93,8 @@ const OrderItem = ({ order }: OrderItemProps) => {
   };
 
   return (
-    <View className='py-[14px] bg-background'>
-      <View className='flex-row justify-between items-center px-[25px]'>
+    <Pressable className='py-[14px] bg-background' onPress={handleNavigateToOrderDetail}>
+      <View className='flex-row justify-between items-center w-full px-[25px]'>
         <Text className='font-inter-semiBold text-foreground text-[14px]'>
           {dayjs(order.createdAt).format('DD-MM-YYYY')}
         </Text>
@@ -130,7 +133,7 @@ const OrderItem = ({ order }: OrderItemProps) => {
 
       <Separator className='bg-muted' />
 
-      <Button variant='ghost' onPress={handleNavigateToOrderDetail}>
+      <Button className='w-full' variant='ghost'>
         <RNText className='font-inter-regular text-muted-foreground text-[12px] leading-[20px]'>
           View more product
         </RNText>
@@ -138,10 +141,10 @@ const OrderItem = ({ order }: OrderItemProps) => {
 
       <Separator className='bg-muted' />
 
-      <View className='flex-row justify-between px-[25px] py-[8px]'>
+      <View className='flex-row justify-between w-full px-[25px] py-[8px]'>
         <Text className='font-inter-regular text-muted-foreground text-[12px] leading-[20px]'>
-          ({order.orderItems.length} item
-          {order.orderItems.length > 1 ? 's' : ''})
+          {order.orderItems.length} item
+          {order.orderItems.length > 1 ? 's' : ''}
         </Text>
         <Text className='font-inter-semiBold text-foreground text-[14px] leading-[20px]'>
           Order Total:
@@ -157,7 +160,7 @@ const OrderItem = ({ order }: OrderItemProps) => {
       <View className='ml-auto px-[25px]'>
         <OrderButton orderStatus={order.status} onPress={handleButtonActionPress} onBuyAgain={handleBuyOrderAgain} />
       </View>
-    </View>
+    </Pressable>
   );
 };
 

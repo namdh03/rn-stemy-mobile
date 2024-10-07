@@ -77,13 +77,9 @@ const DrawerFilterSortingContent = () => {
         </Pressable>
       </View>
 
-      <ScrollView
-        className='flex-grow px-[33px]'
-        showsVerticalScrollIndicator={false}
-        automaticallyAdjustContentInsets={false}
-      >
+      <ScrollView className='flex-grow' showsVerticalScrollIndicator={false} automaticallyAdjustContentInsets={false}>
         <Tabs value={value} onValueChange={setValue}>
-          <TabsList className='flex-row justify-start gap-[20px] p-0 native:p-0 bg-transparent'>
+          <TabsList className='flex-row justify-start gap-[20px] px-[33px] native:p-0 bg-transparent'>
             <View>
               <TabsTrigger value='filter' className='px-0 native:px-0'>
                 <Text className='font-inter-regular text-foreground text-[14px] leading-[20px] tracking-[0.2px]'>

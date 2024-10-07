@@ -57,3 +57,11 @@ export const GetMeQuery = graphql(`
     }
   }
 `);
+
+export const UpdateMeMutation = graphql(`
+  mutation UpdateMe($address: String, $email: String, $fullName: String, $phone: String) {
+    updateUser(address: $address, email: $email, fullName: $fullName, phone: $phone) {
+      id
+    }
+  }
+`);

@@ -90,7 +90,7 @@ export type MainStackParamList = {
   SearchOrdersScreen: undefined;
   OrderDetailScreen: GetOrderByStatusQuery['searchOrder'][number];
   OrderHistoryScreen: undefined;
-  FeedbackProductScreen: { orderId: string };
+  FeedbackProductScreen: { order: GetOrderByStatusQuery['searchOrder'][number] };
   MyPurchasesScreen: undefined;
 };
 

@@ -57,6 +57,8 @@ const documents = {
     types.LoginWithGoogleDocument,
   '\n  query Me {\n    me {\n      createdAt\n      email\n      fullName\n      id\n      phone\n      role\n      status\n      updatedAt\n      address\n    }\n  }\n':
     types.MeDocument,
+  '\n  mutation UpdateMe($address: String, $email: String, $fullName: String, $phone: String) {\n    updateUser(address: $address, email: $email, fullName: $fullName, phone: $phone) {\n      id\n    }\n  }\n':
+    types.UpdateMeDocument,
 };
 
 /**
@@ -203,6 +205,12 @@ export function graphql(
 export function graphql(
   source: '\n  query Me {\n    me {\n      createdAt\n      email\n      fullName\n      id\n      phone\n      role\n      status\n      updatedAt\n      address\n    }\n  }\n',
 ): typeof import('./graphql').MeDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation UpdateMe($address: String, $email: String, $fullName: String, $phone: String) {\n    updateUser(address: $address, email: $email, fullName: $fullName, phone: $phone) {\n      id\n    }\n  }\n',
+): typeof import('./graphql').UpdateMeDocument;
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};
