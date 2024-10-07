@@ -1,32 +1,24 @@
 import { useCallback } from 'react';
 import { FlatList, ScrollView, View } from 'react-native';
-import { ALERT_TYPE, Dialog, Toast } from 'react-native-alert-notification';
+import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
 import dayjs from 'dayjs';
-import * as WebBrowser from 'expo-web-browser';
 
 import Clipboard from '@react-native-clipboard/clipboard';
-import { useMutation } from '@tanstack/react-query';
 
 import Pressable from '~components/customs/Pressable';
 import { CircleDollarSign } from '~components/icons';
 import { Text } from '~components/ui/text';
 import constants from '~constants';
-import execute from '~graphql/execute';
 import { GetOrderByStatusQuery, OrderStatus } from '~graphql/graphql';
+import { useRepayOrder } from '~hooks';
 import CheckoutItem from '~screens/CheckoutScreen/components/CheckoutItem';
-import { RepayOrderMutation } from '~services/order.services';
 import { OrderDetailScreenNavigationProps } from '~types/navigation.type';
-import isErrors from '~utils/responseChecker';
-import showDialogError from '~utils/showDialogError';
-import showDialogWarning from '~utils/showDialogWarning';
 
 import OrderDetailButton from './components/OrderDetailButton';
 import OrderUserInfo from './components/OrderUserInfo';
 
 const OrderDetailScreen = ({ route, navigation }: OrderDetailScreenNavigationProps) => {
-  const { mutate: repayOrderMutate } = useMutation({
-    mutationFn: (orderId: number) => execute(RepayOrderMutation, { orderId }),
-  });
+  const { onRepayOrder } = useRepayOrder();
 
   const renderOrderItem = useCallback(
     ({ item }: { item: GetOrderByStatusQuery['searchOrder'][number]['orderItems'][number] }) => (
@@ -50,27 +42,7 @@ const OrderDetailScreen = ({ route, navigation }: OrderDetailScreenNavigationPro
 
   const handleRepayOrder = () => {
     if (!route.params.id) return;
-    showDialogWarning({
-      title: 'Reorder Confirmation',
-      textBody: 'Your previous payment failed. Do you want to reorder and try paying again?',
-      button: 'Reorder Now',
-      onPressButton: () =>
-        repayOrderMutate(+route.params.id, {
-          onSuccess: async (data) => {
-            await WebBrowser.openAuthSessionAsync(data.data.repayOrder);
-          },
-          onError: (errors) => {
-            if (isErrors(errors)) {
-              const error = errors.find((error) => error.path.includes('repayOrder'));
-              if (error?.message) {
-                return showDialogError({ textBody: error.message });
-              }
-            }
-            showDialogError();
-          },
-          onSettled: () => Dialog.hide(),
-        }),
-    });
+    onRepayOrder(+route.params.id);
   };
 
   const handleReceiveOrder = () => {

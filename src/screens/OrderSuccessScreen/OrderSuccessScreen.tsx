@@ -47,7 +47,7 @@ const OrderSuccessScreen = ({ route, navigation }: OrderSuccessScreenNavigationP
           >
             <RNText className='text-foreground text-[14px]'>Home</RNText>
           </Button>
-          <Button className='w-1/2'>
+          <Button className='w-1/2' onPress={() => navigation.replace('MyPurchasesScreen')}>
             <RNText className='text-muted text-[14px]'>My Purchase</RNText>
           </Button>
         </View>

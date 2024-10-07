@@ -745,6 +745,12 @@ export type RepayOrderMutationVariables = Exact<{
 
 export type RepayOrderMutation = { __typename?: 'Mutation'; repayOrder: string };
 
+export type ReceivedOrderMutationVariables = Exact<{
+  orderId: Scalars['Float']['input'];
+}>;
+
+export type ReceivedOrderMutation = { __typename?: 'Mutation'; receiveOrder: { __typename?: 'Order'; id: string } };
+
 export type GetProductQueryVariables = Exact<{
   id: Scalars['Float']['input'];
 }>;
@@ -1200,6 +1206,13 @@ export const RepayOrderDocument = new TypedDocumentString(`
   repayOrder(orderId: $orderId)
 }
     `) as unknown as TypedDocumentString<RepayOrderMutation, RepayOrderMutationVariables>;
+export const ReceivedOrderDocument = new TypedDocumentString(`
+    mutation ReceivedOrder($orderId: Float!) {
+  receiveOrder(orderId: $orderId) {
+    id
+  }
+}
+    `) as unknown as TypedDocumentString<ReceivedOrderMutation, ReceivedOrderMutationVariables>;
 export const GetProductDocument = new TypedDocumentString(`
     query GetProduct($id: Float!) {
   product(id: $id) {
