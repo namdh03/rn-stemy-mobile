@@ -12,6 +12,7 @@ import CheckoutScreen from '~screens/CheckoutScreen';
 import CheckoutUserInformationScreen from '~screens/CheckoutUserInformationScreen';
 import FeedbackProductScreen from '~screens/FeedbackProductScreen/FeedbackProductScreen';
 import MyOrdersScreen from '~screens/MyOrdersScreen';
+import MyPurchasesScreen from '~screens/MyPurchasesScreen';
 import OrderDetailScreen from '~screens/OrderDetailScreen';
 import OrderErrorScreen from '~screens/OrderErrorScreen';
 import OrderHistoryScreen from '~screens/OrderHistoryScreen';
@@ -26,6 +27,7 @@ import {
   FeedbackProductScreenNavigationProps,
   MainStackParamList,
   MyOrdersScreenNavigationProps,
+  MyPurchasesScreenNavigationProps,
   OrderDetailScreenNavigationProps,
   OrderHistoryScreenNavigationProps,
   SearchOrdersScreenNavigationProps,
@@ -223,6 +225,24 @@ const MainNavigator = () => (
         headerRight: () => (
           <Pressable onPress={() => console.log('FEEDBACK_SUBMIT')}>
             <Text className='font-inter-medium text-primary text-[18px]'>Submit</Text>
+          </Pressable>
+        ),
+      })}
+    />
+
+    <MainStack.Screen
+      name='MyPurchasesScreen'
+      component={MyPurchasesScreen}
+      options={({ navigation }: MyPurchasesScreenNavigationProps) => ({
+        title: 'My Purchases',
+        headerTitleAlign: 'center',
+        headerTitleStyle: {
+          fontFamily: 'Inter_18pt-Medium',
+          fontSize: 18,
+        },
+        headerLeft: () => (
+          <Pressable onPress={() => navigation.goBack()}>
+            <ChevronLeft className='text-foreground' size={30} />
           </Pressable>
         ),
       })}

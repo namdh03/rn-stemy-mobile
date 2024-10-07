@@ -100,10 +100,12 @@ const MeScreen = ({ navigation }: MeScreenNavigationProps) => {
       {/* List */}
       <View className='flex-col items-start self-stretch pt-[50px] px-[16px] gap-[2px]'>
         <Divider />
-        <View className='flex-row items-center justify-between self-stretch p-[16px] w-full gap-[16px]'>
-          <Text className='font-inter-regular text-[14px] text-[#1F2024] leading-[20px]'>My Purchases</Text>
-          <ChevronRight size={18} className='color-[#8F9098]' />
-        </View>
+        <Pressable onPress={() => navigation.navigate('MyPurchasesScreen')}>
+          <View className='flex-row items-center justify-between self-stretch p-[16px] w-full gap-[16px]'>
+            <Text className='font-inter-regular text-[14px] text-[#1F2024] leading-[20px]'>My Purchases</Text>
+            <ChevronRight size={18} className='color-[#8F9098]' />
+          </View>
+        </Pressable>
         <Divider />
         <View className='flex-row items-center justify-between self-stretch p-[16px] w-full gap-[16px]'>
           <Text className='font-inter-regular text-[14px] text-[#1F2024] leading-[20px]'>My tickets</Text>
