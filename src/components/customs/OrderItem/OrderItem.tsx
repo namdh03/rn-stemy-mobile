@@ -40,7 +40,6 @@ const OrderItem = ({ order }: OrderItemProps) => {
     navigation.navigate('OrderDetailScreen', order);
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleRepayOrder = () => {
     if (!order.id) return;
     showDialogWarning({
@@ -77,8 +76,7 @@ const OrderItem = ({ order }: OrderItemProps) => {
   const handleButtonActionPress = () => {
     switch (order.status) {
       case OrderStatus.Unpaid:
-        // return handleRepayOrder();
-        return navigation.navigate('FeedbackProductScreen', { order });
+        return handleRepayOrder();
       case OrderStatus.Paid:
         return;
       case OrderStatus.Delivering:
