@@ -1,26 +1,19 @@
 import { useMemo } from 'react';
 import { Text as RNText, View } from 'react-native';
-import { Dialog } from 'react-native-alert-notification';
 import dayjs from 'dayjs';
 import { Image } from 'expo-image';
-import * as WebBrowser from 'expo-web-browser';
 
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useMutation } from '@tanstack/react-query';
 
 import { Button } from '~components/ui/button';
 import { Separator } from '~components/ui/separator';
 import { Text } from '~components/ui/text';
 import constants from '~constants';
-import execute from '~graphql/execute';
 import { OrderStatus, SearchOrderQuery } from '~graphql/graphql';
-import { RepayOrderMutation } from '~services/order.services';
+import { useRepayOrder } from '~hooks';
 import { MainStackParamList } from '~types/navigation.type';
 import { getOrderStatusLabel } from '~utils/getOrderItemText';
-import isErrors from '~utils/responseChecker';
-import showDialogError from '~utils/showDialogError';
-import showDialogWarning from '~utils/showDialogWarning';
 
 import OrderButton from '../OrderButton';
 import Pressable from '../Pressable';
@@ -32,9 +25,10 @@ interface OrderItemProps {
 const OrderItem = ({ order }: OrderItemProps) => {
   const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
   const firstOrderItem = useMemo(() => order.orderItems[0], [order]);
-  const { mutate: repayOrderMutate } = useMutation({
-    mutationFn: (orderId: number) => execute(RepayOrderMutation, { orderId }),
-  });
+  const { onRepayOrder } = useRepayOrder();
+  // const { mutate: receivedOrderMutate } = useMutation({
+  //   mutationFn: (orderId: number) => execute(ReceivedOrderMutation, { orderId }),
+  // });
 
   const handleNavigateToOrderDetail = () => {
     navigation.navigate('OrderDetailScreen', order);
@@ -42,35 +36,15 @@ const OrderItem = ({ order }: OrderItemProps) => {
 
   const handleRepayOrder = () => {
     if (!order.id) return;
-    showDialogWarning({
-      title: 'Reorder Confirmation',
-      textBody: 'Your previous payment failed. Do you want to reorder and try paying again?',
-      button: 'Reorder Now',
-      onPressButton: () =>
-        repayOrderMutate(+order.id, {
-          onSuccess: async (data) => {
-            await WebBrowser.openAuthSessionAsync(data.data.repayOrder);
-          },
-          onError: (errors) => {
-            if (isErrors(errors)) {
-              const error = errors.find((error) => error.path.includes('repayOrder'));
-              if (error?.message) {
-                return showDialogError({ textBody: error.message });
-              }
-            }
-            showDialogError();
-          },
-          onSettled: () => Dialog.hide(),
-        }),
-    });
-  };
-
-  const handleBuyOrderAgain = () => {
-    console.log('handleBuyOrderAgain');
+    onRepayOrder(+order.id);
   };
 
   const handleReceiveOrder = () => {
     console.log('handleReceiveOrder');
+  };
+
+  const handleBuyOrderAgain = () => {
+    console.log('handleBuyOrderAgain');
   };
 
   const handleButtonActionPress = () => {

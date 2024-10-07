@@ -6,4 +6,5 @@ export { default as useFocusNotifyOnChangeProps } from './useFocusNotifyOnChange
 export { default as useOnlineManager } from './useOnlineManager';
 export { default as useRefreshByUser } from './useRefreshByUser';
 export { default as useRefreshOnFocus } from './useRefreshOnFocus';
+export { default as useRepayOrder } from './useRepayOrder';
 export { default as useThrottle } from './useThrottle';

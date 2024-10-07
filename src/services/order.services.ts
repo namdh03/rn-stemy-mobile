@@ -119,3 +119,11 @@ export const RepayOrderMutation = graphql(`
     repayOrder(orderId: $orderId)
   }
 `);
+
+export const ReceivedOrderMutation = graphql(`
+  mutation ReceivedOrder($orderId: Float!) {
+    receiveOrder(orderId: $orderId) {
+      id
+    }
+  }
+`);
