@@ -23,6 +23,7 @@ const MyOrdersScreen = ({ route, navigation }: MyOrdersScreenNavigationProps) =>
     data: orderListByStatus,
     refetch: orderListByOrderRefetch,
     isLoading,
+    error,
   } = useQuery({
     queryKey: [constants.ORDER_QUERY_KEY.GET_ORDER_BY_STATUS_QUERY_KEY, tab],
     queryFn: () => execute(GetOrderByStatusQuery, { status: tab }),
@@ -36,6 +37,8 @@ const MyOrdersScreen = ({ route, navigation }: MyOrdersScreenNavigationProps) =>
       return dateA - dateB;
     });
   }, [orderListByStatus]);
+
+  console.log(orderListByStatus, JSON.stringify(error));
 
   const handleNavigateToSearchOrder = useCallback(() => {
     navigation.navigate('SearchOrdersScreen');

@@ -43,6 +43,15 @@ input CheckoutOrderInput {
   vnp_TxnRef: String!
 }
 
+type CountOrderResponse {
+  delivered: Float!
+  delivering: Float!
+  paid: Float!
+  rated: Float!
+  received: Float!
+  unpaid: Float!
+}
+
 input CreateFeedbackInput {
   images: [File!]
   note: String
@@ -97,13 +106,15 @@ type Mutation {
     images: [File!]! = []
     orderItemId: Float!
     title: String!
-  ): Ticket!
+  ): Boolean!
   deleteCarts(cartId: [Int!]!): String!
   deleteProduct(id: Float!): Product!
   getTokenResetPassword(OTPCode: String!, email: String!): String!
   login(email: String!, password: String!): AccessTokenResponse!
   loginWithGoogle(code: String!): AccessTokenResponse!
-  reOrder(orderId: Float!): [OrderItem!]!
+  ratingTicket(rating: Float!, ticketId: Float!): Ticket!
+  reOrder(orderId: Float!): [Cart!]!
+  receiveOrder(orderId: Float!): Order!
   register(email: String!, fullName: String!, password: String!, phone: String!): AccessTokenResponse!
   repayOrder(orderId: Float!): String!
   replyTicket(comment: String!, images: [File!]! = [], ticketId: Float!): Ticket!
@@ -123,6 +134,7 @@ type Order {
   orderItems: [OrderItem!]!
   payment: OrderPaymentEmbeddable!
   phone: String!
+  receiveTime: DateTimeISO
   shipTime: DateTimeISO
   status: OrderStatus!
   totalPrice: Int!
@@ -152,6 +164,7 @@ enum OrderStatus {
   DELIVERING
   PAID
   RATED
+  RECEIVED
   UNPAID
 }
 
@@ -215,6 +228,7 @@ type ProductsWithPaginationResponse {
 type Query {
   carts: [Cart!]!
   countCart: Float!
+  countOrder: CountOrderResponse!
   me: User!
   product(id: Float!): Product!
   productCategories: [ProductCategory!]!
@@ -261,6 +275,7 @@ type Ticket {
   id: ID!
   images: [TicketImage!]!
   orderItem: OrderItem!
+  rating: Float
   replier: User
   replierComment: String
   sender: User!
