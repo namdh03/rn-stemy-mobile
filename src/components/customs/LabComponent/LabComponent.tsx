@@ -1,12 +1,10 @@
 import React from 'react';
-import { ImageSourcePropType, View } from 'react-native';
+import { ImageSourcePropType, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 
 import { Download } from '~components/icons';
 import { Badge } from '~components/ui/badge';
 import { Button } from '~components/ui/button';
-import { Separator } from '~components/ui/separator';
-import { Text } from '~components/ui/text';
 import constants from '~constants';
 
 export interface LabComponentProps {
@@ -31,7 +29,7 @@ const LabComponent = ({
   message,
 }: LabComponentProps) => {
   return (
-    <View className='w-[327px] px-[16px] py-[16px] rounded-[6px] bg-white shadow-lg'>
+    <View className='w-full px-[16px] py-[16px] rounded-[6px] bg-white shadow-md border-black'>
       <View className='flex-row justify-between'>
         <View className='flex-row'>
           <Image
@@ -41,10 +39,10 @@ const LabComponent = ({
             contentFit='cover'
           />
           <View className='ml-[16px]'>
-            <Text numberOfLines={1} className='font-inter-semiBold text-[16px] '>
+            <Text numberOfLines={1} className='font-inter-semiBold text-[16px] mb-[4px]'>
               {title}
             </Text>
-            <Text className='font-inter-medium mb-[4px] text-[14px] '>{purchaseDate.toLocaleDateString()}</Text>
+            <Text className='font-inter-medium mb-[4px] text-[12px] '>{purchaseDate.toLocaleDateString()}</Text>
             <Text className='font-inter-regular mb-[4px] text-[12px] '>Ticket: {numberOfTicket}/3</Text>
           </View>
         </View>
@@ -56,7 +54,8 @@ const LabComponent = ({
           </Badge>
         </View>
       </View>
-      <Separator className='my-[12px] bg-muted' />
+      <View className=' border-b border-muted my-3' />
+
       <View className='w-full'>
         <Text className='font-inter-regular text-[12px] text-muted-foreground'>
           {activeDate ? `Active day: ${activeDate.toLocaleDateString()}` : message}
@@ -67,7 +66,7 @@ const LabComponent = ({
               <Text className='font-inter-semiBold w-[150px] text-[14px]'> File Lab instruction: </Text>
             </View>
             <Button className=' w-[120px] p-[8px] rounded-[10px] flex-row items-center '>
-              <Text className='font-inter-semiBold text-[14px]'>Download</Text>
+              <Text className='font-inter-semiBold text-[12px] text-white'>Download</Text>
               <Download className='text-background ml-[8px]' size={16} strokeWidth={2.5} />
             </Button>
           </View>
