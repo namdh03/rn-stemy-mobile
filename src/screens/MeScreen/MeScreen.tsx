@@ -1,4 +1,5 @@
 import { Image, View } from 'react-native';
+import { useShallow } from 'zustand/react/shallow';
 
 import images from '~assets/images';
 import Divider from '~components/customs/Divider';
@@ -7,12 +8,19 @@ import { Box, ChevronRight, Pencil, Star, Truck, Wallet } from '~components/icon
 import { Badge } from '~components/ui/badge';
 import { Text } from '~components/ui/text';
 import { OrderStatus } from '~graphql/graphql';
+import { useStore } from '~store';
 import { MeScreenNavigationProps } from '~types/navigation.type';
 
 const MeScreen = ({ navigation }: MeScreenNavigationProps) => {
   const handleNavigateToMyOrders = (orderStatus: OrderStatus) => {
     navigation.navigate('MyOrdersScreen', { orderStatus });
   };
+
+  const { user } = useStore(
+    useShallow((state) => ({
+      user: state.user,
+    })),
+  );
   return (
     <View className='flex items-center justify-center'>
       {/* Avatar */}
@@ -24,7 +32,7 @@ const MeScreen = ({ navigation }: MeScreenNavigationProps) => {
           </Pressable>
         </View>
         <Text className='font-inter-black leading-normal tracking-[0.08px] text-center color-[#1F2024] pt-[16px]'>
-          Lucas Scott
+          {user?.fullName}
         </Text>
       </View>
 

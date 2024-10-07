@@ -57,6 +57,16 @@ export type CheckoutOrderInput = {
   vnp_TxnRef: Scalars['String']['input'];
 };
 
+export type CountOrderResponse = {
+  __typename?: 'CountOrderResponse';
+  delivered: Scalars['Float']['output'];
+  delivering: Scalars['Float']['output'];
+  paid: Scalars['Float']['output'];
+  rated: Scalars['Float']['output'];
+  received: Scalars['Float']['output'];
+  unpaid: Scalars['Float']['output'];
+};
+
 export type CreateFeedbackInput = {
   images?: InputMaybe<Array<Scalars['File']['input']>>;
   note?: InputMaybe<Scalars['String']['input']>;
@@ -92,13 +102,15 @@ export type Mutation = {
   createFeedback: Scalars['Boolean']['output'];
   createOrder: Scalars['String']['output'];
   createProduct: Product;
-  createTicket: Ticket;
+  createTicket: Scalars['Boolean']['output'];
   deleteCarts: Scalars['String']['output'];
   deleteProduct: Product;
   getTokenResetPassword: Scalars['String']['output'];
   login: AccessTokenResponse;
   loginWithGoogle: AccessTokenResponse;
-  reOrder: Array<OrderItem>;
+  ratingTicket: Ticket;
+  reOrder: Array<Cart>;
+  receiveOrder: Order;
   register: AccessTokenResponse;
   repayOrder: Scalars['String']['output'];
   replyTicket: Ticket;
@@ -168,7 +180,16 @@ export type MutationLoginWithGoogleArgs = {
   code: Scalars['String']['input'];
 };
 
+export type MutationRatingTicketArgs = {
+  rating: Scalars['Float']['input'];
+  ticketId: Scalars['Float']['input'];
+};
+
 export type MutationReOrderArgs = {
+  orderId: Scalars['Float']['input'];
+};
+
+export type MutationReceiveOrderArgs = {
   orderId: Scalars['Float']['input'];
 };
 
@@ -224,6 +245,7 @@ export type Order = {
   orderItems: Array<OrderItem>;
   payment: OrderPaymentEmbeddable;
   phone: Scalars['String']['output'];
+  receiveTime?: Maybe<Scalars['DateTimeISO']['output']>;
   shipTime?: Maybe<Scalars['DateTimeISO']['output']>;
   status: OrderStatus;
   totalPrice: Scalars['Int']['output'];
@@ -255,6 +277,7 @@ export enum OrderStatus {
   Delivering = 'DELIVERING',
   Paid = 'PAID',
   Rated = 'RATED',
+  Received = 'RECEIVED',
   Unpaid = 'UNPAID',
 }
 
@@ -324,6 +347,7 @@ export type Query = {
   __typename?: 'Query';
   carts: Array<Cart>;
   countCart: Scalars['Float']['output'];
+  countOrder: CountOrderResponse;
   me: User;
   product: Product;
   productCategories: Array<ProductCategory>;
@@ -388,6 +412,7 @@ export type Ticket = {
   id: Scalars['ID']['output'];
   images: Array<TicketImage>;
   orderItem: OrderItem;
+  rating?: Maybe<Scalars['Float']['output']>;
   replier?: Maybe<User>;
   replierComment?: Maybe<Scalars['String']['output']>;
   sender: User;
