@@ -86,7 +86,7 @@ export type MainStackParamList = {
   OrderSuccessScreen: { totalPrice: number };
   OrderErrorScreen: undefined;
   SearchProductScreen: undefined;
-  MyOrdersScreen: { orderStatus: OrderStatus };
+  MyOrdersScreen: { orderStatus: OrderStatus[] };
   SearchOrdersScreen: undefined;
   OrderDetailScreen: GetOrderByStatusQuery['searchOrder'][number];
   OrderHistoryScreen: undefined;
