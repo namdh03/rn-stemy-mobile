@@ -11,7 +11,6 @@ import { Button } from '~components/ui/button';
 import { Separator } from '~components/ui/separator';
 import { Text } from '~components/ui/text';
 import constants from '~constants';
-import { GET_CART_COUNT_QUERY_KEY } from '~constants/cart-query-key';
 import execute from '~graphql/execute';
 import { CreateOrderMutation } from '~services/checkout.services';
 import { useCartStore, useStore } from '~store';
@@ -68,7 +67,7 @@ const CheckoutScreen = ({ navigation }: CheckoutScreenNavigationProps) => {
         },
         {
           onSuccess: async (data) => {
-            queryClient.invalidateQueries({ queryKey: [GET_CART_COUNT_QUERY_KEY] });
+            queryClient.invalidateQueries({ queryKey: [constants.CART_QUERY_KEY.GET_CART_COUNT_QUERY_KEY] });
             await WebBrowser.openAuthSessionAsync(data.data.createOrder);
             clearOrderedCart();
           },

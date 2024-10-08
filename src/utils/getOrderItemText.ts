@@ -12,6 +12,7 @@ export function getOrderStatusLabel(status: OrderStatus): string {
     case OrderStatus.Received:
       return 'To Rate';
     case OrderStatus.Rated:
+    case OrderStatus.Unrated:
       return '';
     default:
       return 'Unknown Status';
@@ -30,6 +31,8 @@ export function getOrderStatusButtonText(status: OrderStatus): string {
       return 'Rate';
     case OrderStatus.Rated:
       return 'Buy again';
+    case OrderStatus.Unrated:
+      return 'Buy again';
     default:
       return 'Unknown Status';
   }
@@ -44,10 +47,11 @@ export function getOrderStatusDescription(status: OrderStatus): string {
     case OrderStatus.Delivering:
       return 'In transit';
     case OrderStatus.Delivered:
-      return 'Delivery successful';
     case OrderStatus.Received:
-    case OrderStatus.Rated:
       return '';
+    case OrderStatus.Rated:
+    case OrderStatus.Unrated:
+      return 'Delivery successful';
     default:
       return 'Unknown Status';
   }

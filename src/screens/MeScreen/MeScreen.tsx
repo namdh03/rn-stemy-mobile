@@ -25,6 +25,7 @@ const MeScreen = ({ navigation }: MeScreenNavigationProps) => {
       user: state.user,
     })),
   );
+
   return (
     <View className='flex items-center justify-center'>
       {/* Avatar */}
@@ -119,15 +120,19 @@ const MeScreen = ({ navigation }: MeScreenNavigationProps) => {
           </View>
         </Pressable>
         <Divider />
-        <View className='flex-row items-center justify-between self-stretch p-[16px] w-full gap-[16px]'>
-          <Text className='font-inter-regular text-[14px] text-[#1F2024] leading-[20px]'>My tickets</Text>
-          <ChevronRight size={18} className='color-[#8F9098]' />
-        </View>
+        <Pressable>
+          <View className='flex-row items-center justify-between self-stretch p-[16px] w-full gap-[16px]'>
+            <Text className='font-inter-regular text-[14px] text-[#1F2024] leading-[20px]'>My tickets</Text>
+            <ChevronRight size={18} className='color-[#8F9098]' />
+          </View>
+        </Pressable>
         <Divider />
-        <View className='flex-row items-center justify-between self-stretch p-[16px] w-full gap-[16px]'>
-          <Text className='font-inter-regular text-[14px] text-[#1F2024] leading-[20px]'>Setting</Text>
-          <ChevronRight size={18} className='color-[#8F9098]' />
-        </View>
+        <Pressable onPress={() => navigation.navigate('SettingsScreen')}>
+          <View className='flex-row items-center justify-between self-stretch p-[16px] w-full gap-[16px]'>
+            <Text className='font-inter-regular text-[14px] text-[#1F2024] leading-[20px]'>Setting</Text>
+            <ChevronRight size={18} className='color-[#8F9098]' />
+          </View>
+        </Pressable>
         <Divider />
       </View>
     </View>
