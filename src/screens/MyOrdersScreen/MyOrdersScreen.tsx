@@ -1,5 +1,5 @@
 import { memo, useCallback, useState } from 'react';
-import { FlatList, RefreshControl, View } from 'react-native';
+import { FlatList, RefreshControl, ScrollView, View } from 'react-native';
 
 import OrderItem from '~components/customs/OrderItem';
 import OrderItemSkeleton from '~components/customs/OrderItemSkeleton';
@@ -67,7 +67,14 @@ const MyOrdersScreen = ({ route, navigation }: MyOrdersScreenNavigationProps) =>
           contentContainerStyle={{ gap: 16, paddingBottom: 50 }}
         />
       ) : data.length === 0 ? (
-        <EmptyOrderList />
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          refreshControl={
+            <RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} tintColor='#your-primary-color' />
+          }
+        >
+          <EmptyOrderList />
+        </ScrollView>
       ) : (
         <FlatList
           data={data}

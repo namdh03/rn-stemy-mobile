@@ -8,5 +8,6 @@ export { default as useOrderList } from './useOrderList';
 export { default as useReceivedOrder } from './useReceivedOrder';
 export { default as useRefreshByUser } from './useRefreshByUser';
 export { default as useRefreshOnFocus } from './useRefreshOnFocus';
+export { default as useReOrder } from './useReOrder';
 export { default as useRepayOrder } from './useRepayOrder';
 export { default as useThrottle } from './useThrottle';

@@ -11,7 +11,7 @@ import { Separator } from '~components/ui/separator';
 import { Text } from '~components/ui/text';
 import constants from '~constants';
 import { OrderStatus, SearchOrderQuery } from '~graphql/graphql';
-import { useReceivedOrder, useRepayOrder } from '~hooks';
+import { useReceivedOrder, useReOrder, useRepayOrder } from '~hooks';
 import { MainStackParamList } from '~types/navigation.type';
 import { getOrderStatusLabel } from '~utils/getOrderItemText';
 
@@ -27,6 +27,7 @@ const OrderItem = ({ order }: OrderItemProps) => {
   const firstOrderItem = useMemo(() => order.orderItems[0], [order]);
   const { onRepayOrder } = useRepayOrder();
   const { onReceivedOrder } = useReceivedOrder();
+  const { onReOrder } = useReOrder();
 
   const handleNavigateToOrderDetail = () => {
     navigation.navigate('OrderDetailScreen', order);
@@ -43,7 +44,8 @@ const OrderItem = ({ order }: OrderItemProps) => {
   };
 
   const handleBuyOrderAgain = () => {
-    console.log('handleBuyOrderAgain');
+    if (!order.id) return;
+    onReOrder(+order.id);
   };
 
   const handleButtonActionPress = () => {
@@ -59,7 +61,7 @@ const OrderItem = ({ order }: OrderItemProps) => {
         return navigation.navigate('FeedbackProductScreen', { order });
       case OrderStatus.Rated:
       case OrderStatus.Unrated:
-        return;
+        return handleBuyOrderAgain();
       default:
         return 'Unknown Status';
     }

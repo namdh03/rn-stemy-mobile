@@ -216,7 +216,7 @@ const CartItem = memo(({ item }: CartItemProps) => {
                 </Pressable>
               </View>
 
-              <Text className='font-inter-extraBold text-left text-foreground text-[14px] break-words flex-shrink pr-[24px]'>
+              <Text className='font-inter-extraBold w-full text-right text-foreground text-[14px] break-words flex-shrink pr-[24px]'>
                 {(item.product.price * item.quantity).toLocaleString()} ₫
               </Text>
             </View>

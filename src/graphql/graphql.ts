@@ -351,6 +351,7 @@ export type Query = {
   me: User;
   product: Product;
   productCategories: Array<ProductCategory>;
+  productCategory?: Maybe<ProductCategory>;
   products: ProductsWithPaginationResponse;
   searchOrder: Array<Order>;
   ticket: Ticket;
@@ -361,6 +362,10 @@ export type Query = {
 };
 
 export type QueryProductArgs = {
+  id: Scalars['Float']['input'];
+};
+
+export type QueryProductCategoryArgs = {
   id: Scalars['Float']['input'];
 };
 
@@ -821,6 +826,28 @@ export type ReceivedOrderMutationVariables = Exact<{
 }>;
 
 export type ReceivedOrderMutation = { __typename?: 'Mutation'; receiveOrder: { __typename?: 'Order'; id: string } };
+
+export type ReOrderMutationVariables = Exact<{
+  orderId: Scalars['Float']['input'];
+}>;
+
+export type ReOrderMutation = {
+  __typename?: 'Mutation';
+  reOrder: Array<{
+    __typename?: 'Cart';
+    id: string;
+    hasLab: boolean;
+    quantity: number;
+    product: {
+      __typename?: 'Product';
+      id: string;
+      name: string;
+      price: number;
+      images: Array<{ __typename?: 'ProductImage'; url: string }>;
+      lab?: { __typename?: 'ProductLab'; price: number } | null;
+    };
+  }>;
+};
 
 export type GetProductQueryVariables = Exact<{
   id: Scalars['Float']['input'];
@@ -1354,6 +1381,26 @@ export const ReceivedOrderDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<ReceivedOrderMutation, ReceivedOrderMutationVariables>;
+export const ReOrderDocument = new TypedDocumentString(`
+    mutation ReOrder($orderId: Float!) {
+  reOrder(orderId: $orderId) {
+    id
+    hasLab
+    product {
+      id
+      name
+      price
+      images {
+        url
+      }
+      lab {
+        price
+      }
+    }
+    quantity
+  }
+}
+    `) as unknown as TypedDocumentString<ReOrderMutation, ReOrderMutationVariables>;
 export const GetProductDocument = new TypedDocumentString(`
     query GetProduct($id: Float!) {
   product(id: $id) {
