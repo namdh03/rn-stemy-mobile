@@ -14,7 +14,10 @@ interface OrderButtonProps {
 }
 
 const OrderButton = ({ orderStatus, onPress, onBuyAgain }: OrderButtonProps) => {
-  const inactive = useMemo(() => orderStatus === OrderStatus.Paid, [orderStatus]);
+  const inactive = useMemo(
+    () => orderStatus === OrderStatus.Paid || orderStatus === OrderStatus.Delivering,
+    [orderStatus],
+  );
 
   return (
     <View className='w-full flex-row justify-between items-center mt-[8px]'>
@@ -22,7 +25,7 @@ const OrderButton = ({ orderStatus, onPress, onBuyAgain }: OrderButtonProps) => 
         {getOrderStatusDescription(orderStatus)}
       </Text>
       <View className='flex-row gap-[10px] items-center'>
-        {orderStatus === OrderStatus.Delivered && (
+        {orderStatus === OrderStatus.Received && (
           <Button variant='outline' className='min-w-[100px]' size='sm' onPress={onBuyAgain}>
             <RNText className='font-inter-semiBold text-muted-foreground text-[12px]'>Buy again</RNText>
           </Button>

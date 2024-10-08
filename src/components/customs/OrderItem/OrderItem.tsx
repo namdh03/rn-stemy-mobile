@@ -105,7 +105,7 @@ const OrderItem = ({ order }: OrderItemProps) => {
 
       <Separator className='bg-muted' />
 
-      <Button className='w-full' variant='ghost'>
+      <Button className='w-full' variant='ghost' onPress={handleNavigateToOrderDetail}>
         <RNText className='font-inter-regular text-muted-foreground text-[12px] leading-[20px]'>
           View more product
         </RNText>

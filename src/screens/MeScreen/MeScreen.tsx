@@ -13,7 +13,11 @@ import { MeScreenNavigationProps } from '~types/navigation.type';
 
 const MeScreen = ({ navigation }: MeScreenNavigationProps) => {
   const handleNavigateToMyOrders = (orderStatus: OrderStatus) => {
-    navigation.navigate('MyOrdersScreen', { orderStatus });
+    if (orderStatus === OrderStatus.Paid || orderStatus === OrderStatus.Delivering) {
+      navigation.navigate('MyOrdersScreen', { orderStatus: [OrderStatus.Paid, OrderStatus.Delivering] });
+    } else {
+      navigation.navigate('MyOrdersScreen', { orderStatus: [orderStatus] });
+    }
   };
 
   const { user } = useStore(
@@ -75,7 +79,7 @@ const MeScreen = ({ navigation }: MeScreenNavigationProps) => {
             </View>
           </Pressable>
 
-          <Pressable onPress={() => handleNavigateToMyOrders(OrderStatus.Delivering)}>
+          <Pressable onPress={() => handleNavigateToMyOrders(OrderStatus.Delivered)}>
             <View className='flex-col justify-center items-center py-[4px]'>
               <Truck size={26} className='color-accent-foreground mb-[3px]' />
               <Text className='font-inter-regular text-[#000] text-[12px]'>To Receive</Text>
@@ -88,7 +92,7 @@ const MeScreen = ({ navigation }: MeScreenNavigationProps) => {
             </View>
           </Pressable>
 
-          <Pressable onPress={() => handleNavigateToMyOrders(OrderStatus.Delivered)}>
+          <Pressable onPress={() => handleNavigateToMyOrders(OrderStatus.Received)}>
             <View className='flex-col justify-center items-center py-[4px]'>
               <View className='border-2 w-[27px] h-[27px] border-black rounded-full flex items-center justify-center p-[2px]'>
                 <Star size={18} className='color-accent-foreground mb-[3px]' />

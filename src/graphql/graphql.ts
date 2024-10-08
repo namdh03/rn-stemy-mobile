@@ -704,6 +704,70 @@ export type GetOrderByStatusQuery = {
   }>;
 };
 
+export type GetOrderByToShipQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetOrderByToShipQuery = {
+  __typename?: 'Query';
+  searchOrderByPaid: Array<{
+    __typename?: 'Order';
+    id: string;
+    createdAt: any;
+    updatedAt?: any | null;
+    totalPrice: number;
+    status: OrderStatus;
+    address: string;
+    fullName: string;
+    phone: string;
+    shipTime?: any | null;
+    payment: { __typename?: 'OrderPaymentEmbeddable'; provider: PaymentProvider; time?: any | null };
+    orderItems: Array<{
+      __typename?: 'OrderItem';
+      hasLab: boolean;
+      id: string;
+      labPrice: number;
+      productPrice: number;
+      quantity: number;
+      product: {
+        __typename?: 'Product';
+        id: string;
+        name: string;
+        price: number;
+        images: Array<{ __typename?: 'ProductImage'; url: string }>;
+        lab?: { __typename?: 'ProductLab'; price: number } | null;
+      };
+    }>;
+  }>;
+  searchOrderByDelivering: Array<{
+    __typename?: 'Order';
+    id: string;
+    createdAt: any;
+    updatedAt?: any | null;
+    totalPrice: number;
+    status: OrderStatus;
+    address: string;
+    fullName: string;
+    phone: string;
+    shipTime?: any | null;
+    payment: { __typename?: 'OrderPaymentEmbeddable'; provider: PaymentProvider; time?: any | null };
+    orderItems: Array<{
+      __typename?: 'OrderItem';
+      hasLab: boolean;
+      id: string;
+      labPrice: number;
+      productPrice: number;
+      quantity: number;
+      product: {
+        __typename?: 'Product';
+        id: string;
+        name: string;
+        price: number;
+        images: Array<{ __typename?: 'ProductImage'; url: string }>;
+        lab?: { __typename?: 'ProductLab'; price: number } | null;
+      };
+    }>;
+  }>;
+};
+
 export type GetHistoryOrderQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetHistoryOrderQuery = {
@@ -1164,6 +1228,76 @@ export const GetOrderByStatusDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<GetOrderByStatusQuery, GetOrderByStatusQueryVariables>;
+export const GetOrderByToShipDocument = new TypedDocumentString(`
+    query GetOrderByToShip {
+  searchOrderByPaid: searchOrder(search: "", status: PAID) {
+    id
+    createdAt
+    updatedAt
+    totalPrice
+    status
+    address
+    fullName
+    phone
+    shipTime
+    payment {
+      provider
+      time
+    }
+    orderItems {
+      hasLab
+      id
+      labPrice
+      productPrice
+      quantity
+      product {
+        id
+        name
+        price
+        images {
+          url
+        }
+        lab {
+          price
+        }
+      }
+    }
+  }
+  searchOrderByDelivering: searchOrder(search: "", status: DELIVERING) {
+    id
+    createdAt
+    updatedAt
+    totalPrice
+    status
+    address
+    fullName
+    phone
+    shipTime
+    payment {
+      provider
+      time
+    }
+    orderItems {
+      hasLab
+      id
+      labPrice
+      productPrice
+      quantity
+      product {
+        id
+        name
+        price
+        images {
+          url
+        }
+        lab {
+          price
+        }
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<GetOrderByToShipQuery, GetOrderByToShipQueryVariables>;
 export const GetHistoryOrderDocument = new TypedDocumentString(`
     query GetHistoryOrder {
   searchOrder(search: "") {

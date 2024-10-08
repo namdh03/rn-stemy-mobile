@@ -5,10 +5,11 @@ export function getOrderStatusLabel(status: OrderStatus): string {
     case OrderStatus.Unpaid:
       return 'To Pay';
     case OrderStatus.Paid:
-      return 'To Ship';
     case OrderStatus.Delivering:
-      return 'To Receive';
+      return 'To Ship';
     case OrderStatus.Delivered:
+      return 'To Receive';
+    case OrderStatus.Received:
       return 'To Rate';
     case OrderStatus.Rated:
       return '';
@@ -22,10 +23,10 @@ export function getOrderStatusButtonText(status: OrderStatus): string {
     case OrderStatus.Unpaid:
       return 'Pay Now';
     case OrderStatus.Paid:
-      return 'Received';
     case OrderStatus.Delivering:
-      return 'Received';
     case OrderStatus.Delivered:
+      return 'Received';
+    case OrderStatus.Received:
       return 'Rate';
     case OrderStatus.Rated:
       return 'Buy again';
@@ -44,6 +45,7 @@ export function getOrderStatusDescription(status: OrderStatus): string {
       return 'In transit';
     case OrderStatus.Delivered:
       return 'Delivery successful';
+    case OrderStatus.Received:
     case OrderStatus.Rated:
       return '';
     default:
