@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { FlatList, Keyboard, Pressable as RNPressable, RefreshControl, View } from 'react-native';
+import { FlatList, Image, Keyboard, Pressable as RNPressable, RefreshControl, ScrollView, View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import { Image } from 'expo-image';
 
 import { useQuery } from '@tanstack/react-query';
 
@@ -96,26 +95,27 @@ const SearchOrdersScreen = () => {
             onEndReachedThreshold={0.5}
           />
         ) : (
-          <RNPressable className='flex-1 gap-[8px] items-center pt-[100px] px-[25px]' onPress={Keyboard.dismiss}>
-            <Image
-              source={images.searchOrders}
-              placeholder={{ blurhash: constants.EXPO_IMAGE.BLUR_HASH }}
-              style={{ width: 135, height: 128 }}
-              contentFit='cover'
-            />
-            <Text className='font-inter-regular text-center text-muted-foreground text-[14px] leading-[18px]'>
-              Please try using other keywords to find the product name or order id
-            </Text>
-          </RNPressable>
+          <ScrollView
+            contentContainerStyle={{ flexGrow: 1 }}
+            refreshControl={
+              <RefreshControl
+                refreshing={isRefetchingByUser}
+                onRefresh={refetchByUser}
+                tintColor='#your-primary-color'
+              />
+            }
+          >
+            <RNPressable className='flex-1 gap-[8px] items-center pt-[100px] px-[25px]' onPress={Keyboard.dismiss}>
+              <Image source={images.searchOrders} style={{ width: 135, height: 128 }} resizeMode='cover' />
+              <Text className='font-inter-regular text-center text-muted-foreground text-[14px] leading-[18px]'>
+                Please try using other keywords to find the product name or order id
+              </Text>
+            </RNPressable>
+          </ScrollView>
         )
       ) : (
         <RNPressable className='flex-1 gap-[8px] items-center pt-[100px] px-[25px]' onPress={Keyboard.dismiss}>
-          <Image
-            source={images.searchOrders}
-            placeholder={{ blurhash: constants.EXPO_IMAGE.BLUR_HASH }}
-            style={{ width: 135, height: 128 }}
-            contentFit='cover'
-          />
+          <Image source={images.searchOrders} style={{ width: 135, height: 128 }} resizeMode='cover' />
           <Text className='font-inter-regular text-center text-muted-foreground text-[14px] leading-[18px]'>
             You can search by Order ID or Product name
           </Text>

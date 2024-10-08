@@ -232,6 +232,7 @@ type Query {
   me: User!
   product(id: Float!): Product!
   productCategories: [ProductCategory!]!
+  productCategory(id: Float!): ProductCategory
   products(
     categoryIds: [Int!] = []
     currentItem: Int! = 9

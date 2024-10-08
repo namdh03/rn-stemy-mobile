@@ -1,6 +1,6 @@
 import { StateCreator } from 'zustand';
 
-import { CartSlice, CartState } from './cart.type';
+import { CartSlice, CartState, SelectedCart } from './cart.type';
 
 const initialState: CartState = {
   isActive: false,
@@ -30,17 +30,30 @@ export const createCartSlice: StateCreator<CartSlice, [['zustand/immer', never]]
         return newCartItem;
       });
     }),
-  setSelectedCart: (cart) =>
+  setSelectedCart: (cartItem) =>
     set((state) => {
       const selectedCart = state.selectedCart || {};
 
-      if (selectedCart[cart.id]) {
-        delete selectedCart[cart.id];
+      // Toggle the selected cart item
+      if (selectedCart[cartItem.id]) {
+        delete selectedCart[cartItem.id];
       } else {
-        selectedCart[cart.id] = cart;
+        selectedCart[cartItem.id] = cartItem;
       }
 
       const total = Object.values(selectedCart).reduce((acc, cur) => acc + cur.product.price * cur.quantity, 0);
+      state.selectedCart = selectedCart;
+      state.total = total;
+    }),
+  setMultipleSelectedCart: (cartItems) =>
+    set((state) => {
+      let total = 0;
+      const selectedCart = {} as SelectedCart;
+
+      cartItems.forEach((cartItem) => {
+        selectedCart[cartItem.id] = cartItem;
+        total += cartItem.product.price * cartItem.quantity;
+      });
 
       state.selectedCart = selectedCart;
       state.total = total;

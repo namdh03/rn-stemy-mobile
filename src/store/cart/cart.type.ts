@@ -1,6 +1,6 @@
 import { GetCartQuery } from '~graphql/graphql';
 
-type SelectedCart = {
+export type SelectedCart = {
   [key: string]: GetCartQuery['carts'][number];
 };
 
@@ -14,7 +14,8 @@ export type CartState = {
 export type CartActions = {
   toggleActive: () => void;
   setCart: (carts: GetCartQuery['carts']) => void;
-  setSelectedCart: (cart: GetCartQuery['carts'][number]) => void;
+  setSelectedCart: (cartItem: GetCartQuery['carts'][number]) => void;
+  setMultipleSelectedCart: (cartItems: GetCartQuery['carts']) => void;
   clearOrderedCart: () => void;
   updateCartItemQuantity: (id: string, quantity: number) => void;
   removeCartItem: (id: string) => void;

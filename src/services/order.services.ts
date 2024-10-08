@@ -198,3 +198,24 @@ export const ReceivedOrderMutation = graphql(`
     }
   }
 `);
+
+export const ReOrderMutation = graphql(`
+  mutation ReOrder($orderId: Float!) {
+    reOrder(orderId: $orderId) {
+      id
+      hasLab
+      product {
+        id
+        name
+        price
+        images {
+          url
+        }
+        lab {
+          price
+        }
+      }
+      quantity
+    }
+  }
+`);

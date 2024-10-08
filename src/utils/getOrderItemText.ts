@@ -30,7 +30,6 @@ export function getOrderStatusButtonText(status: OrderStatus): string {
     case OrderStatus.Received:
       return 'Rate';
     case OrderStatus.Rated:
-      return 'Buy again';
     case OrderStatus.Unrated:
       return 'Buy again';
     default:
