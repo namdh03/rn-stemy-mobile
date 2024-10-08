@@ -4,6 +4,7 @@ export { default as useColorScheme } from './useColorScheme';
 export { default as useDebounce } from './useDebounce';
 export { default as useFocusNotifyOnChangeProps } from './useFocusNotifyOnChangeProps';
 export { default as useOnlineManager } from './useOnlineManager';
+export { default as useReceivedOrder } from './useReceivedOrder';
 export { default as useRefreshByUser } from './useRefreshByUser';
 export { default as useRefreshOnFocus } from './useRefreshOnFocus';
 export { default as useRepayOrder } from './useRepayOrder';

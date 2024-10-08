@@ -33,3 +33,20 @@ export function getOrderStatusButtonText(status: OrderStatus): string {
       return 'Unknown Status';
   }
 }
+
+export function getOrderStatusDescription(status: OrderStatus): string {
+  switch (status) {
+    case OrderStatus.Unpaid:
+      return 'Waiting for payment';
+    case OrderStatus.Paid:
+      return 'Preparing to ship';
+    case OrderStatus.Delivering:
+      return 'In transit';
+    case OrderStatus.Delivered:
+      return 'Delivery successful';
+    case OrderStatus.Rated:
+      return '';
+    default:
+      return 'Unknown Status';
+  }
+}
