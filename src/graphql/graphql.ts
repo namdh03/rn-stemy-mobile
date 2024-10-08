@@ -241,7 +241,6 @@ export type Order = {
   createdAt: Scalars['DateTimeISO']['output'];
   fullName: Scalars['String']['output'];
   id: Scalars['ID']['output'];
-  isAllowRating: Scalars['Boolean']['output'];
   orderItems: Array<OrderItem>;
   payment: OrderPaymentEmbeddable;
   phone: Scalars['String']['output'];
@@ -279,6 +278,7 @@ export enum OrderStatus {
   Rated = 'RATED',
   Received = 'RECEIVED',
   Unpaid = 'UNPAID',
+  Unrated = 'UNRATED',
 }
 
 export enum PaymentProvider {
@@ -353,6 +353,7 @@ export type Query = {
   productCategories: Array<ProductCategory>;
   products: ProductsWithPaginationResponse;
   searchOrder: Array<Order>;
+  ticket: Ticket;
   tickets: TicketsWithPaginationResponse;
   user?: Maybe<User>;
   userLabs: Array<UserLab>;
@@ -379,6 +380,10 @@ export type QueryProductsArgs = {
 export type QuerySearchOrderArgs = {
   search: Scalars['String']['input'];
   status?: InputMaybe<OrderStatus>;
+};
+
+export type QueryTicketArgs = {
+  ticketId: Scalars['Float']['input'];
 };
 
 export type QueryTicketsArgs = {
@@ -460,7 +465,9 @@ export type User = {
   email: Scalars['String']['output'];
   fullName: Scalars['String']['output'];
   id: Scalars['ID']['output'];
+  numberOfTicket: Scalars['Float']['output'];
   phone?: Maybe<Scalars['String']['output']>;
+  rating: Scalars['Float']['output'];
   role: Role;
   status: UserStatus;
   updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;

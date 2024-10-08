@@ -11,7 +11,7 @@ import { Separator } from '~components/ui/separator';
 import { Text } from '~components/ui/text';
 import constants from '~constants';
 import { OrderStatus, SearchOrderQuery } from '~graphql/graphql';
-import { useRepayOrder } from '~hooks';
+import { useReceivedOrder, useRepayOrder } from '~hooks';
 import { MainStackParamList } from '~types/navigation.type';
 import { getOrderStatusLabel } from '~utils/getOrderItemText';
 
@@ -26,9 +26,7 @@ const OrderItem = ({ order }: OrderItemProps) => {
   const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
   const firstOrderItem = useMemo(() => order.orderItems[0], [order]);
   const { onRepayOrder } = useRepayOrder();
-  // const { mutate: receivedOrderMutate } = useMutation({
-  //   mutationFn: (orderId: number) => execute(ReceivedOrderMutation, { orderId }),
-  // });
+  const { onReceivedOrder } = useReceivedOrder();
 
   const handleNavigateToOrderDetail = () => {
     navigation.navigate('OrderDetailScreen', order);
@@ -40,7 +38,8 @@ const OrderItem = ({ order }: OrderItemProps) => {
   };
 
   const handleReceiveOrder = () => {
-    console.log('handleReceiveOrder');
+    if (!order.id) return;
+    onReceivedOrder(+order.id);
   };
 
   const handleBuyOrderAgain = () => {
@@ -52,12 +51,14 @@ const OrderItem = ({ order }: OrderItemProps) => {
       case OrderStatus.Unpaid:
         return handleRepayOrder();
       case OrderStatus.Paid:
-        return;
       case OrderStatus.Delivering:
-        return handleReceiveOrder();
+        return;
       case OrderStatus.Delivered:
+        return handleReceiveOrder();
+      case OrderStatus.Received:
         return navigation.navigate('FeedbackProductScreen', { order });
       case OrderStatus.Rated:
+      case OrderStatus.Unrated:
         return;
       default:
         return 'Unknown Status';

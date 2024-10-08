@@ -130,7 +130,6 @@ type Order {
   createdAt: DateTimeISO!
   fullName: String!
   id: ID!
-  isAllowRating: Boolean!
   orderItems: [OrderItem!]!
   payment: OrderPaymentEmbeddable!
   phone: String!
@@ -166,6 +165,7 @@ enum OrderStatus {
   RATED
   RECEIVED
   UNPAID
+  UNRATED
 }
 
 enum PaymentProvider {
@@ -245,6 +245,7 @@ type Query {
     sort: String! = "id"
   ): ProductsWithPaginationResponse!
   searchOrder(search: String!, status: OrderStatus): [Order!]!
+  ticket(ticketId: Float!): Ticket!
   tickets(
     currentItem: Int! = 9
     currentPage: Int! = 1
@@ -319,7 +320,9 @@ type User {
   email: String!
   fullName: String!
   id: ID!
+  numberOfTicket: Float!
   phone: String
+  rating: Float!
   role: Role!
   status: UserStatus!
   updatedAt: DateTimeISO
