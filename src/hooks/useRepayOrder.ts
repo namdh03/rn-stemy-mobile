@@ -23,6 +23,7 @@ const useRepayOrder = () => {
       onPressButton: () =>
         repayOrderMutate(orderId, {
           onSuccess: async (data) => {
+            Dialog.hide();
             await WebBrowser.openAuthSessionAsync(data.data.repayOrder);
           },
           onError: (errors) => {
@@ -34,7 +35,6 @@ const useRepayOrder = () => {
             }
             showDialogError();
           },
-          onSettled: () => Dialog.hide(),
         }),
     });
   };
