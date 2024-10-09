@@ -15,7 +15,6 @@ import { Minus, Plus } from '~components/icons';
 import { Checkbox } from '~components/ui/checkbox';
 import { Text } from '~components/ui/text';
 import constants from '~constants';
-import { GET_CART_COUNT_QUERY_KEY } from '~constants/cart-query-key';
 import execute from '~graphql/execute';
 import { GetCartQuery } from '~graphql/graphql';
 import { useDebounce } from '~hooks';
@@ -91,7 +90,7 @@ const CartItem = memo(({ item }: CartItemProps) => {
     swipeableRowRef.current?.close();
     deleteCartItem(Number(item.id), {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: [GET_CART_COUNT_QUERY_KEY] });
+        queryClient.invalidateQueries({ queryKey: [constants.CART_QUERY_KEY.GET_CART_COUNT_QUERY_KEY] });
         removeCartItem(item.id);
       },
       onError: (errors) => {
@@ -217,7 +216,7 @@ const CartItem = memo(({ item }: CartItemProps) => {
                 </Pressable>
               </View>
 
-              <Text className='font-inter-extraBold text-left text-foreground text-[14px] break-words flex-shrink pr-[24px]'>
+              <Text className='font-inter-extraBold w-full text-right text-foreground text-[14px] break-words flex-shrink pr-[24px]'>
                 {(item.product.price * item.quantity).toLocaleString()} ₫
               </Text>
             </View>

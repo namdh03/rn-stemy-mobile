@@ -11,7 +11,7 @@ import { Separator } from '~components/ui/separator';
 import { Text } from '~components/ui/text';
 import constants from '~constants';
 import { OrderStatus, SearchOrderQuery } from '~graphql/graphql';
-import { useRepayOrder } from '~hooks';
+import { useReceivedOrder, useReOrder, useRepayOrder } from '~hooks';
 import { MainStackParamList } from '~types/navigation.type';
 import { getOrderStatusLabel } from '~utils/getOrderItemText';
 
@@ -26,9 +26,8 @@ const OrderItem = ({ order }: OrderItemProps) => {
   const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
   const firstOrderItem = useMemo(() => order.orderItems[0], [order]);
   const { onRepayOrder } = useRepayOrder();
-  // const { mutate: receivedOrderMutate } = useMutation({
-  //   mutationFn: (orderId: number) => execute(ReceivedOrderMutation, { orderId }),
-  // });
+  const { onReceivedOrder } = useReceivedOrder();
+  const { onReOrder } = useReOrder();
 
   const handleNavigateToOrderDetail = () => {
     navigation.navigate('OrderDetailScreen', order);
@@ -40,11 +39,13 @@ const OrderItem = ({ order }: OrderItemProps) => {
   };
 
   const handleReceiveOrder = () => {
-    console.log('handleReceiveOrder');
+    if (!order.id) return;
+    onReceivedOrder(+order.id);
   };
 
   const handleBuyOrderAgain = () => {
-    console.log('handleBuyOrderAgain');
+    if (!order.id) return;
+    onReOrder(+order.id);
   };
 
   const handleButtonActionPress = () => {
@@ -52,13 +53,15 @@ const OrderItem = ({ order }: OrderItemProps) => {
       case OrderStatus.Unpaid:
         return handleRepayOrder();
       case OrderStatus.Paid:
-        return;
       case OrderStatus.Delivering:
-        return handleReceiveOrder();
+        return;
       case OrderStatus.Delivered:
+        return handleReceiveOrder();
+      case OrderStatus.Received:
         return navigation.navigate('FeedbackProductScreen', { order });
       case OrderStatus.Rated:
-        return;
+      case OrderStatus.Unrated:
+        return handleBuyOrderAgain();
       default:
         return 'Unknown Status';
     }
@@ -105,7 +108,7 @@ const OrderItem = ({ order }: OrderItemProps) => {
 
       <Separator className='bg-muted' />
 
-      <Button className='w-full' variant='ghost'>
+      <Button className='w-full' variant='ghost' onPress={handleNavigateToOrderDetail}>
         <RNText className='font-inter-regular text-muted-foreground text-[12px] leading-[20px]'>
           View more product
         </RNText>

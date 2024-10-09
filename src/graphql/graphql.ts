@@ -472,7 +472,7 @@ export type User = {
   email: Scalars['String']['output'];
   fullName: Scalars['String']['output'];
   id: Scalars['ID']['output'];
-  numberOfOpenTicket: Scalars['Float']['output'];
+  numberOfTicket: Scalars['Float']['output'];
   phone?: Maybe<Scalars['String']['output']>;
   rating: Scalars['Float']['output'];
   role: Role;
@@ -718,6 +718,70 @@ export type GetOrderByStatusQuery = {
   }>;
 };
 
+export type GetOrderByToShipQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetOrderByToShipQuery = {
+  __typename?: 'Query';
+  searchOrderByPaid: Array<{
+    __typename?: 'Order';
+    id: string;
+    createdAt: any;
+    updatedAt?: any | null;
+    totalPrice: number;
+    status: OrderStatus;
+    address: string;
+    fullName: string;
+    phone: string;
+    shipTime?: any | null;
+    payment: { __typename?: 'OrderPaymentEmbeddable'; provider: PaymentProvider; time?: any | null };
+    orderItems: Array<{
+      __typename?: 'OrderItem';
+      hasLab: boolean;
+      id: string;
+      labPrice: number;
+      productPrice: number;
+      quantity: number;
+      product: {
+        __typename?: 'Product';
+        id: string;
+        name: string;
+        price: number;
+        images: Array<{ __typename?: 'ProductImage'; url: string }>;
+        lab?: { __typename?: 'ProductLab'; price: number } | null;
+      };
+    }>;
+  }>;
+  searchOrderByDelivering: Array<{
+    __typename?: 'Order';
+    id: string;
+    createdAt: any;
+    updatedAt?: any | null;
+    totalPrice: number;
+    status: OrderStatus;
+    address: string;
+    fullName: string;
+    phone: string;
+    shipTime?: any | null;
+    payment: { __typename?: 'OrderPaymentEmbeddable'; provider: PaymentProvider; time?: any | null };
+    orderItems: Array<{
+      __typename?: 'OrderItem';
+      hasLab: boolean;
+      id: string;
+      labPrice: number;
+      productPrice: number;
+      quantity: number;
+      product: {
+        __typename?: 'Product';
+        id: string;
+        name: string;
+        price: number;
+        images: Array<{ __typename?: 'ProductImage'; url: string }>;
+        lab?: { __typename?: 'ProductLab'; price: number } | null;
+      };
+    }>;
+  }>;
+};
+
 export type GetHistoryOrderQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetHistoryOrderQuery = {
@@ -764,6 +828,28 @@ export type ReceivedOrderMutationVariables = Exact<{
 }>;
 
 export type ReceivedOrderMutation = { __typename?: 'Mutation'; receiveOrder: { __typename?: 'Order'; id: string } };
+
+export type ReOrderMutationVariables = Exact<{
+  orderId: Scalars['Float']['input'];
+}>;
+
+export type ReOrderMutation = {
+  __typename?: 'Mutation';
+  reOrder: Array<{
+    __typename?: 'Cart';
+    id: string;
+    hasLab: boolean;
+    quantity: number;
+    product: {
+      __typename?: 'Product';
+      id: string;
+      name: string;
+      price: number;
+      images: Array<{ __typename?: 'ProductImage'; url: string }>;
+      lab?: { __typename?: 'ProductLab'; price: number } | null;
+    };
+  }>;
+};
 
 export type GetProductQueryVariables = Exact<{
   id: Scalars['Float']['input'];
@@ -1178,6 +1264,76 @@ export const GetOrderByStatusDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<GetOrderByStatusQuery, GetOrderByStatusQueryVariables>;
+export const GetOrderByToShipDocument = new TypedDocumentString(`
+    query GetOrderByToShip {
+  searchOrderByPaid: searchOrder(search: "", status: PAID) {
+    id
+    createdAt
+    updatedAt
+    totalPrice
+    status
+    address
+    fullName
+    phone
+    shipTime
+    payment {
+      provider
+      time
+    }
+    orderItems {
+      hasLab
+      id
+      labPrice
+      productPrice
+      quantity
+      product {
+        id
+        name
+        price
+        images {
+          url
+        }
+        lab {
+          price
+        }
+      }
+    }
+  }
+  searchOrderByDelivering: searchOrder(search: "", status: DELIVERING) {
+    id
+    createdAt
+    updatedAt
+    totalPrice
+    status
+    address
+    fullName
+    phone
+    shipTime
+    payment {
+      provider
+      time
+    }
+    orderItems {
+      hasLab
+      id
+      labPrice
+      productPrice
+      quantity
+      product {
+        id
+        name
+        price
+        images {
+          url
+        }
+        lab {
+          price
+        }
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<GetOrderByToShipQuery, GetOrderByToShipQueryVariables>;
 export const GetHistoryOrderDocument = new TypedDocumentString(`
     query GetHistoryOrder {
   searchOrder(search: "") {
@@ -1227,6 +1383,26 @@ export const ReceivedOrderDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<ReceivedOrderMutation, ReceivedOrderMutationVariables>;
+export const ReOrderDocument = new TypedDocumentString(`
+    mutation ReOrder($orderId: Float!) {
+  reOrder(orderId: $orderId) {
+    id
+    hasLab
+    product {
+      id
+      name
+      price
+      images {
+        url
+      }
+      lab {
+        price
+      }
+    }
+    quantity
+  }
+}
+    `) as unknown as TypedDocumentString<ReOrderMutation, ReOrderMutationVariables>;
 export const GetProductDocument = new TypedDocumentString(`
     query GetProduct($id: Float!) {
   product(id: $id) {

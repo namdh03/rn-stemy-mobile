@@ -1,4 +1,5 @@
 import { Image, View } from 'react-native';
+import { useShallow } from 'zustand/react/shallow';
 
 import images from '~assets/images';
 import Divider from '~components/customs/Divider';
@@ -8,12 +9,24 @@ import { Box, ChevronRight, Pencil, Star, Truck, Wallet } from '~components/icon
 import { Badge } from '~components/ui/badge';
 import { Text } from '~components/ui/text';
 import { OrderStatus } from '~graphql/graphql';
+import { useStore } from '~store';
 import { MeScreenNavigationProps } from '~types/navigation.type';
 
 const MeScreen = ({ navigation }: MeScreenNavigationProps) => {
   const handleNavigateToMyOrders = (orderStatus: OrderStatus) => {
-    navigation.navigate('MyOrdersScreen', { orderStatus });
+    if (orderStatus === OrderStatus.Paid || orderStatus === OrderStatus.Delivering) {
+      navigation.navigate('MyOrdersScreen', { orderStatus: [OrderStatus.Paid, OrderStatus.Delivering] });
+    } else {
+      navigation.navigate('MyOrdersScreen', { orderStatus: [orderStatus] });
+    }
   };
+
+  const { user } = useStore(
+    useShallow((state) => ({
+      user: state.user,
+    })),
+  );
+
   return (
     <View className='flex items-center justify-center'>
       {/* Avatar */}
@@ -25,7 +38,7 @@ const MeScreen = ({ navigation }: MeScreenNavigationProps) => {
           </Pressable>
         </View>
         <Text className='font-inter-black leading-normal tracking-[0.08px] text-center color-[#1F2024] pt-[16px]'>
-          Lucas Scott
+          {user?.fullName}
         </Text>
       </View>
 
@@ -68,7 +81,7 @@ const MeScreen = ({ navigation }: MeScreenNavigationProps) => {
             </View>
           </Pressable>
 
-          <Pressable onPress={() => handleNavigateToMyOrders(OrderStatus.Delivering)}>
+          <Pressable onPress={() => handleNavigateToMyOrders(OrderStatus.Delivered)}>
             <View className='flex-col justify-center items-center py-[4px]'>
               <Truck size={26} className='color-accent-foreground mb-[3px]' />
               <Text className='font-inter-regular text-[#000] text-[12px]'>To Receive</Text>
@@ -81,7 +94,7 @@ const MeScreen = ({ navigation }: MeScreenNavigationProps) => {
             </View>
           </Pressable>
 
-          <Pressable onPress={() => handleNavigateToMyOrders(OrderStatus.Delivered)}>
+          <Pressable onPress={() => handleNavigateToMyOrders(OrderStatus.Received)}>
             <View className='flex-col justify-center items-center py-[4px]'>
               <View className='border-2 w-[27px] h-[27px] border-black rounded-full flex items-center justify-center p-[2px]'>
                 <Star size={18} className='color-accent-foreground mb-[3px]' />
@@ -108,15 +121,19 @@ const MeScreen = ({ navigation }: MeScreenNavigationProps) => {
           </View>
         </Pressable>
         <Divider />
-        <View className='flex-row items-center justify-between self-stretch p-[16px] w-full gap-[16px]'>
-          <Text className='font-inter-regular text-[14px] text-[#1F2024] leading-[20px]'>My tickets</Text>
-          <ChevronRight size={18} className='color-[#8F9098]' />
-        </View>
+        <Pressable>
+          <View className='flex-row items-center justify-between self-stretch p-[16px] w-full gap-[16px]'>
+            <Text className='font-inter-regular text-[14px] text-[#1F2024] leading-[20px]'>My tickets</Text>
+            <ChevronRight size={18} className='color-[#8F9098]' />
+          </View>
+        </Pressable>
         <Divider />
-        <View className='flex-row items-center justify-between self-stretch p-[16px] w-full gap-[16px]'>
-          <Text className='font-inter-regular text-[14px] text-[#1F2024] leading-[20px]'>Setting</Text>
-          <ChevronRight size={18} className='color-[#8F9098]' />
-        </View>
+        <Pressable onPress={() => navigation.navigate('SettingsScreen')}>
+          <View className='flex-row items-center justify-between self-stretch p-[16px] w-full gap-[16px]'>
+            <Text className='font-inter-regular text-[14px] text-[#1F2024] leading-[20px]'>Setting</Text>
+            <ChevronRight size={18} className='color-[#8F9098]' />
+          </View>
+        </Pressable>
         <Divider />
       </View>
 

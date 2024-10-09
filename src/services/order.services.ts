@@ -76,6 +76,77 @@ export const GetOrderByStatusQuery = graphql(`
   }
 `);
 
+export const GetOrderByToShipQuery = graphql(`
+  query GetOrderByToShip {
+    searchOrderByPaid: searchOrder(search: "", status: PAID) {
+      id
+      createdAt
+      updatedAt
+      totalPrice
+      status
+      address
+      fullName
+      phone
+      shipTime
+      payment {
+        provider
+        time
+      }
+      orderItems {
+        hasLab
+        id
+        labPrice
+        productPrice
+        quantity
+        product {
+          id
+          name
+          price
+          images {
+            url
+          }
+          lab {
+            price
+          }
+        }
+      }
+    }
+    searchOrderByDelivering: searchOrder(search: "", status: DELIVERING) {
+      id
+      createdAt
+      updatedAt
+      totalPrice
+      status
+      address
+      fullName
+      phone
+      shipTime
+      payment {
+        provider
+        time
+      }
+      orderItems {
+        hasLab
+        id
+        labPrice
+        productPrice
+        quantity
+        product {
+          id
+          name
+          price
+          images {
+            url
+          }
+          lab {
+            price
+          }
+        }
+      }
+    }
+  }
+`);
+
 export const GetHistoryOrderQuery = graphql(`
   query GetHistoryOrder {
     searchOrder(search: "") {
@@ -124,6 +195,27 @@ export const ReceivedOrderMutation = graphql(`
   mutation ReceivedOrder($orderId: Float!) {
     receiveOrder(orderId: $orderId) {
       id
+    }
+  }
+`);
+
+export const ReOrderMutation = graphql(`
+  mutation ReOrder($orderId: Float!) {
+    reOrder(orderId: $orderId) {
+      id
+      hasLab
+      product {
+        id
+        name
+        price
+        images {
+          url
+        }
+        lab {
+          price
+        }
+      }
+      quantity
     }
   }
 `);

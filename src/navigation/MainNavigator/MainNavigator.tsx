@@ -20,6 +20,7 @@ import OrderProgressScreen from '~screens/OrderProgressScreen';
 import OrderSuccessScreen from '~screens/OrderSuccessScreen';
 import SearchOrdersScreen from '~screens/SearchOrdersScreen';
 import SearchProductScreen from '~screens/SearchProductScreen';
+import SettingsScreen from '~screens/SettingsScreen';
 import {
   CartScreenNavigationProps,
   CheckoutScreenNavigationProps,
@@ -32,6 +33,7 @@ import {
   OrderHistoryScreenNavigationProps,
   SearchOrdersScreenNavigationProps,
   SearchProductScreenNavigationProps,
+  SettingsScreenNavigationProps,
 } from '~types/navigation.type';
 
 const MainStack = createNativeStackNavigator<MainStackParamList>();
@@ -229,12 +231,28 @@ const MainNavigator = () => (
         ),
       })}
     />
-
     <MainStack.Screen
       name='MyPurchasesScreen'
       component={MyPurchasesScreen}
       options={({ navigation }: MyPurchasesScreenNavigationProps) => ({
         title: 'My Purchases',
+        headerTitleAlign: 'center',
+        headerTitleStyle: {
+          fontFamily: 'Inter_18pt-Medium',
+          fontSize: 18,
+        },
+        headerLeft: () => (
+          <Pressable onPress={() => navigation.goBack()}>
+            <ChevronLeft className='text-foreground' size={30} />
+          </Pressable>
+        ),
+      })}
+    />
+    <MainStack.Screen
+      name='SettingsScreen'
+      component={SettingsScreen}
+      options={({ navigation }: SettingsScreenNavigationProps) => ({
+        title: 'Settings',
         headerTitleAlign: 'center',
         headerTitleStyle: {
           fontFamily: 'Inter_18pt-Medium',

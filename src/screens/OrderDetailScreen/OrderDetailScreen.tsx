@@ -10,7 +10,7 @@ import { CircleDollarSign } from '~components/icons';
 import { Text } from '~components/ui/text';
 import constants from '~constants';
 import { GetOrderByStatusQuery, OrderStatus } from '~graphql/graphql';
-import { useRepayOrder } from '~hooks';
+import { useReceivedOrder, useRepayOrder } from '~hooks';
 import CheckoutItem from '~screens/CheckoutScreen/components/CheckoutItem';
 import { OrderDetailScreenNavigationProps } from '~types/navigation.type';
 
@@ -19,6 +19,7 @@ import OrderUserInfo from './components/OrderUserInfo';
 
 const OrderDetailScreen = ({ route, navigation }: OrderDetailScreenNavigationProps) => {
   const { onRepayOrder } = useRepayOrder();
+  const { onReceivedOrder } = useReceivedOrder();
 
   const renderOrderItem = useCallback(
     ({ item }: { item: GetOrderByStatusQuery['searchOrder'][number]['orderItems'][number] }) => (
@@ -46,7 +47,8 @@ const OrderDetailScreen = ({ route, navigation }: OrderDetailScreenNavigationPro
   };
 
   const handleReceiveOrder = () => {
-    console.log('handleReceiveOrder');
+    if (!route.params.id) return;
+    onReceivedOrder(+route.params.id, true);
   };
 
   const handleButtonActionPress = () => {
@@ -54,13 +56,15 @@ const OrderDetailScreen = ({ route, navigation }: OrderDetailScreenNavigationPro
       case OrderStatus.Unpaid:
         return handleRepayOrder();
       case OrderStatus.Paid:
-        return;
       case OrderStatus.Delivering:
-        return handleReceiveOrder();
+        return;
       case OrderStatus.Delivered:
+        return handleReceiveOrder();
+      case OrderStatus.Received:
         return navigation.navigate('FeedbackProductScreen', { order: route.params });
       case OrderStatus.Rated:
-        return handleRepayOrder();
+      case OrderStatus.Unrated:
+        return;
       default:
         return 'Unknown Status';
     }
