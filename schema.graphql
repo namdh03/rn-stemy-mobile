@@ -323,7 +323,7 @@ type User {
   email: String!
   fullName: String!
   id: ID!
-  numberOfTicket: Float!
+  numberOfOpenTicket: Float!
   phone: String
   rating: Float!
   role: Role!

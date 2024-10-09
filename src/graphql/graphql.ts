@@ -472,7 +472,7 @@ export type User = {
   email: Scalars['String']['output'];
   fullName: Scalars['String']['output'];
   id: Scalars['ID']['output'];
-  numberOfTicket: Scalars['Float']['output'];
+  numberOfOpenTicket: Scalars['Float']['output'];
   phone?: Maybe<Scalars['String']['output']>;
   rating: Scalars['Float']['output'];
   role: Role;

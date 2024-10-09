@@ -2,16 +2,31 @@ import { Text, View } from 'react-native';
 import { useShallow } from 'zustand/react/shallow';
 
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { useQueryClient } from '@tanstack/react-query';
 
 import { Button } from '~components/ui/button';
-import { useStore } from '~store';
+import { useCartStore, useStore } from '~store';
 import { removeAccessToken } from '~utils/token-storage';
 
 const SettingsScreen = () => {
-  const unAuthenticate = useStore(useShallow((state) => state.unAuthenticate));
+  const queryClient = useQueryClient();
+  const { unAuthenticate, clearFilterStoring } = useStore(
+    useShallow((state) => ({
+      unAuthenticate: state.unAuthenticate,
+      clearFilterStoring: state.clearFilterStoring,
+    })),
+  );
+  const { resetCartStore } = useCartStore(
+    useShallow((state) => ({
+      resetCartStore: state.reset,
+    })),
+  );
 
   const logout = async () => {
+    queryClient.clear();
     unAuthenticate();
+    clearFilterStoring();
+    resetCartStore();
     removeAccessToken();
     await GoogleSignin.signOut();
   };

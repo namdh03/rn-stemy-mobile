@@ -1,4 +1,5 @@
 import AUTH_ROUTES from './auth-routes';
+import * as CART from './cart';
 import * as CART_QUERY_KEY from './cart-query-key';
 import * as CATEGORY_QUERY_KEY from './category-query-key';
 import * as EXPO_IMAGE from './expo-image';
@@ -16,6 +17,7 @@ import * as USER_QUERY_KEY from './user-query-key';
 
 const constants = {
   AUTH_ROUTES,
+  CART,
   CART_QUERY_KEY,
   CATEGORY_QUERY_KEY,
   EXPO_IMAGE,

@@ -63,11 +63,12 @@ const TabFilterContent = ({ form }: TabFilterContentProps) => {
   };
 
   const handleRatingPress = (ratingValue: number) => {
+    if (ratingValue === rating) return form.setValue('rating', 0, { shouldValidate: true });
     form.setValue('rating', ratingValue, { shouldValidate: true });
   };
 
   return (
-    <View className='gap-[16px]'>
+    <View className='gap-[16px] pb-[50px]'>
       {/* Price Slider */}
       <View className='px-[33px]'>
         <Text className='font-inter-regular text-foreground text-[14px] leading-[20px]'>Price</Text>
@@ -143,6 +144,7 @@ const TabFilterContent = ({ form }: TabFilterContentProps) => {
                               return (
                                 <FormCheckbox
                                   {...field}
+                                  iconSize={12}
                                   value={field.value?.includes(+category.id)}
                                   onChange={(checked) => {
                                     return checked

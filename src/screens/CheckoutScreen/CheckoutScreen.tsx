@@ -56,6 +56,10 @@ const CheckoutScreen = ({ navigation }: CheckoutScreenNavigationProps) => {
       });
     }
 
+    if (!checkoutData.paymentProvider) {
+      return handleOpenPaymentMethod();
+    }
+
     if (checkoutData) {
       createOrderMutate(
         {
@@ -75,10 +79,10 @@ const CheckoutScreen = ({ navigation }: CheckoutScreenNavigationProps) => {
             if (isErrors(errors)) {
               const error = errors.find((error) => error.path.includes('createOrder'));
               if (error?.message) {
-                return showDialogError({ textBody: error.message });
+                return showDialogError({ textBody: error.message, onHide: () => navigation.navigate('CartScreen') });
               }
             }
-            showDialogError();
+            showDialogError({ onHide: () => navigation.navigate('CartScreen') });
           },
         },
       );
@@ -92,12 +96,12 @@ const CheckoutScreen = ({ navigation }: CheckoutScreenNavigationProps) => {
       <FlatList
         data={Object.values(selectedCart || {})}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <CheckoutItem item={item} />}
-        ItemSeparatorComponent={() => <Separator className='bg-muted my-[14px]' />}
+        renderItem={({ item }) => <CheckoutItem item={item} isPressable={false} />}
+        ItemSeparatorComponent={() => <Separator className='bg-muted' />}
         showsVerticalScrollIndicator={false}
         automaticallyAdjustContentInsets={false}
         className='flex-1'
-        contentContainerStyle={{ paddingBottom: 220 }}
+        contentContainerStyle={{ marginTop: 6, paddingBottom: 220 }}
       />
 
       <View className='absolute left-0 right-0 bottom-0 bg-card'>
@@ -106,7 +110,14 @@ const CheckoutScreen = ({ navigation }: CheckoutScreenNavigationProps) => {
         <View className='px-[24px] py-[12px]'>
           <View className='flex-row items-center'>
             <CircleDollarSign className='text-[#EF4444]' size={24} strokeWidth={1.5} />
-            <Text className='font-inter-medium text-foreground text-[16px] ml-[10px]'>Payment Option</Text>
+            <View className='gap-[4px] ml-[10px]'>
+              <Text className='font-inter-medium text-foreground text-[14px]'>Payment Option</Text>
+              {checkoutData.paymentProvider && (
+                <Text className='font-inter-regular text-muted-foreground text-[12px] leading-[16px] tracking-[0.12px]'>
+                  {checkoutData.paymentProvider}
+                </Text>
+              )}
+            </View>
             <Button size='sm' className='ml-auto' variant='ghost' onPress={handleOpenPaymentMethod}>
               <RNText className='font-inter-medium text-primary text-[16px]'>Choose </RNText>
             </Button>
@@ -118,7 +129,7 @@ const CheckoutScreen = ({ navigation }: CheckoutScreenNavigationProps) => {
         <View className='px-[24px] pb-[24px] mt-[14px]'>
           <View className='flex-row items-center justify-between px-[12px] py-[8px]'>
             <Text className='font-inter-regular text-muted-foreground text-[14px] leading-[20px]'>
-              Order payment ({Object.values(selectedCart || {}).length} item
+              Order ({Object.values(selectedCart || {}).length} item
               {Object.values(selectedCart || {}).length > 1 ? 's' : ''})
             </Text>
             <Text className='font-inter-extraBold text-foreground text-[14px]'>{total.toLocaleString()} ₫</Text>

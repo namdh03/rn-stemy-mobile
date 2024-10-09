@@ -7,12 +7,14 @@ interface PressableProps {
   children: ReactNode;
   className?: string;
   disabled?: boolean;
-  onPress?: () => void;
+  pointerEvents?: 'none' | 'box-none' | 'box-only' | 'auto' | undefined;
+  onPress?: (() => void) | null;
 }
 
-const Pressable = ({ children, className, disabled, onPress }: PressableProps) => {
+const Pressable = ({ children, className, disabled, pointerEvents, onPress }: PressableProps) => {
   return (
     <RNPressable
+      pointerEvents={pointerEvents}
       onPress={onPress}
       disabled={disabled}
       hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}

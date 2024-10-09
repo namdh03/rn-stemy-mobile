@@ -1,3 +1,5 @@
+import { Dialog } from 'react-native-alert-notification';
+
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -19,27 +21,29 @@ const useReceivedOrder = () => {
   });
 
   const onReceivedOrder = (orderId: number, isGoBack: boolean = false) => {
-    receivedOrderMutate(orderId, {
-      onSuccess: () => {
-        showDialogSuccess({
-          title: constants.MESSAGES.ORDER_MESSAGES.RECEIVED_ORDER_TITLE,
-          textBody: constants.MESSAGES.ORDER_MESSAGES.RECEIVED_ORDER_TEXT_BODY,
-          onHide: () => {
+    showDialogSuccess({
+      title: constants.MESSAGES.ORDER_MESSAGES.RECEIVED_ORDER_TITLE,
+      textBody: constants.MESSAGES.ORDER_MESSAGES.RECEIVED_ORDER_TEXT_BODY,
+      button: constants.MESSAGES.ORDER_MESSAGES.RECEIVED_ORDER_BUTTON,
+      onPressButton: () => {
+        Dialog.hide();
+        receivedOrderMutate(orderId, {
+          onSuccess: () => {
             queryClient.invalidateQueries({
               queryKey: [constants.ORDER_QUERY_KEY.GET_ORDER_BY_STATUS_QUERY_KEY, OrderStatus.Delivered],
             });
             if (isGoBack) navigation.goBack();
           },
+          onError: (errors) => {
+            if (isErrors(errors)) {
+              const error = errors.find((error) => error.path.includes('receiveOrder'));
+              if (error?.message) {
+                return showDialogError({ textBody: error.message });
+              }
+            }
+            showDialogError();
+          },
         });
-      },
-      onError: (errors) => {
-        if (isErrors(errors)) {
-          const error = errors.find((error) => error.path.includes('receiveOrder'));
-          if (error?.message) {
-            return showDialogError({ textBody: error.message });
-          }
-        }
-        showDialogError();
       },
     });
   };

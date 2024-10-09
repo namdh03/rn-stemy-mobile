@@ -30,7 +30,7 @@ const MeScreen = ({ navigation }: MeScreenNavigationProps) => {
   return (
     <View className='flex items-center justify-center'>
       {/* Avatar */}
-      <View className='flex flex-col justify-center items-center w-[374px] px-[140px] py-[8px]'>
+      <View className='flex flex-col justify-center items-center px-[140px] py-[8px]'>
         <View className='relative'>
           <Image source={images.avatar} className='w-[80px] h-[80px] rounded-[32px]' />
           <Pressable className='absolute flex justify-center items-center bottom-0 right-0 w-[24px] h-[24px] p-[7px] rounded-[40px] bg-[#006FFD]'>
@@ -121,7 +121,7 @@ const MeScreen = ({ navigation }: MeScreenNavigationProps) => {
           </View>
         </Pressable>
         <Divider />
-        <Pressable>
+        <Pressable onPress={() => navigation.navigate('MyTicketsScreen')}>
           <View className='flex-row items-center justify-between self-stretch p-[16px] w-full gap-[16px]'>
             <Text className='font-inter-regular text-[14px] text-[#1F2024] leading-[20px]'>My tickets</Text>
             <ChevronRight size={18} className='color-[#8F9098]' />

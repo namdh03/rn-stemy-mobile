@@ -40,8 +40,18 @@ const OrderErrorScreen = ({ navigation }: OrderErrorScreenNavigationProps) => {
           >
             <RNText className='text-foreground text-[14px]'>Home</RNText>
           </Button>
-          <Button className='w-1/2' onPress={() => navigation.replace('MyPurchasesScreen')}>
-            <RNText className='text-muted text-[14px]'>My Purchase</RNText>
+          <Button
+            className='w-1/2'
+            onPress={() =>
+              navigation.replace('BottomTabStack', {
+                screen: 'MeStack',
+                params: {
+                  screen: 'MeScreen',
+                },
+              })
+            }
+          >
+            <RNText className='text-muted text-[14px]'>My Orders</RNText>
           </Button>
         </View>
       </Card>

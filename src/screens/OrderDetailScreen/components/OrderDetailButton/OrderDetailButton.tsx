@@ -11,7 +11,10 @@ interface OrderDetailButtonProps {
 }
 
 const OrderDetailButton = ({ orderStatus, onPress }: OrderDetailButtonProps) => {
-  const inactive = useMemo(() => orderStatus === OrderStatus.Paid, [orderStatus]);
+  const inactive = useMemo(
+    () => orderStatus === OrderStatus.Paid || orderStatus === OrderStatus.Delivering,
+    [orderStatus],
+  );
 
   return (
     <Button className={inactive ? 'bg-border' : ''} size='lg' onPress={onPress} disabled={inactive}>

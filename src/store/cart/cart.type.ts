@@ -5,20 +5,19 @@ export type SelectedCart = {
 };
 
 export type CartState = {
-  isActive: boolean;
   cart: GetCartQuery['carts'];
-  selectedCart?: SelectedCart;
+  selectedCart: SelectedCart;
   total: number;
 };
 
 export type CartActions = {
-  toggleActive: () => void;
   setCart: (carts: GetCartQuery['carts']) => void;
   setSelectedCart: (cartItem: GetCartQuery['carts'][number]) => void;
   setMultipleSelectedCart: (cartItems: GetCartQuery['carts']) => void;
   clearOrderedCart: () => void;
   updateCartItemQuantity: (id: string, quantity: number) => void;
   removeCartItem: (id: string) => void;
+  syncWithServer: (serverCart: GetCartQuery['carts']) => void;
   reset: () => void;
 };
 

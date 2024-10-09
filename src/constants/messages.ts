@@ -31,7 +31,8 @@ export const ORDER_MESSAGES = {
   REPAY_ORDER_TITLE: 'Reorder Confirmation',
   REPAY_ORDER_TEXT_BODY: 'Your previous payment failed. Do you want to reorder and try paying again?',
   REPAY_ORDER_BUTTON: 'Reorder Now',
-  RECEIVED_ORDER_TITLE: 'Order Received',
+  RECEIVED_ORDER_TITLE: 'Confirm Order Received',
   RECEIVED_ORDER_TEXT_BODY:
-    'You have successfully confirmed the receipt of your STEM kit. We hope you enjoy your hands-on learning experience!',
+    'By clicking Confirm, you acknowledge that you have successfully received the order, and the lab instructions will be activated in your system.',
+  RECEIVED_ORDER_BUTTON: 'Confirm',
 };

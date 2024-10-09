@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Keyboard, Pressable, RefreshControl, ScrollView, View } from 'react-native';
+import { Keyboard, Pressable, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import { useShallow } from 'zustand/react/shallow';
 
 import BottomSheet from '@gorhom/bottom-sheet';
@@ -128,23 +128,26 @@ const ProductDetailScreen = ({ route }: ProductDetailScreenNavigationProps) => {
             <Feedbacks />
           </View>
 
-          <View className={`rounded-t-[10px] ${isDarkColorScheme ? 'bg-secondary' : 'bg-destructive-foreground'}`}>
-            <ProductList hiddenProductId={route.params.id} title='Featured Product' data={data?.products.items || []} />
-          </View>
-
           <View
-            className={`flex-row gap-[20px] px-[25px] pt-[12px] pb-[25px] ${isDarkColorScheme ? 'bg-secondary' : 'bg-destructive-foreground'}`}
+            className={`pb-[100px] rounded-t-[10px] ${isDarkColorScheme ? 'bg-secondary' : 'bg-destructive-foreground'}`}
           >
-            <Button className='flex-1' size='lg' variant='destructive'>
-              <Text className='font-inter-medium text-white leading-[20px]'>Buy Now</Text>
-            </Button>
-
-            <Button className='flex-1' size='lg' onPress={handleOpenAddToCart}>
-              <Text className='font-inter-medium text-white leading-[20px]'>Add to Cart</Text>
-            </Button>
+            <ProductList hiddenProductId={route.params.id} title='Featured Product' data={data?.products.items || []} />
           </View>
         </Pressable>
       </ScrollView>
+
+      <View
+        style={styles.shadow}
+        className={`absolute bottom-0 left-0 right-0 flex-row gap-[20px] px-[25px] py-[12px] pb-[16px] ${isDarkColorScheme ? 'bg-secondary' : 'bg-destructive-foreground'}`}
+      >
+        <Button className='flex-1' size='lg' variant='destructive'>
+          <Text className='font-inter-medium text-white leading-[20px]'>Buy Now</Text>
+        </Button>
+
+        <Button className='flex-1' size='lg' onPress={handleOpenAddToCart}>
+          <Text className='font-inter-medium text-white leading-[20px]'>Add to Cart</Text>
+        </Button>
+      </View>
 
       <AddCartBottomSheet
         ref={bottomSheetRef}
@@ -156,5 +159,18 @@ const ProductDetailScreen = ({ route }: ProductDetailScreenNavigationProps) => {
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  shadow: {
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.17,
+    shadowRadius: 3.05,
+    elevation: 4,
+  },
+});
 
 export default ProductDetailScreen;

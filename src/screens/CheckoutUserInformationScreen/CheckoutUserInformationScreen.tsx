@@ -7,11 +7,12 @@ import { useShallow } from 'zustand/react/shallow';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { Form, FormField, FormInput, FormTextarea } from '~components/deprecated-ui/form';
 import { Button } from '~components/ui/button';
 import { Text } from '~components/ui/text';
+import constants from '~constants';
 import execute from '~graphql/execute';
 import { UpdateMeMutationVariables } from '~graphql/graphql';
 import { UpdateMeMutation } from '~services/user.serivces';
@@ -23,6 +24,7 @@ import showDialogError from '~utils/showDialogError';
 import schema, { CheckoutUserInformationFormType } from './schema';
 
 const CheckoutUserInformationScreen = () => {
+  const queryClient = useQueryClient();
   const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
   const { user, fullName, phone, address, setCheckoutData } = useStore(
     useShallow((state) => ({
@@ -50,26 +52,35 @@ const CheckoutUserInformationScreen = () => {
   });
 
   const onSubmit = (values: CheckoutUserInformationFormType) => {
+    if (!user) return;
     setCheckoutData(values);
-    navigation.goBack();
 
     // Update user when empty information
     const updates = {
-      ...(user?.phone ? {} : { fullName: values.phone }),
-      ...(user?.address ? {} : { fullName: values.address }),
+      ...(user.fullName ? {} : { fullName: values.fullName }),
+      ...(user.phone ? {} : { phone: values.phone }),
+      ...(user.address ? {} : { address: values.address }),
     };
+
     if (Object.keys(updates).length > 0) {
       mutate(updates, {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: [constants.USER_QUERY_KEY.GET_ME_QUERY_KEY] });
+          navigation.goBack();
+        },
         onError: (errors) => {
           if (isErrors(errors)) {
-            const error = errors.find((error) => error.path.includes('createOrder'));
+            const error = errors.find((error) => error.path.includes('updateUser'));
             if (error?.message) {
               return showDialogError({ textBody: error.message });
             }
           }
           showDialogError();
+          navigation.goBack();
         },
       });
+    } else {
+      navigation.goBack();
     }
   };
 
@@ -131,7 +142,7 @@ const CheckoutUserInformationScreen = () => {
                 <RNText className='font-inter-medium text-background text-[16px] leading-[20px]'>Loading...</RNText>
               </View>
             ) : (
-              <RNText className='font-inter-medium text-background text-[16px] leading-[20px]'>Place Order</RNText>
+              <RNText className='font-inter-medium text-background text-[16px] leading-[20px]'>Confirm</RNText>
             )}
           </Button>
         </View>
