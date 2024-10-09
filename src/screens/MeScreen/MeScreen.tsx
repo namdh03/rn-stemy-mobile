@@ -2,6 +2,7 @@ import { Image, View } from 'react-native';
 
 import images from '~assets/images';
 import Divider from '~components/customs/Divider';
+import FeedbackProduct from '~components/customs/FeedbackProduct';
 import Pressable from '~components/customs/Pressable';
 import { Box, ChevronRight, Pencil, Star, Truck, Wallet } from '~components/icons';
 import { Badge } from '~components/ui/badge';
@@ -118,6 +119,8 @@ const MeScreen = ({ navigation }: MeScreenNavigationProps) => {
         </View>
         <Divider />
       </View>
+
+      <FeedbackProduct />
     </View>
   );
 };

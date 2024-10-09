@@ -14,6 +14,7 @@ const orderSuccess = require('~assets/images/order-success.png');
 const cartEmpty = require('~assets/images/cart-empty.png');
 const searchOrders = require('~assets/images/search-orders.png');
 const avatar = require('~assets/images/avatar.png');
+const product = require('~assets/images/product.png');
 
 const images = {
   forgotPassword,
@@ -31,6 +32,7 @@ const images = {
   cartEmpty,
   searchOrders,
   avatar,
+  product,
 };
 
 export default images;

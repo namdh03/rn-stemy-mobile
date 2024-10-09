@@ -241,7 +241,6 @@ export type Order = {
   createdAt: Scalars['DateTimeISO']['output'];
   fullName: Scalars['String']['output'];
   id: Scalars['ID']['output'];
-  isAllowRating: Scalars['Boolean']['output'];
   orderItems: Array<OrderItem>;
   payment: OrderPaymentEmbeddable;
   phone: Scalars['String']['output'];
@@ -263,6 +262,7 @@ export type OrderItem = {
   productPrice: Scalars['Int']['output'];
   quantity: Scalars['Int']['output'];
   updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
+  userLab?: Maybe<UserLab>;
 };
 
 export type OrderPaymentEmbeddable = {
@@ -279,6 +279,7 @@ export enum OrderStatus {
   Rated = 'RATED',
   Received = 'RECEIVED',
   Unpaid = 'UNPAID',
+  Unrated = 'UNRATED',
 }
 
 export enum PaymentProvider {
@@ -349,10 +350,13 @@ export type Query = {
   countCart: Scalars['Float']['output'];
   countOrder: CountOrderResponse;
   me: User;
+  myTickets: Array<Ticket>;
   product: Product;
   productCategories: Array<ProductCategory>;
+  productCategory?: Maybe<ProductCategory>;
   products: ProductsWithPaginationResponse;
   searchOrder: Array<Order>;
+  ticket: Ticket;
   tickets: TicketsWithPaginationResponse;
   user?: Maybe<User>;
   userLabs: Array<UserLab>;
@@ -360,6 +364,10 @@ export type Query = {
 };
 
 export type QueryProductArgs = {
+  id: Scalars['Float']['input'];
+};
+
+export type QueryProductCategoryArgs = {
   id: Scalars['Float']['input'];
 };
 
@@ -379,6 +387,10 @@ export type QueryProductsArgs = {
 export type QuerySearchOrderArgs = {
   search: Scalars['String']['input'];
   status?: InputMaybe<OrderStatus>;
+};
+
+export type QueryTicketArgs = {
+  ticketId: Scalars['Float']['input'];
 };
 
 export type QueryTicketsArgs = {
@@ -460,7 +472,9 @@ export type User = {
   email: Scalars['String']['output'];
   fullName: Scalars['String']['output'];
   id: Scalars['ID']['output'];
+  numberOfOpenTicket: Scalars['Float']['output'];
   phone?: Maybe<Scalars['String']['output']>;
+  rating: Scalars['Float']['output'];
   role: Role;
   status: UserStatus;
   updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;

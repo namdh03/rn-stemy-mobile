@@ -130,7 +130,6 @@ type Order {
   createdAt: DateTimeISO!
   fullName: String!
   id: ID!
-  isAllowRating: Boolean!
   orderItems: [OrderItem!]!
   payment: OrderPaymentEmbeddable!
   phone: String!
@@ -151,6 +150,7 @@ type OrderItem {
   productPrice: Int!
   quantity: Int!
   updatedAt: DateTimeISO
+  userLab: UserLab
 }
 
 type OrderPaymentEmbeddable {
@@ -166,6 +166,7 @@ enum OrderStatus {
   RATED
   RECEIVED
   UNPAID
+  UNRATED
 }
 
 enum PaymentProvider {
@@ -230,8 +231,10 @@ type Query {
   countCart: Float!
   countOrder: CountOrderResponse!
   me: User!
+  myTickets: [Ticket!]!
   product(id: Float!): Product!
   productCategories: [ProductCategory!]!
+  productCategory(id: Float!): ProductCategory
   products(
     categoryIds: [Int!] = []
     currentItem: Int! = 9
@@ -245,6 +248,7 @@ type Query {
     sort: String! = "id"
   ): ProductsWithPaginationResponse!
   searchOrder(search: String!, status: OrderStatus): [Order!]!
+  ticket(ticketId: Float!): Ticket!
   tickets(
     currentItem: Int! = 9
     currentPage: Int! = 1
@@ -319,7 +323,9 @@ type User {
   email: String!
   fullName: String!
   id: ID!
+  numberOfOpenTicket: Float!
   phone: String
+  rating: Float!
   role: Role!
   status: UserStatus!
   updatedAt: DateTimeISO
