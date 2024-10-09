@@ -1,14 +1,16 @@
 import { useEffect } from 'react';
 
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import LoadingOverlay from '~components/customs/LoadingOverlay';
+import constants from '~constants';
 import execute from '~graphql/execute';
-import { CheckoutOrderInput } from '~graphql/graphql';
+import { CheckoutOrderInput, OrderStatus } from '~graphql/graphql';
 import { CheckoutOrderMutation } from '~services/checkout.services';
 import { OrderProgressScreenNavigationProps } from '~types/navigation.type';
 
 const OrderProgressScreen = ({ route, navigation }: OrderProgressScreenNavigationProps) => {
+  const queryClient = useQueryClient();
   const { mutate } = useMutation({
     mutationFn: (input: CheckoutOrderInput) => execute(CheckoutOrderMutation, { input }),
   });
@@ -21,6 +23,11 @@ const OrderProgressScreen = ({ route, navigation }: OrderProgressScreenNavigatio
         },
         onError: () => {
           return navigation.replace('OrderErrorScreen');
+        },
+        onSettled: () => {
+          queryClient.invalidateQueries({
+            queryKey: [constants.ORDER_QUERY_KEY.GET_ORDER_BY_STATUS_QUERY_KEY, OrderStatus.Unpaid],
+          });
         },
       });
     } else {

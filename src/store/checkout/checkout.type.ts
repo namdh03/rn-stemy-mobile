@@ -5,7 +5,7 @@ export interface CheckoutData {
   phone?: string | null;
   address?: string | null;
   cartIds: number[];
-  paymentProvider: PaymentProvider;
+  paymentProvider?: PaymentProvider;
 }
 
 export interface CheckoutDataStrict {

@@ -17,10 +17,10 @@ import { useStore } from '~store';
 
 const RootNavigator = () => {
   const { isDarkColorScheme } = useColorScheme();
-  const { isFetching, appIsReady, onLayoutRootView } = useAppIsReady();
+  const { isLoading, appIsReady, onLayoutRootView } = useAppIsReady();
   const isAuthenticated = useStore(useShallow((state) => state.isAuthenticated));
 
-  if (isFetching) {
+  if (isLoading) {
     return <LoadingOverlay message='Loading...' loop />;
   }
 

@@ -1,7 +1,5 @@
 import { StateCreator } from 'zustand';
 
-import { PaymentProvider } from '~graphql/graphql';
-
 import { CheckoutData, CheckoutSlice } from './checkout.type';
 
 const initialCheckoutData: CheckoutData = {
@@ -9,7 +7,7 @@ const initialCheckoutData: CheckoutData = {
   phone: undefined,
   address: undefined,
   cartIds: [],
-  paymentProvider: PaymentProvider.Vnpay,
+  paymentProvider: undefined,
 } as const;
 
 export const createCheckoutSlice: StateCreator<CheckoutSlice, [['zustand/immer', never]], [], CheckoutSlice> = (

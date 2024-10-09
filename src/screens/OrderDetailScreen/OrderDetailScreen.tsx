@@ -7,6 +7,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 
 import Pressable from '~components/customs/Pressable';
 import { CircleDollarSign } from '~components/icons';
+import { Separator } from '~components/ui/separator';
 import { Text } from '~components/ui/text';
 import constants from '~constants';
 import { GetOrderByStatusQuery, OrderStatus } from '~graphql/graphql';
@@ -71,7 +72,7 @@ const OrderDetailScreen = ({ route, navigation }: OrderDetailScreenNavigationPro
   };
 
   const handleCopyOrderId = () => {
-    Clipboard.setString(route.params.id);
+    Clipboard.setString(btoa(btoa(btoa(btoa(route.params.id)))));
     Toast.show({
       type: ALERT_TYPE.SUCCESS,
       title: constants.MESSAGES.SYSTEM_MESSAGES.SUCCESS_TITLE,
@@ -91,6 +92,7 @@ const OrderDetailScreen = ({ route, navigation }: OrderDetailScreenNavigationPro
         data={route.params.orderItems}
         keyExtractor={keyExtractor}
         renderItem={renderOrderItem}
+        ItemSeparatorComponent={() => <Separator className='bg-muted' />}
         showsVerticalScrollIndicator={false}
         automaticallyAdjustContentInsets={false}
         scrollEnabled={false}
@@ -109,7 +111,9 @@ const OrderDetailScreen = ({ route, navigation }: OrderDetailScreenNavigationPro
       <View className='gap-[8px] px-[14px] py-[13px] bg-background'>
         <View className='flex-row items-center w-full'>
           <Text className='font-inter-medium text-foreground text-[12px]'>Order ID</Text>
-          <Text className='font-inter-medium ml-auto text-foreground text-[12px]'>{route.params.id}</Text>
+          <Text className='font-inter-medium ml-auto text-foreground text-[12px]'>
+            {btoa(btoa(btoa(btoa(route.params.id))))}
+          </Text>
           <Pressable className='ml-[6px]' onPress={handleCopyOrderId}>
             <Text className='font-inter-medium text-primary text-[12px]'>COPY</Text>
           </Pressable>
@@ -124,7 +128,7 @@ const OrderDetailScreen = ({ route, navigation }: OrderDetailScreenNavigationPro
           </Text>
         </View>
 
-        {route.params.status === OrderStatus.Paid && (
+        {route.params.payment?.time && (
           <View className='flex-row items-center justify-between w-full'>
             <Text className='font-inter-regular text-muted-foreground text-[12px] leading-[16px] tracking-[0.12px]'>
               Payment Time
@@ -135,7 +139,7 @@ const OrderDetailScreen = ({ route, navigation }: OrderDetailScreenNavigationPro
           </View>
         )}
 
-        {route.params.status === OrderStatus.Delivered && (
+        {route.params?.shipTime && (
           <View className='flex-row items-center justify-between w-full'>
             <Text className='font-inter-regular text-muted-foreground text-[12px] leading-[16px] tracking-[0.12px]'>
               Ship Time
@@ -150,7 +154,7 @@ const OrderDetailScreen = ({ route, navigation }: OrderDetailScreenNavigationPro
       <View className='gap-[24px] mt-[4px] p-[24px] bg-background'>
         <View className='flex-row items-center justify-between px-[12px] w-full'>
           <Text className='font-inter-regular text-muted-foreground text-[14px] leading-[20px]'>
-            Order payment ({route.params.orderItems.length} item
+            Order ({route.params.orderItems.length} item
             {route.params.orderItems.length > 1 ? 's' : ''})
           </Text>
           <Text className='font-inter-extraBold text-foreground text-[14px]'>

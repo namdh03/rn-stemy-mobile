@@ -32,7 +32,8 @@
  *      ├── Order History Screen
  *      ├── Feedback Product Screen
  *      ├── My Purchases Screen
- *      └── Settings Screen
+ *      ├── Settings Screen
+ *      └── My Tickets Screen
  */
 
 // import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
@@ -94,6 +95,7 @@ export type MainStackParamList = {
   FeedbackProductScreen: { order: GetOrderByStatusQuery['searchOrder'][number] };
   MyPurchasesScreen: undefined;
   SettingsScreen: undefined;
+  MyTicketsScreen: undefined;
 };
 
 // Root Stack
@@ -224,5 +226,10 @@ export type MyPurchasesScreenNavigationProps = CompositeScreenProps<
 
 export type SettingsScreenNavigationProps = CompositeScreenProps<
   NativeStackScreenProps<MainStackParamList, 'SettingsScreen'>,
+  NativeStackScreenProps<BottomTabParamList>
+>;
+
+export type MyTicketsScreenNavigationProps = CompositeScreenProps<
+  NativeStackScreenProps<MainStackParamList, 'MyTicketsScreen'>,
   NativeStackScreenProps<BottomTabParamList>
 >;

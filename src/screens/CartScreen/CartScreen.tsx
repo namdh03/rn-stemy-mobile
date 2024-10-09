@@ -30,7 +30,7 @@ const CartScreen = ({ navigation }: CartScreenNavigationProps) => {
     })),
   );
   const setCheckoutData = useStore(useShallow((state) => state.setCheckoutData));
-  const { data, refetch, isFetching } = useQuery({
+  const { data, refetch, isFetching, isFetchedAfterMount } = useQuery({
     queryKey: [constants.CART_QUERY_KEY.GET_CART_QUERY_KEY],
     queryFn: () => execute(GetCartQuery),
     select: (data) => data.data.carts,
@@ -38,12 +38,12 @@ const CartScreen = ({ navigation }: CartScreenNavigationProps) => {
   const { isRefetchingByUser, refetchByUser } = useRefreshByUser(refetch);
 
   useLayoutEffect(() => {
-    if (data) setCart(data);
+    if (data && isFetchedAfterMount) setCart(data);
 
     return () => {
       setCart([]);
     };
-  }, [data]);
+  }, [data, isFetchedAfterMount]);
 
   const handleCheckout = () => {
     navigation.navigate('CheckoutScreen');
