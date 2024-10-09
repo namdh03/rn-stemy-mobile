@@ -262,6 +262,7 @@ export type OrderItem = {
   productPrice: Scalars['Int']['output'];
   quantity: Scalars['Int']['output'];
   updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
+  userLab?: Maybe<UserLab>;
 };
 
 export type OrderPaymentEmbeddable = {
@@ -349,6 +350,7 @@ export type Query = {
   countCart: Scalars['Float']['output'];
   countOrder: CountOrderResponse;
   me: User;
+  myTickets: Array<Ticket>;
   product: Product;
   productCategories: Array<ProductCategory>;
   productCategory?: Maybe<ProductCategory>;

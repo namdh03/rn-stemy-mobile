@@ -150,6 +150,7 @@ type OrderItem {
   productPrice: Int!
   quantity: Int!
   updatedAt: DateTimeISO
+  userLab: UserLab
 }
 
 type OrderPaymentEmbeddable {
@@ -230,6 +231,7 @@ type Query {
   countCart: Float!
   countOrder: CountOrderResponse!
   me: User!
+  myTickets: [Ticket!]!
   product(id: Float!): Product!
   productCategories: [ProductCategory!]!
   productCategory(id: Float!): ProductCategory
