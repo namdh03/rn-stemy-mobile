@@ -5,7 +5,7 @@ import { Button } from '~components/ui/button';
 import { Text } from '~components/ui/text';
 
 interface CateProps {
-  id: number;
+  id: string;
   icon: LucideIcon;
   title: string;
   bgColor: string;
