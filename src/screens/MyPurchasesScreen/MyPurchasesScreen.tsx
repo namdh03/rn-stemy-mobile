@@ -1,53 +1,27 @@
 import React from 'react';
 import { FlatList, View } from 'react-native';
+import { RefreshControl } from 'react-native-gesture-handler';
 
-import { LabComponentProps } from '~components/customs/LabComponent/LabComponent';
+import { useQuery } from '@tanstack/react-query';
+
 import LabList from '~components/customs/LabList';
 import SearchName from '~components/customs/SearchName';
-
-const dummyData = {
-  orderId: '286598516',
-  lab: [
-    {
-      id: '1',
-      imageUrl: 'https://th.bing.com/th/id/OIP.CBFZpMOFqyCjyHOJxouwVAHaE8?rs=1&pid=ImgDetMain',
-      title: 'Lab 1',
-      purchaseDate: new Date(),
-      numberOfTicket: 3,
-      status: true,
-      fileLink: 'https://www.google.com',
-      activeDate: new Date(),
-    },
-    {
-      id: '2',
-      imageUrl: 'https://th.bing.com/th/id/OIP.CBFZpMOFqyCjyHOJxouwVAHaE8?rs=1&pid=ImgDetMain',
-      title: 'Lab 2',
-      purchaseDate: new Date(),
-      numberOfTicket: 0,
-      status: false,
-      activeDate: undefined,
-      fileLink: 'https://www.google.com',
-      message: 'You have 1 ticket left',
-    },
-    {
-      id: '3',
-      imageUrl: 'https://th.bing.com/th/id/OIP.CBFZpMOFqyCjyHOJxouwVAHaE8?rs=1&pid=ImgDetMain',
-      title: 'Lab 3',
-      purchaseDate: new Date(),
-      numberOfTicket: 1,
-      status: true,
-      fileLink: 'https://www.google.com',
-    },
-  ],
-};
-const dummyOrder = [{ ...dummyData }, { ...dummyData }, { ...dummyData }];
-type getLabListQuery = {
-  orderId: string;
-  lab: LabComponentProps[];
-};
+import { GET_USER_LABS_IN_ORDER_QUERY_KEY } from '~constants/lab-query-key';
+import execute from '~graphql/execute';
+import { GetMyPurchasesQuery as GetMyPurchasesQueryType } from '~graphql/graphql';
+import { useRefreshByUser } from '~hooks';
+import { GetMyPurchasesQuery } from '~services/lab.services';
 
 const MyPurchasesScreen = () => {
-  const renderItem = ({ item }: { item: getLabListQuery }) => {
+  const { data, refetch } = useQuery({
+    queryKey: [GET_USER_LABS_IN_ORDER_QUERY_KEY],
+    queryFn: () => execute(GetMyPurchasesQuery, { search: '' }),
+    select: (data) => data.data.searchOrder,
+  });
+
+  const { isRefetchingByUser, refetchByUser } = useRefreshByUser(refetch);
+
+  const renderItem = ({ item }: { item: GetMyPurchasesQueryType['searchOrder'][number] }) => {
     return (
       <View className='w-full'>
         <LabList data={item} />
@@ -67,10 +41,13 @@ const MyPurchasesScreen = () => {
       </View>
 
       <FlatList
-        data={dummyOrder}
+        data={data}
         renderItem={renderItem}
         // keyExtractor={(item) => item.orderId}
         showsHorizontalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} tintColor='#your-primary-color' />
+        }
       />
     </View>
   );

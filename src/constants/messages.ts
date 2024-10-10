@@ -36,3 +36,7 @@ export const ORDER_MESSAGES = {
     'By clicking Confirm, you acknowledge that you have successfully received the order, and the lab instructions will be activated in your system.',
   RECEIVED_ORDER_BUTTON: 'Confirm',
 };
+
+export const LAB_MESSAGES = {
+  INACTIVE_LAB: 'This kit are delivering. Please wait for active it ',
+};
