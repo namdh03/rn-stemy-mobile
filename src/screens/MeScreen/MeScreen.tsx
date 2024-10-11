@@ -1,18 +1,28 @@
 import { Image, View } from 'react-native';
 import { useShallow } from 'zustand/react/shallow';
 
+import { useQuery } from '@tanstack/react-query';
+
 import images from '~assets/images';
 import Divider from '~components/customs/Divider';
-import FeedbackProduct from '~components/customs/FeedbackProduct';
 import Pressable from '~components/customs/Pressable';
 import { Box, ChevronRight, Pencil, Star, Truck, Wallet } from '~components/icons';
 import { Badge } from '~components/ui/badge';
 import { Text } from '~components/ui/text';
+import constants from '~constants';
+import execute from '~graphql/execute';
 import { OrderStatus } from '~graphql/graphql';
+import { GetCountOrderQuery } from '~services/order.services';
 import { useStore } from '~store';
 import { MeScreenNavigationProps } from '~types/navigation.type';
 
 const MeScreen = ({ navigation }: MeScreenNavigationProps) => {
+  const { data } = useQuery({
+    queryKey: [constants.ORDER_QUERY_KEY.GET_COUNT_ORDER_QUERY_KEY],
+    queryFn: () => execute(GetCountOrderQuery),
+    select: (data) => data.data.countOrder,
+  });
+
   const handleNavigateToMyOrders = (orderStatus: OrderStatus) => {
     if (orderStatus === OrderStatus.Paid || orderStatus === OrderStatus.Delivering) {
       navigation.navigate('MyOrdersScreen', { orderStatus: [OrderStatus.Paid, OrderStatus.Delivering] });
@@ -63,7 +73,7 @@ const MeScreen = ({ navigation }: MeScreenNavigationProps) => {
                 pointerEvents='none'
                 className='absolute top-[-6px] right-[-9px] items-center justify-center p-0 w-[20px] h-[20px]'
               >
-                <Text>{9}</Text>
+                <Text>{data?.unpaid || 0}</Text>
               </Badge>
             </View>
           </Pressable>
@@ -76,7 +86,7 @@ const MeScreen = ({ navigation }: MeScreenNavigationProps) => {
                 pointerEvents='none'
                 className='absolute top-[-6px] right-[-7px] items-center justify-center p-0 w-[20px] h-[20px]'
               >
-                <Text>{9}</Text>
+                <Text>{data?.paid || 0}</Text>
               </Badge>
             </View>
           </Pressable>
@@ -89,7 +99,7 @@ const MeScreen = ({ navigation }: MeScreenNavigationProps) => {
                 pointerEvents='none'
                 className='absolute top-[-5px] right-[7px] items-center justify-center p-0 w-[20px] h-[20px]'
               >
-                <Text>{9}</Text>
+                <Text>{data?.delivered || 0}</Text>
               </Badge>
             </View>
           </Pressable>
@@ -104,7 +114,7 @@ const MeScreen = ({ navigation }: MeScreenNavigationProps) => {
                 pointerEvents='none'
                 className='absolute top-[-5px] right-[-10px] items-center justify-center p-0 w-[20px] h-[20px]'
               >
-                <Text>{9}</Text>
+                <Text>{data?.received || 0}</Text>
               </Badge>
             </View>
           </Pressable>
@@ -136,8 +146,6 @@ const MeScreen = ({ navigation }: MeScreenNavigationProps) => {
         </Pressable>
         <Divider />
       </View>
-
-      <FeedbackProduct />
     </View>
   );
 };

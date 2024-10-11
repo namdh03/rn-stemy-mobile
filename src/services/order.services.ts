@@ -147,6 +147,19 @@ export const GetOrderByToShipQuery = graphql(`
   }
 `);
 
+export const GetCountOrderQuery = graphql(`
+  query GetCountOrder {
+    countOrder {
+      delivering
+      delivered
+      paid
+      rated
+      received
+      unpaid
+    }
+  }
+`);
+
 export const GetHistoryOrderQuery = graphql(`
   query GetHistoryOrder {
     searchOrder(search: "") {
