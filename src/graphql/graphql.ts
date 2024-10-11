@@ -284,6 +284,7 @@ export type OrderItem = {
   productPrice: Scalars['Int']['output'];
   quantity: Scalars['Int']['output'];
   tickets: Array<Ticket>;
+  tickets: Array<Ticket>;
   updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
   userLab?: Maybe<UserLab>;
 };
@@ -374,6 +375,7 @@ export type Query = {
   countOrder: CountOrderResponse;
   me: User;
   myTickets: Array<Ticket>;
+  orders: Array<Order>;
   product: Product;
   productCategories: Array<ProductCategory>;
   productCategory?: Maybe<ProductCategory>;
@@ -386,6 +388,12 @@ export type Query = {
   users: Array<User>;
 };
 
+export type QueryOrdersArgs = {
+  currentItem?: Scalars['Int']['input'];
+  currentPage?: Scalars['Int']['input'];
+  order?: SortOrder;
+  sort?: Scalars['String']['input'];
+};
 
 export type QueryProductArgs = {
   id: Scalars['Float']['input'];
@@ -594,7 +602,100 @@ export type CheckoutOrderMutation = { __typename?: 'Mutation', checkoutOrder: bo
 export type GetHomeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetHomeQuery = { __typename?: 'Query', featuredProduct: { __typename?: 'ProductsWithPaginationResponse', items: Array<{ __typename?: 'Product', id: string, name: string, price: number, rating: number, images: Array<{ __typename?: 'ProductImage', url: string }>, feedbacks: Array<{ __typename?: 'Feedback', id: string }> }> }, bestSellers: { __typename?: 'ProductsWithPaginationResponse', items: Array<{ __typename?: 'Product', id: string, name: string, price: number, rating: number, images: Array<{ __typename?: 'ProductImage', url: string }>, feedbacks: Array<{ __typename?: 'Feedback', id: string }> }> }, newArrivals: { __typename?: 'ProductsWithPaginationResponse', items: Array<{ __typename?: 'Product', id: string, name: string, price: number, rating: number, feedbacks: Array<{ __typename?: 'Feedback', id: string }>, images: Array<{ __typename?: 'ProductImage', url: string }> }> }, topRatedProduct: { __typename?: 'ProductsWithPaginationResponse', items: Array<{ __typename?: 'Product', id: string, name: string, price: number, rating: number, images: Array<{ __typename?: 'ProductImage', url: string }>, feedbacks: Array<{ __typename?: 'Feedback', id: string }> }> }, specialOffers: { __typename?: 'ProductsWithPaginationResponse', items: Array<{ __typename?: 'Product', id: string, name: string, price: number, rating: number, feedbacks: Array<{ __typename?: 'Feedback', id: string }>, images: Array<{ __typename?: 'ProductImage', url: string }> }> } };
+export type GetHomeQuery = {
+  __typename?: 'Query';
+  featuredProduct: {
+    __typename?: 'ProductsWithPaginationResponse';
+    items: Array<{
+      __typename?: 'Product';
+      id: string;
+      name: string;
+      price: number;
+      rating: number;
+      images: Array<{ __typename?: 'ProductImage'; url: string }>;
+      feedbacks: Array<{ __typename?: 'Feedback'; id: string }>;
+    }>;
+  };
+  bestSellers: {
+    __typename?: 'ProductsWithPaginationResponse';
+    items: Array<{
+      __typename?: 'Product';
+      id: string;
+      name: string;
+      price: number;
+      rating: number;
+      images: Array<{ __typename?: 'ProductImage'; url: string }>;
+      feedbacks: Array<{ __typename?: 'Feedback'; id: string }>;
+    }>;
+  };
+  newArrivals: {
+    __typename?: 'ProductsWithPaginationResponse';
+    items: Array<{
+      __typename?: 'Product';
+      id: string;
+      name: string;
+      price: number;
+      rating: number;
+      feedbacks: Array<{ __typename?: 'Feedback'; id: string }>;
+      images: Array<{ __typename?: 'ProductImage'; url: string }>;
+    }>;
+  };
+  topRatedProduct: {
+    __typename?: 'ProductsWithPaginationResponse';
+    items: Array<{
+      __typename?: 'Product';
+      id: string;
+      name: string;
+      price: number;
+      rating: number;
+      images: Array<{ __typename?: 'ProductImage'; url: string }>;
+      feedbacks: Array<{ __typename?: 'Feedback'; id: string }>;
+    }>;
+  };
+  specialOffers: {
+    __typename?: 'ProductsWithPaginationResponse';
+    items: Array<{
+      __typename?: 'Product';
+      id: string;
+      name: string;
+      price: number;
+      rating: number;
+      feedbacks: Array<{ __typename?: 'Feedback'; id: string }>;
+      images: Array<{ __typename?: 'ProductImage'; url: string }>;
+    }>;
+  };
+};
+
+export type GetMyPurchasesQueryVariables = Exact<{
+  search: Scalars['String']['input'];
+}>;
+
+export type GetMyPurchasesQuery = {
+  __typename?: 'Query';
+  searchOrder: Array<{
+    __typename?: 'Order';
+    id: string;
+    createdAt: any;
+    orderItems: Array<{
+      __typename?: 'OrderItem';
+      id: string;
+      userLab?: {
+        __typename?: 'UserLab';
+        isActive: boolean;
+        id: string;
+        updatedAt?: any | null;
+        createdAt: any;
+      } | null;
+      product: {
+        __typename?: 'Product';
+        name: string;
+        id: string;
+        images: Array<{ __typename?: 'ProductImage'; url: string }>;
+      };
+      tickets: Array<{ __typename?: 'Ticket'; id: string }>;
+    }>;
+  }>;
+};
 
 export type SearchOrderQueryVariables = Exact<{
   search: Scalars['String']['input'];
@@ -903,6 +1004,33 @@ export const GetHomeDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<GetHomeQuery, GetHomeQueryVariables>;
+export const GetMyPurchasesDocument = new TypedDocumentString(`
+    query GetMyPurchases($search: String!) {
+  searchOrder(search: $search) {
+    orderItems {
+      userLab {
+        isActive
+        id
+        updatedAt
+        createdAt
+      }
+      product {
+        name
+        images {
+          url
+        }
+        id
+      }
+      tickets {
+        id
+      }
+      id
+    }
+    id
+    createdAt
+  }
+}
+    `) as unknown as TypedDocumentString<GetMyPurchasesQuery, GetMyPurchasesQueryVariables>;
 export const SearchOrderDocument = new TypedDocumentString(`
     query SearchOrder($search: String!) {
   searchOrder(search: $search) {
