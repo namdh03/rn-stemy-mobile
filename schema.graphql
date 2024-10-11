@@ -149,6 +149,7 @@ type OrderItem {
   product: Product!
   productPrice: Int!
   quantity: Int!
+  tickets: [Ticket!]!
   updatedAt: DateTimeISO
   userLab: UserLab
 }

@@ -261,6 +261,7 @@ export type OrderItem = {
   product: Product;
   productPrice: Scalars['Int']['output'];
   quantity: Scalars['Int']['output'];
+  tickets: Array<Ticket>;
   updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
   userLab?: Maybe<UserLab>;
 };
