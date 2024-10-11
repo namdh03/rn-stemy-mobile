@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageSourcePropType, Platform, Text, View } from 'react-native';
+import { Alert, ImageSourcePropType, Platform, Text, View } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import { Image } from 'expo-image';
 import { shareAsync } from 'expo-sharing';
@@ -9,7 +9,6 @@ import { Badge } from '~components/ui/badge';
 import { Button } from '~components/ui/button';
 import constants from '~constants';
 import { LAB_MESSAGES } from '~constants/messages';
-import { downloadFilePFD } from '~services/lab.services';
 
 export interface LabComponentProps {
   id: string;
@@ -35,22 +34,20 @@ const LabComponent = ({
     const filename = title;
 
     try {
-      // const response = await downloadFilePFD(fileLink);
-      // // Handle the response, e.g., show a success message, save the file, etc.
-      // console.log('File downloaded successfully', response);
-      const result = await FileSystem.downloadAsync(
+      const result: FileSystem.FileSystemDownloadResult = await FileSystem.downloadAsync(
         `https://stemyb.thanhf.dev/download/${fileLink}`,
         FileSystem.documentDirectory + filename,
       );
       console.log('result', result);
-      save(result.uri, filename, response.headers['content-type']);
+      save(result.uri, filename, result.headers['Content-Type']);
+      Alert.alert('Download Successful', `The file ${filename} has been downloaded successfully.`);
     } catch (error) {
-      // Handle errors, e.g., show an error message
+      Alert.alert('Download Failed', 'An error occurred while downloading the file.');
       console.error('Error downloading the file', error);
     }
   };
 
-  const save = async (uri: string, filename: string, mimetype) => {
+  const save = async (uri: string, filename: string, mimetype: string = 'application/pdf') => {
     if (Platform.OS === 'android') {
       const permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
       if (permissions.granted) {
