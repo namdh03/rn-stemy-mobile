@@ -9,6 +9,7 @@ import { Badge } from '~components/ui/badge';
 import { Button } from '~components/ui/button';
 import constants from '~constants';
 import { LAB_MESSAGES } from '~constants/messages';
+import { getAccessToken } from '~utils/token-storage';
 
 export interface LabComponentProps {
   id: string;
@@ -31,12 +32,19 @@ const LabComponent = ({
   fileLink,
 }: LabComponentProps) => {
   const onDownloadFile = async () => {
-    const filename = title;
-
     try {
+      const token = getAccessToken();
+      if (!token) return;
+
+      const filename = title;
       const result: FileSystem.FileSystemDownloadResult = await FileSystem.downloadAsync(
         `https://stemyb.thanhf.dev/download/${fileLink}`,
         FileSystem.documentDirectory + filename,
+        {
+          headers: {
+            Authorization: token,
+          },
+        },
       );
       console.log('result', result);
       save(result.uri, filename, result.headers['Content-Type']);
