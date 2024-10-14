@@ -33,9 +33,9 @@
  *      ├── Feedback Product Screen
  *      ├── My Purchases Screen
  *      ├── Settings Screen
- *      └── My Tickets Screen
+ *      ├── My Tickets Screen
+ *      └── Search My Purchases Screen
  */
-
 // import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import type { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -96,6 +96,7 @@ export type MainStackParamList = {
   MyPurchasesScreen: undefined;
   SettingsScreen: undefined;
   MyTicketsScreen: undefined;
+  SearchMyPurchasesScreen: undefined;
 };
 
 // Root Stack
@@ -231,5 +232,10 @@ export type SettingsScreenNavigationProps = CompositeScreenProps<
 
 export type MyTicketsScreenNavigationProps = CompositeScreenProps<
   NativeStackScreenProps<MainStackParamList, 'MyTicketsScreen'>,
+  NativeStackScreenProps<BottomTabParamList>
+>;
+
+export type SearchMyPurchasesScreenNavigationProps = CompositeScreenProps<
+  NativeStackScreenProps<MainStackParamList, 'SearchMyPurchasesScreen'>,
   NativeStackScreenProps<BottomTabParamList>
 >;
