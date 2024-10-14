@@ -1035,6 +1035,28 @@ export type GetMyTicketsQuery = {
     __typename?: 'Ticket';
     id: string;
     createdAt: any;
+    title: string;
+    status: TicketStatus;
+    senderComment: string;
+    orderItem: {
+      __typename?: 'OrderItem';
+      id: string;
+      product: { __typename?: 'Product'; name: string; images: Array<{ __typename?: 'ProductImage'; url: string }> };
+    };
+    category: { __typename?: 'TicketCategory'; name: string };
+  }>;
+};
+
+export type GetTicketByIdQueryVariables = Exact<{
+  ticketId: Scalars['Float']['input'];
+}>;
+
+export type GetTicketByIdQuery = {
+  __typename?: 'Query';
+  ticket: {
+    __typename?: 'Ticket';
+    id: string;
+    createdAt: any;
     closedAt?: any | null;
     title: string;
     status: TicketStatus;
@@ -1046,9 +1068,9 @@ export type GetMyTicketsQuery = {
       product: { __typename?: 'Product'; name: string; images: Array<{ __typename?: 'ProductImage'; url: string }> };
     };
     category: { __typename?: 'TicketCategory'; name: string };
-    replyImages: Array<{ __typename?: 'ReplyTicketImage'; url: string }>;
-    images: Array<{ __typename?: 'TicketImage'; url: string }>;
-  }>;
+    replyImages: Array<{ __typename?: 'ReplyTicketImage'; id: string; url: string }>;
+    images: Array<{ __typename?: 'TicketImage'; id: string; url: string }>;
+  };
 };
 
 export type LoginMutationVariables = Exact<{
@@ -1653,6 +1675,29 @@ export const GetMyTicketsDocument = new TypedDocumentString(`
   myTickets {
     id
     createdAt
+    title
+    status
+    senderComment
+    orderItem {
+      id
+      product {
+        name
+        images {
+          url
+        }
+      }
+    }
+    category {
+      name
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<GetMyTicketsQuery, GetMyTicketsQueryVariables>;
+export const GetTicketByIdDocument = new TypedDocumentString(`
+    query GetTicketById($ticketId: Float!) {
+  ticket(ticketId: $ticketId) {
+    id
+    createdAt
     closedAt
     title
     status
@@ -1671,14 +1716,16 @@ export const GetMyTicketsDocument = new TypedDocumentString(`
       name
     }
     replyImages {
+      id
       url
     }
     images {
+      id
       url
     }
   }
 }
-    `) as unknown as TypedDocumentString<GetMyTicketsQuery, GetMyTicketsQueryVariables>;
+    `) as unknown as TypedDocumentString<GetTicketByIdQuery, GetTicketByIdQueryVariables>;
 export const LoginDocument = new TypedDocumentString(`
     mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {

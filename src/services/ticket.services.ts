@@ -5,6 +5,30 @@ export const GetMyTicketsQuery = graphql(`
     myTickets {
       id
       createdAt
+      title
+      status
+      senderComment
+      orderItem {
+        id
+        product {
+          name
+          images {
+            url
+          }
+        }
+      }
+      category {
+        name
+      }
+    }
+  }
+`);
+
+export const GetTicketByIdQuery = graphql(`
+  query GetTicketById($ticketId: Float!) {
+    ticket(ticketId: $ticketId) {
+      id
+      createdAt
       closedAt
       title
       status
@@ -23,9 +47,11 @@ export const GetMyTicketsQuery = graphql(`
         name
       }
       replyImages {
+        id
         url
       }
       images {
+        id
         url
       }
     }

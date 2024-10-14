@@ -22,7 +22,7 @@ const Ticket = ({ index, item }: TicketProps) => {
   const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
 
   return (
-    <Pressable onPress={() => navigation.navigate('TicketDetailScreen', { index, ticket: item })}>
+    <Pressable onPress={() => navigation.navigate('TicketDetailScreen', { index, ticketId: item.id })}>
       <View
         className={cn('w-full pl-[6px] pt-[6px] pb-[12px] pr-[12px] bg-background rounded-[6px] border-l-[20px]', {
           'border-primary': item.status === TicketStatus.Open,

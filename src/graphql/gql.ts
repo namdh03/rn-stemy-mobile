@@ -53,8 +53,10 @@ const documents = {
     types.SearchProductByNameDocument,
   '\n  query FilterAndSortingProduct(\n    $categoryIds: [Int!]!\n    $currentItem: Int!\n    $currentPage: Int!\n    $maxPrice: Int\n    $maxRating: Int\n    $minPrice: Int\n    $minRating: Int\n    $order: SortOrder!\n    $search: String!\n    $sort: String!\n  ) {\n    products(\n      categoryIds: $categoryIds\n      currentItem: $currentItem\n      currentPage: $currentPage\n      maxPrice: $maxPrice\n      maxRating: $maxRating\n      minPrice: $minPrice\n      minRating: $minRating\n      order: $order\n      search: $search\n      sort: $sort\n    ) {\n      items {\n        id\n        images {\n          url\n        }\n        price\n        name\n        rating\n        feedbacks {\n          id\n        }\n      }\n    }\n  }\n':
     types.FilterAndSortingProductDocument,
-  '\n  query GetMyTickets {\n    myTickets {\n      id\n      createdAt\n      closedAt\n      title\n      status\n      senderComment\n      replierComment\n      orderItem {\n        id\n        product {\n          name\n          images {\n            url\n          }\n        }\n      }\n      category {\n        name\n      }\n      replyImages {\n        url\n      }\n      images {\n        url\n      }\n    }\n  }\n':
+  '\n  query GetMyTickets {\n    myTickets {\n      id\n      createdAt\n      title\n      status\n      senderComment\n      orderItem {\n        id\n        product {\n          name\n          images {\n            url\n          }\n        }\n      }\n      category {\n        name\n      }\n    }\n  }\n':
     types.GetMyTicketsDocument,
+  '\n  query GetTicketById($ticketId: Float!) {\n    ticket(ticketId: $ticketId) {\n      id\n      createdAt\n      closedAt\n      title\n      status\n      senderComment\n      replierComment\n      orderItem {\n        id\n        product {\n          name\n          images {\n            url\n          }\n        }\n      }\n      category {\n        name\n      }\n      replyImages {\n        id\n        url\n      }\n      images {\n        id\n        url\n      }\n    }\n  }\n':
+    types.GetTicketByIdDocument,
   '\n  mutation Login($email: String!, $password: String!) {\n    login(email: $email, password: $password) {\n      access_token\n    }\n  }\n':
     types.LoginDocument,
   '\n  mutation Register($email: String!, $fullName: String!, $password: String!, $phone: String!) {\n    register(email: $email, fullName: $fullName, password: $password, phone: $phone) {\n      access_token\n    }\n  }\n':
@@ -209,8 +211,14 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query GetMyTickets {\n    myTickets {\n      id\n      createdAt\n      closedAt\n      title\n      status\n      senderComment\n      replierComment\n      orderItem {\n        id\n        product {\n          name\n          images {\n            url\n          }\n        }\n      }\n      category {\n        name\n      }\n      replyImages {\n        url\n      }\n      images {\n        url\n      }\n    }\n  }\n',
+  source: '\n  query GetMyTickets {\n    myTickets {\n      id\n      createdAt\n      title\n      status\n      senderComment\n      orderItem {\n        id\n        product {\n          name\n          images {\n            url\n          }\n        }\n      }\n      category {\n        name\n      }\n    }\n  }\n',
 ): typeof import('./graphql').GetMyTicketsDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query GetTicketById($ticketId: Float!) {\n    ticket(ticketId: $ticketId) {\n      id\n      createdAt\n      closedAt\n      title\n      status\n      senderComment\n      replierComment\n      orderItem {\n        id\n        product {\n          name\n          images {\n            url\n          }\n        }\n      }\n      category {\n        name\n      }\n      replyImages {\n        id\n        url\n      }\n      images {\n        id\n        url\n      }\n    }\n  }\n',
+): typeof import('./graphql').GetTicketByIdDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
