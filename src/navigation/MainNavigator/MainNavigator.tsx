@@ -23,6 +23,7 @@ import SearchMyPurchasesScreen from '~screens/SearchMyPurchasesScreen';
 import SearchOrdersScreen from '~screens/SearchOrdersScreen';
 import SearchProductScreen from '~screens/SearchProductScreen';
 import SettingsScreen from '~screens/SettingsScreen';
+import TicketDetailScreen from '~screens/TicketDetailScreen';
 import {
   CartScreenNavigationProps,
   CheckoutScreenNavigationProps,
@@ -38,6 +39,7 @@ import {
   SearchOrdersScreenNavigationProps,
   SearchProductScreenNavigationProps,
   SettingsScreenNavigationProps,
+  TicketDetailScreenNavigationProps,
 } from '~types/navigation.type';
 
 const MainStack = createNativeStackNavigator<MainStackParamList>();
@@ -291,6 +293,23 @@ const MainNavigator = () => (
       component={SearchMyPurchasesScreen}
       options={({ navigation }: SearchMyPurchasesScreenNavigationProps) => ({
         title: 'Search my purchases',
+        headerTitleAlign: 'center',
+        headerTitleStyle: {
+          fontFamily: 'Inter_18pt-SemiBold',
+          fontSize: 18,
+        },
+        headerLeft: () => (
+          <Pressable onPress={() => navigation.goBack()}>
+            <ChevronLeft className='text-primary' size={30} />
+          </Pressable>
+        ),
+      })}
+    />
+    <MainStack.Screen
+      name='TicketDetailScreen'
+      component={TicketDetailScreen}
+      options={({ navigation }: TicketDetailScreenNavigationProps) => ({
+        title: 'Ticket detail',
         headerTitleAlign: 'center',
         headerTitleStyle: {
           fontFamily: 'Inter_18pt-SemiBold',
