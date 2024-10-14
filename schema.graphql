@@ -170,6 +170,11 @@ enum OrderStatus {
   UNRATED
 }
 
+type OrdersWithPaginationResponse {
+  items: [Order!]!
+  pageInfo: e!
+}
+
 enum PaymentProvider {
   VNPAY
 }
@@ -233,7 +238,13 @@ type Query {
   countOrder: CountOrderResponse!
   me: User!
   myTickets: [Ticket!]!
-  orders(currentItem: Int! = 9, currentPage: Int! = 1, order: SortOrder! = ASC, sort: String! = "id"): [Order!]!
+  order(id: Float!): Order!
+  orders(
+    currentItem: Int! = 9
+    currentPage: Int! = 1
+    order: SortOrder! = ASC
+    sort: String! = "id"
+  ): OrdersWithPaginationResponse!
   product(id: Float!): Product!
   productCategories: [ProductCategory!]!
   productCategory(id: Float!): ProductCategory
