@@ -77,6 +77,7 @@ const OrderDetailScreen = ({ route, navigation }: OrderDetailScreenNavigationPro
       type: ALERT_TYPE.SUCCESS,
       title: constants.MESSAGES.SYSTEM_MESSAGES.SUCCESS_TITLE,
       textBody: constants.MESSAGES.ORDER_MESSAGES.COPY_ORDER_ID,
+      autoClose: 1000,
     });
   };
 

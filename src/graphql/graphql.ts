@@ -424,6 +424,16 @@ export type QueryUserArgs = {
   id: Scalars['Int']['input'];
 };
 
+export type ReplyTicketImage = {
+  __typename?: 'ReplyTicketImage';
+  createdAt: Scalars['DateTimeISO']['output'];
+  id: Scalars['ID']['output'];
+  owner: Role;
+  ticket: Ticket;
+  updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
+  url: Scalars['String']['output'];
+};
+
 export enum Role {
   Admin = 'ADMIN',
   Customer = 'CUSTOMER',
@@ -445,8 +455,9 @@ export type Ticket = {
   images: Array<TicketImage>;
   orderItem: OrderItem;
   rating?: Maybe<Scalars['Float']['output']>;
-  replier?: Maybe<User>;
+  replier: User;
   replierComment?: Maybe<Scalars['String']['output']>;
+  replyImages: Array<ReplyTicketImage>;
   sender: User;
   senderComment: Scalars['String']['output'];
   status: TicketStatus;
@@ -1035,6 +1046,8 @@ export type GetMyTicketsQuery = {
       product: { __typename?: 'Product'; name: string; images: Array<{ __typename?: 'ProductImage'; url: string }> };
     };
     category: { __typename?: 'TicketCategory'; name: string };
+    replyImages: Array<{ __typename?: 'ReplyTicketImage'; url: string }>;
+    images: Array<{ __typename?: 'TicketImage'; url: string }>;
   }>;
 };
 
@@ -1656,6 +1669,12 @@ export const GetMyTicketsDocument = new TypedDocumentString(`
     }
     category {
       name
+    }
+    replyImages {
+      url
+    }
+    images {
+      url
     }
   }
 }

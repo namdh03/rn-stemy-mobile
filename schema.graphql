@@ -273,6 +273,15 @@ type Query {
   users: [User!]!
 }
 
+type ReplyTicketImage {
+  createdAt: DateTimeISO!
+  id: ID!
+  owner: Role!
+  ticket: Ticket!
+  updatedAt: DateTimeISO
+  url: String!
+}
+
 enum Role {
   ADMIN
   CUSTOMER
@@ -293,8 +302,9 @@ type Ticket {
   images: [TicketImage!]!
   orderItem: OrderItem!
   rating: Float
-  replier: User
+  replier: User!
   replierComment: String
+  replyImages: [ReplyTicketImage!]!
   sender: User!
   senderComment: String!
   status: TicketStatus!

@@ -1,4 +1,4 @@
-import { Image, View } from 'react-native';
+import { Image, RefreshControl, ScrollView, View } from 'react-native';
 import { useShallow } from 'zustand/react/shallow';
 
 import { useQuery } from '@tanstack/react-query';
@@ -12,16 +12,18 @@ import { Text } from '~components/ui/text';
 import constants from '~constants';
 import execute from '~graphql/execute';
 import { OrderStatus } from '~graphql/graphql';
+import { useRefreshByUser } from '~hooks';
 import { GetCountOrderQuery } from '~services/order.services';
 import { useStore } from '~store';
 import { MeScreenNavigationProps } from '~types/navigation.type';
 
 const MeScreen = ({ navigation }: MeScreenNavigationProps) => {
-  const { data } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: [constants.ORDER_QUERY_KEY.GET_COUNT_ORDER_QUERY_KEY],
     queryFn: () => execute(GetCountOrderQuery),
     select: (data) => data.data.countOrder,
   });
+  const { isRefetchingByUser, refetchByUser } = useRefreshByUser(refetch);
 
   const handleNavigateToMyOrders = (orderStatus: OrderStatus) => {
     if (orderStatus === OrderStatus.Paid || orderStatus === OrderStatus.Delivering) {
@@ -38,7 +40,12 @@ const MeScreen = ({ navigation }: MeScreenNavigationProps) => {
   );
 
   return (
-    <View className='flex items-center justify-center'>
+    <ScrollView
+      contentContainerStyle={{ flexGrow: 1 }}
+      refreshControl={
+        <RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} tintColor='#your-primary-color' />
+      }
+    >
       {/* Avatar */}
       <View className='flex flex-col justify-center items-center py-[8px]'>
         <View className='relative'>
@@ -59,7 +66,7 @@ const MeScreen = ({ navigation }: MeScreenNavigationProps) => {
           <Pressable onPress={() => navigation.navigate('OrderHistoryScreen')}>
             <View className='inline-flex items-center flex-row gap-[5px]'>
               <Text className='text-[14px] font-inter-regular leading-[20px]'>View Order History</Text>
-              <ChevronRight size={15} className='color-[#E4E4E7]' />
+              <ChevronRight size={18} className='color-[#8F9098]' />
             </View>
           </Pressable>
         </View>
@@ -146,7 +153,7 @@ const MeScreen = ({ navigation }: MeScreenNavigationProps) => {
         </Pressable>
         <Divider />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
