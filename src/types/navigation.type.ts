@@ -34,13 +34,14 @@
  *      ├── My Purchases Screen
  *      ├── Settings Screen
  *      ├── My Tickets Screen
- *      └── Search My Purchases Screen
+ *      ├── Search My Purchases Screen
+ *      └── Ticket Detail Screen
  */
 // import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import type { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-import { CheckoutOrderInput, GetOrderByStatusQuery, OrderStatus } from '~graphql/graphql';
+import { CheckoutOrderInput, GetMyTicketsQuery, GetOrderByStatusQuery, OrderStatus } from '~graphql/graphql';
 
 // Auth Stack
 export type AuthStackParamList = {
@@ -97,6 +98,7 @@ export type MainStackParamList = {
   SettingsScreen: undefined;
   MyTicketsScreen: undefined;
   SearchMyPurchasesScreen: undefined;
+  TicketDetailScreen: { index: number; ticket: GetMyTicketsQuery['myTickets'][number] };
 };
 
 // Root Stack
@@ -237,5 +239,10 @@ export type MyTicketsScreenNavigationProps = CompositeScreenProps<
 
 export type SearchMyPurchasesScreenNavigationProps = CompositeScreenProps<
   NativeStackScreenProps<MainStackParamList, 'SearchMyPurchasesScreen'>,
+  NativeStackScreenProps<BottomTabParamList>
+>;
+
+export type TicketDetailScreenNavigationProps = CompositeScreenProps<
+  NativeStackScreenProps<MainStackParamList, 'TicketDetailScreen'>,
   NativeStackScreenProps<BottomTabParamList>
 >;
