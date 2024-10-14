@@ -1,8 +1,9 @@
-import { useCallback } from 'react';
-import { FlatList, RefreshControl, View } from 'react-native';
+import { useCallback, useMemo } from 'react';
+import { FlatList, RefreshControl, ScrollView, View } from 'react-native';
 
 import { useQuery } from '@tanstack/react-query';
 
+import EmptyList from '~components/customs/EmptyList';
 import constants from '~constants';
 import execute from '~graphql/execute';
 import { GetMyTicketsQuery as GetMyTicketsQueryType } from '~graphql/graphql';
@@ -10,14 +11,22 @@ import { useRefreshByUser } from '~hooks';
 import { GetMyTicketsQuery } from '~services/ticket.services';
 
 import Ticket from './components/Ticket';
+import TicketSkeleton from './components/TicketSkeleton';
 
 const MyTicketsScreen = () => {
-  const { data, refetch } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: [constants.TICKET_QUERY_KEY.GET_MY_TICKET_QUERY_KEY],
     queryFn: () => execute(GetMyTicketsQuery),
     select: (data) => data.data.myTickets,
   });
   const { isRefetchingByUser, refetchByUser } = useRefreshByUser(refetch);
+  const listSorted = useMemo(() => {
+    return [...(data || [])].sort((a, b) => {
+      const dateA = new Date(b.createdAt).getTime();
+      const dateB = new Date(a.createdAt).getTime();
+      return dateA - dateB;
+    });
+  }, [data]);
 
   const renderOrderItem = useCallback(
     ({ item, index }: { item: GetMyTicketsQueryType['myTickets'][number]; index: number }) => (
@@ -30,24 +39,47 @@ const MyTicketsScreen = () => {
 
   return (
     <View className='flex-1 px-[25px] py-[35px] mx-auto w-full max-w-xl bg-muted'>
-      <FlatList
-        data={data}
-        keyExtractor={keyExtractor}
-        renderItem={renderOrderItem}
-        showsVerticalScrollIndicator={false}
-        automaticallyAdjustContentInsets={false}
-        refreshControl={
-          <RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} tintColor='#your-primary-color' />
-        }
-        className='flex-1'
-        contentContainerStyle={{ gap: 16, paddingBottom: 50 }}
-        removeClippedSubviews={true}
-        initialNumToRender={10}
-        maxToRenderPerBatch={5}
-        updateCellsBatchingPeriod={50}
-        windowSize={21}
-        onEndReachedThreshold={0.5}
-      />
+      {isLoading ? (
+        <FlatList
+          data={[...Array(5)]}
+          renderItem={() => <TicketSkeleton />}
+          keyExtractor={(_, index) => `skeleton-${index}`}
+          showsVerticalScrollIndicator={false}
+          automaticallyAdjustContentInsets={false}
+          className='flex-1'
+          contentContainerStyle={{ gap: 16, paddingBottom: 50 }}
+        />
+      ) : listSorted.length === 0 ? (
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          refreshControl={
+            <RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} tintColor='#your-primary-color' />
+          }
+        >
+          <EmptyList
+            message={`You have no support tickets. If you encounter any issues, feel free to create a new ticket.`}
+          />
+        </ScrollView>
+      ) : (
+        <FlatList
+          data={data}
+          keyExtractor={keyExtractor}
+          renderItem={renderOrderItem}
+          showsVerticalScrollIndicator={false}
+          automaticallyAdjustContentInsets={false}
+          refreshControl={
+            <RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} tintColor='#your-primary-color' />
+          }
+          className='flex-1'
+          contentContainerStyle={{ gap: 24, paddingBottom: 50 }}
+          removeClippedSubviews={true}
+          initialNumToRender={10}
+          maxToRenderPerBatch={5}
+          updateCellsBatchingPeriod={50}
+          windowSize={21}
+          onEndReachedThreshold={0.5}
+        />
+      )}
     </View>
   );
 };

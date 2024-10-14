@@ -1,6 +1,7 @@
 import { memo, useCallback, useState } from 'react';
 import { FlatList, RefreshControl, ScrollView, View } from 'react-native';
 
+import EmptyList from '~components/customs/EmptyList';
 import OrderItem from '~components/customs/OrderItem';
 import OrderItemSkeleton from '~components/customs/OrderItemSkeleton';
 import SearchName from '~components/customs/SearchName';
@@ -9,7 +10,6 @@ import { GetOrderByStatusQuery as GetOrderByStatusQueryType, OrderStatus } from 
 import { useOrderList, useRefreshByUser } from '~hooks';
 import { MyOrdersScreenNavigationProps } from '~types/navigation.type';
 
-import EmptyOrderList from './components/EmptyOrderList';
 import TabButton from './components/TabButton';
 
 const MyOrdersScreen = ({ route, navigation }: MyOrdersScreenNavigationProps) => {
@@ -73,7 +73,7 @@ const MyOrdersScreen = ({ route, navigation }: MyOrdersScreenNavigationProps) =>
             <RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} tintColor='#your-primary-color' />
           }
         >
-          <EmptyOrderList />
+          <EmptyList message={`You don't have any orders in this category.`} />
         </ScrollView>
       ) : (
         <FlatList

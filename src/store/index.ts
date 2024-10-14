@@ -4,7 +4,6 @@ import { immer } from 'zustand/middleware/immer';
 
 import { zustandStorage } from '~utils/mmkv-storage';
 
-import { createAnimationRefSlice } from './animation-ref/animation-ref-slice';
 import { createAuthSlice } from './auth/auth-slice';
 import { createCartSlice } from './cart/cart-slice';
 import { createCheckoutSlice } from './checkout/checkout-slice';
@@ -23,7 +22,6 @@ export const useStore = create<Store>()(
         ...createCheckoutSlice(...a),
         ...createFilterSortingSlice(...a),
         ...createStoresDrawerSlice(...a),
-        ...createAnimationRefSlice(...a),
       })),
     ),
   ),

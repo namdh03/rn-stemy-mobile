@@ -1,6 +1,5 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { View } from 'react-native';
-import { useShallow } from 'zustand/react/shallow';
 
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -12,7 +11,6 @@ import { Text } from '~components/ui/text';
 import { GET_CART_COUNT_QUERY_KEY } from '~constants/cart-query-key';
 import execute from '~graphql/execute';
 import { GetCartCountQuery } from '~services/cart.services';
-import { useStore } from '~store';
 import { MainStackParamList } from '~types/navigation.type';
 
 import Pressable from '../Pressable';
@@ -26,13 +24,6 @@ const MainHeaderRight = () => {
   });
 
   const cartIconRef = useRef<View>(null);
-  const setCartIconRef = useStore(useShallow((state) => state.setCartIconRef));
-
-  useEffect(() => {
-    if (cartIconRef.current) {
-      setCartIconRef(cartIconRef);
-    }
-  }, [cartIconRef, setCartIconRef]);
 
   return (
     <View className='flex-row gap-[18px]'>

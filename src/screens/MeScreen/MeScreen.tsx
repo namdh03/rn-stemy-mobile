@@ -40,7 +40,7 @@ const MeScreen = ({ navigation }: MeScreenNavigationProps) => {
   return (
     <View className='flex items-center justify-center'>
       {/* Avatar */}
-      <View className='flex flex-col justify-center items-center px-[140px] py-[8px]'>
+      <View className='flex flex-col justify-center items-center py-[8px]'>
         <View className='relative'>
           <Image source={images.avatar} className='w-[80px] h-[80px] rounded-[32px]' />
           <Pressable className='absolute flex justify-center items-center bottom-0 right-0 w-[24px] h-[24px] p-[7px] rounded-[40px] bg-[#006FFD]'>
