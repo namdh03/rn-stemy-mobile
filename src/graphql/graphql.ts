@@ -1016,6 +1016,28 @@ export type FilterAndSortingProductQuery = {
   };
 };
 
+export type GetMyTicketsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetMyTicketsQuery = {
+  __typename?: 'Query';
+  myTickets: Array<{
+    __typename?: 'Ticket';
+    id: string;
+    createdAt: any;
+    closedAt?: any | null;
+    title: string;
+    status: TicketStatus;
+    senderComment: string;
+    replierComment?: string | null;
+    orderItem: {
+      __typename?: 'OrderItem';
+      id: string;
+      product: { __typename?: 'Product'; name: string; images: Array<{ __typename?: 'ProductImage'; url: string }> };
+    };
+    category: { __typename?: 'TicketCategory'; name: string };
+  }>;
+};
+
 export type LoginMutationVariables = Exact<{
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -1613,6 +1635,31 @@ export const FilterAndSortingProductDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<FilterAndSortingProductQuery, FilterAndSortingProductQueryVariables>;
+export const GetMyTicketsDocument = new TypedDocumentString(`
+    query GetMyTickets {
+  myTickets {
+    id
+    createdAt
+    closedAt
+    title
+    status
+    senderComment
+    replierComment
+    orderItem {
+      id
+      product {
+        name
+        images {
+          url
+        }
+      }
+    }
+    category {
+      name
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<GetMyTicketsQuery, GetMyTicketsQueryVariables>;
 export const LoginDocument = new TypedDocumentString(`
     mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {

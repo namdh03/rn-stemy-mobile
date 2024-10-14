@@ -13,6 +13,7 @@ import * as ORDER_QUERY_KEY from './order-query-key';
 import * as PRODUCT_QUERY_KEY from './product-query-key';
 import * as REGEX from './regex';
 import * as THEME from './theme';
+import * as TICKET_QUERY_KEY from './ticket-query-key';
 import TOKEN from './token';
 import * as USER_QUERY_KEY from './user-query-key';
 
@@ -31,6 +32,7 @@ const constants = {
   PRODUCT_QUERY_KEY,
   REGEX,
   THEME,
+  TICKET_QUERY_KEY,
   TOKEN,
   USER_QUERY_KEY,
   PURCHASES_QUERY_KEY,
