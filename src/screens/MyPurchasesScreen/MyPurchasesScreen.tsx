@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { FlatList, View } from 'react-native';
 import { RefreshControl, ScrollView } from 'react-native-gesture-handler';
 
@@ -13,13 +13,26 @@ import { GetMyPurchasesQuery as GetMyPurchasesQueryType } from '~graphql/graphql
 import { useRefreshByUser } from '~hooks';
 import EmptyOrderList from '~screens/MyOrdersScreen/components/EmptyOrderList';
 import { GetMyPurchasesQuery } from '~services/lab.services';
+import { MyPurchasesScreenNavigationProps } from '~types/navigation.type';
 
-const MyPurchasesScreen = () => {
+const MyPurchasesScreen = ({ navigation }: MyPurchasesScreenNavigationProps) => {
   const { data, refetch, isLoading } = useQuery({
     queryKey: [GET_USER_LABS_IN_ORDER_QUERY_KEY],
     queryFn: () => execute(GetMyPurchasesQuery, { search: '' }),
     select: (data) => data.data.searchOrder,
   });
+
+  const handleNavigateToSearchMyPurchases = useCallback(() => {
+    navigation.navigate('SearchMyPurchasesScreen');
+  }, [navigation]);
+
+  const orderListSorted = useMemo(() => {
+    return [...(data || [])].sort((a, b) => {
+      const dateA = new Date(b.createdAt).getTime();
+      const dateB = new Date(a.createdAt).getTime();
+      return dateA - dateB;
+    });
+  }, [data]);
 
   const { isRefetchingByUser, refetchByUser } = useRefreshByUser(refetch);
 
@@ -37,7 +50,7 @@ const MyPurchasesScreen = () => {
         <SearchName
           editable={false}
           placeholder='Search Product Name or Order ID'
-          // onContainerPress={handleNavigateToSearchOrder}
+          onContainerPress={handleNavigateToSearchMyPurchases}
           active
         />
       </View>
@@ -61,7 +74,7 @@ const MyPurchasesScreen = () => {
         </ScrollView>
       ) : (
         <FlatList
-          data={data}
+          data={orderListSorted}
           renderItem={renderItem}
           showsHorizontalScrollIndicator={false}
           refreshControl={

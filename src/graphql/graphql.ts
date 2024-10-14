@@ -283,6 +283,12 @@ export enum OrderStatus {
   Unrated = 'UNRATED',
 }
 
+export type OrdersWithPaginationResponse = {
+  __typename?: 'OrdersWithPaginationResponse';
+  items: Array<Order>;
+  pageInfo: E;
+};
+
 export enum PaymentProvider {
   Vnpay = 'VNPAY',
 }
@@ -352,7 +358,8 @@ export type Query = {
   countOrder: CountOrderResponse;
   me: User;
   myTickets: Array<Ticket>;
-  orders: Array<Order>;
+  order: Order;
+  orders: OrdersWithPaginationResponse;
   product: Product;
   productCategories: Array<ProductCategory>;
   productCategory?: Maybe<ProductCategory>;
@@ -363,6 +370,10 @@ export type Query = {
   user?: Maybe<User>;
   userLabs: Array<UserLab>;
   users: Array<User>;
+};
+
+export type QueryOrderArgs = {
+  id: Scalars['Float']['input'];
 };
 
 export type QueryOrdersArgs = {
