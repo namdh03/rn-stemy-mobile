@@ -4,13 +4,13 @@ import { RefreshControl } from 'react-native-gesture-handler';
 
 import { useQuery } from '@tanstack/react-query';
 
+import EmptyList from '~components/customs/EmptyList';
 import OrderItem from '~components/customs/OrderItem';
 import OrderItemSkeleton from '~components/customs/OrderItemSkeleton';
 import SearchName from '~components/customs/SearchName';
 import execute from '~graphql/execute';
 import { GetHistoryOrderQuery as GetHistoryOrderQueryType } from '~graphql/graphql';
 import { useRefreshByUser } from '~hooks';
-import EmptyOrderList from '~screens/MyOrdersScreen/components/EmptyOrderList';
 import { GetHistoryOrderQuery } from '~services/order.services';
 import { OrderHistoryScreenNavigationProps } from '~types/navigation.type';
 
@@ -62,7 +62,9 @@ const OrderHistoryScreen = ({ navigation }: OrderHistoryScreenNavigationProps) =
           contentContainerStyle={{ gap: 16, paddingBottom: 50 }}
         />
       ) : data?.length === 0 ? (
-        <EmptyOrderList />
+        <EmptyList
+          message={`You haven't placed any orders yet. Start exploring and shop your favorite STEM kits now!`}
+        />
       ) : (
         <FlatList
           data={orderListSorted}

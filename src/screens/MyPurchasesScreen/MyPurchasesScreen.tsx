@@ -4,6 +4,7 @@ import { RefreshControl, ScrollView } from 'react-native-gesture-handler';
 
 import { useQuery } from '@tanstack/react-query';
 
+import EmptyList from '~components/customs/EmptyList';
 import LabComponentSkeleton from '~components/customs/LabComponentSkeleton';
 import LabList from '~components/customs/LabList';
 import SearchName from '~components/customs/SearchName';
@@ -11,7 +12,6 @@ import { GET_USER_LABS_IN_ORDER_QUERY_KEY } from '~constants/lab-query-key';
 import execute from '~graphql/execute';
 import { GetMyPurchasesQuery as GetMyPurchasesQueryType } from '~graphql/graphql';
 import { useRefreshByUser } from '~hooks';
-import EmptyOrderList from '~screens/MyOrdersScreen/components/EmptyOrderList';
 import { GetMyPurchasesQuery } from '~services/lab.services';
 import { MyPurchasesScreenNavigationProps } from '~types/navigation.type';
 
@@ -70,7 +70,7 @@ const MyPurchasesScreen = ({ navigation }: MyPurchasesScreenNavigationProps) => 
             <RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} tintColor='#your-primary-color' />
           }
         >
-          <EmptyOrderList />
+          <EmptyList message={`You haven't made any purchases yet. Start shopping now!`} />
         </ScrollView>
       ) : (
         <FlatList
@@ -80,6 +80,8 @@ const MyPurchasesScreen = ({ navigation }: MyPurchasesScreenNavigationProps) => 
           refreshControl={
             <RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} tintColor='#your-primary-color' />
           }
+          showsVerticalScrollIndicator={false}
+          automaticallyAdjustContentInsets={false}
         />
       )}
     </View>

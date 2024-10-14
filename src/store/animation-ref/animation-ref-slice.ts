@@ -6,7 +6,12 @@ const initialState: AnimationRefState = {
   cartIconRef: null,
 };
 
-export const createAnimationRefSlice: StateCreator<AnimationRefSlice> = (set) => ({
+export const createAnimationRefSlice: StateCreator<
+  AnimationRefSlice,
+  [['zustand/immer', never]],
+  [],
+  AnimationRefSlice
+> = (set) => ({
   ...initialState,
   setCartIconRef: (ref) => set({ cartIconRef: ref }),
   reset: () => set({ ...initialState }),

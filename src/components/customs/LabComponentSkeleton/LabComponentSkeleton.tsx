@@ -4,7 +4,7 @@ import { Skeleton } from '~/components/ui/skeleton';
 
 const LabComponentSkeleton = () => {
   return (
-    <View className='p-[16px] w-[327px] rounded-[6px] bg-white shadow-lg'>
+    <View className='p-[16px] w-full rounded-[6px] bg-white shadow-lg my-3'>
       <View className='flex-row justify-between'>
         <View className='flex-row'>
           {/* Image Skeleton */}
