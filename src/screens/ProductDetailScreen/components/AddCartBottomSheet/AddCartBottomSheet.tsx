@@ -18,7 +18,6 @@ import { AddToCartMutation } from '~services/cart.services';
 import { ProductDetailStackParamList } from '~types/navigation.type';
 import isErrors from '~utils/responseChecker';
 import showDialogError from '~utils/showDialogError';
-import showDialogSuccess from '~utils/showDialogSuccess';
 
 interface AddCartBottomSheetProps {
   defaultPrice: number;
@@ -76,8 +75,8 @@ const AddCartBottomSheet = forwardRef<BottomSheet, AddCartBottomSheetProps>(
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: [constants.CART_QUERY_KEY.GET_CART_QUERY_KEY] });
           queryClient.invalidateQueries({ queryKey: [constants.CART_QUERY_KEY.GET_CART_COUNT_QUERY_KEY] });
-          showDialogSuccess({ textBody: constants.MESSAGES.CART_MESSAGES.ADD_TO_CART_SUCCESSFULLY });
           onClose();
+          // HANDLE START ANIMATION HERE
         },
         onError: (errors) => {
           if (isErrors(errors)) {
