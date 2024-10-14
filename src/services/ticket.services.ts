@@ -22,6 +22,12 @@ export const GetMyTicketsQuery = graphql(`
       category {
         name
       }
+      replyImages {
+        url
+      }
+      images {
+        url
+      }
     }
   }
 `);
