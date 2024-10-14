@@ -2,15 +2,31 @@ import { ScrollView, View } from 'react-native';
 import dayjs from 'dayjs';
 import { Image } from 'expo-image';
 
+import { useQuery } from '@tanstack/react-query';
+
+import LoadingOverlay from '~components/customs/LoadingOverlay';
 import { Separator } from '~components/ui/separator';
 import { Text } from '~components/ui/text';
 import constants from '~constants';
+import execute from '~graphql/execute';
 import { TicketStatus } from '~graphql/graphql';
 import { cn } from '~lib/utils';
+import { GetTicketByIdQuery } from '~services/ticket.services';
 import { TicketDetailScreenNavigationProps } from '~types/navigation.type';
 import capitalizeFirstLetter from '~utils/capitalizeFirstLetter';
 
 const TicketDetailScreen = ({ route }: TicketDetailScreenNavigationProps) => {
+  const { data, isLoading } = useQuery({
+    queryKey: [constants.TICKET_QUERY_KEY.GET_TICKET_BY_ID_QUERY_KEY],
+    queryFn: () => execute(GetTicketByIdQuery, { ticketId: +route.params.ticketId }),
+    select: (data) => data.data.ticket,
+  });
+
+  if (isLoading) {
+    return <LoadingOverlay />;
+  }
+  if (!data) return;
+
   return (
     <ScrollView
       contentContainerClassName='gap-[16px] p-[25px] py-[30px] mx-auto w-full max-w-xl'
@@ -18,23 +34,23 @@ const TicketDetailScreen = ({ route }: TicketDetailScreenNavigationProps) => {
       automaticallyAdjustContentInsets={false}
     >
       <View className='gap-[12px]'>
-        <Text className='font-inter-bold text-foreground text-[16px]'>{route.params.ticket.title}</Text>
+        <Text className='font-inter-bold text-foreground text-[16px]'>{data.title}</Text>
         <Text className='font-inter-regular text-foreground text-[14px] leading-[16px] tracking-[0.14px]'>
-          ＃Ticket {route.params.index + 1}: {route.params.ticket.category.name}
+          ＃Ticket {route.params.index + 1}: {data.category.name}
         </Text>
         <View
           className={cn('max-w-[50px] px-[8px] py-[2px] bg-background rounded-[6px] border shadow-sm', {
-            'border-primary': route.params.ticket.status === TicketStatus.Open,
-            'border-muted-foreground': route.params.ticket.status === TicketStatus.Close,
+            'border-primary': data.status === TicketStatus.Open,
+            'border-muted-foreground': data.status === TicketStatus.Close,
           })}
         >
           <Text
             className={cn('font-inter-medium text-[12px] text-center', {
-              'text-primary ': route.params.ticket.status === TicketStatus.Open,
-              'text-muted-foreground': route.params.ticket.status === TicketStatus.Close,
+              'text-primary ': data.status === TicketStatus.Open,
+              'text-muted-foreground': data.status === TicketStatus.Close,
             })}
           >
-            {capitalizeFirstLetter(route.params.ticket.status)}
+            {capitalizeFirstLetter(data.status)}
           </Text>
         </View>
       </View>
@@ -43,7 +59,7 @@ const TicketDetailScreen = ({ route }: TicketDetailScreenNavigationProps) => {
 
       <View className='flex-row items-center mt-[10px]'>
         <Image
-          source={route.params.ticket.orderItem.product.images[0].url}
+          source={data.orderItem.product.images[0].url}
           placeholder={{ blurhash: constants.EXPO_IMAGE.BLUR_HASH }}
           style={{ width: 60, height: 60, alignSelf: 'center', borderRadius: 4 }}
           contentFit='cover'
@@ -54,10 +70,10 @@ const TicketDetailScreen = ({ route }: TicketDetailScreenNavigationProps) => {
             numberOfLines={1}
             className='font-inter-medium text-foreground text-[14px] leading-[16px] tracking-[0.14px]'
           >
-            {route.params.ticket.orderItem.product.name}
+            {data.orderItem.product.name}
           </Text>
           <Text className='font-inter-regular text-[12px] text-foreground leading-[16px] tracking-[0.1px]'>
-            Order product ID: {btoa(btoa(btoa(btoa(route.params.ticket.orderItem.id.toString()))))}
+            Order product ID: {btoa(btoa(btoa(btoa(data.orderItem.id.toString()))))}
           </Text>
         </View>
       </View>
@@ -66,34 +82,27 @@ const TicketDetailScreen = ({ route }: TicketDetailScreenNavigationProps) => {
 
       <View className='gap-[12px]'>
         <Text className='font-inter-medium text-foreground text-[14px] leading-[20px]'>
-          {dayjs(route.params.ticket.createdAt).format('HH:mm DD-MM-YYYY')}
+          {dayjs(data.createdAt).format('HH:mm DD-MM-YYYY')}
         </Text>
 
-        <View className='flex-row items-center gap-[12px]'>
-          <Image
-            source={route.params.ticket.orderItem.product.images[0].url}
-            placeholder={{ blurhash: constants.EXPO_IMAGE.BLUR_HASH }}
-            style={{ width: 50, height: 50, alignSelf: 'center', borderRadius: 4 }}
-            contentFit='cover'
-          />
-          <Image
-            source={route.params.ticket.orderItem.product.images[0].url}
-            placeholder={{ blurhash: constants.EXPO_IMAGE.BLUR_HASH }}
-            style={{ width: 50, height: 50, alignSelf: 'center', borderRadius: 4 }}
-            contentFit='cover'
-          />
-          <Image
-            source={route.params.ticket.orderItem.product.images[0].url}
-            placeholder={{ blurhash: constants.EXPO_IMAGE.BLUR_HASH }}
-            style={{ width: 50, height: 50, alignSelf: 'center', borderRadius: 4 }}
-            contentFit='cover'
-          />
-        </View>
+        {data.images.length !== 0 && (
+          <View className='flex-row items-center gap-[12px]'>
+            {data.images.map((image) => (
+              <Image
+                key={image.id}
+                source={image.url}
+                placeholder={{ blurhash: constants.EXPO_IMAGE.BLUR_HASH }}
+                style={{ width: 50, height: 50, alignSelf: 'center', borderRadius: 4 }}
+                contentFit='cover'
+              />
+            ))}
+          </View>
+        )}
 
         <View className='gap-[4px]'>
           <Text className='font-inter-medium text-primary text-[12px] leading-[16px]'>Reason:</Text>
           <Text className='font-inter-regular text-foreground text-[12px] leading-[16px] tracking-[0.12px]'>
-            {route.params.ticket.senderComment}
+            {data.senderComment}
           </Text>
         </View>
       </View>
@@ -102,34 +111,27 @@ const TicketDetailScreen = ({ route }: TicketDetailScreenNavigationProps) => {
 
       <View className='gap-[12px]'>
         <Text className='font-inter-medium text-foreground text-[14px] leading-[20px]'>
-          {dayjs(route.params.ticket.closedAt).format('HH:mm DD-MM-YYYY')}
+          {dayjs(data.closedAt).format('HH:mm DD-MM-YYYY')}
         </Text>
 
-        <View className='flex-row items-center gap-[12px]'>
-          <Image
-            source={route.params.ticket.orderItem.product.images[0].url}
-            placeholder={{ blurhash: constants.EXPO_IMAGE.BLUR_HASH }}
-            style={{ width: 50, height: 50, alignSelf: 'center', borderRadius: 4 }}
-            contentFit='cover'
-          />
-          <Image
-            source={route.params.ticket.orderItem.product.images[0].url}
-            placeholder={{ blurhash: constants.EXPO_IMAGE.BLUR_HASH }}
-            style={{ width: 50, height: 50, alignSelf: 'center', borderRadius: 4 }}
-            contentFit='cover'
-          />
-          <Image
-            source={route.params.ticket.orderItem.product.images[0].url}
-            placeholder={{ blurhash: constants.EXPO_IMAGE.BLUR_HASH }}
-            style={{ width: 50, height: 50, alignSelf: 'center', borderRadius: 4 }}
-            contentFit='cover'
-          />
-        </View>
+        {data.replyImages.length !== 0 && (
+          <View className='flex-row items-center gap-[12px]'>
+            {data.replyImages.map((image) => (
+              <Image
+                key={image.id}
+                source={image.url}
+                placeholder={{ blurhash: constants.EXPO_IMAGE.BLUR_HASH }}
+                style={{ width: 50, height: 50, alignSelf: 'center', borderRadius: 4 }}
+                contentFit='cover'
+              />
+            ))}
+          </View>
+        )}
 
         <View className='gap-[4px]'>
           <Text className='font-inter-medium text-primary text-[12px] leading-[16px]'>Reply:</Text>
           <Text className='font-inter-regular text-foreground text-[12px] leading-[16px] tracking-[0.12px]'>
-            {route.params.ticket.replierComment}
+            {data.replierComment}
           </Text>
         </View>
       </View>

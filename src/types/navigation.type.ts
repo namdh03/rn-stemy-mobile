@@ -41,7 +41,7 @@
 import type { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-import { CheckoutOrderInput, GetMyTicketsQuery, GetOrderByStatusQuery, OrderStatus } from '~graphql/graphql';
+import { CheckoutOrderInput, GetOrderByStatusQuery, OrderStatus } from '~graphql/graphql';
 
 // Auth Stack
 export type AuthStackParamList = {
@@ -98,7 +98,7 @@ export type MainStackParamList = {
   SettingsScreen: undefined;
   MyTicketsScreen: undefined;
   SearchMyPurchasesScreen: undefined;
-  TicketDetailScreen: { index: number; ticket: GetMyTicketsQuery['myTickets'][number] };
+  TicketDetailScreen: { index: number; ticketId: string };
 };
 
 // Root Stack
