@@ -19,9 +19,11 @@ import OrderErrorScreen from '~screens/OrderErrorScreen';
 import OrderHistoryScreen from '~screens/OrderHistoryScreen';
 import OrderProgressScreen from '~screens/OrderProgressScreen';
 import OrderSuccessScreen from '~screens/OrderSuccessScreen';
+import SearchMyPurchasesScreen from '~screens/SearchMyPurchasesScreen';
 import SearchOrdersScreen from '~screens/SearchOrdersScreen';
 import SearchProductScreen from '~screens/SearchProductScreen';
 import SettingsScreen from '~screens/SettingsScreen';
+import TicketDetailScreen from '~screens/TicketDetailScreen';
 import {
   CartScreenNavigationProps,
   CheckoutScreenNavigationProps,
@@ -33,9 +35,11 @@ import {
   MyTicketsScreenNavigationProps,
   OrderDetailScreenNavigationProps,
   OrderHistoryScreenNavigationProps,
+  SearchMyPurchasesScreenNavigationProps,
   SearchOrdersScreenNavigationProps,
   SearchProductScreenNavigationProps,
   SettingsScreenNavigationProps,
+  TicketDetailScreenNavigationProps,
 } from '~types/navigation.type';
 
 const MainStack = createNativeStackNavigator<MainStackParamList>();
@@ -280,6 +284,40 @@ const MainNavigator = () => (
         headerLeft: () => (
           <Pressable onPress={() => navigation.goBack()}>
             <ChevronLeft className='text-foreground' size={30} />
+          </Pressable>
+        ),
+      })}
+    />
+    <MainStack.Screen
+      name='SearchMyPurchasesScreen'
+      component={SearchMyPurchasesScreen}
+      options={({ navigation }: SearchMyPurchasesScreenNavigationProps) => ({
+        title: 'Search my purchases',
+        headerTitleAlign: 'center',
+        headerTitleStyle: {
+          fontFamily: 'Inter_18pt-SemiBold',
+          fontSize: 18,
+        },
+        headerLeft: () => (
+          <Pressable onPress={() => navigation.goBack()}>
+            <ChevronLeft className='text-primary' size={30} />
+          </Pressable>
+        ),
+      })}
+    />
+    <MainStack.Screen
+      name='TicketDetailScreen'
+      component={TicketDetailScreen}
+      options={({ navigation }: TicketDetailScreenNavigationProps) => ({
+        title: 'Ticket detail',
+        headerTitleAlign: 'center',
+        headerTitleStyle: {
+          fontFamily: 'Inter_18pt-SemiBold',
+          fontSize: 18,
+        },
+        headerLeft: () => (
+          <Pressable onPress={() => navigation.goBack()}>
+            <ChevronLeft className='text-primary' size={30} />
           </Pressable>
         ),
       })}

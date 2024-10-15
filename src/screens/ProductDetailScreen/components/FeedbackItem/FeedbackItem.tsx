@@ -11,7 +11,7 @@ interface FeedbackItemProps {
   name: string;
   time: string;
   rating: number;
-  note: string;
+  note?: string | null;
   nonFillColor?: string;
 }
 

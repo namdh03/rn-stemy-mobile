@@ -20,8 +20,8 @@ const OrderErrorScreen = ({ navigation }: OrderErrorScreenNavigationProps) => {
             Please repay again to complete this order.
           </Text>
           <Text className='font-inter-regular text-muted-foreground text-[12px] leading-[14px]'>
-            Go to <Text className='font-inter-regular text-primary text-[12px] leading-[14px]'>My Purchases</Text> for
-            more info
+            Go to <Text className='font-inter-regular text-primary text-[12px] leading-[14px]'>My Orders</Text> for more
+            info
           </Text>
         </View>
 

@@ -28,7 +28,7 @@ const OrderSuccessScreen = ({ route, navigation }: OrderSuccessScreenNavigationP
           </Text>
           <Text className='font-inter-regular text-muted-foreground text-[12px] leading-[14px]'>
             Keep track your order at
-            <Text className='font-inter-regular text-primary text-[12px] leading-[14px]'> My Purchases</Text>
+            <Text className='font-inter-regular text-primary text-[12px] leading-[14px]'> My Orders</Text>
           </Text>
         </View>
 

@@ -30,8 +30,12 @@ const useReceivedOrder = () => {
         receivedOrderMutate(orderId, {
           onSuccess: () => {
             queryClient.invalidateQueries({
+              queryKey: [constants.ORDER_QUERY_KEY.GET_COUNT_ORDER_QUERY_KEY],
+            });
+            queryClient.invalidateQueries({
               queryKey: [constants.ORDER_QUERY_KEY.GET_ORDER_BY_STATUS_QUERY_KEY, OrderStatus.Delivered],
             });
+
             if (isGoBack) navigation.goBack();
           },
           onError: (errors) => {

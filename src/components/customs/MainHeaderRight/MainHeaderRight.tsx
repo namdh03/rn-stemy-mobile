@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { View } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
@@ -22,13 +23,17 @@ const MainHeaderRight = () => {
     select: (data) => data.data.countCart,
   });
 
+  const cartIconRef = useRef<View>(null);
+
   return (
     <View className='flex-row gap-[18px]'>
       {/* <Pressable>
         <Bell className='text-foreground' size={26} />
       </Pressable> */}
       <Pressable onPress={() => navigation.navigate('CartScreen')}>
-        <ShoppingCart className='text-foreground' size={26} />
+        <View ref={cartIconRef}>
+          <ShoppingCart className='text-foreground' size={26} />
+        </View>
         <Badge
           pointerEvents='none'
           className='absolute top-[-3px] right-[-8px] items-center justify-center p-0 w-[20px] h-[20px]'

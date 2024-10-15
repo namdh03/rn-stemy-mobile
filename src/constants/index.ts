@@ -6,12 +6,14 @@ import * as EXPO_IMAGE from './expo-image';
 import * as FILTER_SORTING from './filter-sorting';
 import * as HOME_QUERY_KEY from './home-query-key';
 import HTTP_STATUS from './http-status';
+import * as PURCHASES_QUERY_KEY from './lab-query-key';
 import * as MESSAGES from './messages';
 import NAV_THEME from './nav-theme';
 import * as ORDER_QUERY_KEY from './order-query-key';
 import * as PRODUCT_QUERY_KEY from './product-query-key';
 import * as REGEX from './regex';
 import * as THEME from './theme';
+import * as TICKET_QUERY_KEY from './ticket-query-key';
 import TOKEN from './token';
 import * as USER_QUERY_KEY from './user-query-key';
 
@@ -30,8 +32,10 @@ const constants = {
   PRODUCT_QUERY_KEY,
   REGEX,
   THEME,
+  TICKET_QUERY_KEY,
   TOKEN,
   USER_QUERY_KEY,
+  PURCHASES_QUERY_KEY,
 };
 
 export default constants;

@@ -1,46 +1,30 @@
-import { FlatList, ImageSourcePropType, Text } from 'react-native';
+import { FlatList, Text } from 'react-native';
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '~components/ui/accordion';
+import { GetMyPurchasesQuery } from '~graphql/graphql';
 
 import LabComponent from '../LabComponent';
 
-type LabComponentProps = {
-  id: string;
-  imageUrl: ImageSourcePropType | string;
-  title: string;
-  purchaseDate: Date;
-  numberOfTicket: number;
-  status: boolean;
-  activeDate?: Date;
-  message?: string;
-  fileLink: string;
-};
-
-type getLabListQuery = {
-  orderId: string;
-  lab: LabComponentProps[];
-};
-
 interface LabListProps {
-  data: getLabListQuery;
+  data: GetMyPurchasesQuery['searchOrder'][number];
   hiddenProductId?: string;
   onPress?: () => void;
 }
 
 const LabList = ({ data }: LabListProps) => {
-  const renderItem = ({ item }: { item: LabComponentProps }) => {
+  const renderItem = ({ item }: { item: GetMyPurchasesQuery['searchOrder'][number]['orderItems'][number] }) => {
+    if (!item.userLab) return null;
     return (
       <AccordionContent>
         <LabComponent
           id={item.id}
-          imageUrl={item.imageUrl}
-          title={item.title}
-          purchaseDate={item.purchaseDate}
-          numberOfTicket={item.numberOfTicket}
-          status={item.status}
-          fileLink={item.fileLink}
-          activeDate={item.activeDate}
-          message={item.message}
+          imageUrl={item.product.images[0]?.url}
+          title={item.product.name}
+          purchaseDate={new Date(item.userLab.createdAt)}
+          numberOfTicket={item.tickets.length}
+          status={item.userLab.isActive}
+          fileLink={item.id}
+          activeDate={item.userLab.updatedAt ? new Date(item.userLab.updatedAt) : undefined}
         />
       </AccordionContent>
     );
@@ -50,13 +34,13 @@ const LabList = ({ data }: LabListProps) => {
     <Accordion type='multiple' collapsible defaultValue={['item-1']} className='w-full px-3 bg-white my-3'>
       <AccordionItem value='item-1'>
         <AccordionTrigger>
-          <Text className='font-inter-medium text-[16px] w-[200px]'>
-            Order ID: <Text className='text-muted-foreground'>{data.orderId}</Text>
+          <Text className='font-inter-medium text-[14px] w-[250px]'>
+            Order ID: <Text className='text-muted-foreground'>{btoa(btoa(btoa(btoa(data.id))))}</Text>
           </Text>
         </AccordionTrigger>
 
         <FlatList
-          data={data.lab}
+          data={data.orderItems.filter((item) => item.userLab !== null)}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
           showsHorizontalScrollIndicator={false}
