@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { View } from 'react-native';
 import { Image } from 'expo-image';
 
-import images from '~assets/images';
 import { Star } from '~components/icons';
 import { Input } from '~components/ui/input';
 import { Text } from '~components/ui/text';
@@ -10,23 +9,33 @@ import { Text } from '~components/ui/text';
 import Divider from '../Divider';
 import Pressable from '../Pressable';
 
-const FeedbackProduct = () => {
+interface FeedbackProps {
+  image: { uri: string };
+  name: string;
+  hasLab: boolean;
+}
+
+const FeedbackProduct = ({ image, name, hasLab }: FeedbackProps) => {
   const [rating, setRating] = useState(0);
 
   const handleRating = (value: number) => {
     setRating(value);
+    console.log(value);
   };
+
   return (
-    <View className='w-[375px] h-[345px] flex-col items-center p-[15px] gap-[19px] mt-[10px]'>
+    <View className='w-full h-[345px] flex-col items-center p-[15px] gap-[19px] mt-[10px] bg-[#FFF]'>
       {/* View info product */}
       <View className='w-full h-[45px] '>
         <View className='flex-row items-center mb-[8px] justify-start gap-[5px]'>
           <View className='p-[5px]'>
-            <Image source={images.product} style={{ width: 35, height: 35 }} className='rounded-[16px]' />
+            <Image source={image} style={{ width: 35, height: 35 }} className='rounded-[16px]' />
           </View>
           <View>
-            <Text className='font-inter-regular text-[14px] text-[#000]'>Sữa Chống Nắng Sunplay</Text>
-            <Text className='font-inter-regular text-[12px] text-muted-foreground'>Variation: 70g</Text>
+            <Text className='font-inter-regular text-[14px] text-[#000]'>{name}</Text>
+            <Text className='font-inter-regular text-[12px] text-muted-foreground'>
+              {hasLab ? 'Lab included' : 'No Lab'}
+            </Text>
           </View>
         </View>
         <Divider />
