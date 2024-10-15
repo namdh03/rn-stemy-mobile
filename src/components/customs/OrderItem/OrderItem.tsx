@@ -11,7 +11,7 @@ import { Separator } from '~components/ui/separator';
 import { Text } from '~components/ui/text';
 import constants from '~constants';
 import { OrderStatus, SearchOrderQuery } from '~graphql/graphql';
-import { useReceivedOrder, useReOrder } from '~hooks';
+import { useReceivedOrder, useReOrder, useRepayOrder } from '~hooks';
 import { MainStackParamList } from '~types/navigation.type';
 import { getOrderStatusLabel } from '~utils/getOrderItemText';
 
@@ -25,7 +25,7 @@ interface OrderItemProps {
 const OrderItem = ({ order }: OrderItemProps) => {
   const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
   const firstOrderItem = useMemo(() => order.orderItems[0], [order]);
-  // const { onRepayOrder } = useRepayOrder();
+  const { onRepayOrder } = useRepayOrder();
   const { onReceivedOrder } = useReceivedOrder();
   const { onReOrder } = useReOrder();
 
@@ -33,10 +33,10 @@ const OrderItem = ({ order }: OrderItemProps) => {
     navigation.navigate('OrderDetailScreen', order);
   };
 
-  // const handleRepayOrder = () => {
-  //   if (!order.id) return;
-  //   onRepayOrder(+order.id);
-  // };
+  const handleRepayOrder = () => {
+    if (!order.id) return;
+    onRepayOrder(+order.id);
+  };
 
   const handleReceiveOrder = () => {
     if (!order.id) return;
@@ -51,8 +51,7 @@ const OrderItem = ({ order }: OrderItemProps) => {
   const handleButtonActionPress = () => {
     switch (order.status) {
       case OrderStatus.Unpaid:
-        // return handleRepayOrder();
-        return navigation.navigate('FeedbackProductScreen', { order });
+        return handleRepayOrder();
       case OrderStatus.Paid:
         return;
       case OrderStatus.Delivering:
