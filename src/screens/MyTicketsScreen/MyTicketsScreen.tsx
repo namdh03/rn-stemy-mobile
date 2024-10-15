@@ -4,16 +4,16 @@ import { FlatList, RefreshControl, ScrollView, View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 
 import EmptyList from '~components/customs/EmptyList';
+import Ticket, { TicketProps } from '~components/customs/Ticket';
+import TicketSkeleton from '~components/customs/TicketSkeleton';
 import constants from '~constants';
 import execute from '~graphql/execute';
 import { GetMyTicketsQuery as GetMyTicketsQueryType } from '~graphql/graphql';
 import { useRefreshByUser } from '~hooks';
 import { GetMyTicketsQuery } from '~services/ticket.services';
+import { MyTicketsScreenNavigationProps } from '~types/navigation.type';
 
-import Ticket from './components/Ticket';
-import TicketSkeleton from './components/TicketSkeleton';
-
-const MyTicketsScreen = () => {
+const MyTicketsScreen = ({ navigation }: MyTicketsScreenNavigationProps) => {
   const { data, isLoading, refetch } = useQuery({
     queryKey: [constants.TICKET_QUERY_KEY.GET_MY_TICKET_QUERY_KEY],
     queryFn: () => execute(GetMyTicketsQuery),
@@ -28,11 +28,15 @@ const MyTicketsScreen = () => {
     });
   }, [data]);
 
+  const handleNavigationToTicketDetail = ({ index, item }: Omit<TicketProps, 'onPress'>) => {
+    navigation.navigate('TicketDetailScreen', { index, ticketId: item.id });
+  };
+
   const renderOrderItem = useCallback(
     ({ item, index }: { item: GetMyTicketsQueryType['myTickets'][number]; index: number }) => (
-      <Ticket index={index} item={item} />
+      <Ticket index={index} item={item} onPress={handleNavigationToTicketDetail.bind(null, { index, item })} />
     ),
-    [],
+    [handleNavigationToTicketDetail],
   );
 
   const keyExtractor = useCallback((item: GetMyTicketsQueryType['myTickets'][number]) => item.id, []);

@@ -29,6 +29,7 @@ export { default as SlidersVertical } from './SlidersVertical';
 export { default as Star } from './Star';
 export { default as Store } from './Store';
 export { default as Sun } from './Sun';
+export { default as Tickets } from './Tickets';
 export { default as Truck } from './Truck';
 export { default as Wallet } from './Wallet';
 export { default as Wrench } from './Wrench';
