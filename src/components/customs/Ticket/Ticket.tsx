@@ -2,27 +2,22 @@ import { View } from 'react-native';
 import dayjs from 'dayjs';
 import { Image } from 'expo-image';
 
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-
 import Pressable from '~components/customs/Pressable';
 import { Text } from '~components/ui/text';
 import constants from '~constants';
 import { GetMyTicketsQuery, TicketStatus } from '~graphql/graphql';
 import { cn } from '~lib/utils';
-import { MainStackParamList } from '~types/navigation.type';
 import capitalizeFirstLetter from '~utils/capitalizeFirstLetter';
 
-interface TicketProps {
+export interface TicketProps {
   index: number;
   item: GetMyTicketsQuery['myTickets'][number];
+  onPress: () => void;
 }
 
-const Ticket = ({ index, item }: TicketProps) => {
-  const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
-
+const Ticket = ({ index, item, onPress }: TicketProps) => {
   return (
-    <Pressable onPress={() => navigation.navigate('TicketDetailScreen', { index, ticketId: item.id })}>
+    <Pressable onPress={onPress}>
       <View
         className={cn('w-full pl-[6px] pt-[6px] pb-[12px] pr-[12px] bg-background rounded-[6px] border-l-[20px]', {
           'border-primary': item.status === TicketStatus.Open,

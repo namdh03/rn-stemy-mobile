@@ -237,7 +237,7 @@ type Query {
   countCart: Float!
   countOrder: CountOrderResponse!
   me: User!
-  myTickets: [Ticket!]!
+  myTickets(status: TicketStatus): [Ticket!]!
   order(id: Float!): Order!
   orders(
     currentItem: Int! = 9

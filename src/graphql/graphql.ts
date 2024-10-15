@@ -372,6 +372,10 @@ export type Query = {
   users: Array<User>;
 };
 
+export type QueryMyTicketsArgs = {
+  status?: InputMaybe<TicketStatus>;
+};
+
 export type QueryOrderArgs = {
   id: Scalars['Float']['input'];
 };
@@ -1073,6 +1077,28 @@ export type GetTicketByIdQuery = {
   };
 };
 
+export type GetStaffTicketsByStatusQueryVariables = Exact<{
+  status?: InputMaybe<TicketStatus>;
+}>;
+
+export type GetStaffTicketsByStatusQuery = {
+  __typename?: 'Query';
+  myTickets: Array<{
+    __typename?: 'Ticket';
+    id: string;
+    createdAt: any;
+    title: string;
+    status: TicketStatus;
+    senderComment: string;
+    orderItem: {
+      __typename?: 'OrderItem';
+      id: string;
+      product: { __typename?: 'Product'; name: string; images: Array<{ __typename?: 'ProductImage'; url: string }> };
+    };
+    category: { __typename?: 'TicketCategory'; name: string };
+  }>;
+};
+
 export type LoginMutationVariables = Exact<{
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -1726,6 +1752,29 @@ export const GetTicketByIdDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<GetTicketByIdQuery, GetTicketByIdQueryVariables>;
+export const GetStaffTicketsByStatusDocument = new TypedDocumentString(`
+    query GetStaffTicketsByStatus($status: TicketStatus) {
+  myTickets(status: $status) {
+    id
+    createdAt
+    title
+    status
+    senderComment
+    orderItem {
+      id
+      product {
+        name
+        images {
+          url
+        }
+      }
+    }
+    category {
+      name
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<GetStaffTicketsByStatusQuery, GetStaffTicketsByStatusQueryVariables>;
 export const LoginDocument = new TypedDocumentString(`
     mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {

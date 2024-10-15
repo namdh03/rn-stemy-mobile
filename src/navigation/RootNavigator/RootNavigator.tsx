@@ -10,15 +10,35 @@ import { PortalHost } from '@rn-primitives/portal';
 import LoadingOverlay from '~components/customs/LoadingOverlay';
 import configs from '~configs';
 import constants from '~constants';
+import { Role } from '~graphql/graphql';
 import { useAppIsReady, useColorScheme } from '~hooks';
 import AuthNavigator from '~navigation/AuthNavigator';
 import MainNavigator from '~navigation/MainNavigator';
+import StaffNavigator from '~navigation/StaffNavigator';
 import { useStore } from '~store';
 
 const RootNavigator = () => {
   const { isDarkColorScheme } = useColorScheme();
   const { isLoading, appIsReady, onLayoutRootView } = useAppIsReady();
-  const isAuthenticated = useStore(useShallow((state) => state.isAuthenticated));
+  const { isAuthenticated, user } = useStore(
+    useShallow((state) => ({
+      isAuthenticated: state.isAuthenticated,
+      user: state.user,
+    })),
+  );
+
+  const renderNavigator = () => {
+    if (!isAuthenticated || !user) {
+      return <AuthNavigator />;
+    }
+
+    switch (user.role) {
+      case Role.Customer:
+        return <MainNavigator />;
+      case Role.Staff:
+        return <StaffNavigator />;
+    }
+  };
 
   if (isLoading) {
     return <LoadingOverlay message='Loading...' loop />;
@@ -40,7 +60,7 @@ const RootNavigator = () => {
                 onReady={onLayoutRootView}
                 theme={isDarkColorScheme ? constants.THEME.DARK_THEME : constants.THEME.LIGHT_THEME}
               >
-                {isAuthenticated ? <MainNavigator /> : <AuthNavigator />}
+                {renderNavigator()}
               </NavigationContainer>
             </SafeAreaView>
             <PortalHost />

@@ -8,7 +8,7 @@ import EmptyList from '~components/customs/EmptyList';
 import LabComponentSkeleton from '~components/customs/LabComponentSkeleton';
 import LabList from '~components/customs/LabList';
 import SearchName from '~components/customs/SearchName';
-import { GET_USER_LABS_IN_ORDER_QUERY_KEY } from '~constants/lab-query-key';
+import constants from '~constants';
 import execute from '~graphql/execute';
 import { GetMyPurchasesQuery as GetMyPurchasesQueryType } from '~graphql/graphql';
 import { useRefreshByUser } from '~hooks';
@@ -17,7 +17,7 @@ import { MyPurchasesScreenNavigationProps } from '~types/navigation.type';
 
 const MyPurchasesScreen = ({ navigation }: MyPurchasesScreenNavigationProps) => {
   const { data, refetch, isLoading } = useQuery({
-    queryKey: [GET_USER_LABS_IN_ORDER_QUERY_KEY],
+    queryKey: [constants.PURCHASES_QUERY_KEY.GET_USER_LABS_IN_ORDER_QUERY_KEY],
     queryFn: () => execute(GetMyPurchasesQuery, { search: '' }),
     select: (data) => data.data.searchOrder,
   });

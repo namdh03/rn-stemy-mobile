@@ -9,35 +9,39 @@
  *  │   ├── OTP Screen
  *  │   └── Reset Password Screen
  *  │
- *  └── Main Stack
- *      ├── Bottom Tab
- *      │   ├── Home Stack
- *      │   │   └── Home Screen
- *      │   ├── Stores Stack
- *      │   │   ├── Stores Screen
- *      │   └── Me Screen
- *      ├── Product Detail Stack
- *      │   ├── Product Detail Screen
- *      │   └── Product Feedback Screen
- *      ├── Cart Screen
- *      ├── Checkout Screen
- *      ├── Checkout User Information Screen
- *      ├── Order Progress Screen
- *      ├── Order Success Screen
- *      ├── Order Error Screen
- *      ├── Search Product Screen
- *      ├── My Orders Screen
- *      ├── Search Orders Screen
- *      ├── Order Detail Screen
- *      ├── Order History Screen
- *      ├── Feedback Product Screen
- *      ├── My Purchases Screen
- *      ├── Settings Screen
- *      ├── My Tickets Screen
- *      ├── Search My Purchases Screen
- *      └── Ticket Detail Screen
+ *  ├── Main Stack
+ *  │   ├── Bottom Tab (User)
+ *  │   │   ├── Home Stack
+ *  │   │   │   └── Home Screen
+ *  │   │   ├── Stores Stack
+ *  │   │   │   ├── Stores Screen
+ *  │   │   └── Me Screen
+ *  │   ├── Product Detail Stack
+ *  │   │   ├── Product Detail Screen
+ *  │   │   └── Product Feedback Screen
+ *  │   ├── Cart Screen
+ *  │   ├── Checkout Screen
+ *  │   ├── Checkout User Information Screen
+ *  │   ├── Order Progress Screen
+ *  │   ├── Order Success Screen
+ *  │   ├── Order Error Screen
+ *  │   ├── Search Product Screen
+ *  │   ├── My Orders Screen
+ *  │   ├── Search Orders Screen
+ *  │   ├── Order Detail Screen
+ *  │   ├── Order History Screen
+ *  │   ├── Feedback Product Screen
+ *  │   ├── My Purchases Screen
+ *  │   ├── Settings Screen
+ *  │   ├── My Tickets Screen
+ *  │   ├── Search My Purchases Screen
+ *  │   └── Ticket Detail Screen
+ *  └── Staff Stack
+ *      └── Bottom Tab (Staff)
+ *          └── Support Stack
+ *              └── Support Screen
  */
-// import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+
 import type { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
@@ -65,7 +69,7 @@ export type MeStackParamList = {
   MeScreen: undefined;
 };
 
-// Bottom Tab
+// Bottom Tab (User)
 export type BottomTabParamList = {
   HomeStack: NavigatorScreenParams<HomeStackParamList>;
   StoresStack: NavigatorScreenParams<StoresStackParamList>;
@@ -76,6 +80,15 @@ export type BottomTabParamList = {
 export type ProductDetailStackParamList = {
   ProductDetailScreen: { id: string };
   ProductFeedbackScreen: { rating: number };
+};
+
+export type SupportStackParamList = {
+  SupportScreen: undefined;
+};
+
+// Bottom Tab (Staff)
+export type StaffBottomTabParamList = {
+  SupportStack: NavigatorScreenParams<SupportStackParamList>;
 };
 
 // Main Stack
@@ -101,10 +114,16 @@ export type MainStackParamList = {
   TicketDetailScreen: { index: number; ticketId: string };
 };
 
+// Staff Stack
+export type StaffStackParamList = {
+  StaffBottomTabParamList: NavigatorScreenParams<StaffBottomTabParamList>;
+};
+
 // Root Stack
 export type RootStackParamList = {
   AuthStack: NavigatorScreenParams<AuthStackParamList>;
   MainStack: NavigatorScreenParams<MainStackParamList>;
+  StaffStack: NavigatorScreenParams<StaffStackParamList>;
 };
 
 export type LoginScreenNavigationProps = CompositeScreenProps<

@@ -57,3 +57,27 @@ export const GetTicketByIdQuery = graphql(`
     }
   }
 `);
+
+export const GetStaffTicketsByStatusQuery = graphql(`
+  query GetStaffTicketsByStatus($status: TicketStatus) {
+    myTickets(status: $status) {
+      id
+      createdAt
+      title
+      status
+      senderComment
+      orderItem {
+        id
+        product {
+          name
+          images {
+            url
+          }
+        }
+      }
+      category {
+        name
+      }
+    }
+  }
+`);
