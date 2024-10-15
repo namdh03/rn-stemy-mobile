@@ -137,21 +137,33 @@ const MeScreen = ({ navigation }: MeScreenNavigationProps) => {
             <ChevronRight size={18} className='color-[#8F9098]' />
           </View>
         </Pressable>
+
         <Divider />
+
         <Pressable onPress={() => navigation.navigate('MyTicketsScreen')}>
           <View className='flex-row items-center justify-between self-stretch p-[16px] w-full gap-[16px]'>
             <Text className='font-inter-regular text-[14px] text-[#1F2024] leading-[20px]'>My tickets</Text>
             <ChevronRight size={18} className='color-[#8F9098]' />
           </View>
         </Pressable>
+
         <Divider />
+
         <Pressable onPress={() => navigation.navigate('SettingsScreen')}>
           <View className='flex-row items-center justify-between self-stretch p-[16px] w-full gap-[16px]'>
             <Text className='font-inter-regular text-[14px] text-[#1F2024] leading-[20px]'>Setting</Text>
             <ChevronRight size={18} className='color-[#8F9098]' />
           </View>
         </Pressable>
+
         <Divider />
+
+        {/* <Pressable onPress={() => navigation.navigate("FeedbackProductScreen")}>
+          <View className='flex-row items-center justify-between self-stretch p-[16px] w-full gap-[16px]'>
+            <Text className='font-inter-regular text-[14px] text-[#1F2024] leading-[20px]'>Feedback</Text>
+            <ChevronRight size={18} className='color-[#8F9098]' />
+          </View>
+        </Pressable> */}
       </View>
     </ScrollView>
   );

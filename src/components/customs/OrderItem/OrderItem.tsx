@@ -53,6 +53,7 @@ const OrderItem = ({ order }: OrderItemProps) => {
       case OrderStatus.Unpaid:
         return handleRepayOrder();
       case OrderStatus.Paid:
+        return;
       case OrderStatus.Delivering:
         return;
       case OrderStatus.Delivered:
