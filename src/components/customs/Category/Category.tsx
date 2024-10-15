@@ -1,8 +1,14 @@
 import { View } from 'react-native';
 import { LucideIcon } from 'lucide-react-native';
+import { useShallow } from 'zustand/react/shallow';
+
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { Button } from '~components/ui/button';
 import { Text } from '~components/ui/text';
+import { useStore } from '~store';
+import { MainStackParamList } from '~types/navigation.type';
 
 interface CateProps {
   id: string;
@@ -13,8 +19,21 @@ interface CateProps {
 }
 
 const Category = ({ id, icon: Icon, title, bgColor, colorIcon }: CateProps) => {
+  const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
+  const { setFilterStoring } = useStore(
+    useShallow((state) => ({
+      setFilterStoring: state.setFilterStoring,
+    })),
+  );
+
   const handlePress = () => {
-    console.log(`Category ID: ${id}`);
+    setFilterStoring({ categoryIds: [+id] });
+    navigation.navigate('BottomTabStack', {
+      screen: 'StoresStack',
+      params: {
+        screen: 'StoresScreen',
+      },
+    });
   };
 
   return (
