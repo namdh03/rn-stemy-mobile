@@ -41,3 +41,7 @@ export const ORDER_MESSAGES = {
 export const LAB_MESSAGES = {
   INACTIVE_LAB: 'This kit are delivering. Please wait for active it ',
 };
+
+export const STAFF_TICKET = {
+  DESCRIPTION_VALIDATE: 'Please enter at least 1 character.',
+};

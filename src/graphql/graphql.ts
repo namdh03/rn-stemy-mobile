@@ -1129,6 +1129,14 @@ export type GetStaffTicketsByStatusQuery = {
   }>;
 };
 
+export type ReplyTicketMutationVariables = Exact<{
+  comment: Scalars['String']['input'];
+  ticketId: Scalars['Float']['input'];
+  images: Array<Scalars['File']['input']> | Scalars['File']['input'];
+}>;
+
+export type ReplyTicketMutation = { __typename?: 'Mutation'; replyTicket: { __typename?: 'Ticket'; id: string } };
+
 export type LoginMutationVariables = Exact<{
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -1805,6 +1813,13 @@ export const GetStaffTicketsByStatusDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<GetStaffTicketsByStatusQuery, GetStaffTicketsByStatusQueryVariables>;
+export const ReplyTicketDocument = new TypedDocumentString(`
+    mutation ReplyTicket($comment: String!, $ticketId: Float!, $images: [File!]!) {
+  replyTicket(comment: $comment, ticketId: $ticketId, images: $images) {
+    id
+  }
+}
+    `) as unknown as TypedDocumentString<ReplyTicketMutation, ReplyTicketMutationVariables>;
 export const LoginDocument = new TypedDocumentString(`
     mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {

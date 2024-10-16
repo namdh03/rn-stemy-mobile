@@ -59,6 +59,8 @@ const documents = {
     types.GetTicketByIdDocument,
   '\n  query GetStaffTicketsByStatus($status: TicketStatus) {\n    myTickets(status: $status) {\n      id\n      createdAt\n      title\n      status\n      senderComment\n      orderItem {\n        id\n        product {\n          name\n          images {\n            url\n          }\n        }\n      }\n      category {\n        name\n      }\n    }\n  }\n':
     types.GetStaffTicketsByStatusDocument,
+  '\n  mutation ReplyTicket($comment: String!, $ticketId: Float!, $images: [File!]!) {\n    replyTicket(comment: $comment, ticketId: $ticketId, images: $images) {\n      id\n    }\n  }\n':
+    types.ReplyTicketDocument,
   '\n  mutation Login($email: String!, $password: String!) {\n    login(email: $email, password: $password) {\n      access_token\n    }\n  }\n':
     types.LoginDocument,
   '\n  mutation Register($email: String!, $fullName: String!, $password: String!, $phone: String!) {\n    register(email: $email, fullName: $fullName, password: $password, phone: $phone) {\n      access_token\n    }\n  }\n':
@@ -227,6 +229,12 @@ export function graphql(
 export function graphql(
   source: '\n  query GetStaffTicketsByStatus($status: TicketStatus) {\n    myTickets(status: $status) {\n      id\n      createdAt\n      title\n      status\n      senderComment\n      orderItem {\n        id\n        product {\n          name\n          images {\n            url\n          }\n        }\n      }\n      category {\n        name\n      }\n    }\n  }\n',
 ): typeof import('./graphql').GetStaffTicketsByStatusDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation ReplyTicket($comment: String!, $ticketId: Float!, $images: [File!]!) {\n    replyTicket(comment: $comment, ticketId: $ticketId, images: $images) {\n      id\n    }\n  }\n',
+): typeof import('./graphql').ReplyTicketDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

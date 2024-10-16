@@ -72,9 +72,7 @@ const OrderHistoryScreen = ({ navigation }: OrderHistoryScreenNavigationProps) =
           renderItem={renderOrderItem}
           showsVerticalScrollIndicator={false}
           automaticallyAdjustContentInsets={false}
-          refreshControl={
-            <RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} tintColor='#your-primary-color' />
-          }
+          refreshControl={<RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} />}
           className='flex-1'
           contentContainerStyle={{ gap: 16, paddingBottom: 50 }}
           removeClippedSubviews={true}
