@@ -28,6 +28,7 @@ export const CART_MESSAGES = {
 
 export const ORDER_MESSAGES = {
   COPY_ORDER_ID: 'Order ID copied! You can now create a support ticket if needed.',
+  COPY_ORDER_PRODUCT_ID: 'Order Product ID copied! You can now create a support ticket if needed.',
   REPAY_ORDER_TITLE: 'Reorder Confirmation',
   REPAY_ORDER_TEXT_BODY: 'Your previous payment failed. Do you want to reorder and try paying again?',
   REPAY_ORDER_BUTTON: 'Reorder Now',

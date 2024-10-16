@@ -102,9 +102,11 @@ export type Mutation = {
   createFeedback: Scalars['Boolean']['output'];
   createOrder: Scalars['String']['output'];
   createProduct: Product;
-  createTicket: Scalars['Boolean']['output'];
+  createProductCategory: ProductCategory;
+  createTicket: Ticket;
   deleteCarts: Scalars['String']['output'];
   deleteProduct: Product;
+  deleteProductCategory: ProductCategory;
   getTokenResetPassword: Scalars['String']['output'];
   login: AccessTokenResponse;
   loginWithGoogle: AccessTokenResponse;
@@ -118,6 +120,8 @@ export type Mutation = {
   sendResetPasswordOTP: Scalars['String']['output'];
   updateAvatar: User;
   updateCart: Cart;
+  updateProduct: Product;
+  updateProductCategory: ProductCategory;
   updateUser: User;
 };
 
@@ -150,6 +154,10 @@ export type MutationCreateProductArgs = {
   lab: Scalars['File']['input'];
 };
 
+export type MutationCreateProductCategoryArgs = {
+  input: ProductCategoryInput;
+};
+
 export type MutationCreateTicketArgs = {
   categoryId: Scalars['Float']['input'];
   comment: Scalars['String']['input'];
@@ -163,6 +171,10 @@ export type MutationDeleteCartsArgs = {
 };
 
 export type MutationDeleteProductArgs = {
+  id: Scalars['Float']['input'];
+};
+
+export type MutationDeleteProductCategoryArgs = {
   id: Scalars['Float']['input'];
 };
 
@@ -226,6 +238,18 @@ export type MutationUpdateAvatarArgs = {
 export type MutationUpdateCartArgs = {
   cartId: Scalars['Float']['input'];
   quantity: Scalars['Float']['input'];
+};
+
+export type MutationUpdateProductArgs = {
+  id: Scalars['Float']['input'];
+  images?: InputMaybe<Array<Scalars['File']['input']>>;
+  input: ProductInput;
+  lab?: InputMaybe<Scalars['File']['input']>;
+};
+
+export type MutationUpdateProductCategoryArgs = {
+  id: Scalars['Float']['input'];
+  input: ProductCategoryInput;
 };
 
 export type MutationUpdateUserArgs = {
@@ -318,6 +342,12 @@ export type ProductCategory = {
   title: Scalars['String']['output'];
   type: CategoryType;
   updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
+};
+
+export type ProductCategoryInput = {
+  name: Scalars['String']['input'];
+  title: Scalars['String']['input'];
+  type: CategoryType;
 };
 
 export type ProductImage = {

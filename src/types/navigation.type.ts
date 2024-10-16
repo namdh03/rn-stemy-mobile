@@ -35,6 +35,7 @@
  *  │   ├── Settings Screen
  *  │   ├── My Tickets Screen
  *  │   ├── Search My Purchases Screen
+ *  │   ├── Create Ticket Screen
  *  │   └── Ticket Detail Screen
  *  └── Staff Stack
  *      └── Bottom Tab (Staff)
@@ -111,6 +112,7 @@ export type MainStackParamList = {
   SettingsScreen: undefined;
   MyTicketsScreen: undefined;
   SearchMyPurchasesScreen: undefined;
+  CreateTicketScreen: { orderItemId: string };
   TicketDetailScreen: { index: number; ticketId: string };
 };
 
@@ -263,5 +265,10 @@ export type SearchMyPurchasesScreenNavigationProps = CompositeScreenProps<
 
 export type TicketDetailScreenNavigationProps = CompositeScreenProps<
   NativeStackScreenProps<MainStackParamList, 'TicketDetailScreen'>,
+  NativeStackScreenProps<BottomTabParamList>
+>;
+
+export type CreateTicketScreenNavigationProps = CompositeScreenProps<
+  NativeStackScreenProps<MainStackParamList, 'CreateTicketScreen'>,
   NativeStackScreenProps<BottomTabParamList>
 >;
