@@ -9,6 +9,7 @@ export { default as CircleDollarSign } from './CircleDollarSign';
 export { default as CircleUser } from './CircleUser';
 export { default as CircleX } from './CircleX';
 export { default as Clock } from './Clock';
+export { default as Copy } from './Copy';
 export { default as Download } from './Download';
 export { default as EllipsisVertical } from './EllipsisVertical';
 export { default as Eye } from './Eye';

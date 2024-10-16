@@ -10,6 +10,7 @@ import ProductDetailNavigator from '~navigation/ProductDetailNavigator';
 import CartScreen from '~screens/CartScreen';
 import CheckoutScreen from '~screens/CheckoutScreen';
 import CheckoutUserInformationScreen from '~screens/CheckoutUserInformationScreen';
+import CreateTicketScreen from '~screens/CreateTicketScreen';
 import FeedbackProductScreen from '~screens/FeedbackProductScreen/FeedbackProductScreen';
 import MyOrdersScreen from '~screens/MyOrdersScreen';
 import MyPurchasesScreen from '~screens/MyPurchasesScreen';
@@ -28,6 +29,7 @@ import {
   CartScreenNavigationProps,
   CheckoutScreenNavigationProps,
   CheckoutUserInformationScreenNavigationProps,
+  CreateTicketScreenNavigationProps,
   FeedbackProductScreenNavigationProps,
   MainStackParamList,
   MyOrdersScreenNavigationProps,
@@ -310,6 +312,24 @@ const MainNavigator = () => (
       component={TicketDetailScreen}
       options={({ navigation }: TicketDetailScreenNavigationProps) => ({
         title: 'Ticket detail',
+        headerTitleAlign: 'center',
+        headerTitleStyle: {
+          fontFamily: 'Inter_18pt-SemiBold',
+          fontSize: 18,
+        },
+        headerLeft: () => (
+          <Pressable onPress={() => navigation.goBack()}>
+            <ChevronLeft className='text-primary' size={30} />
+          </Pressable>
+        ),
+      })}
+    />
+
+    <MainStack.Screen
+      name='CreateTicketScreen'
+      component={CreateTicketScreen}
+      options={({ navigation }: CreateTicketScreenNavigationProps) => ({
+        title: 'Create ticket',
         headerTitleAlign: 'center',
         headerTitleStyle: {
           fontFamily: 'Inter_18pt-SemiBold',
