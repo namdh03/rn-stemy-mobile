@@ -97,13 +97,7 @@ const SearchOrdersScreen = () => {
         ) : (
           <ScrollView
             contentContainerStyle={{ flexGrow: 1 }}
-            refreshControl={
-              <RefreshControl
-                refreshing={isRefetchingByUser}
-                onRefresh={refetchByUser}
-                tintColor='#your-primary-color'
-              />
-            }
+            refreshControl={<RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} />}
           >
             <RNPressable className='flex-1 gap-[8px] items-center pt-[100px] px-[25px]' onPress={Keyboard.dismiss}>
               <Image source={images.searchOrders} style={{ width: 135, height: 128 }} resizeMode='cover' />

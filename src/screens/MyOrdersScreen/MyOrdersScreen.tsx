@@ -69,9 +69,7 @@ const MyOrdersScreen = ({ route, navigation }: MyOrdersScreenNavigationProps) =>
       ) : data.length === 0 ? (
         <ScrollView
           contentContainerStyle={{ flexGrow: 1 }}
-          refreshControl={
-            <RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} tintColor='#your-primary-color' />
-          }
+          refreshControl={<RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} />}
         >
           <EmptyList message={`You don't have any orders in this category.`} />
         </ScrollView>
@@ -82,9 +80,7 @@ const MyOrdersScreen = ({ route, navigation }: MyOrdersScreenNavigationProps) =>
           renderItem={renderOrderItem}
           showsVerticalScrollIndicator={false}
           automaticallyAdjustContentInsets={false}
-          refreshControl={
-            <RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} tintColor='#your-primary-color' />
-          }
+          refreshControl={<RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} />}
           className='flex-1'
           contentContainerStyle={{ gap: 16, paddingBottom: 50 }}
           removeClippedSubviews={true}

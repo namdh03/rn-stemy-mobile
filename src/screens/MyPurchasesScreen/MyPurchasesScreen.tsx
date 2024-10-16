@@ -66,9 +66,7 @@ const MyPurchasesScreen = ({ navigation }: MyPurchasesScreenNavigationProps) => 
       ) : data?.length === 0 ? (
         <ScrollView
           contentContainerStyle={{ flexGrow: 1 }}
-          refreshControl={
-            <RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} tintColor='#your-primary-color' />
-          }
+          refreshControl={<RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} />}
         >
           <EmptyList message={`You haven't made any purchases yet. Start shopping now!`} />
         </ScrollView>
@@ -77,9 +75,7 @@ const MyPurchasesScreen = ({ navigation }: MyPurchasesScreenNavigationProps) => 
           data={orderListSorted}
           renderItem={renderItem}
           showsHorizontalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} tintColor='#your-primary-color' />
-          }
+          refreshControl={<RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} />}
           showsVerticalScrollIndicator={false}
           automaticallyAdjustContentInsets={false}
         />

@@ -100,15 +100,17 @@ type Mutation {
     phone: String!
   ): String!
   createProduct(images: [File!]!, input: ProductInput!, lab: File!): Product!
+  createProductCategory(input: ProductCategoryInput!): ProductCategory!
   createTicket(
     categoryId: Float!
     comment: String!
     images: [File!]! = []
     orderItemId: Float!
     title: String!
-  ): Boolean!
+  ): Ticket!
   deleteCarts(cartId: [Int!]!): String!
   deleteProduct(id: Float!): Product!
+  deleteProductCategory(id: Float!): ProductCategory!
   getTokenResetPassword(OTPCode: String!, email: String!): String!
   login(email: String!, password: String!): AccessTokenResponse!
   loginWithGoogle(code: String!): AccessTokenResponse!
@@ -122,6 +124,8 @@ type Mutation {
   sendResetPasswordOTP(email: String!): String!
   updateAvatar(image: File!): User!
   updateCart(cartId: Float!, quantity: Float!): Cart!
+  updateProduct(id: Float!, images: [File!], input: ProductInput!, lab: File): Product!
+  updateProductCategory(id: Float!, input: ProductCategoryInput!): ProductCategory!
   updateUser(address: String, email: String, fullName: String, phone: String): User!
 }
 
@@ -202,6 +206,12 @@ type ProductCategory {
   title: String!
   type: CategoryType!
   updatedAt: DateTimeISO
+}
+
+input ProductCategoryInput {
+  name: String!
+  title: String!
+  type: CategoryType!
 }
 
 type ProductImage {

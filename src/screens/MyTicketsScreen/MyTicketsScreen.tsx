@@ -32,7 +32,7 @@ const MyTicketsScreen = ({ navigation }: MyTicketsScreenNavigationProps) => {
     navigation.navigate('TicketDetailScreen', { index, ticketId: item.id });
   };
 
-  const renderOrderItem = useCallback(
+  const renderTicketItem = useCallback(
     ({ item, index }: { item: GetMyTicketsQueryType['myTickets'][number]; index: number }) => (
       <Ticket index={index} item={item} onPress={handleNavigationToTicketDetail.bind(null, { index, item })} />
     ),
@@ -56,9 +56,7 @@ const MyTicketsScreen = ({ navigation }: MyTicketsScreenNavigationProps) => {
       ) : listSorted.length === 0 ? (
         <ScrollView
           contentContainerStyle={{ flexGrow: 1 }}
-          refreshControl={
-            <RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} tintColor='#your-primary-color' />
-          }
+          refreshControl={<RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} />}
         >
           <EmptyList
             message={`You have no support tickets. If you encounter any issues, feel free to create a new ticket.`}
@@ -68,12 +66,10 @@ const MyTicketsScreen = ({ navigation }: MyTicketsScreenNavigationProps) => {
         <FlatList
           data={data}
           keyExtractor={keyExtractor}
-          renderItem={renderOrderItem}
+          renderItem={renderTicketItem}
           showsVerticalScrollIndicator={false}
           automaticallyAdjustContentInsets={false}
-          refreshControl={
-            <RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} tintColor='#your-primary-color' />
-          }
+          refreshControl={<RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} />}
           className='flex-1'
           contentContainerStyle={{ gap: 24, paddingBottom: 50 }}
           removeClippedSubviews={true}

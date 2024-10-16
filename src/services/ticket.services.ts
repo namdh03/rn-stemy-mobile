@@ -81,3 +81,11 @@ export const GetStaffTicketsByStatusQuery = graphql(`
     }
   }
 `);
+
+export const ReplyTicketMutation = graphql(`
+  mutation ReplyTicket($comment: String!, $ticketId: Float!, $images: [File!]!) {
+    replyTicket(comment: $comment, ticketId: $ticketId, images: $images) {
+      id
+    }
+  }
+`);

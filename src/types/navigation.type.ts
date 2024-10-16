@@ -37,15 +37,16 @@
  *  │   ├── Search My Purchases Screen
  *  │   └── Ticket Detail Screen
  *  └── Staff Stack
- *      └── Bottom Tab (Staff)
- *          └── Support Stack
- *              └── Support Screen
+ *      ├── Bottom Tab (Staff)
+ *      │   └── Support Stack
+ *      │       └── Support Screen
+ *      └── Support Ticket Detail Screen
  */
 
 import type { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-import { CheckoutOrderInput, GetOrderByStatusQuery, OrderStatus } from '~graphql/graphql';
+import { CheckoutOrderInput, GetOrderByStatusQuery, OrderStatus, TicketStatus } from '~graphql/graphql';
 
 // Auth Stack
 export type AuthStackParamList = {
@@ -117,6 +118,7 @@ export type MainStackParamList = {
 // Staff Stack
 export type StaffStackParamList = {
   StaffBottomTabParamList: NavigatorScreenParams<StaffBottomTabParamList>;
+  SupportTicketDetailScreen: { index: number; ticketId: string; status: TicketStatus };
 };
 
 // Root Stack
@@ -264,4 +266,14 @@ export type SearchMyPurchasesScreenNavigationProps = CompositeScreenProps<
 export type TicketDetailScreenNavigationProps = CompositeScreenProps<
   NativeStackScreenProps<MainStackParamList, 'TicketDetailScreen'>,
   NativeStackScreenProps<BottomTabParamList>
+>;
+
+export type SupportScreenNavigationProps = CompositeScreenProps<
+  NativeStackScreenProps<SupportStackParamList, 'SupportScreen'>,
+  NativeStackScreenProps<StaffStackParamList>
+>;
+
+export type SupportTicketDetailScreenNavigationProps = NativeStackScreenProps<
+  StaffStackParamList,
+  'SupportTicketDetailScreen'
 >;

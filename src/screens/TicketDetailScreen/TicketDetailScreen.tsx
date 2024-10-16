@@ -107,34 +107,38 @@ const TicketDetailScreen = ({ route }: TicketDetailScreenNavigationProps) => {
         </View>
       </View>
 
-      <Separator className='bg-muted' />
+      {data.status === TicketStatus.Close && (
+        <>
+          <Separator className='bg-muted' />
 
-      <View className='gap-[12px]'>
-        <Text className='font-inter-medium text-foreground text-[14px] leading-[20px]'>
-          {dayjs(data.closedAt).format('HH:mm DD-MM-YYYY')}
-        </Text>
+          <View className='gap-[12px]'>
+            <Text className='font-inter-medium text-foreground text-[14px] leading-[20px]'>
+              {dayjs(data.closedAt).format('HH:mm DD-MM-YYYY')}
+            </Text>
 
-        {data.replyImages.length !== 0 && (
-          <View className='flex-row items-center gap-[12px]'>
-            {data.replyImages.map((image) => (
-              <Image
-                key={image.id}
-                source={image.url}
-                placeholder={{ blurhash: constants.EXPO_IMAGE.BLUR_HASH }}
-                style={{ width: 50, height: 50, alignSelf: 'center', borderRadius: 4 }}
-                contentFit='cover'
-              />
-            ))}
+            {data.replyImages.length !== 0 && (
+              <View className='flex-row items-center gap-[12px]'>
+                {data.replyImages.map((image) => (
+                  <Image
+                    key={image.id}
+                    source={image.url}
+                    placeholder={{ blurhash: constants.EXPO_IMAGE.BLUR_HASH }}
+                    style={{ width: 50, height: 50, alignSelf: 'center', borderRadius: 4 }}
+                    contentFit='cover'
+                  />
+                ))}
+              </View>
+            )}
+
+            <View className='gap-[4px]'>
+              <Text className='font-inter-medium text-primary text-[12px] leading-[16px]'>Reply:</Text>
+              <Text className='font-inter-regular text-foreground text-[12px] leading-[16px] tracking-[0.12px]'>
+                {data.replierComment}
+              </Text>
+            </View>
           </View>
-        )}
-
-        <View className='gap-[4px]'>
-          <Text className='font-inter-medium text-primary text-[12px] leading-[16px]'>Reply:</Text>
-          <Text className='font-inter-regular text-foreground text-[12px] leading-[16px] tracking-[0.12px]'>
-            {data.replierComment}
-          </Text>
-        </View>
-      </View>
+        </>
+      )}
     </ScrollView>
   );
 };

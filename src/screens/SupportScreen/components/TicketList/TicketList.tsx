@@ -1,22 +1,33 @@
 import { useCallback } from 'react';
 import { FlatList, RefreshControl, ScrollView, View } from 'react-native';
 
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
 import EmptyList from '~components/customs/EmptyList';
-import Ticket from '~components/customs/Ticket';
+import Ticket, { TicketProps } from '~components/customs/Ticket';
 import TicketSkeleton from '~components/customs/TicketSkeleton';
-import { GetStaffTicketsByStatusQuery } from '~graphql/graphql';
+import { GetStaffTicketsByStatusQuery, TicketStatus } from '~graphql/graphql';
+import { StaffStackParamList } from '~types/navigation.type';
 
 interface TicketListProps {
   isLoading: boolean;
   data: GetStaffTicketsByStatusQuery['myTickets'];
   isRefetch: boolean;
   refetch: () => Promise<void>;
+  status: TicketStatus;
 }
 
-const TicketList = ({ isLoading, data, isRefetch, refetch }: TicketListProps) => {
-  const renderOrderItem = useCallback(
+const TicketList = ({ isLoading, data, isRefetch, refetch, status }: TicketListProps) => {
+  const navigation = useNavigation<NativeStackNavigationProp<StaffStackParamList>>();
+
+  const handleNavigationToSupportTicketDetail = ({ index, item }: Omit<TicketProps, 'onPress'>) => {
+    navigation.navigate('SupportTicketDetailScreen', { index, ticketId: item.id, status });
+  };
+
+  const renderTicketItem = useCallback(
     ({ item, index }: { item: GetStaffTicketsByStatusQuery['myTickets'][number]; index: number }) => (
-      <Ticket index={index} item={item} onPress={() => {}} />
+      <Ticket index={index} item={item} onPress={handleNavigationToSupportTicketDetail.bind(null, { index, item })} />
     ),
     [],
   );
@@ -24,7 +35,7 @@ const TicketList = ({ isLoading, data, isRefetch, refetch }: TicketListProps) =>
   const keyExtractor = useCallback((item: GetStaffTicketsByStatusQuery['myTickets'][number]) => item.id, []);
 
   return (
-    <View className='flex-1 mx-auto w-full max-w-xl'>
+    <View className='flex-1 mx-auto w-full max-w-xl h-full pb-[180px]'>
       {isLoading ? (
         <FlatList
           data={[...Array(5)]}
@@ -38,7 +49,7 @@ const TicketList = ({ isLoading, data, isRefetch, refetch }: TicketListProps) =>
       ) : data.length === 0 ? (
         <ScrollView
           contentContainerStyle={{ flexGrow: 1 }}
-          refreshControl={<RefreshControl refreshing={isRefetch} onRefresh={refetch} tintColor='#your-primary-color' />}
+          refreshControl={<RefreshControl refreshing={isRefetch} onRefresh={refetch} />}
         >
           <EmptyList
             message={`You have no support tickets. If you encounter any issues, feel free to create a new ticket.`}
@@ -48,10 +59,10 @@ const TicketList = ({ isLoading, data, isRefetch, refetch }: TicketListProps) =>
         <FlatList
           data={data}
           keyExtractor={keyExtractor}
-          renderItem={renderOrderItem}
+          renderItem={renderTicketItem}
           showsVerticalScrollIndicator={false}
           automaticallyAdjustContentInsets={false}
-          refreshControl={<RefreshControl refreshing={isRefetch} onRefresh={refetch} tintColor='#your-primary-color' />}
+          refreshControl={<RefreshControl refreshing={isRefetch} onRefresh={refetch} />}
           className='flex-1'
           contentContainerStyle={{ gap: 24, paddingBottom: 50 }}
           removeClippedSubviews={true}

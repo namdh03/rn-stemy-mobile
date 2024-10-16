@@ -42,9 +42,7 @@ const MeScreen = ({ navigation }: MeScreenNavigationProps) => {
   return (
     <ScrollView
       contentContainerStyle={{ flexGrow: 1 }}
-      refreshControl={
-        <RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} tintColor='#your-primary-color' />
-      }
+      refreshControl={<RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} />}
     >
       {/* Avatar */}
       <View className='flex flex-col justify-center items-center py-[8px]'>
