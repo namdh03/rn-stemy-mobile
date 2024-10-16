@@ -56,7 +56,13 @@ const SupportScreen = () => {
             </Badge>
           </View>
 
-          <TicketList isLoading={isLoading} data={listSorted} isRefetch={isRefetchingByUser} refetch={refetchByUser} />
+          <TicketList
+            isLoading={isLoading}
+            data={listSorted}
+            isRefetch={isRefetchingByUser}
+            refetch={refetchByUser}
+            status={value}
+          />
         </TabsContent>
 
         <TabsContent value={TicketStatus.Close} className='mt-[14px] h-full'>
@@ -67,7 +73,13 @@ const SupportScreen = () => {
             </Badge>
           </View>
 
-          <TicketList isLoading={isLoading} data={listSorted} isRefetch={isRefetchingByUser} refetch={refetchByUser} />
+          <TicketList
+            isLoading={isLoading}
+            data={listSorted}
+            isRefetch={isRefetchingByUser}
+            refetch={refetchByUser}
+            status={value}
+          />
         </TabsContent>
       </Tabs>
     </View>
