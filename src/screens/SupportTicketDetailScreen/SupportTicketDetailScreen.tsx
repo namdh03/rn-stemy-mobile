@@ -2,10 +2,7 @@ import { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
-  Dimensions,
   Image as RNImage,
-  Modal,
-  Pressable as RNPressable,
   RefreshControl,
   ScrollView,
   Text as RNText,
@@ -20,8 +17,9 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import LoadingOverlay from '~components/customs/LoadingOverlay';
 import Pressable from '~components/customs/Pressable';
+import PreviewImage from '~components/customs/PreviewImage';
 import { Form, FormField, FormTextarea } from '~components/deprecated-ui/form';
-import { CircleX, Download, X } from '~components/icons';
+import { CircleX, Download } from '~components/icons';
 import { Button } from '~components/ui/button';
 import { Separator } from '~components/ui/separator';
 import { Text } from '~components/ui/text';
@@ -37,8 +35,6 @@ import isErrors from '~utils/responseChecker';
 import showDialogError from '~utils/showDialogError';
 
 import { ReplyTicketFormType, replyTicketSchema } from './schema';
-
-const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const SupportTicketDetailScreen = ({ route, navigation }: SupportTicketDetailScreenNavigationProps) => {
   const queryClient = useQueryClient();
@@ -317,64 +313,7 @@ const SupportTicketDetailScreen = ({ route, navigation }: SupportTicketDetailScr
         )}
       </ScrollView>
 
-      <Modal
-        animationType='fade'
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}
-      >
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: 'rgba(0,0,0,0.8)',
-          }}
-        >
-          <View
-            style={{
-              backgroundColor: 'white',
-              padding: 20,
-              borderRadius: 10,
-              width: SCREEN_WIDTH * 0.9,
-              maxHeight: SCREEN_HEIGHT * 0.8,
-            }}
-          >
-            <RNPressable
-              onPress={() => setModalVisible(false)}
-              style={{
-                alignSelf: 'flex-end',
-                marginBottom: 10,
-                padding: 5,
-                backgroundColor: 'rgba(0,0,0,0.1)',
-                borderRadius: 20,
-              }}
-            >
-              <X size={24} className='text-foreground' />
-            </RNPressable>
-            {selectedImage && (
-              <ScrollView
-                contentContainerStyle={{
-                  flexGrow: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <Image
-                  source={selectedImage}
-                  style={{
-                    width: SCREEN_WIDTH * 0.8,
-                    height: SCREEN_HEIGHT * 0.6,
-                    borderRadius: 10,
-                  }}
-                  contentFit='contain'
-                  transition={1000}
-                />
-              </ScrollView>
-            )}
-          </View>
-        </View>
-      </Modal>
+      <PreviewImage image={selectedImage} visible={modalVisible} setVisible={setModalVisible} />
     </>
   );
 };

@@ -1,8 +1,9 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import { Tickets } from '~components/icons';
+import { CircleUser, Tickets } from '~components/icons';
 import { StaffBottomTabParamList } from '~types/navigation.type';
 
+import StaffProfileStack from './stack/StaffProfileStack';
 import SupportStack from './stack/SupportStack';
 
 const StaffBottomTab = createBottomTabNavigator<StaffBottomTabParamList>();
@@ -34,6 +35,14 @@ const StaffBottomTabNavigator = () => {
         options={{
           tabBarLabel: 'Support',
           tabBarIcon: ({ color, size }) => <Tickets color={color} size={size} />,
+        }}
+      />
+      <StaffBottomTab.Screen
+        name='StaffProfileStack'
+        component={StaffProfileStack}
+        options={{
+          tabBarLabel: 'Profile',
+          tabBarIcon: ({ color, size }) => <CircleUser color={color} size={size} />,
         }}
       />
     </StaffBottomTab.Navigator>
