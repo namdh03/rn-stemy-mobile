@@ -1,11 +1,12 @@
 import React, { useCallback, useRef } from 'react';
-import { Alert, Animated, Clipboard, ImageSourcePropType, Platform, Text, View } from 'react-native';
+import { Alert, Animated, ImageSourcePropType, Platform, Text, View } from 'react-native';
 import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
 import { Swipeable } from 'react-native-gesture-handler';
 import * as FileSystem from 'expo-file-system';
 import { Image } from 'expo-image';
 import { shareAsync } from 'expo-sharing';
 
+import Clipboard from '@react-native-clipboard/clipboard';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 

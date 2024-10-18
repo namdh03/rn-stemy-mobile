@@ -39,8 +39,10 @@
  *  │   └── Ticket Detail Screen
  *  └── Staff Stack
  *      ├── Bottom Tab (Staff)
- *      │   └── Support Stack
- *      │       └── Support Screen
+ *      │   ├── Support Stack
+ *      │   │   └── Support Screen
+ *      │   └── Staff Profile Stack
+ *      │       └── Staff Profile Screen
  *      └── Support Ticket Detail Screen
  */
 
@@ -88,9 +90,14 @@ export type SupportStackParamList = {
   SupportScreen: undefined;
 };
 
+export type StaffProfileStackParamList = {
+  StaffProfileScreen: undefined;
+};
+
 // Bottom Tab (Staff)
 export type StaffBottomTabParamList = {
   SupportStack: NavigatorScreenParams<SupportStackParamList>;
+  StaffProfileStack: NavigatorScreenParams<StaffProfileStackParamList>;
 };
 
 // Main Stack
