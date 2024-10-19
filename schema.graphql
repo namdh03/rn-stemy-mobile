@@ -249,6 +249,7 @@ type Query {
   me: User!
   myTickets(status: TicketStatus): [Ticket!]!
   order(id: Float!): Order!
+  orderItem(id: Float!): OrderItem!
   orders(
     currentItem: Int! = 9
     currentPage: Int! = 1
@@ -272,6 +273,7 @@ type Query {
   ): ProductsWithPaginationResponse!
   searchOrder(search: String!, status: OrderStatus): [Order!]!
   ticket(ticketId: Float!): Ticket!
+  ticketCategorys: [TicketCategory!]!
   tickets(
     currentItem: Int! = 9
     currentPage: Int! = 1
