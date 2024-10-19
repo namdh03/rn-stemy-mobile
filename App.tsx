@@ -10,7 +10,7 @@ import RootNavigator from '~navigation/RootNavigator';
 import './global.css';
 import { enableScreens } from 'react-native-screens';
 import { useKeepAwake } from 'expo-keep-awake';
-import { useOnlineManager } from '~hooks';
+import { useOnlineManager, usePushNotifications } from '~hooks';
 
 // Config react query
 const queryClient = new QueryClient({
@@ -28,6 +28,7 @@ enableScreens();
 export default function App() {
   useKeepAwake();
   useOnlineManager();
+  usePushNotifications();
 
   return (
     <QueryClientProvider client={queryClient}>
