@@ -12,7 +12,8 @@
     "prettier": "prettier --check .",
     "prettier:fix": "prettier --write .",
     "format": "npm run lint:fix && npm run prettier:fix",
-    "codegen": "graphql-codegen --config codegen.ts --watch"
+    "codegen": "graphql-codegen --config codegen.ts --watch",
+    "eas-build-pre-install": "echo $GOOGLE_SERVICES_BASE64 | base64 --decode > ./android/app/google-services.json"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^4.6.4",
