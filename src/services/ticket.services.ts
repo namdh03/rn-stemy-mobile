@@ -89,3 +89,34 @@ export const ReplyTicketMutation = graphql(`
     }
   }
 `);
+
+export const GetCreateTicketQuery = graphql(`
+  query GetCreateTicket {
+    ticketCategorys {
+      name
+      id
+    }
+    userLabs {
+      orderItem {
+        id
+        product {
+          name
+          images {
+            url
+          }
+        }
+        tickets {
+          id
+        }
+      }
+    }
+  }
+`);
+
+export const CreateTicketMutation = graphql(`
+  mutation CreateTicket($categoryId: Float!, $comment: String!, $orderItemId: Float!, $title: String!) {
+    createTicket(categoryId: $categoryId, comment: $comment, orderItemId: $orderItemId, title: $title) {
+      id
+    }
+  }
+`);

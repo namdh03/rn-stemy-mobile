@@ -30,6 +30,8 @@ const documents = {
     types.GetHomeDocument,
   '\n  query GetMyPurchases($search: String!) {\n    searchOrder(search: $search) {\n      orderItems {\n        userLab {\n          isActive\n          id\n          updatedAt\n          createdAt\n        }\n        product {\n          name\n          images {\n            url\n          }\n          id\n        }\n        tickets {\n          id\n        }\n        id\n      }\n      id\n      createdAt\n    }\n  }\n':
     types.GetMyPurchasesDocument,
+  '\n  query GetUserLabs {\n    userLabs {\n      orderItem {\n        id\n      }\n    }\n  }\n':
+    types.GetUserLabsDocument,
   '\n  query SearchOrder($search: String!) {\n    searchOrder(search: $search) {\n      id\n      createdAt\n      updatedAt\n      totalPrice\n      status\n      address\n      fullName\n      phone\n      shipTime\n      payment {\n        provider\n        time\n      }\n      orderItems {\n        hasLab\n        id\n        labPrice\n        productPrice\n        quantity\n        product {\n          id\n          name\n          price\n          images {\n            url\n          }\n          lab {\n            price\n          }\n        }\n      }\n    }\n  }\n':
     types.SearchOrderDocument,
   '\n  query GetOrderByStatus($status: OrderStatus!) {\n    searchOrder(search: "", status: $status) {\n      id\n      createdAt\n      updatedAt\n      totalPrice\n      status\n      address\n      fullName\n      phone\n      shipTime\n      payment {\n        provider\n        time\n      }\n      orderItems {\n        hasLab\n        id\n        labPrice\n        productPrice\n        quantity\n        product {\n          id\n          name\n          price\n          images {\n            url\n          }\n          lab {\n            price\n          }\n        }\n      }\n    }\n  }\n':
@@ -61,6 +63,10 @@ const documents = {
     types.GetStaffTicketsByStatusDocument,
   '\n  mutation ReplyTicket($comment: String!, $ticketId: Float!, $images: [File!]!) {\n    replyTicket(comment: $comment, ticketId: $ticketId, images: $images) {\n      id\n    }\n  }\n':
     types.ReplyTicketDocument,
+  '\n  query GetCreateTicket {\n    ticketCategorys {\n      name\n      id\n    }\n    userLabs {\n      orderItem {\n        id\n        product {\n          name\n          images {\n            url\n          }\n        }\n        tickets {\n          id\n        }\n      }\n    }\n  }\n':
+    types.GetCreateTicketDocument,
+  '\n  mutation CreateTicket($categoryId: Float!, $comment: String!, $orderItemId: Float!, $title: String!) {\n    createTicket(categoryId: $categoryId, comment: $comment, orderItemId: $orderItemId, title: $title) {\n      id\n    }\n  }\n':
+    types.CreateTicketDocument,
   '\n  mutation Login($email: String!, $password: String!) {\n    login(email: $email, password: $password) {\n      access_token\n    }\n  }\n':
     types.LoginDocument,
   '\n  mutation Register($email: String!, $fullName: String!, $password: String!, $phone: String!) {\n    register(email: $email, fullName: $fullName, password: $password, phone: $phone) {\n      access_token\n    }\n  }\n':
@@ -139,6 +145,12 @@ export function graphql(
 export function graphql(
   source: '\n  query GetMyPurchases($search: String!) {\n    searchOrder(search: $search) {\n      orderItems {\n        userLab {\n          isActive\n          id\n          updatedAt\n          createdAt\n        }\n        product {\n          name\n          images {\n            url\n          }\n          id\n        }\n        tickets {\n          id\n        }\n        id\n      }\n      id\n      createdAt\n    }\n  }\n',
 ): typeof import('./graphql').GetMyPurchasesDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query GetUserLabs {\n    userLabs {\n      orderItem {\n        id\n      }\n    }\n  }\n',
+): typeof import('./graphql').GetUserLabsDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -235,6 +247,18 @@ export function graphql(
 export function graphql(
   source: '\n  mutation ReplyTicket($comment: String!, $ticketId: Float!, $images: [File!]!) {\n    replyTicket(comment: $comment, ticketId: $ticketId, images: $images) {\n      id\n    }\n  }\n',
 ): typeof import('./graphql').ReplyTicketDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query GetCreateTicket {\n    ticketCategorys {\n      name\n      id\n    }\n    userLabs {\n      orderItem {\n        id\n        product {\n          name\n          images {\n            url\n          }\n        }\n        tickets {\n          id\n        }\n      }\n    }\n  }\n',
+): typeof import('./graphql').GetCreateTicketDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation CreateTicket($categoryId: Float!, $comment: String!, $orderItemId: Float!, $title: String!) {\n    createTicket(categoryId: $categoryId, comment: $comment, orderItemId: $orderItemId, title: $title) {\n      id\n    }\n  }\n',
+): typeof import('./graphql').CreateTicketDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

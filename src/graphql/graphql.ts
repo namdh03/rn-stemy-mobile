@@ -389,6 +389,7 @@ export type Query = {
   me: User;
   myTickets: Array<Ticket>;
   order: Order;
+  orderItem: OrderItem;
   orders: OrdersWithPaginationResponse;
   product: Product;
   productCategories: Array<ProductCategory>;
@@ -396,6 +397,7 @@ export type Query = {
   products: ProductsWithPaginationResponse;
   searchOrder: Array<Order>;
   ticket: Ticket;
+  ticketCategorys: Array<TicketCategory>;
   tickets: TicketsWithPaginationResponse;
   user?: Maybe<User>;
   userLabs: Array<UserLab>;
@@ -407,6 +409,10 @@ export type QueryMyTicketsArgs = {
 };
 
 export type QueryOrderArgs = {
+  id: Scalars['Float']['input'];
+};
+
+export type QueryOrderItemArgs = {
   id: Scalars['Float']['input'];
 };
 
@@ -738,6 +744,13 @@ export type GetMyPurchasesQuery = {
       tickets: Array<{ __typename?: 'Ticket'; id: string }>;
     }>;
   }>;
+};
+
+export type GetUserLabsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetUserLabsQuery = {
+  __typename?: 'Query';
+  userLabs: Array<{ __typename?: 'UserLab'; orderItem: { __typename?: 'OrderItem'; id: string } }>;
 };
 
 export type SearchOrderQueryVariables = Exact<{
@@ -1137,6 +1150,31 @@ export type ReplyTicketMutationVariables = Exact<{
 
 export type ReplyTicketMutation = { __typename?: 'Mutation'; replyTicket: { __typename?: 'Ticket'; id: string } };
 
+export type GetCreateTicketQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetCreateTicketQuery = {
+  __typename?: 'Query';
+  ticketCategorys: Array<{ __typename?: 'TicketCategory'; name: string; id: string }>;
+  userLabs: Array<{
+    __typename?: 'UserLab';
+    orderItem: {
+      __typename?: 'OrderItem';
+      id: string;
+      product: { __typename?: 'Product'; name: string; images: Array<{ __typename?: 'ProductImage'; url: string }> };
+      tickets: Array<{ __typename?: 'Ticket'; id: string }>;
+    };
+  }>;
+};
+
+export type CreateTicketMutationVariables = Exact<{
+  categoryId: Scalars['Float']['input'];
+  comment: Scalars['String']['input'];
+  orderItemId: Scalars['Float']['input'];
+  title: Scalars['String']['input'];
+}>;
+
+export type CreateTicketMutation = { __typename?: 'Mutation'; createTicket: { __typename?: 'Ticket'; id: string } };
+
 export type LoginMutationVariables = Exact<{
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -1404,6 +1442,15 @@ export const GetMyPurchasesDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<GetMyPurchasesQuery, GetMyPurchasesQueryVariables>;
+export const GetUserLabsDocument = new TypedDocumentString(`
+    query GetUserLabs {
+  userLabs {
+    orderItem {
+      id
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<GetUserLabsQuery, GetUserLabsQueryVariables>;
 export const SearchOrderDocument = new TypedDocumentString(`
     query SearchOrder($search: String!) {
   searchOrder(search: $search) {
@@ -1820,6 +1867,40 @@ export const ReplyTicketDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<ReplyTicketMutation, ReplyTicketMutationVariables>;
+export const GetCreateTicketDocument = new TypedDocumentString(`
+    query GetCreateTicket {
+  ticketCategorys {
+    name
+    id
+  }
+  userLabs {
+    orderItem {
+      id
+      product {
+        name
+        images {
+          url
+        }
+      }
+      tickets {
+        id
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<GetCreateTicketQuery, GetCreateTicketQueryVariables>;
+export const CreateTicketDocument = new TypedDocumentString(`
+    mutation CreateTicket($categoryId: Float!, $comment: String!, $orderItemId: Float!, $title: String!) {
+  createTicket(
+    categoryId: $categoryId
+    comment: $comment
+    orderItemId: $orderItemId
+    title: $title
+  ) {
+    id
+  }
+}
+    `) as unknown as TypedDocumentString<CreateTicketMutation, CreateTicketMutationVariables>;
 export const LoginDocument = new TypedDocumentString(`
     mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {

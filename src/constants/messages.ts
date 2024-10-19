@@ -43,5 +43,7 @@ export const LAB_MESSAGES = {
 };
 
 export const STAFF_TICKET = {
+  CATEGORY_ID: 'Category id must be a number',
+  TITLE_VALIDATE: 'Please enter at least 1 character.',
   DESCRIPTION_VALIDATE: 'Please enter at least 1 character.',
 };

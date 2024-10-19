@@ -30,3 +30,13 @@ export const GetMyPurchasesQuery = graphql(`
 `);
 
 export const downloadFilePFD = (id: string) => http.get(`/download/${id}`);
+
+export const GetUserLabsQuery = graphql(`
+  query GetUserLabs {
+    userLabs {
+      orderItem {
+        id
+      }
+    }
+  }
+`);
