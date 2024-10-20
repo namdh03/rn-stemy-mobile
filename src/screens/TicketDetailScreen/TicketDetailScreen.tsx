@@ -19,7 +19,7 @@ import { TicketDetailScreenNavigationProps } from '~types/navigation.type';
 import capitalizeFirstLetter from '~utils/capitalizeFirstLetter';
 
 const TicketDetailScreen = ({ route }: TicketDetailScreenNavigationProps) => {
-  const { data, isLoading } = useQuery({
+  const { data, isFetching } = useQuery({
     queryKey: [constants.TICKET_QUERY_KEY.GET_TICKET_BY_ID_QUERY_KEY],
     queryFn: () => execute(GetTicketByIdQuery, { ticketId: +route.params.ticketId }),
     select: (data) => data.data.ticket,
@@ -32,7 +32,7 @@ const TicketDetailScreen = ({ route }: TicketDetailScreenNavigationProps) => {
     setModalVisible(true);
   };
 
-  if (isLoading) {
+  if (isFetching) {
     return <LoadingOverlay />;
   }
   if (!data) return;

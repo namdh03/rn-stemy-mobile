@@ -46,8 +46,14 @@ const CreateTicketScreen: FC<CreateTicketScreenNavigationProps> = ({ route, navi
       images,
     },
   });
-  const orderItemWatch = form.watch('orderItemId');
   const imagesWatch = form.watch('images');
+  const categoryIdWatch = form.watch('categoryId');
+  const currentCategory = useMemo(
+    () => data?.ticketCategorys.find((category) => +category.id === categoryIdWatch),
+    [data?.ticketCategorys, categoryIdWatch],
+  );
+
+  const orderItemWatch = form.watch('orderItemId');
   const currentOrderItem = useMemo(
     () => data?.userLabs.find((lab) => +lab.orderItem.id === orderItemWatch),
     [data?.userLabs, orderItemWatch],
@@ -171,12 +177,16 @@ const CreateTicketScreen: FC<CreateTicketScreenNavigationProps> = ({ route, navi
                     showsVerticalScrollIndicator={false}
                     maxHeight={200}
                     renderRightIcon={() => <ChevronsUpDown size={20} className='text-muted-foreground' />}
+                    value={currentCategory}
                     data={data?.ticketCategorys || []}
                     valueField='id'
                     labelField='name'
                     imageField='image'
                     placeholder='Select category'
-                    onChange={({ id }) => field.onChange(id)}
+                    onChange={({ id }) => {
+                      field.onChange(id);
+                      form.setValue('categoryId', +id);
+                    }}
                   />
                   <FormMessage />
                 </View>
@@ -255,7 +265,6 @@ const CreateTicketScreen: FC<CreateTicketScreenNavigationProps> = ({ route, navi
                     <FormTextarea
                       placeholder='Enter a description...'
                       className='font-inter-regular text-foreground text-[14px] leading-[20px] rounded-[6px] shadow-sm placeholder:text-muted-foreground placeholder:text-[14px]'
-                      autoCapitalize='words'
                       autoComplete='off'
                       {...field}
                     />
