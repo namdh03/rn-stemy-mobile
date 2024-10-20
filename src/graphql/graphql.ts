@@ -725,6 +725,7 @@ export type GetMyPurchasesQuery = {
     __typename?: 'Order';
     id: string;
     createdAt: any;
+    updatedAt?: any | null;
     orderItems: Array<{
       __typename?: 'OrderItem';
       id: string;
@@ -1082,6 +1083,7 @@ export type GetMyTicketsQuery = {
     __typename?: 'Ticket';
     id: string;
     createdAt: any;
+    updatedAt?: any | null;
     title: string;
     status: TicketStatus;
     senderComment: string;
@@ -1130,6 +1132,7 @@ export type GetStaffTicketsByStatusQuery = {
     __typename?: 'Ticket';
     id: string;
     createdAt: any;
+    updatedAt?: any | null;
     title: string;
     status: TicketStatus;
     senderComment: string;
@@ -1160,6 +1163,7 @@ export type GetCreateTicketQuery = {
     orderItem: {
       __typename?: 'OrderItem';
       id: string;
+      createdAt: any;
       product: { __typename?: 'Product'; name: string; images: Array<{ __typename?: 'ProductImage'; url: string }> };
       tickets: Array<{ __typename?: 'Ticket'; id: string }>;
     };
@@ -1171,6 +1175,7 @@ export type CreateTicketMutationVariables = Exact<{
   comment: Scalars['String']['input'];
   orderItemId: Scalars['Float']['input'];
   title: Scalars['String']['input'];
+  images: Array<Scalars['File']['input']> | Scalars['File']['input'];
 }>;
 
 export type CreateTicketMutation = { __typename?: 'Mutation'; createTicket: { __typename?: 'Ticket'; id: string } };
@@ -1439,6 +1444,7 @@ export const GetMyPurchasesDocument = new TypedDocumentString(`
     }
     id
     createdAt
+    updatedAt
   }
 }
     `) as unknown as TypedDocumentString<GetMyPurchasesQuery, GetMyPurchasesQueryVariables>;
@@ -1786,6 +1792,7 @@ export const GetMyTicketsDocument = new TypedDocumentString(`
   myTickets {
     id
     createdAt
+    updatedAt
     title
     status
     senderComment
@@ -1842,6 +1849,7 @@ export const GetStaffTicketsByStatusDocument = new TypedDocumentString(`
   myTickets(status: $status) {
     id
     createdAt
+    updatedAt
     title
     status
     senderComment
@@ -1876,6 +1884,7 @@ export const GetCreateTicketDocument = new TypedDocumentString(`
   userLabs {
     orderItem {
       id
+      createdAt
       product {
         name
         images {
@@ -1890,12 +1899,13 @@ export const GetCreateTicketDocument = new TypedDocumentString(`
 }
     `) as unknown as TypedDocumentString<GetCreateTicketQuery, GetCreateTicketQueryVariables>;
 export const CreateTicketDocument = new TypedDocumentString(`
-    mutation CreateTicket($categoryId: Float!, $comment: String!, $orderItemId: Float!, $title: String!) {
+    mutation CreateTicket($categoryId: Float!, $comment: String!, $orderItemId: Float!, $title: String!, $images: [File!]!) {
   createTicket(
     categoryId: $categoryId
     comment: $comment
     orderItemId: $orderItemId
     title: $title
+    images: $images
   ) {
     id
   }

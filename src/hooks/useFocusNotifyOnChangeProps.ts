@@ -16,15 +16,13 @@ export default function useFocusNotifyOnChangeProps(notifyOnChangeProps?: Notify
     }, []),
   );
 
-  return () => {
-    if (!focusedRef.current) {
-      return [];
-    }
-
-    if (typeof notifyOnChangeProps === 'function') {
-      return notifyOnChangeProps();
-    }
-
-    return notifyOnChangeProps;
+  return {
+    notifyOnChangeProps: () =>
+      !focusedRef.current
+        ? []
+        : typeof notifyOnChangeProps === 'function'
+          ? notifyOnChangeProps()
+          : notifyOnChangeProps,
+    isFocused: focusedRef.current,
   };
 }

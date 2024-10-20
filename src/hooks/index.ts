@@ -1,6 +1,7 @@
 export { default as useAppIsReady } from './useAppIsReady';
 export { default as useAppState } from './useAppState';
 export { default as useColorScheme } from './useColorScheme';
+export { default as useCreateTicket } from './useCreateTicket';
 export { default as useDebounce } from './useDebounce';
 export { default as useFocusNotifyOnChangeProps } from './useFocusNotifyOnChangeProps';
 export { default as useOnlineManager } from './useOnlineManager';

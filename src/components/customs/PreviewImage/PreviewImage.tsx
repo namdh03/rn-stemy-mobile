@@ -25,10 +25,10 @@ const PreviewImage = ({ image, visible, setVisible }: PreviewImageProps) => {
         <View
           style={{
             backgroundColor: 'white',
-            padding: 20,
-            borderRadius: 10,
-            width: SCREEN_WIDTH * 0.9,
-            maxHeight: SCREEN_HEIGHT * 0.8,
+            padding: 15,
+            borderRadius: 12,
+            width: SCREEN_WIDTH * 0.85,
+            maxHeight: SCREEN_HEIGHT * 0.75,
           }}
         >
           <Pressable
@@ -54,9 +54,9 @@ const PreviewImage = ({ image, visible, setVisible }: PreviewImageProps) => {
               <Image
                 source={image}
                 style={{
-                  width: SCREEN_WIDTH * 0.8,
-                  height: SCREEN_HEIGHT * 0.6,
-                  borderRadius: 10,
+                  width: SCREEN_WIDTH * 0.75,
+                  height: SCREEN_HEIGHT * 0.5,
+                  borderRadius: 8,
                 }}
                 contentFit='contain'
                 transition={1000}

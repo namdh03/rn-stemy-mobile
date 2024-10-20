@@ -5,6 +5,7 @@ export const GetMyTicketsQuery = graphql(`
     myTickets {
       id
       createdAt
+      updatedAt
       title
       status
       senderComment
@@ -63,6 +64,7 @@ export const GetStaffTicketsByStatusQuery = graphql(`
     myTickets(status: $status) {
       id
       createdAt
+      updatedAt
       title
       status
       senderComment
@@ -99,6 +101,7 @@ export const GetCreateTicketQuery = graphql(`
     userLabs {
       orderItem {
         id
+        createdAt
         product {
           name
           images {
@@ -114,8 +117,20 @@ export const GetCreateTicketQuery = graphql(`
 `);
 
 export const CreateTicketMutation = graphql(`
-  mutation CreateTicket($categoryId: Float!, $comment: String!, $orderItemId: Float!, $title: String!) {
-    createTicket(categoryId: $categoryId, comment: $comment, orderItemId: $orderItemId, title: $title) {
+  mutation CreateTicket(
+    $categoryId: Float!
+    $comment: String!
+    $orderItemId: Float!
+    $title: String!
+    $images: [File!]!
+  ) {
+    createTicket(
+      categoryId: $categoryId
+      comment: $comment
+      orderItemId: $orderItemId
+      title: $title
+      images: $images
+    ) {
       id
     }
   }

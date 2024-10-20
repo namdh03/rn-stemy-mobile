@@ -28,7 +28,7 @@ const documents = {
     types.CheckoutOrderDocument,
   '\n  query GetHome {\n    featuredProduct: products(currentItem: 10, order: DESC, sort: "rating") {\n      items {\n        id\n        images {\n          url\n        }\n        name\n        price\n        rating\n        feedbacks {\n          id\n        }\n      }\n    }\n\n    bestSellers: products(currentItem: 10, order: DESC, sort: "sold") {\n      items {\n        id\n        images {\n          url\n        }\n        name\n        price\n        rating\n        feedbacks {\n          id\n        }\n      }\n    }\n\n    newArrivals: products(currentItem: 10, order: DESC, sort: "createdAt") {\n      items {\n        id\n        feedbacks {\n          id\n        }\n        images {\n          url\n        }\n        name\n        price\n        rating\n      }\n    }\n\n    topRatedProduct: products(currentItem: 10, order: DESC, sort: "rating") {\n      items {\n        id\n        images {\n          url\n        }\n        name\n        price\n        rating\n        feedbacks {\n          id\n        }\n      }\n    }\n\n    specialOffers: products(order: ASC, sort: "price", currentItem: 10) {\n      items {\n        id\n        feedbacks {\n          id\n        }\n        images {\n          url\n        }\n        name\n        price\n        rating\n      }\n    }\n  }\n':
     types.GetHomeDocument,
-  '\n  query GetMyPurchases($search: String!) {\n    searchOrder(search: $search) {\n      orderItems {\n        userLab {\n          isActive\n          id\n          updatedAt\n          createdAt\n        }\n        product {\n          name\n          images {\n            url\n          }\n          id\n        }\n        tickets {\n          id\n        }\n        id\n      }\n      id\n      createdAt\n    }\n  }\n':
+  '\n  query GetMyPurchases($search: String!) {\n    searchOrder(search: $search) {\n      orderItems {\n        userLab {\n          isActive\n          id\n          updatedAt\n          createdAt\n        }\n        product {\n          name\n          images {\n            url\n          }\n          id\n        }\n        tickets {\n          id\n        }\n        id\n      }\n      id\n      createdAt\n      updatedAt\n    }\n  }\n':
     types.GetMyPurchasesDocument,
   '\n  query GetUserLabs {\n    userLabs {\n      orderItem {\n        id\n      }\n    }\n  }\n':
     types.GetUserLabsDocument,
@@ -55,17 +55,17 @@ const documents = {
     types.SearchProductByNameDocument,
   '\n  query FilterAndSortingProduct(\n    $categoryIds: [Int!]!\n    $currentItem: Int!\n    $currentPage: Int!\n    $maxPrice: Int\n    $maxRating: Int\n    $minPrice: Int\n    $minRating: Int\n    $order: SortOrder!\n    $search: String!\n    $sort: String!\n  ) {\n    products(\n      categoryIds: $categoryIds\n      currentItem: $currentItem\n      currentPage: $currentPage\n      maxPrice: $maxPrice\n      maxRating: $maxRating\n      minPrice: $minPrice\n      minRating: $minRating\n      order: $order\n      search: $search\n      sort: $sort\n    ) {\n      items {\n        id\n        images {\n          url\n        }\n        price\n        name\n        rating\n        feedbacks {\n          id\n        }\n      }\n    }\n  }\n':
     types.FilterAndSortingProductDocument,
-  '\n  query GetMyTickets {\n    myTickets {\n      id\n      createdAt\n      title\n      status\n      senderComment\n      orderItem {\n        id\n        product {\n          name\n          images {\n            url\n          }\n        }\n      }\n      category {\n        name\n      }\n    }\n  }\n':
+  '\n  query GetMyTickets {\n    myTickets {\n      id\n      createdAt\n      updatedAt\n      title\n      status\n      senderComment\n      orderItem {\n        id\n        product {\n          name\n          images {\n            url\n          }\n        }\n      }\n      category {\n        name\n      }\n    }\n  }\n':
     types.GetMyTicketsDocument,
   '\n  query GetTicketById($ticketId: Float!) {\n    ticket(ticketId: $ticketId) {\n      id\n      createdAt\n      closedAt\n      title\n      status\n      senderComment\n      replierComment\n      orderItem {\n        id\n        product {\n          name\n          images {\n            url\n          }\n        }\n      }\n      category {\n        name\n      }\n      replyImages {\n        id\n        url\n      }\n      images {\n        id\n        url\n      }\n    }\n  }\n':
     types.GetTicketByIdDocument,
-  '\n  query GetStaffTicketsByStatus($status: TicketStatus) {\n    myTickets(status: $status) {\n      id\n      createdAt\n      title\n      status\n      senderComment\n      orderItem {\n        id\n        product {\n          name\n          images {\n            url\n          }\n        }\n      }\n      category {\n        name\n      }\n    }\n  }\n':
+  '\n  query GetStaffTicketsByStatus($status: TicketStatus) {\n    myTickets(status: $status) {\n      id\n      createdAt\n      updatedAt\n      title\n      status\n      senderComment\n      orderItem {\n        id\n        product {\n          name\n          images {\n            url\n          }\n        }\n      }\n      category {\n        name\n      }\n    }\n  }\n':
     types.GetStaffTicketsByStatusDocument,
   '\n  mutation ReplyTicket($comment: String!, $ticketId: Float!, $images: [File!]!) {\n    replyTicket(comment: $comment, ticketId: $ticketId, images: $images) {\n      id\n    }\n  }\n':
     types.ReplyTicketDocument,
-  '\n  query GetCreateTicket {\n    ticketCategorys {\n      name\n      id\n    }\n    userLabs {\n      orderItem {\n        id\n        product {\n          name\n          images {\n            url\n          }\n        }\n        tickets {\n          id\n        }\n      }\n    }\n  }\n':
+  '\n  query GetCreateTicket {\n    ticketCategorys {\n      name\n      id\n    }\n    userLabs {\n      orderItem {\n        id\n        createdAt\n        product {\n          name\n          images {\n            url\n          }\n        }\n        tickets {\n          id\n        }\n      }\n    }\n  }\n':
     types.GetCreateTicketDocument,
-  '\n  mutation CreateTicket($categoryId: Float!, $comment: String!, $orderItemId: Float!, $title: String!) {\n    createTicket(categoryId: $categoryId, comment: $comment, orderItemId: $orderItemId, title: $title) {\n      id\n    }\n  }\n':
+  '\n  mutation CreateTicket(\n    $categoryId: Float!\n    $comment: String!\n    $orderItemId: Float!\n    $title: String!\n    $images: [File!]!\n  ) {\n    createTicket(\n      categoryId: $categoryId\n      comment: $comment\n      orderItemId: $orderItemId\n      title: $title\n      images: $images\n    ) {\n      id\n    }\n  }\n':
     types.CreateTicketDocument,
   '\n  mutation Login($email: String!, $password: String!) {\n    login(email: $email, password: $password) {\n      access_token\n    }\n  }\n':
     types.LoginDocument,
@@ -143,7 +143,7 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query GetMyPurchases($search: String!) {\n    searchOrder(search: $search) {\n      orderItems {\n        userLab {\n          isActive\n          id\n          updatedAt\n          createdAt\n        }\n        product {\n          name\n          images {\n            url\n          }\n          id\n        }\n        tickets {\n          id\n        }\n        id\n      }\n      id\n      createdAt\n    }\n  }\n',
+  source: '\n  query GetMyPurchases($search: String!) {\n    searchOrder(search: $search) {\n      orderItems {\n        userLab {\n          isActive\n          id\n          updatedAt\n          createdAt\n        }\n        product {\n          name\n          images {\n            url\n          }\n          id\n        }\n        tickets {\n          id\n        }\n        id\n      }\n      id\n      createdAt\n      updatedAt\n    }\n  }\n',
 ): typeof import('./graphql').GetMyPurchasesDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
@@ -227,7 +227,7 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query GetMyTickets {\n    myTickets {\n      id\n      createdAt\n      title\n      status\n      senderComment\n      orderItem {\n        id\n        product {\n          name\n          images {\n            url\n          }\n        }\n      }\n      category {\n        name\n      }\n    }\n  }\n',
+  source: '\n  query GetMyTickets {\n    myTickets {\n      id\n      createdAt\n      updatedAt\n      title\n      status\n      senderComment\n      orderItem {\n        id\n        product {\n          name\n          images {\n            url\n          }\n        }\n      }\n      category {\n        name\n      }\n    }\n  }\n',
 ): typeof import('./graphql').GetMyTicketsDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
@@ -239,7 +239,7 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query GetStaffTicketsByStatus($status: TicketStatus) {\n    myTickets(status: $status) {\n      id\n      createdAt\n      title\n      status\n      senderComment\n      orderItem {\n        id\n        product {\n          name\n          images {\n            url\n          }\n        }\n      }\n      category {\n        name\n      }\n    }\n  }\n',
+  source: '\n  query GetStaffTicketsByStatus($status: TicketStatus) {\n    myTickets(status: $status) {\n      id\n      createdAt\n      updatedAt\n      title\n      status\n      senderComment\n      orderItem {\n        id\n        product {\n          name\n          images {\n            url\n          }\n        }\n      }\n      category {\n        name\n      }\n    }\n  }\n',
 ): typeof import('./graphql').GetStaffTicketsByStatusDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
@@ -251,13 +251,13 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query GetCreateTicket {\n    ticketCategorys {\n      name\n      id\n    }\n    userLabs {\n      orderItem {\n        id\n        product {\n          name\n          images {\n            url\n          }\n        }\n        tickets {\n          id\n        }\n      }\n    }\n  }\n',
+  source: '\n  query GetCreateTicket {\n    ticketCategorys {\n      name\n      id\n    }\n    userLabs {\n      orderItem {\n        id\n        createdAt\n        product {\n          name\n          images {\n            url\n          }\n        }\n        tickets {\n          id\n        }\n      }\n    }\n  }\n',
 ): typeof import('./graphql').GetCreateTicketDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  mutation CreateTicket($categoryId: Float!, $comment: String!, $orderItemId: Float!, $title: String!) {\n    createTicket(categoryId: $categoryId, comment: $comment, orderItemId: $orderItemId, title: $title) {\n      id\n    }\n  }\n',
+  source: '\n  mutation CreateTicket(\n    $categoryId: Float!\n    $comment: String!\n    $orderItemId: Float!\n    $title: String!\n    $images: [File!]!\n  ) {\n    createTicket(\n      categoryId: $categoryId\n      comment: $comment\n      orderItemId: $orderItemId\n      title: $title\n      images: $images\n    ) {\n      id\n    }\n  }\n',
 ): typeof import('./graphql').CreateTicketDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.

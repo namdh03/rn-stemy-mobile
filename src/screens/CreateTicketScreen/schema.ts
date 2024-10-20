@@ -13,6 +13,19 @@ const ImageFileSchema = z.object({
 });
 
 export const createTicketSchema = z.object({
+  orderItemId: z.coerce
+    .number({
+      message: constants.MESSAGES.STAFF_TICKET.ORDER_ITEM_ID,
+    })
+    .int({
+      message: constants.MESSAGES.STAFF_TICKET.ORDER_ITEM_ID,
+    })
+    .positive({
+      message: constants.MESSAGES.STAFF_TICKET.ORDER_ITEM_ID,
+    })
+    .min(1, {
+      message: constants.MESSAGES.STAFF_TICKET.ORDER_ITEM_ID,
+    }),
   categoryId: z.coerce
     .number({
       message: constants.MESSAGES.STAFF_TICKET.CATEGORY_ID,
