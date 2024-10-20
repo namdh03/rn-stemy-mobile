@@ -54,7 +54,7 @@ const ProductDetailScreen = ({ route }: ProductDetailScreenNavigationProps) => {
   };
 
   if (isFetching) {
-    return <LoadingOverlay loop />;
+    return <LoadingOverlay />;
   }
 
   return (

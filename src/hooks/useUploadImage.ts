@@ -7,11 +7,11 @@ import { ensureDirExists, imgDir } from '~utils/file';
 
 interface ImageFile {
   uri: string;
-  name: string;
-  type: string;
+  name?: string;
+  type?: string;
 }
 
-const MAX_IMAGE_SIZE = 1 * 1024 * 1024; // 1MB in bytes
+const MAX_IMAGE_SIZE = 1 * 1024 * 1024;
 
 const useUploadImage = () => {
   const [images, setImages] = useState<ImageFile[]>([]);
@@ -52,15 +52,14 @@ const useUploadImage = () => {
   };
 
   // Save image to file system
-  const saveImage = async (uri: string) => {
+  const saveImage = async (file: ImageFile) => {
     await ensureDirExists();
-    const filename = new Date().getTime() + '.jpeg';
-    const dest = imgDir + filename;
-    await FileSystem.copyAsync({ from: uri, to: dest });
+    const dest = imgDir + file.name;
+    await FileSystem.copyAsync({ from: file.uri, to: dest });
     const newImage: ImageFile = {
       uri: dest,
-      name: filename,
-      type: 'image/jpeg',
+      name: file.name,
+      type: `image/${file.type}`,
     };
     setImages([...images, newImage]);
   };
@@ -96,10 +95,12 @@ const useUploadImage = () => {
     // Check image size and save if not cancelled and size is within limit
     if (!result.canceled) {
       const uri = result.assets[0].uri;
+      const fileType = result.assets[0].uri.split('.').pop();
+      const fileName = result.assets[0].uri.split('/').pop();
       const fileInfo = await FileSystem.getInfoAsync(uri);
 
       if (hasSize(fileInfo) && fileInfo.size <= MAX_IMAGE_SIZE) {
-        await saveImage(uri);
+        await saveImage({ uri, type: fileType, name: fileName });
       } else {
         Alert.alert(
           'Image Upload Error',

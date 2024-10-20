@@ -38,7 +38,7 @@ import { ReplyTicketFormType, replyTicketSchema } from './schema';
 
 const SupportTicketDetailScreen = ({ route, navigation }: SupportTicketDetailScreenNavigationProps) => {
   const queryClient = useQueryClient();
-  const { data, refetch, isLoading } = useQuery({
+  const { data, refetch, isFetching } = useQuery({
     queryKey: [constants.TICKET_QUERY_KEY.GET_TICKET_BY_ID_QUERY_KEY, route.params.ticketId],
     queryFn: () => execute(GetTicketByIdQuery, { ticketId: +route.params.ticketId }),
     select: (data) => data.data.ticket,
@@ -127,7 +127,7 @@ const SupportTicketDetailScreen = ({ route, navigation }: SupportTicketDetailScr
     });
   };
 
-  if (isLoading) {
+  if (isFetching) {
     return <LoadingOverlay />;
   }
   if (!data) return;
