@@ -24,8 +24,8 @@ const SupportScreen = () => {
   const { isRefetchingByUser, refetchByUser } = useRefreshByUser(refetch);
   const listSorted = useMemo(() => {
     return [...(data || [])].sort((a, b) => {
-      const dateA = new Date(b.createdAt).getTime();
-      const dateB = new Date(a.createdAt).getTime();
+      const dateA = new Date(b.updatedAt || b.createdAt).getTime();
+      const dateB = new Date(a.updatedAt || a.createdAt).getTime();
       return dateA - dateB;
     });
   }, [data]);

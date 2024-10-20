@@ -21,7 +21,6 @@ export const executeWithFormData = <TResult>(formData: FormData): Promise<{ data
         'Content-Type': 'multipart/form-data',
         Accept: 'application/json',
       },
-      transformRequest: (data) => data,
     })
     .then((response) => response.data);
 };

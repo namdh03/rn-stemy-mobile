@@ -28,8 +28,8 @@ const MyPurchasesScreen = ({ navigation }: MyPurchasesScreenNavigationProps) => 
 
   const orderListSorted = useMemo(() => {
     return [...(data || [])].sort((a, b) => {
-      const dateA = new Date(b.createdAt).getTime();
-      const dateB = new Date(a.createdAt).getTime();
+      const dateA = new Date(b.updatedAt || b.createdAt).getTime();
+      const dateB = new Date(a.updatedAt || a.createdAt).getTime();
       return dateA - dateB;
     });
   }, [data]);
@@ -74,6 +74,7 @@ const MyPurchasesScreen = ({ navigation }: MyPurchasesScreenNavigationProps) => 
         <FlatList
           data={orderListSorted}
           renderItem={renderItem}
+          keyExtractor={(item) => item.id}
           showsHorizontalScrollIndicator={false}
           refreshControl={<RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} />}
           showsVerticalScrollIndicator={false}
