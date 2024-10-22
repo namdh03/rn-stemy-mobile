@@ -57,19 +57,39 @@ const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
         </View>
       </View>
       <View className={`${isDarkColorScheme ? 'bg-secondary' : 'bg-destructive-foreground'}`}>
-        <ProductList title='Featured Product' data={data?.featuredProduct.items || []} />
+        <ProductList
+          onPress={() => navigation.navigate('StoresStack', { screen: 'StoresScreen' })}
+          title='Featured Product'
+          data={data?.featuredProduct.items || []}
+        />
 
         <Banner imageUrl={images.bannerA} onPress={handlePress} />
 
-        <ProductList title='Best Sellers' data={data?.bestSellers.items || []} />
+        <ProductList
+          onPress={() => navigation.navigate('StoresStack', { screen: 'StoresScreen' })}
+          title='Best Sellers'
+          data={data?.bestSellers.items || []}
+        />
 
         <Banner imageUrl={images.bannerB} onPress={handlePress} />
 
-        <ProductList title='New Arrivals' data={data?.newArrivals.items || []} />
+        <ProductList
+          onPress={() => navigation.navigate('StoresStack', { screen: 'StoresScreen' })}
+          title='New Arrivals'
+          data={data?.newArrivals.items || []}
+        />
 
-        <ProductList title='Top Rated Product' data={data?.topRatedProduct.items || []} />
+        <ProductList
+          onPress={() => navigation.navigate('StoresStack', { screen: 'StoresScreen' })}
+          title='Top Rated Product'
+          data={data?.topRatedProduct.items || []}
+        />
 
-        <ProductList title='Special Offers' data={data?.specialOffers.items || []} />
+        <ProductList
+          onPress={() => navigation.navigate('StoresStack', { screen: 'StoresScreen' })}
+          title='Special Offers'
+          data={data?.specialOffers.items || []}
+        />
       </View>
     </ScrollView>
   );

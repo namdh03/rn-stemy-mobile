@@ -11,6 +11,7 @@ import { useCartStore } from '~store';
 import { MainStackParamList } from '~types/navigation.type';
 import isErrors from '~utils/responseChecker';
 import showDialogError from '~utils/showDialogError';
+import { getAccessToken } from '~utils/token-storage';
 
 const useReOrder = () => {
   const queryClient = useQueryClient();
@@ -25,9 +26,12 @@ const useReOrder = () => {
   });
 
   const onReOrder = (orderId: number) => {
+    console.log(orderId, getAccessToken());
     reOrderMutate(orderId, {
       onSuccess: (data) => {
+        console.log(data.data.reOrder);
         setMultipleSelectedCart(data.data.reOrder);
+        queryClient.invalidateQueries({ queryKey: [constants.CART_QUERY_KEY.GET_CART_QUERY_KEY] });
         queryClient.invalidateQueries({ queryKey: [constants.CART_QUERY_KEY.GET_CART_COUNT_QUERY_KEY] });
         navigation.navigate('CartScreen');
       },

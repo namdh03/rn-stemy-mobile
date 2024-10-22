@@ -220,9 +220,9 @@ const CartItem = memo(({ item }: CartItemProps) => {
                 </View>
 
                 <Text className='font-inter-extraBold w-full text-right text-foreground text-[14px] break-words flex-shrink pr-[24px]'>
-                  {(
-                    (item.hasLab ? item.product.price + (item.product.lab?.price || 0) : item.product.price) *
-                    item.quantity
+                  {(item.hasLab
+                    ? item.product.price + (item.product.lab?.price || 0)
+                    : item.product.price
                   ).toLocaleString()}
                   ₫
                 </Text>

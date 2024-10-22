@@ -57,7 +57,7 @@ const documents = {
     types.FilterAndSortingProductDocument,
   '\n  query GetMyTickets {\n    myTickets {\n      id\n      createdAt\n      updatedAt\n      title\n      status\n      senderComment\n      orderItem {\n        id\n        product {\n          name\n          images {\n            url\n          }\n        }\n      }\n      category {\n        name\n      }\n    }\n  }\n':
     types.GetMyTicketsDocument,
-  '\n  query GetTicketById($ticketId: Float!) {\n    ticket(ticketId: $ticketId) {\n      id\n      createdAt\n      closedAt\n      title\n      status\n      senderComment\n      replierComment\n      orderItem {\n        id\n        product {\n          name\n          images {\n            url\n          }\n        }\n      }\n      category {\n        name\n      }\n      replyImages {\n        id\n        url\n      }\n      images {\n        id\n        url\n      }\n    }\n  }\n':
+  '\n  query GetTicketById($ticketId: Float!) {\n    ticket(ticketId: $ticketId) {\n      id\n      createdAt\n      closedAt\n      title\n      status\n      senderComment\n      replierComment\n      orderItem {\n        id\n        product {\n          name\n          images {\n            url\n          }\n        }\n      }\n      category {\n        name\n      }\n      replyImages {\n        id\n        url\n      }\n      images {\n        id\n        url\n      }\n      replier {\n        fullName\n      }\n      sender {\n        fullName\n      }\n    }\n  }\n':
     types.GetTicketByIdDocument,
   '\n  query GetStaffTicketsByStatus($status: TicketStatus) {\n    myTickets(status: $status) {\n      id\n      createdAt\n      updatedAt\n      title\n      status\n      senderComment\n      orderItem {\n        id\n        product {\n          name\n          images {\n            url\n          }\n        }\n      }\n      category {\n        name\n      }\n    }\n  }\n':
     types.GetStaffTicketsByStatusDocument,
@@ -233,7 +233,7 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query GetTicketById($ticketId: Float!) {\n    ticket(ticketId: $ticketId) {\n      id\n      createdAt\n      closedAt\n      title\n      status\n      senderComment\n      replierComment\n      orderItem {\n        id\n        product {\n          name\n          images {\n            url\n          }\n        }\n      }\n      category {\n        name\n      }\n      replyImages {\n        id\n        url\n      }\n      images {\n        id\n        url\n      }\n    }\n  }\n',
+  source: '\n  query GetTicketById($ticketId: Float!) {\n    ticket(ticketId: $ticketId) {\n      id\n      createdAt\n      closedAt\n      title\n      status\n      senderComment\n      replierComment\n      orderItem {\n        id\n        product {\n          name\n          images {\n            url\n          }\n        }\n      }\n      category {\n        name\n      }\n      replyImages {\n        id\n        url\n      }\n      images {\n        id\n        url\n      }\n      replier {\n        fullName\n      }\n      sender {\n        fullName\n      }\n    }\n  }\n',
 ): typeof import('./graphql').GetTicketByIdDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.

@@ -3,13 +3,8 @@ import { Alert } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import * as ImagePicker from 'expo-image-picker';
 
+import { ImageFile } from '~screens/SupportTicketDetailScreen/schema';
 import { ensureDirExists, imgDir } from '~utils/file';
-
-interface ImageFile {
-  uri: string;
-  name?: string;
-  type?: string;
-}
 
 const MAX_IMAGE_SIZE = 1 * 1024 * 1024;
 

@@ -55,6 +55,12 @@ export const GetTicketByIdQuery = graphql(`
         id
         url
       }
+      replier {
+        fullName
+      }
+      sender {
+        fullName
+      }
     }
   }
 `);
