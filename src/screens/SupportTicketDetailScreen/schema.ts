@@ -8,8 +8,8 @@ const MAX_IMAGE_SIZE = MAX_IMAGE_SIZE_MB * 1024 * 1024;
 
 const ImageFileSchema = z.object({
   uri: z.string(),
-  name: z.string(),
-  type: z.string(),
+  name: z.string().optional(),
+  type: z.string().optional(),
 });
 
 export const replyTicketSchema = z.object({
@@ -31,5 +31,7 @@ export const replyTicketSchema = z.object({
     },
   ),
 });
+
+export type ImageFile = z.infer<typeof ImageFileSchema>;
 
 export type ReplyTicketFormType = z.infer<typeof replyTicketSchema>;

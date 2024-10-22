@@ -192,6 +192,10 @@ const SupportTicketDetailScreen = ({ route, navigation }: SupportTicketDetailScr
             {dayjs(data.createdAt).format('HH:mm DD-MM-YYYY')}
           </Text>
 
+          <Text className='font-inter-regular text-muted-foreground text-[12px] leading-[16px] tracking-[0.12px]'>
+            Customer name: {data.sender.fullName}
+          </Text>
+
           {data.images.length !== 0 && (
             <View className='flex-row items-center gap-[12px]'>
               {data.images.map((image) => (

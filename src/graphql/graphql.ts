@@ -1119,6 +1119,8 @@ export type GetTicketByIdQuery = {
     category: { __typename?: 'TicketCategory'; name: string };
     replyImages: Array<{ __typename?: 'ReplyTicketImage'; id: string; url: string }>;
     images: Array<{ __typename?: 'TicketImage'; id: string; url: string }>;
+    replier: { __typename?: 'User'; fullName: string };
+    sender: { __typename?: 'User'; fullName: string };
   };
 };
 
@@ -1840,6 +1842,12 @@ export const GetTicketByIdDocument = new TypedDocumentString(`
     images {
       id
       url
+    }
+    replier {
+      fullName
+    }
+    sender {
+      fullName
     }
   }
 }

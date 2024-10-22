@@ -128,6 +128,10 @@ const TicketDetailScreen = ({ route }: TicketDetailScreenNavigationProps) => {
                 {dayjs(data.closedAt).format('HH:mm DD-MM-YYYY')}
               </Text>
 
+              <Text className='font-inter-regular text-muted-foreground text-[12px] leading-[16px] tracking-[0.12px]'>
+                Staff name: {data.replier.fullName}
+              </Text>
+
               {data.replyImages.length !== 0 && (
                 <View className='flex-row items-center gap-[12px]'>
                   {data.replyImages.map((image) => (

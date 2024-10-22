@@ -132,7 +132,7 @@ const CreateTicketScreen: FC<CreateTicketScreenNavigationProps> = ({ route, navi
         });
         form.reset();
         clearImages();
-        navigation.navigate('TicketDetailScreen', { index: 0, ticketId: data.data.createTicket.id });
+        navigation.replace('TicketDetailScreen', { index: 0, ticketId: data.data.createTicket.id });
       },
       onError: (errors) => {
         if (isErrors(errors)) {
