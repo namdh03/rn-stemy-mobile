@@ -25,7 +25,7 @@ const DeliveryScreen = () => {
     return [...(data || [])].sort((a, b) => {
       const dateA = new Date(b.createdAt).getTime();
       const dateB = new Date(a.createdAt).getTime();
-      return dateA - dateB;
+      return dateB - dateA;
     });
   }, [data]);
 

@@ -11,7 +11,7 @@ import { useStore } from '~store';
 export type DeliveryItemProps = {
   item: GetStaffListOrderQuery['listOrders'][number];
   buttonText: string;
-  onPress: () => void;
+  onPress: (orderId: string) => void;
 };
 
 const DeliveryItem = ({ item, buttonText, onPress }: DeliveryItemProps) => {
@@ -72,7 +72,7 @@ const DeliveryItem = ({ item, buttonText, onPress }: DeliveryItemProps) => {
       </View>
 
       <View className='ml-auto px-[16px]'>
-        <Button className='min-w-[100px]' onPress={onPress} size='sm'>
+        <Button className='min-w-[100px]' onPress={onPress.bind(null, item.id)} size='sm'>
           <RNText className='font-inter-semiBold text-primary-foreground text-[12px]'>{buttonText}</RNText>
         </Button>
       </View>
