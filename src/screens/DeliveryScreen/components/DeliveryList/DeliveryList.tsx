@@ -2,22 +2,28 @@ import { useCallback, useMemo, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
+  Image as RNImage,
   Modal,
-  Pressable,
   RefreshControl,
   ScrollView,
   Text as RNText,
   View,
 } from 'react-native';
+import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { pickUpOrder } from '~api/order.api';
+import { confirmDeliveredOrder, pickUpOrder } from '~api/order.api';
 import EmptyList from '~components/customs/EmptyList';
+import Pressable from '~components/customs/Pressable';
+import PreviewImage from '~components/customs/PreviewImage';
+import { Camera, CircleX, Image } from '~components/icons';
 import { Button } from '~components/ui/button';
 import { Text } from '~components/ui/text';
 import constants from '~constants';
 import { GetStaffListOrderQuery, OrderStatus } from '~graphql/graphql';
+import { useUploadImage } from '~hooks';
+import { cn } from '~lib/utils';
 import showDialogError from '~utils/showDialogError';
 
 import DeliveryItem from '../DeliveryItem';
@@ -35,10 +41,17 @@ const DeliveryList = ({ isLoading, data, isRefetch, refetch, status }: DeliveryL
   const queryClient = useQueryClient();
   const [pickupModalVisible, setPickupModalVisible] = useState(false);
   const [deliveryModalVisible, setDeliveryModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const orderIdRef = useRef<string>('');
-  const { mutate, isPending } = useMutation({
+  const { mutate: pickUpOrderMutate, isPending: isPickUpOrderPending } = useMutation({
     mutationFn: (orderId: string) => pickUpOrder(orderId),
   });
+  const { mutate: confirmDeliveredOrderMutate, isPending: isConfirmDeliveredOrderPending } = useMutation({
+    mutationFn: (orderId: string) => confirmDeliveredOrder(orderId),
+  });
+
+  const { images, selectImage, deleteImage, clearImages } = useUploadImage();
 
   // Handle order button text based on status
   const handleOrderButtonPress = useCallback(() => {
@@ -54,7 +67,7 @@ const DeliveryList = ({ isLoading, data, isRefetch, refetch, status }: DeliveryL
 
   const handlePickUpOrder = () => {
     if (!orderIdRef.current) return;
-    mutate(orderIdRef.current, {
+    pickUpOrderMutate(orderIdRef.current, {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: [constants.ORDER_QUERY_KEY.GET_STAFF_LIST_ORDER_QUERY, status] });
         setPickupModalVisible(false);
@@ -66,9 +79,29 @@ const DeliveryList = ({ isLoading, data, isRefetch, refetch, status }: DeliveryL
     });
   };
 
-  const handleDeliveryOrder = () => {
-    console.log('DELIVERY CONFIRMED');
+  const handleCloseDeliveryModal = () => {
+    clearImages();
     setDeliveryModalVisible(false);
+  };
+
+  const handleDeliveryOrder = () => {
+    if (!orderIdRef.current) return;
+    confirmDeliveredOrderMutate(orderIdRef.current, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: [constants.ORDER_QUERY_KEY.GET_STAFF_LIST_ORDER_QUERY, status] });
+        Toast.show({
+          type: ALERT_TYPE.SUCCESS,
+          title: constants.MESSAGES.SYSTEM_MESSAGES.SUCCESS_TITLE,
+          textBody: constants.MESSAGES.ORDER_MESSAGES.DELIVERED_ORDER_SUCCESS,
+          autoClose: 1000,
+        });
+        setDeliveryModalVisible(false);
+      },
+      onError: () => {
+        showDialogError();
+        setDeliveryModalVisible(false);
+      },
+    });
   };
 
   // Render the delivery item with memoized callback
@@ -95,6 +128,11 @@ const DeliveryList = ({ isLoading, data, isRefetch, refetch, status }: DeliveryL
 
   // Predefine number of skeletons for loading state
   const skeletonItems = useMemo(() => [...Array(5)], []);
+
+  const openImageModal = (imageUrl: string) => {
+    setSelectedImage(imageUrl);
+    setModalVisible(true);
+  };
 
   return (
     <>
@@ -152,8 +190,8 @@ const DeliveryList = ({ isLoading, data, isRefetch, refetch, status }: DeliveryL
                 <RNText className='font-inter-semiBold text-foreground text-[12px]'>Cancel</RNText>
               </Button>
 
-              <Button disabled={isPending} className='min-w-[80px]' onPress={handlePickUpOrder} size='sm'>
-                {isPending ? (
+              <Button disabled={isPickUpOrderPending} className='min-w-[80px]' onPress={handlePickUpOrder} size='sm'>
+                {isPickUpOrderPending ? (
                   <View className='flex-row items-center justify-center gap-[6px]'>
                     <ActivityIndicator className='text-secondary' size={'small'} />
                   </View>
@@ -180,32 +218,79 @@ const DeliveryList = ({ isLoading, data, isRefetch, refetch, status }: DeliveryL
               Confirm that the order has been successfully delivered to the customer.
             </Text>
             <Text className='font-inter-regular text-foreground text-sm mb-4'>Please upload evidence</Text>
-            <View className='flex-row justify-between mb-6'>
-              {/* // TODO: Remove Later */}
-              <Pressable className='bg-gray-100 p-4 rounded-lg'>
-                <Text>Camera</Text>
+
+            <View className='flex-row justify-center gap-[8px] mb-6'>
+              <Pressable
+                disabled={images.length >= 5}
+                className={cn('bg-[#16A34A1A] rounded-[6px]', {
+                  'opacity-50': images.length >= 5,
+                })}
+                onPress={() => selectImage(false)}
+              >
+                <View className='items-center gap-[2px] min-w-[80px] p-[14px]'>
+                  <Camera className='text-foreground ' />
+                  <Text className='font-inter-regular text-foreground text-[14px] leading-[20px]'>Camera</Text>
+                </View>
               </Pressable>
-              <Pressable className='bg-gray-100 p-4 rounded-lg'>
-                <Text>Gallery</Text>
+              <Pressable
+                disabled={images.length >= 5}
+                className={cn('bg-[#16A34A1A] rounded-[6px]', {
+                  'opacity-50': images.length >= 5,
+                })}
+                onPress={() => selectImage(true)}
+              >
+                <View className='items-center gap-[2px] min-w-[80px] p-[14px]'>
+                  <Image className='text-foreground ' />
+                  <Text className='font-inter-regular text-foreground text-[14px] leading-[20px]'>Gallery</Text>
+                </View>
               </Pressable>
             </View>
+
+            <View className='flex-row flex-wrap items-center gap-[12px] mb-6'>
+              {images.map((image, index) => (
+                <View key={image.uri + index}>
+                  <Pressable onPress={() => openImageModal(image.uri)}>
+                    <RNImage
+                      source={{ uri: image.uri }}
+                      style={{ width: 50, height: 50, alignSelf: 'center', borderRadius: 4 }}
+                      resizeMode='cover'
+                    />
+                  </Pressable>
+                  <Pressable
+                    onPress={() => deleteImage(image)}
+                    className='absolute top-[-6px] right-[-6px] p-1 bg-background rounded-full shadow z-10'
+                  >
+                    <CircleX className='text-destructive ' size={16} />
+                  </Pressable>
+                </View>
+              ))}
+            </View>
+
             <View className='flex-row justify-end gap-[16px]'>
-              <Button
-                variant={'secondary'}
-                className='min-w-[80px]'
-                onPress={() => setDeliveryModalVisible(false)}
-                size='sm'
-              >
+              <Button variant={'secondary'} className='min-w-[80px]' onPress={handleCloseDeliveryModal} size='sm'>
                 <RNText className='font-inter-semiBold text-foreground text-[12px]'>Cancel</RNText>
               </Button>
 
-              <Button className='min-w-[80px]' onPress={handleDeliveryOrder} size='sm'>
-                <RNText className='font-inter-semiBold text-background text-[12px]'>Confirm</RNText>
+              <Button
+                disabled={isConfirmDeliveredOrderPending || images.length === 0}
+                className='min-w-[80px]'
+                onPress={handleDeliveryOrder}
+                size='sm'
+              >
+                {isConfirmDeliveredOrderPending ? (
+                  <View className='flex-row items-center justify-center gap-[6px]'>
+                    <ActivityIndicator className='text-secondary' size={'small'} />
+                  </View>
+                ) : (
+                  <RNText className='font-inter-semiBold text-background text-[12px]'>Confirm</RNText>
+                )}
               </Button>
             </View>
           </View>
         </View>
       </Modal>
+
+      <PreviewImage image={selectedImage} visible={modalVisible} setVisible={setModalVisible} />
     </>
   );
 };
