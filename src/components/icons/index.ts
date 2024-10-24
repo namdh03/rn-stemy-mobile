@@ -1,6 +1,7 @@
 export { default as Bell } from './Bell';
 export { default as Bot } from './Bot';
 export { default as Box } from './Box';
+export { default as Camera } from './Camera';
 export { default as Check } from './Check';
 export { default as ChevronLeft } from './ChevronLeft';
 export { default as ChevronRight } from './ChevronRight';
@@ -15,6 +16,7 @@ export { default as Download } from './Download';
 export { default as EllipsisVertical } from './EllipsisVertical';
 export { default as Eye } from './Eye';
 export { default as EyeOff } from './EyeOff';
+export { default as Image } from './Image';
 export { default as Inbox } from './Inbox';
 export { default as Info } from './Info';
 export { default as Laptop } from './Laptop';

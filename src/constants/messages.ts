@@ -36,6 +36,7 @@ export const ORDER_MESSAGES = {
   RECEIVED_ORDER_TEXT_BODY:
     'By clicking Confirm, you acknowledge that you have successfully received the order, and the lab instructions will be activated in your system.',
   RECEIVED_ORDER_BUTTON: 'Confirm',
+  DELIVERED_ORDER_SUCCESS: 'The order has been successfully confirmed as delivered. Thank you for completing the task!',
 };
 
 export const LAB_MESSAGES = {
