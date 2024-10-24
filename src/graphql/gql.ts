@@ -47,6 +47,8 @@ const documents = {
     types.ReceivedOrderDocument,
   '\n  mutation ReOrder($orderId: Float!) {\n    reOrder(orderId: $orderId) {\n      id\n      hasLab\n      product {\n        id\n        name\n        price\n        images {\n          url\n        }\n        lab {\n          price\n        }\n      }\n      quantity\n    }\n  }\n':
     types.ReOrderDocument,
+  '\n  query GetStaffListOrder($status: OrderStatus!) {\n    listOrders(status: $status) {\n      address\n      createdAt\n      fullName\n      id\n      orderItems {\n        id\n      }\n      phone\n      totalPrice\n      updatedAt\n    }\n  }\n':
+    types.GetStaffListOrderDocument,
   '\n  query GetProduct($id: Float!) {\n    product(id: $id) {\n      categories {\n        id\n        name\n        type\n        title\n      }\n      images {\n        id\n        url\n      }\n      description\n      id\n      name\n      price\n      rating\n      sold\n      feedbacks {\n        note\n        createdAt\n        id\n        rating\n        user {\n          fullName\n        }\n      }\n      lab {\n        price\n      }\n    }\n    products(currentItem: 10, order: ASC, sort: "price") {\n      items {\n        id\n        images {\n          url\n        }\n        price\n        name\n        rating\n        feedbacks {\n          id\n        }\n      }\n    }\n  }\n':
     types.GetProductDocument,
   '\n  query GetFeaturedProduct {\n    products(currentItem: 10, order: ASC, sort: "price") {\n      items {\n        id\n        images {\n          url\n        }\n        price\n        name\n        rating\n        feedbacks {\n          id\n        }\n      }\n    }\n  }\n':
@@ -199,6 +201,12 @@ export function graphql(
 export function graphql(
   source: '\n  mutation ReOrder($orderId: Float!) {\n    reOrder(orderId: $orderId) {\n      id\n      hasLab\n      product {\n        id\n        name\n        price\n        images {\n          url\n        }\n        lab {\n          price\n        }\n      }\n      quantity\n    }\n  }\n',
 ): typeof import('./graphql').ReOrderDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query GetStaffListOrder($status: OrderStatus!) {\n    listOrders(status: $status) {\n      address\n      createdAt\n      fullName\n      id\n      orderItems {\n        id\n      }\n      phone\n      totalPrice\n      updatedAt\n    }\n  }\n',
+): typeof import('./graphql').GetStaffListOrderDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

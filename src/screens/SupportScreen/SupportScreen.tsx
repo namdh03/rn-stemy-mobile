@@ -31,7 +31,7 @@ const SupportScreen = () => {
   }, [data]);
 
   return (
-    <View className='gap-[16px] p-[25px] py-[30px] mx-auto w-full max-w-xl'>
+    <View className='gap-[16px] p-[25px] py-[30px] mx-auto w-full max-w-xl bg-muted'>
       <Tabs
         value={value}
         onValueChange={(value) => setValue(value as TicketStatus)}

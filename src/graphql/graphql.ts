@@ -104,6 +104,7 @@ export type Mutation = {
   createProduct: Product;
   createProductCategory: ProductCategory;
   createTicket: Ticket;
+  deactivatePushToken: Scalars['Boolean']['output'];
   deleteCarts: Scalars['String']['output'];
   deleteProduct: Product;
   deleteProductCategory: ProductCategory;
@@ -117,6 +118,7 @@ export type Mutation = {
   repayOrder: Scalars['String']['output'];
   replyTicket: Ticket;
   resetPassword: Scalars['String']['output'];
+  savePushToken: PushToken;
   sendResetPasswordOTP: Scalars['String']['output'];
   updateAvatar: User;
   updateCart: Cart;
@@ -164,6 +166,10 @@ export type MutationCreateTicketArgs = {
   images?: Array<Scalars['File']['input']>;
   orderItemId: Scalars['Float']['input'];
   title: Scalars['String']['input'];
+};
+
+export type MutationDeactivatePushTokenArgs = {
+  deviceId: Scalars['String']['input'];
 };
 
 export type MutationDeleteCartsArgs = {
@@ -224,6 +230,12 @@ export type MutationReplyTicketArgs = {
 
 export type MutationResetPasswordArgs = {
   password: Scalars['String']['input'];
+  token: Scalars['String']['input'];
+};
+
+export type MutationSavePushTokenArgs = {
+  deviceId: Scalars['String']['input'];
+  platform: Scalars['String']['input'];
   token: Scalars['String']['input'];
 };
 
@@ -381,11 +393,26 @@ export type ProductsWithPaginationResponse = {
   pageInfo: E;
 };
 
+export type PushToken = {
+  __typename?: 'PushToken';
+  createdAt: Scalars['DateTimeISO']['output'];
+  deviceId: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  isActive: Scalars['Boolean']['output'];
+  platform: Scalars['String']['output'];
+  token: Scalars['String']['output'];
+  updatedAt?: Maybe<Scalars['DateTimeISO']['output']>;
+  user: User;
+};
+
 export type Query = {
   __typename?: 'Query';
   carts: Array<Cart>;
   countCart: Scalars['Float']['output'];
   countOrder: CountOrderResponse;
+  getPushToken: PushToken;
+  getPushTokens: Array<PushToken>;
+  listOrders: Array<Order>;
   me: User;
   myTickets: Array<Ticket>;
   order: Order;
@@ -402,6 +429,14 @@ export type Query = {
   user?: Maybe<User>;
   userLabs: Array<UserLab>;
   users: Array<User>;
+};
+
+export type QueryGetPushTokenArgs = {
+  deviceId: Scalars['String']['input'];
+};
+
+export type QueryListOrdersArgs = {
+  status: OrderStatus;
 };
 
 export type QueryMyTicketsArgs = {
@@ -973,6 +1008,25 @@ export type ReOrderMutation = {
       images: Array<{ __typename?: 'ProductImage'; url: string }>;
       lab?: { __typename?: 'ProductLab'; price: number } | null;
     };
+  }>;
+};
+
+export type GetStaffListOrderQueryVariables = Exact<{
+  status: OrderStatus;
+}>;
+
+export type GetStaffListOrderQuery = {
+  __typename?: 'Query';
+  listOrders: Array<{
+    __typename?: 'Order';
+    address: string;
+    createdAt: any;
+    fullName: string;
+    id: string;
+    phone: string;
+    totalPrice: number;
+    updatedAt?: any | null;
+    orderItems: Array<{ __typename?: 'OrderItem'; id: string }>;
   }>;
 };
 
@@ -1684,6 +1738,22 @@ export const ReOrderDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<ReOrderMutation, ReOrderMutationVariables>;
+export const GetStaffListOrderDocument = new TypedDocumentString(`
+    query GetStaffListOrder($status: OrderStatus!) {
+  listOrders(status: $status) {
+    address
+    createdAt
+    fullName
+    id
+    orderItems {
+      id
+    }
+    phone
+    totalPrice
+    updatedAt
+  }
+}
+    `) as unknown as TypedDocumentString<GetStaffListOrderQuery, GetStaffListOrderQueryVariables>;
 export const GetProductDocument = new TypedDocumentString(`
     query GetProduct($id: Float!) {
   product(id: $id) {
