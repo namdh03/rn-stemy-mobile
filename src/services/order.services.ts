@@ -232,3 +232,20 @@ export const ReOrderMutation = graphql(`
     }
   }
 `);
+
+export const GetStaffListOrderQuery = graphql(`
+  query GetStaffListOrder($status: OrderStatus!) {
+    listOrders(status: $status) {
+      address
+      createdAt
+      fullName
+      id
+      orderItems {
+        id
+      }
+      phone
+      totalPrice
+      updatedAt
+    }
+  }
+`);

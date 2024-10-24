@@ -41,6 +41,8 @@
  *      ├── Bottom Tab (Staff)
  *      │   ├── Support Stack
  *      │   │   └── Support Screen
+ *      │   ├── Delivery Stack
+ *      │   │   └── Delivery Screen
  *      │   └── Staff Profile Stack
  *      │       └── Staff Profile Screen
  *      └── Support Ticket Detail Screen
@@ -90,6 +92,10 @@ export type SupportStackParamList = {
   SupportScreen: undefined;
 };
 
+export type DeliveryStackParamList = {
+  DeliveryScreen: undefined;
+};
+
 export type StaffProfileStackParamList = {
   StaffProfileScreen: undefined;
 };
@@ -97,6 +103,7 @@ export type StaffProfileStackParamList = {
 // Bottom Tab (Staff)
 export type StaffBottomTabParamList = {
   SupportStack: NavigatorScreenParams<SupportStackParamList>;
+  DeliveryStack: NavigatorScreenParams<DeliveryStackParamList>;
   StaffProfileStack: NavigatorScreenParams<StaffProfileStackParamList>;
 };
 
@@ -277,17 +284,22 @@ export type TicketDetailScreenNavigationProps = CompositeScreenProps<
   NativeStackScreenProps<BottomTabParamList>
 >;
 
+export type CreateTicketScreenNavigationProps = CompositeScreenProps<
+  NativeStackScreenProps<MainStackParamList, 'CreateTicketScreen'>,
+  NativeStackScreenProps<BottomTabParamList>
+>;
+
 export type SupportScreenNavigationProps = CompositeScreenProps<
   NativeStackScreenProps<SupportStackParamList, 'SupportScreen'>,
+  NativeStackScreenProps<StaffStackParamList>
+>;
+
+export type DeliveryScreenNavigationProps = CompositeScreenProps<
+  NativeStackScreenProps<DeliveryStackParamList, 'DeliveryScreen'>,
   NativeStackScreenProps<StaffStackParamList>
 >;
 
 export type SupportTicketDetailScreenNavigationProps = NativeStackScreenProps<
   StaffStackParamList,
   'SupportTicketDetailScreen'
->;
-
-export type CreateTicketScreenNavigationProps = CompositeScreenProps<
-  NativeStackScreenProps<MainStackParamList, 'CreateTicketScreen'>,
-  NativeStackScreenProps<BottomTabParamList>
 >;

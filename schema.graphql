@@ -108,6 +108,7 @@ type Mutation {
     orderItemId: Float!
     title: String!
   ): Ticket!
+  deactivatePushToken(deviceId: String!): Boolean!
   deleteCarts(cartId: [Int!]!): String!
   deleteProduct(id: Float!): Product!
   deleteProductCategory(id: Float!): ProductCategory!
@@ -121,6 +122,7 @@ type Mutation {
   repayOrder(orderId: Float!): String!
   replyTicket(comment: String!, images: [File!]! = [], ticketId: Float!): Ticket!
   resetPassword(password: String!, token: String!): String!
+  savePushToken(deviceId: String!, platform: String!, token: String!): PushToken!
   sendResetPasswordOTP(email: String!): String!
   updateAvatar(image: File!): User!
   updateCart(cartId: Float!, quantity: Float!): Cart!
@@ -242,10 +244,24 @@ type ProductsWithPaginationResponse {
   pageInfo: e!
 }
 
+type PushToken {
+  createdAt: DateTimeISO!
+  deviceId: String!
+  id: ID!
+  isActive: Boolean!
+  platform: String!
+  token: String!
+  updatedAt: DateTimeISO
+  user: User!
+}
+
 type Query {
   carts: [Cart!]!
   countCart: Float!
   countOrder: CountOrderResponse!
+  getPushToken(deviceId: String!): PushToken!
+  getPushTokens: [PushToken!]!
+  listOrders(status: OrderStatus!): [Order!]!
   me: User!
   myTickets(status: TicketStatus): [Ticket!]!
   order(id: Float!): Order!

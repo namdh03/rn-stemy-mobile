@@ -1,8 +1,9 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import { CircleUser, Tickets } from '~components/icons';
+import { CircleUser, Tickets, Truck } from '~components/icons';
 import { StaffBottomTabParamList } from '~types/navigation.type';
 
+import DeliveryStack from './stack/DeliveryStack';
 import StaffProfileStack from './stack/StaffProfileStack';
 import SupportStack from './stack/SupportStack';
 
@@ -35,6 +36,14 @@ const StaffBottomTabNavigator = () => {
         options={{
           tabBarLabel: 'Support',
           tabBarIcon: ({ color, size }) => <Tickets color={color} size={size} />,
+        }}
+      />
+      <StaffBottomTab.Screen
+        name='DeliveryStack'
+        component={DeliveryStack}
+        options={{
+          tabBarLabel: 'Delivery',
+          tabBarIcon: ({ color, size }) => <Truck color={color} size={size} />,
         }}
       />
       <StaffBottomTab.Screen

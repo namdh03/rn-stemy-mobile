@@ -51,9 +51,7 @@ const TicketList = ({ isLoading, data, isRefetch, refetch, status }: TicketListP
           contentContainerStyle={{ flexGrow: 1 }}
           refreshControl={<RefreshControl refreshing={isRefetch} onRefresh={refetch} />}
         >
-          <EmptyList
-            message={`You have no support tickets. If you encounter any issues, feel free to create a new ticket.`}
-          />
+          <EmptyList message={`You have no support tickets.`} />
         </ScrollView>
       ) : (
         <FlatList
