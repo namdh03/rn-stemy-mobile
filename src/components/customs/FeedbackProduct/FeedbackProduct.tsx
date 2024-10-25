@@ -13,14 +13,21 @@ interface FeedbackProps {
   image: { uri: string };
   name: string;
   hasLab: boolean;
+  onFeedbackChange: (rating: number, note: string) => void;
 }
 
-const FeedbackProduct = ({ image, name, hasLab }: FeedbackProps) => {
+const FeedbackProduct = ({ image, name, hasLab, onFeedbackChange }: FeedbackProps) => {
   const [rating, setRating] = useState(0);
+  const [note, setNote] = useState('');
 
   const handleRating = (value: number) => {
     setRating(value);
-    console.log(value);
+    onFeedbackChange(value, note); // Cập nhật ngay khi chọn rating
+  };
+
+  const handleNoteChange = (text: string) => {
+    setNote(text);
+    onFeedbackChange(rating, text); // Cập nhật ngay khi nhập comment
   };
 
   return (
@@ -57,6 +64,7 @@ const FeedbackProduct = ({ image, name, hasLab }: FeedbackProps) => {
           placeholder='Share more thoughts on the product to help other buyers.'
           multiline={true}
           textAlignVertical='top'
+          onChangeText={handleNoteChange}
           style={{ height: '100%' }}
           className='flex-1 bg-[#F4F4F5] px-[14px] py-[12px] gap-[8px] placeholder:text-[##71717A] placeholder:leading-[24px]'
         />
