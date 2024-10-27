@@ -1,4 +1,4 @@
-import { ScrollView, View } from 'react-native';
+import { RefreshControl, ScrollView, View } from 'react-native';
 
 import { useQuery } from '@tanstack/react-query';
 
@@ -6,29 +6,22 @@ import images from '~assets/images';
 import Banner from '~components/customs/Banner';
 import Carousel from '~components/customs/Carousel';
 import CategoriesList from '~components/customs/CategoriesList';
-// import Category from '~components/customs/Category';
-import LoadingOverlay from '~components/customs/LoadingOverlay';
 import ProductList from '~components/customs/ProductList';
 import SearchName from '~components/customs/SearchName';
-// import { Bot, CircleX, Laptop, SlidersVertical, Wrench } from '~components/icons';
 import { Text } from '~components/ui/text';
 import constants from '~constants';
 import execute from '~graphql/execute';
-import { useColorScheme } from '~hooks';
+import { useColorScheme, useRefreshByUser } from '~hooks';
 import { GetHomeQuery } from '~services/home.services';
 import { HomeScreenNavigationProps } from '~types/navigation.type';
 
 const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
   const { isDarkColorScheme } = useColorScheme();
-  const { data, isFetching } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: [constants.HOME_QUERY_KEY.GET_HOME_QUERY_KEY],
     queryFn: () => execute(GetHomeQuery),
     select: (data) => data.data,
   });
-
-  if (isFetching) {
-    return <LoadingOverlay loop />;
-  }
 
   const handlePress = () => {
     navigation.navigate('StoresStack', {
@@ -36,8 +29,16 @@ const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
     });
   };
 
+  const { isRefetchingByUser, refetchByUser } = useRefreshByUser(refetch);
+
   return (
-    <ScrollView showsVerticalScrollIndicator={false} automaticallyAdjustContentInsets={false}>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      automaticallyAdjustContentInsets={false}
+      refreshControl={
+        <RefreshControl className='text-primary' refreshing={isRefetchingByUser} onRefresh={refetchByUser} />
+      }
+    >
       <View className='w-full px-[25px]'>
         <SearchName
           editable={false}

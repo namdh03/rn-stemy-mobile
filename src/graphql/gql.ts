@@ -26,6 +26,8 @@ const documents = {
     types.CreateOrderDocument,
   '\n  mutation CheckoutOrder($input: CheckoutOrderInput!) {\n    checkoutOrder(input: $input)\n  }\n':
     types.CheckoutOrderDocument,
+  '\n  mutation CreateFeedback($orderId: Float!, $input: [CreateFeedbackInput!]!) {\n    createFeedback(orderId: $orderId, input: $input)\n  }\n':
+    types.CreateFeedbackDocument,
   '\n  query GetHome {\n    featuredProduct: products(currentItem: 10, order: DESC, sort: "rating") {\n      items {\n        id\n        images {\n          url\n        }\n        name\n        price\n        rating\n        feedbacks {\n          id\n        }\n      }\n    }\n\n    bestSellers: products(currentItem: 10, order: DESC, sort: "sold") {\n      items {\n        id\n        images {\n          url\n        }\n        name\n        price\n        rating\n        feedbacks {\n          id\n        }\n      }\n    }\n\n    newArrivals: products(currentItem: 10, order: DESC, sort: "createdAt") {\n      items {\n        id\n        feedbacks {\n          id\n        }\n        images {\n          url\n        }\n        name\n        price\n        rating\n      }\n    }\n\n    topRatedProduct: products(currentItem: 10, order: DESC, sort: "rating") {\n      items {\n        id\n        images {\n          url\n        }\n        name\n        price\n        rating\n        feedbacks {\n          id\n        }\n      }\n    }\n\n    specialOffers: products(order: ASC, sort: "price", currentItem: 10) {\n      items {\n        id\n        feedbacks {\n          id\n        }\n        images {\n          url\n        }\n        name\n        price\n        rating\n      }\n    }\n  }\n':
     types.GetHomeDocument,
   '\n  query GetMyPurchases($search: String!) {\n    searchOrder(search: $search) {\n      orderItems {\n        userLab {\n          isActive\n          id\n          updatedAt\n          createdAt\n        }\n        product {\n          name\n          images {\n            url\n          }\n          id\n        }\n        tickets {\n          id\n        }\n        id\n      }\n      id\n      createdAt\n      updatedAt\n    }\n  }\n':
@@ -135,6 +137,12 @@ export function graphql(
 export function graphql(
   source: '\n  mutation CheckoutOrder($input: CheckoutOrderInput!) {\n    checkoutOrder(input: $input)\n  }\n',
 ): typeof import('./graphql').CheckoutOrderDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation CreateFeedback($orderId: Float!, $input: [CreateFeedbackInput!]!) {\n    createFeedback(orderId: $orderId, input: $input)\n  }\n',
+): typeof import('./graphql').CreateFeedbackDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

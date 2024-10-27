@@ -22,6 +22,8 @@ const OrderDetailScreen = ({ route, navigation }: OrderDetailScreenNavigationPro
   const { onRepayOrder } = useRepayOrder();
   const { onReceivedOrder } = useReceivedOrder();
 
+  console.log(route.params.id);
+
   const renderOrderItem = useCallback(
     ({ item }: { item: GetOrderByStatusQuery['searchOrder'][number]['orderItems'][number] }) => (
       <CheckoutItem

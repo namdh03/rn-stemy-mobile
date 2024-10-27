@@ -684,6 +684,13 @@ export type CheckoutOrderMutationVariables = Exact<{
 
 export type CheckoutOrderMutation = { __typename?: 'Mutation'; checkoutOrder: boolean };
 
+export type CreateFeedbackMutationVariables = Exact<{
+  orderId: Scalars['Float']['input'];
+  input: Array<CreateFeedbackInput> | CreateFeedbackInput;
+}>;
+
+export type CreateFeedbackMutation = { __typename?: 'Mutation'; createFeedback: boolean };
+
 export type GetHomeQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetHomeQuery = {
@@ -1402,6 +1409,11 @@ export const CheckoutOrderDocument = new TypedDocumentString(`
   checkoutOrder(input: $input)
 }
     `) as unknown as TypedDocumentString<CheckoutOrderMutation, CheckoutOrderMutationVariables>;
+export const CreateFeedbackDocument = new TypedDocumentString(`
+    mutation CreateFeedback($orderId: Float!, $input: [CreateFeedbackInput!]!) {
+  createFeedback(orderId: $orderId, input: $input)
+}
+    `) as unknown as TypedDocumentString<CreateFeedbackMutation, CreateFeedbackMutationVariables>;
 export const GetHomeDocument = new TypedDocumentString(`
     query GetHome {
   featuredProduct: products(currentItem: 10, order: DESC, sort: "rating") {
