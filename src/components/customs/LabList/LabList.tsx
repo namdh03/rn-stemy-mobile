@@ -3,6 +3,7 @@ import { FlatList, Text } from 'react-native';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '~components/ui/accordion';
 import { GetMyPurchasesQuery } from '~graphql/graphql';
 
+import EmptyList from '../EmptyList';
 import LabComponent from '../LabComponent';
 
 interface LabListProps {
@@ -14,6 +15,7 @@ interface LabListProps {
 const LabList = ({ data }: LabListProps) => {
   const renderItem = ({ item }: { item: GetMyPurchasesQuery['searchOrder'][number]['orderItems'][number] }) => {
     if (!item.userLab) return null;
+
     return (
       <AccordionContent>
         <LabComponent
@@ -38,13 +40,18 @@ const LabList = ({ data }: LabListProps) => {
             Order ID: <Text className='text-muted-foreground'>{btoa(btoa(btoa(btoa(data.id))))}</Text>
           </Text>
         </AccordionTrigger>
-
-        <FlatList
-          data={data.orderItems.filter((item) => item.userLab !== null)}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          showsHorizontalScrollIndicator={false}
-        />
+        {data.orderItems.filter((item) => item.userLab !== null).length === 0 ? (
+          <AccordionContent>
+            <EmptyList message='No Lab in this order' />
+          </AccordionContent>
+        ) : (
+          <FlatList
+            data={data.orderItems.filter((item) => item.userLab !== null)}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            showsHorizontalScrollIndicator={false}
+          />
+        )}
       </AccordionItem>
     </Accordion>
   );
