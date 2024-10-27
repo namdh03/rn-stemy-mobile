@@ -15,35 +15,35 @@ const ImageFileSchema = z.object({
 export const createTicketSchema = z.object({
   orderItemId: z.coerce
     .number({
-      message: constants.MESSAGES.STAFF_TICKET.ORDER_ITEM_ID,
+      message: constants.MESSAGES.STAFF_TICKET_MESSAGES.ORDER_ITEM_ID,
     })
     .int({
-      message: constants.MESSAGES.STAFF_TICKET.ORDER_ITEM_ID,
+      message: constants.MESSAGES.STAFF_TICKET_MESSAGES.ORDER_ITEM_ID,
     })
     .positive({
-      message: constants.MESSAGES.STAFF_TICKET.ORDER_ITEM_ID,
+      message: constants.MESSAGES.STAFF_TICKET_MESSAGES.ORDER_ITEM_ID,
     })
     .min(1, {
-      message: constants.MESSAGES.STAFF_TICKET.ORDER_ITEM_ID,
+      message: constants.MESSAGES.STAFF_TICKET_MESSAGES.ORDER_ITEM_ID,
     }),
   categoryId: z.coerce
     .number({
-      message: constants.MESSAGES.STAFF_TICKET.CATEGORY_ID,
+      message: constants.MESSAGES.STAFF_TICKET_MESSAGES.CATEGORY_ID,
     })
     .int({
-      message: constants.MESSAGES.STAFF_TICKET.CATEGORY_ID,
+      message: constants.MESSAGES.STAFF_TICKET_MESSAGES.CATEGORY_ID,
     })
     .positive({
-      message: constants.MESSAGES.STAFF_TICKET.CATEGORY_ID,
+      message: constants.MESSAGES.STAFF_TICKET_MESSAGES.CATEGORY_ID,
     })
     .min(1, {
-      message: constants.MESSAGES.STAFF_TICKET.CATEGORY_ID,
+      message: constants.MESSAGES.STAFF_TICKET_MESSAGES.CATEGORY_ID,
     }),
   title: z.string().min(1, {
-    message: constants.MESSAGES.STAFF_TICKET.TITLE_VALIDATE,
+    message: constants.MESSAGES.STAFF_TICKET_MESSAGES.TITLE_VALIDATE,
   }),
   description: z.string().min(1, {
-    message: constants.MESSAGES.STAFF_TICKET.DESCRIPTION_VALIDATE,
+    message: constants.MESSAGES.STAFF_TICKET_MESSAGES.DESCRIPTION_VALIDATE,
   }),
   images: z.array(ImageFileSchema).refine(
     async (images) => {

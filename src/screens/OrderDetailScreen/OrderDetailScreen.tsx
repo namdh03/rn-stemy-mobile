@@ -25,7 +25,6 @@ const OrderDetailScreen = ({ route, navigation }: OrderDetailScreenNavigationPro
     () => route.params.orderItems.reduce((acc, cur) => acc + cur.quantity, 0),
     [route.params.orderItems],
   );
-  console.log(route.params);
 
   const renderOrderItem = useCallback(
     ({ item }: { item: GetOrderByStatusQuery['searchOrder'][number]['orderItems'][number] }) => (

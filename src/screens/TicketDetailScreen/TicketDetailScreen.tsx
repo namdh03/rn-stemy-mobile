@@ -1,35 +1,71 @@
 import { useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { ActivityIndicator, ScrollView, Text as RNText, View } from 'react-native';
+import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
 import dayjs from 'dayjs';
 import { Image } from 'expo-image';
 
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import LoadingOverlay from '~components/customs/LoadingOverlay';
 import Pressable from '~components/customs/Pressable';
 import PreviewImage from '~components/customs/PreviewImage';
+import { Angry, Frown, Laugh, Meh, Smile } from '~components/icons';
+import { Button } from '~components/ui/button';
+import { Card } from '~components/ui/card';
 import { Separator } from '~components/ui/separator';
 import { Text } from '~components/ui/text';
 import constants from '~constants';
 import execute from '~graphql/execute';
 import { TicketStatus } from '~graphql/graphql';
 import { cn } from '~lib/utils';
-import { GetTicketByIdQuery } from '~services/ticket.services';
+import { GetTicketByIdQuery, RatingTicketMutation } from '~services/ticket.services';
 import { TicketDetailScreenNavigationProps } from '~types/navigation.type';
 import capitalizeFirstLetter from '~utils/capitalizeFirstLetter';
+import isErrors from '~utils/responseChecker';
+import showDialogError from '~utils/showDialogError';
 
 const TicketDetailScreen = ({ route }: TicketDetailScreenNavigationProps) => {
+  const queryClient = useQueryClient();
   const { data, isFetching } = useQuery({
-    queryKey: [constants.TICKET_QUERY_KEY.GET_TICKET_BY_ID_QUERY_KEY],
+    queryKey: [constants.TICKET_QUERY_KEY.GET_TICKET_BY_ID_QUERY_KEY, route.params.ticketId],
     queryFn: () => execute(GetTicketByIdQuery, { ticketId: +route.params.ticketId }),
     select: (data) => data.data.ticket,
   });
+  const { mutate, isPending } = useMutation({
+    mutationFn: (rating: number) => execute(RatingTicketMutation, { rating, ticketId: +route.params.ticketId }),
+  });
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [rating, setRating] = useState(5);
 
   const openImageModal = (imageUrl: string) => {
     setSelectedImage(imageUrl);
     setModalVisible(true);
+  };
+
+  const handleRatingTicket = () => {
+    mutate(rating, {
+      onSuccess: async () => {
+        Toast.show({
+          type: ALERT_TYPE.SUCCESS,
+          title: constants.MESSAGES.SYSTEM_MESSAGES.SUCCESS_TITLE,
+          textBody: constants.MESSAGES.TICKET_MESSAGES.RATING_TICKET_TEXT_BODY,
+          autoClose: 1000,
+        });
+        queryClient.invalidateQueries({
+          queryKey: [constants.TICKET_QUERY_KEY.GET_TICKET_BY_ID_QUERY_KEY, route.params.ticketId],
+        });
+      },
+      onError: (errors) => {
+        if (isErrors(errors)) {
+          const error = errors.find((error) => error.path.includes('ratingTicket'));
+          if (error?.message) {
+            return showDialogError({ textBody: error.message });
+          }
+        }
+        showDialogError();
+      },
+    });
   };
 
   if (isFetching) {
@@ -40,7 +76,7 @@ const TicketDetailScreen = ({ route }: TicketDetailScreenNavigationProps) => {
   return (
     <>
       <ScrollView
-        contentContainerClassName='gap-[16px] p-[25px] py-[30px] mx-auto w-full max-w-xl'
+        contentContainerClassName='gap-[16px] p-[25px] pt-[30px] pb-[70px] mx-auto w-full max-w-xl'
         showsVerticalScrollIndicator={false}
         automaticallyAdjustContentInsets={false}
       >
@@ -154,6 +190,129 @@ const TicketDetailScreen = ({ route }: TicketDetailScreenNavigationProps) => {
                 </Text>
               </View>
             </View>
+
+            {data.rating ? (
+              <View className='gap-[16px] items-center'>
+                <Text className='self-start font-inter-medium text-foreground text-[14px] leading-[20px]'>
+                  Rating service
+                </Text>
+
+                <View className='flex flex-row gap-[18px]'>
+                  <View className='items-center'>
+                    <Angry size={32} className={rating === 1 ? 'text-primary' : 'text-muted-foreground'} />
+                    {rating === 1 && (
+                      <Text className='font-inter-regular text-foreground text-[12px] leading-[16px] tracking-[0.4px]'>
+                        Very poor
+                      </Text>
+                    )}
+                  </View>
+                  <View className='items-center'>
+                    <Frown size={32} className={rating === 2 ? 'text-primary' : 'text-muted-foreground'} />
+                    {rating === 2 && (
+                      <Text className='font-inter-regular text-foreground text-[12px] leading-[16px] tracking-[0.4px]'>
+                        Poor
+                      </Text>
+                    )}
+                  </View>
+                  <View className='items-center'>
+                    <Meh size={32} className={rating === 3 ? 'text-primary' : 'text-muted-foreground'} />
+                    {rating === 3 && (
+                      <Text className='font-inter-regular text-foreground text-[12px] leading-[16px] tracking-[0.4px]'>
+                        Average
+                      </Text>
+                    )}
+                  </View>
+                  <View className='items-center'>
+                    <Smile size={32} className={rating === 4 ? 'text-primary' : 'text-muted-foreground'} />
+                    {rating === 4 && (
+                      <Text className='font-inter-regular text-foreground text-[12px] leading-[16px] tracking-[0.4px]'>
+                        Good
+                      </Text>
+                    )}
+                  </View>
+                  <View className='items-center'>
+                    <Laugh size={32} className={rating === 5 ? 'text-primary' : 'text-muted-foreground'} />
+                    {rating === 5 && (
+                      <Text className='font-inter-regular text-foreground text-[12px] leading-[16px] tracking-[0.4px]'>
+                        Excellent
+                      </Text>
+                    )}
+                  </View>
+                </View>
+              </View>
+            ) : (
+              <Card className='w-full p-[16px]'>
+                <View className='gap-[16px] items-center'>
+                  <Text className='self-start font-inter-medium text-foreground text-[14px] leading-[20px]'>
+                    Rating service
+                  </Text>
+
+                  <View className='flex flex-row gap-[18px]'>
+                    <Pressable onPress={() => setRating(1)}>
+                      <View className='items-center'>
+                        <Angry size={32} className={rating === 1 ? 'text-primary' : 'text-muted-foreground'} />
+                        {rating === 1 && (
+                          <Text className='font-inter-regular text-foreground text-[12px] leading-[16px] tracking-[0.4px]'>
+                            Very poor
+                          </Text>
+                        )}
+                      </View>
+                    </Pressable>
+                    <Pressable onPress={() => setRating(2)}>
+                      <View className='items-center'>
+                        <Frown size={32} className={rating === 2 ? 'text-primary' : 'text-muted-foreground'} />
+                        {rating === 2 && (
+                          <Text className='font-inter-regular text-foreground text-[12px] leading-[16px] tracking-[0.4px]'>
+                            Poor
+                          </Text>
+                        )}
+                      </View>
+                    </Pressable>
+                    <Pressable onPress={() => setRating(3)}>
+                      <View className='items-center'>
+                        <Meh size={32} className={rating === 3 ? 'text-primary' : 'text-muted-foreground'} />
+                        {rating === 3 && (
+                          <Text className='font-inter-regular text-foreground text-[12px] leading-[16px] tracking-[0.4px]'>
+                            Average
+                          </Text>
+                        )}
+                      </View>
+                    </Pressable>
+                    <Pressable onPress={() => setRating(4)}>
+                      <View className='items-center'>
+                        <Smile size={32} className={rating === 4 ? 'text-primary' : 'text-muted-foreground'} />
+                        {rating === 4 && (
+                          <Text className='font-inter-regular text-foreground text-[12px] leading-[16px] tracking-[0.4px]'>
+                            Good
+                          </Text>
+                        )}
+                      </View>
+                    </Pressable>
+                    <Pressable onPress={() => setRating(5)}>
+                      <View className='items-center'>
+                        <Laugh size={32} className={rating === 5 ? 'text-primary' : 'text-muted-foreground'} />
+                        {rating === 5 && (
+                          <Text className='font-inter-regular text-foreground text-[12px] leading-[16px] tracking-[0.4px]'>
+                            Excellent
+                          </Text>
+                        )}
+                      </View>
+                    </Pressable>
+                  </View>
+
+                  <Button disabled={isPending} className='min-w-[100px]' size='sm' onPress={handleRatingTicket}>
+                    {isPending ? (
+                      <View className='flex-row items-center justify-center gap-[6px]'>
+                        <ActivityIndicator className='text-secondary' />
+                        <RNText className='font-inter-semiBold text-primary-foreground text-[12px]'>Loading...</RNText>
+                      </View>
+                    ) : (
+                      <RNText className='font-inter-semiBold text-primary-foreground text-[12px]'>Send</RNText>
+                    )}
+                  </Button>
+                </View>
+              </Card>
+            )}
           </>
         )}
       </ScrollView>
