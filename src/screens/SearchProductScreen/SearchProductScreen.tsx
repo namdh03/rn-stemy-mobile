@@ -103,7 +103,18 @@ const SearchProductScreen = ({ navigation }: SearchProductScreenNavigationProps)
         </View>
 
         <View className={`rounded-t-[10px] ${isDarkColorScheme ? 'bg-secondary' : 'bg-destructive-foreground'}`}>
-          <ProductList title='Featured Product' data={featuredProduct || []} />
+          <ProductList
+            title='Featured Product'
+            data={featuredProduct || []}
+            onPress={() =>
+              navigation.navigate('BottomTabStack', {
+                screen: 'StoresStack',
+                params: {
+                  screen: 'StoresScreen',
+                },
+              })
+            }
+          />
         </View>
       </RNPressable>
     </ScrollView>

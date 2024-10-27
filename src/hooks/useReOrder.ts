@@ -11,7 +11,6 @@ import { useCartStore } from '~store';
 import { MainStackParamList } from '~types/navigation.type';
 import isErrors from '~utils/responseChecker';
 import showDialogError from '~utils/showDialogError';
-import { getAccessToken } from '~utils/token-storage';
 
 const useReOrder = () => {
   const queryClient = useQueryClient();
@@ -26,7 +25,6 @@ const useReOrder = () => {
   });
 
   const onReOrder = (orderId: number) => {
-    console.log(orderId, getAccessToken());
     reOrderMutate(orderId, {
       onSuccess: (data) => {
         console.log(data.data.reOrder);

@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import { ActivityIndicator, FlatList, Text as RNText, View } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import { useShallow } from 'zustand/react/shallow';
@@ -25,6 +25,8 @@ import PaymentMethodBottomSheet from './components/PaymentMethodBottomSheet';
 
 const CheckoutScreen = ({ navigation }: CheckoutScreenNavigationProps) => {
   const queryClient = useQueryClient();
+
+  const checkoutData = useStore(useShallow((state) => state.checkoutData));
   const { total, selectedCart, clearOrderedCart } = useCartStore(
     useShallow((state) => ({
       total: state.total,
@@ -32,8 +34,14 @@ const CheckoutScreen = ({ navigation }: CheckoutScreenNavigationProps) => {
       clearOrderedCart: state.clearOrderedCart,
     })),
   );
-  const checkoutData = useStore(useShallow((state) => state.checkoutData));
+
+  const totalSelectedItem = useMemo(
+    () => Object.values(selectedCart).reduce((acc, cur) => acc + cur.quantity, 0),
+    [selectedCart],
+  );
+
   const bottomSheetRef = useRef<BottomSheet>(null);
+
   const { mutate: createOrderMutate, isPending: isCreateOrderPending } = useMutation({
     mutationFn: (data: CheckoutDataStrict) => execute(CreateOrderMutation, data),
   });
@@ -129,8 +137,8 @@ const CheckoutScreen = ({ navigation }: CheckoutScreenNavigationProps) => {
         <View className='px-[24px] pb-[24px] mt-[14px]'>
           <View className='flex-row items-center justify-between px-[12px] py-[8px]'>
             <Text className='font-inter-regular text-muted-foreground text-[14px] leading-[20px]'>
-              Order ({Object.values(selectedCart || {}).length} item
-              {Object.values(selectedCart || {}).length > 1 ? 's' : ''})
+              Order ({totalSelectedItem} item
+              {totalSelectedItem > 1 ? 's' : ''})
             </Text>
             <Text className='font-inter-extraBold text-foreground text-[14px]'>{total.toLocaleString()} ₫</Text>
           </View>

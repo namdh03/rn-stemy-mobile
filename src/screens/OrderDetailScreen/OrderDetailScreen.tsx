@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { FlatList, ScrollView, View } from 'react-native';
 import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
 import dayjs from 'dayjs';
@@ -21,8 +21,11 @@ import OrderUserInfo from './components/OrderUserInfo';
 const OrderDetailScreen = ({ route, navigation }: OrderDetailScreenNavigationProps) => {
   const { onRepayOrder } = useRepayOrder();
   const { onReceivedOrder } = useReceivedOrder();
-
-  console.log(route.params.id);
+  const totalItems = useMemo(
+    () => route.params.orderItems.reduce((acc, cur) => acc + cur.quantity, 0),
+    [route.params.orderItems],
+  );
+  console.log(route.params);
 
   const renderOrderItem = useCallback(
     ({ item }: { item: GetOrderByStatusQuery['searchOrder'][number]['orderItems'][number] }) => (
@@ -157,8 +160,8 @@ const OrderDetailScreen = ({ route, navigation }: OrderDetailScreenNavigationPro
       <View className='gap-[24px] mt-[4px] p-[24px] bg-background'>
         <View className='flex-row items-center justify-between px-[12px] w-full'>
           <Text className='font-inter-regular text-muted-foreground text-[14px] leading-[20px]'>
-            Order ({route.params.orderItems.length} item
-            {route.params.orderItems.length > 1 ? 's' : ''})
+            Order ({totalItems} item
+            {totalItems > 1 ? 's' : ''})
           </Text>
           <Text className='font-inter-extraBold text-foreground text-[14px]'>
             {route.params.totalPrice.toLocaleString()} ₫

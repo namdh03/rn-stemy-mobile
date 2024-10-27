@@ -242,6 +242,7 @@ export const GetStaffListOrderQuery = graphql(`
       id
       orderItems {
         id
+        quantity
       }
       phone
       totalPrice
