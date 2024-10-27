@@ -77,20 +77,20 @@ const LabComponent = ({
 
       const filename = title;
       const result: FileSystem.FileSystemDownloadResult = await FileSystem.downloadAsync(
-        `${configs.env.EXPO_PUBLIC_API_URL}/${fileLink}`,
+        `${configs.env.EXPO_PUBLIC_API_URL}/download/${fileLink}`,
         FileSystem.documentDirectory + filename,
         {
           headers: {
             Authorization: token,
+            Accept: 'application/pdf',
           },
         },
       );
-      console.log('result', result);
       save(result.uri, filename, result.headers['Content-Type']);
       Alert.alert('Download Successful', `The file ${filename} has been downloaded successfully.`);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       Alert.alert('Download Failed', 'An error occurred while downloading the file.');
-      console.error('Error downloading the file', error);
     }
   };
 
@@ -99,11 +99,11 @@ const LabComponent = ({
       const permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
       if (permissions.granted) {
         const base64 = await FileSystem.readAsStringAsync(uri, { encoding: FileSystem.EncodingType.Base64 });
-        await FileSystem.StorageAccessFramework.createFileAsync(permissions.directoryUri, filename, mimetype)
-          .then(async (uri) => {
+        await FileSystem.StorageAccessFramework.createFileAsync(permissions.directoryUri, filename, mimetype).then(
+          async (uri) => {
             await FileSystem.writeAsStringAsync(uri, base64, { encoding: FileSystem.EncodingType.Base64 });
-          })
-          .catch((e) => console.log(e));
+          },
+        );
       } else {
         shareAsync(uri);
       }
@@ -128,7 +128,7 @@ const LabComponent = ({
       friction={2}
       leftThreshold={30}
       rightThreshold={40}
-      renderRightActions={renderRightActions}
+      renderRightActions={numberOfTicket <= 3 ? (progress) => renderRightActions(progress) : undefined}
       overshootRight={false}
     >
       <View className='w-full px-[16px] py-[16px] rounded-[6px] bg-white shadow-md border-black'>
@@ -145,7 +145,9 @@ const LabComponent = ({
                 {title}
               </Text>
               <Text className='font-inter-medium mb-[4px] text-[12px] '>{purchaseDate.toLocaleDateString()}</Text>
-              <Text className='font-inter-regular mb-[4px] text-[12px] '>Ticket: {numberOfTicket}/3</Text>
+              <Text className={`font-inter-regular mb-[4px] text-[12px] ${numberOfTicket > 3 ? 'text-red-500' : ''}`}>
+                Ticket: {numberOfTicket}/3
+              </Text>
               <Pressable onPress={handleCopyOrderId}>
                 <Text className='font-inter-regular mb-[8px] text-[12px] text-muted-foreground'>
                   ID: {btoa(btoa(btoa(btoa(id))))}
