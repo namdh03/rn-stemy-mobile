@@ -43,9 +43,13 @@ export const LAB_MESSAGES = {
   INACTIVE_LAB: 'This kit are delivering. Please wait for active it ',
 };
 
-export const STAFF_TICKET = {
+export const STAFF_TICKET_MESSAGES = {
   ORDER_ITEM_ID: 'Order product id must be a number',
   CATEGORY_ID: 'Category id must be a number',
   TITLE_VALIDATE: 'Please enter at least 1 character.',
   DESCRIPTION_VALIDATE: 'Please enter at least 1 character.',
+};
+
+export const TICKET_MESSAGES = {
+  RATING_TICKET_TEXT_BODY: 'Rating ticket successfully!',
 };

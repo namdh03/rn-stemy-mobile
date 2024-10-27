@@ -1166,6 +1166,7 @@ export type GetTicketByIdQuery = {
   ticket: {
     __typename?: 'Ticket';
     id: string;
+    rating?: number | null;
     createdAt: any;
     closedAt?: any | null;
     title: string;
@@ -1242,6 +1243,16 @@ export type CreateTicketMutationVariables = Exact<{
 }>;
 
 export type CreateTicketMutation = { __typename?: 'Mutation'; createTicket: { __typename?: 'Ticket'; id: string } };
+
+export type RatingTicketMutationVariables = Exact<{
+  rating: Scalars['Float']['input'];
+  ticketId: Scalars['Float']['input'];
+}>;
+
+export type RatingTicketMutation = {
+  __typename?: 'Mutation';
+  ratingTicket: { __typename?: 'Ticket'; rating?: number | null };
+};
 
 export type LoginMutationVariables = Exact<{
   email: Scalars['String']['input'];
@@ -1900,6 +1911,7 @@ export const GetTicketByIdDocument = new TypedDocumentString(`
     query GetTicketById($ticketId: Float!) {
   ticket(ticketId: $ticketId) {
     id
+    rating
     createdAt
     closedAt
     title
@@ -2002,6 +2014,13 @@ export const CreateTicketDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<CreateTicketMutation, CreateTicketMutationVariables>;
+export const RatingTicketDocument = new TypedDocumentString(`
+    mutation RatingTicket($rating: Float!, $ticketId: Float!) {
+  ratingTicket(rating: $rating, ticketId: $ticketId) {
+    rating
+  }
+}
+    `) as unknown as TypedDocumentString<RatingTicketMutation, RatingTicketMutationVariables>;
 export const LoginDocument = new TypedDocumentString(`
     mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {

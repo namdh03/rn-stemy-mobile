@@ -14,7 +14,7 @@ const ImageFileSchema = z.object({
 
 export const replyTicketSchema = z.object({
   description: z.string().min(1, {
-    message: constants.MESSAGES.STAFF_TICKET.DESCRIPTION_VALIDATE,
+    message: constants.MESSAGES.STAFF_TICKET_MESSAGES.DESCRIPTION_VALIDATE,
   }),
   images: z.array(ImageFileSchema).refine(
     async (images) => {

@@ -29,6 +29,7 @@ export const GetTicketByIdQuery = graphql(`
   query GetTicketById($ticketId: Float!) {
     ticket(ticketId: $ticketId) {
       id
+      rating
       createdAt
       closedAt
       title
@@ -138,6 +139,14 @@ export const CreateTicketMutation = graphql(`
       images: $images
     ) {
       id
+    }
+  }
+`);
+
+export const RatingTicketMutation = graphql(`
+  mutation RatingTicket($rating: Float!, $ticketId: Float!) {
+    ratingTicket(rating: $rating, ticketId: $ticketId) {
+      rating
     }
   }
 `);
