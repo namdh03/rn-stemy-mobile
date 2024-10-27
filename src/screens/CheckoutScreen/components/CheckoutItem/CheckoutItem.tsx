@@ -51,8 +51,9 @@ const CheckoutItem = ({ item, isPressable = true }: CheckoutItemProps) => {
           <View className='flex-row items-center justify-between w-full mt-[14px]'>
             <Text className='font-inter-regular text-foreground text-[14px] leading-[20px]'>x{item.quantity}</Text>
             <Text className='font-inter-extraBold text-left text-foreground text-[14px] break-words flex-shrink'>
-              {(
-                (item.hasLab ? item.product.price + (item.product.lab?.price || 0) : item.product.price) * item.quantity
+              {(item.hasLab
+                ? item.product.price + (item.product.lab?.price || 0)
+                : item.product.price
               ).toLocaleString()}
               ₫
             </Text>

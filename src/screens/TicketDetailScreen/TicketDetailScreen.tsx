@@ -50,7 +50,7 @@ const TicketDetailScreen = ({ route }: TicketDetailScreenNavigationProps) => {
             ＃Ticket {route.params.index + 1}: {data.category.name}
           </Text>
           <View
-            className={cn('max-w-[50px] px-[8px] py-[2px] bg-background rounded-[6px] border shadow-sm', {
+            className={cn('max-w-[60px] px-[8px] py-[2px] bg-background rounded-[6px] border shadow-sm', {
               'border-primary': data.status === TicketStatus.Open,
               'border-muted-foreground': data.status === TicketStatus.Close,
             })}

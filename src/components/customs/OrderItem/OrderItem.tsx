@@ -24,11 +24,11 @@ interface OrderItemProps {
 
 const OrderItem = ({ order }: OrderItemProps) => {
   const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
-  const firstOrderItem = useMemo(() => order.orderItems[0], [order]);
   const { onRepayOrder } = useRepayOrder();
   const { onReceivedOrder } = useReceivedOrder();
   const { onReOrder } = useReOrder();
-
+  const firstOrderItem = useMemo(() => order.orderItems[0], [order]);
+  const totalItems = useMemo(() => order.orderItems.reduce((acc, cur) => acc + cur.quantity, 0), [order.orderItems]);
   const handleNavigateToOrderDetail = () => {
     navigation.navigate('OrderDetailScreen', order);
   };
@@ -97,10 +97,9 @@ const OrderItem = ({ order }: OrderItemProps) => {
           </View>
 
           <Text className='font-inter-medium mt-[11px] w-full text-right text-foreground text-[14px] break-words flex-shrink'>
-            {(
-              (firstOrderItem.hasLab
-                ? firstOrderItem.productPrice + firstOrderItem.labPrice
-                : firstOrderItem.productPrice) * firstOrderItem.quantity
+            {(firstOrderItem.hasLab
+              ? firstOrderItem.productPrice + firstOrderItem.labPrice
+              : firstOrderItem.productPrice
             ).toLocaleString()}
             ₫
           </Text>
@@ -119,8 +118,8 @@ const OrderItem = ({ order }: OrderItemProps) => {
 
       <View className='flex-row justify-between w-full px-[25px] py-[8px]'>
         <Text className='font-inter-regular text-muted-foreground text-[12px] leading-[20px]'>
-          {order.orderItems.length} item
-          {order.orderItems.length > 1 ? 's' : ''}
+          {totalItems} item
+          {totalItems > 1 ? 's' : ''}
         </Text>
         <Text className='font-inter-semiBold text-foreground text-[14px] leading-[20px]'>
           Order Total:

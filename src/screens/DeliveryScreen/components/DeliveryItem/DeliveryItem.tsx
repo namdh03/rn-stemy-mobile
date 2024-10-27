@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { Text as RNText, View } from 'react-native';
 import dayjs from 'dayjs';
 import { useShallow } from 'zustand/react/shallow';
@@ -16,6 +17,7 @@ export type DeliveryItemProps = {
 
 const DeliveryItem = ({ item, buttonText, onPress }: DeliveryItemProps) => {
   const user = useStore(useShallow((state) => state.user));
+  const totalItems = useMemo(() => item.orderItems.reduce((acc, cur) => acc + cur.quantity, 0), [item.orderItems]);
 
   return (
     <View className='py-[16px] bg-background rounded-[6px]'>
@@ -59,8 +61,8 @@ const DeliveryItem = ({ item, buttonText, onPress }: DeliveryItemProps) => {
 
       <View className='flex-row justify-between w-full px-[25px] py-[8px]'>
         <Text className='font-inter-regular text-muted-foreground text-[12px] leading-[20px]'>
-          {item.orderItems.length} item
-          {item.orderItems.length > 1 ? 's' : ''}
+          {totalItems} item
+          {totalItems > 1 ? 's' : ''}
         </Text>
         <Text className='font-inter-semiBold text-foreground text-[14px] leading-[20px]'>
           Order Total:

@@ -1367,6 +1367,7 @@ export const GetStaffListOrderDocument = new TypedDocumentString(`
     id
     orderItems {
       id
+      quantity
     }
     phone
     totalPrice
