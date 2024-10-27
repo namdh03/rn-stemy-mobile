@@ -24,7 +24,7 @@ import CategoryList from './components/CategoryList';
 import Feedbacks from './components/Feedbacks';
 import ImageCarousel from './components/ImageCarousel';
 
-const ProductDetailScreen = ({ route }: ProductDetailScreenNavigationProps) => {
+const ProductDetailScreen = ({ route, navigation }: ProductDetailScreenNavigationProps) => {
   const { isDarkColorScheme } = useColorScheme();
   const setFeedbacks = useStore(useShallow((state) => state.setFeedbacks));
   const { data, refetch, isFetching } = useQuery({
@@ -131,7 +131,19 @@ const ProductDetailScreen = ({ route }: ProductDetailScreenNavigationProps) => {
           <View
             className={`pb-[100px] rounded-t-[10px] ${isDarkColorScheme ? 'bg-secondary' : 'bg-destructive-foreground'}`}
           >
-            <ProductList hiddenProductId={route.params.id} title='Featured Product' data={data?.products.items || []} />
+            <ProductList
+              hiddenProductId={route.params.id}
+              title='Featured Product'
+              data={data?.products.items || []}
+              onPress={() =>
+                navigation.navigate('BottomTabStack', {
+                  screen: 'StoresStack',
+                  params: {
+                    screen: 'StoresScreen',
+                  },
+                })
+              }
+            />
           </View>
         </Pressable>
       </ScrollView>

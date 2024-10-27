@@ -1033,7 +1033,7 @@ export type GetStaffListOrderQuery = {
     phone: string;
     totalPrice: number;
     updatedAt?: any | null;
-    orderItems: Array<{ __typename?: 'OrderItem'; id: string }>;
+    orderItems: Array<{ __typename?: 'OrderItem'; id: string; quantity: number }>;
   }>;
 };
 
@@ -1759,6 +1759,7 @@ export const GetStaffListOrderDocument = new TypedDocumentString(`
     id
     orderItems {
       id
+      quantity
     }
     phone
     totalPrice
