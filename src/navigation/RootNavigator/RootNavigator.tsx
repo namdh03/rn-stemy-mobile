@@ -11,13 +11,14 @@ import LoadingOverlay from '~components/customs/LoadingOverlay';
 import configs from '~configs';
 import constants from '~constants';
 import { Role } from '~graphql/graphql';
-import { useAppIsReady, useColorScheme } from '~hooks';
+import { useAppIsReady, useColorScheme, usePushNotifications } from '~hooks';
 import AuthNavigator from '~navigation/AuthNavigator';
 import MainNavigator from '~navigation/MainNavigator';
 import StaffNavigator from '~navigation/StaffNavigator';
 import { useStore } from '~store';
 
 const RootNavigator = () => {
+  usePushNotifications();
   const { isDarkColorScheme } = useColorScheme();
   const { isLoading, appIsReady, onLayoutRootView } = useAppIsReady();
   const { isAuthenticated, user } = useStore(

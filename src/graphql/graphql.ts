@@ -796,6 +796,23 @@ export type GetUserLabsQuery = {
   userLabs: Array<{ __typename?: 'UserLab'; orderItem: { __typename?: 'OrderItem'; id: string } }>;
 };
 
+export type DeactivatePushTokenMutationVariables = Exact<{
+  deviceId: Scalars['String']['input'];
+}>;
+
+export type DeactivatePushTokenMutation = { __typename?: 'Mutation'; deactivatePushToken: boolean };
+
+export type SavePushTokenMutationVariables = Exact<{
+  deviceId: Scalars['String']['input'];
+  platform: Scalars['String']['input'];
+  token: Scalars['String']['input'];
+}>;
+
+export type SavePushTokenMutation = {
+  __typename?: 'Mutation';
+  savePushToken: { __typename?: 'PushToken'; id: string };
+};
+
 export type SearchOrderQueryVariables = Exact<{
   search: Scalars['String']['input'];
 }>;
@@ -1536,6 +1553,18 @@ export const GetUserLabsDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<GetUserLabsQuery, GetUserLabsQueryVariables>;
+export const DeactivatePushTokenDocument = new TypedDocumentString(`
+    mutation DeactivatePushToken($deviceId: String!) {
+  deactivatePushToken(deviceId: $deviceId)
+}
+    `) as unknown as TypedDocumentString<DeactivatePushTokenMutation, DeactivatePushTokenMutationVariables>;
+export const SavePushTokenDocument = new TypedDocumentString(`
+    mutation SavePushToken($deviceId: String!, $platform: String!, $token: String!) {
+  savePushToken(deviceId: $deviceId, platform: $platform, token: $token) {
+    id
+  }
+}
+    `) as unknown as TypedDocumentString<SavePushTokenMutation, SavePushTokenMutationVariables>;
 export const SearchOrderDocument = new TypedDocumentString(`
     query SearchOrder($search: String!) {
   searchOrder(search: $search) {
