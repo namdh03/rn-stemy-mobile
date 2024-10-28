@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View } from 'react-native';
+import { ImageSourcePropType, View } from 'react-native';
 import { Image } from 'expo-image';
 
 import { Star } from '~components/icons';
@@ -10,7 +10,7 @@ import Divider from '../Divider';
 import Pressable from '../Pressable';
 
 interface FeedbackProps {
-  image: { uri: string };
+  image: ImageSourcePropType | string;
   name: string;
   hasLab: boolean;
   onFeedbackChange: (rating: number, note: string) => void;
@@ -36,7 +36,11 @@ const FeedbackProduct = ({ image, name, hasLab, onFeedbackChange }: FeedbackProp
       <View className='w-full h-[45px] '>
         <View className='flex-row items-center mb-[8px] justify-start gap-[5px]'>
           <View className='p-[5px]'>
-            <Image source={image} style={{ width: 35, height: 35 }} className='rounded-[16px]' />
+            <Image
+              source={typeof image === 'string' ? { uri: image } : image}
+              style={{ width: 35, height: 35 }}
+              className='rounded-[16px]'
+            />
           </View>
           <View>
             <Text className='font-inter-regular text-[14px] text-[#000]'>{name}</Text>

@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { ActivityIndicator, ScrollView, View } from 'react-native';
+import { useLayoutEffect, useState } from 'react';
+import { ScrollView, View } from 'react-native';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import FeedbackProduct from '~components/customs/FeedbackProduct';
-import { Button } from '~components/ui/button';
+import Pressable from '~components/customs/Pressable';
 import { Text } from '~components/ui/text';
 import constants from '~constants';
 import execute from '~graphql/execute';
@@ -28,12 +28,13 @@ const FeedbackProductScreen = ({ route, navigation }: FeedbackProductScreenNavig
   }>({});
 
   // Mutation để gửi nhiều feedbacks
-  const { mutateAsync, isPending, error } = useMutation({
+  const { mutateAsync, error } = useMutation({
     mutationFn: (variables: { orderId: number; input: Array<{ orderItemId: number; rating: number; note: string }> }) =>
       execute(CreateFeedbackMutation, variables),
     onSuccess: () => {
-      // queryClient.invalidateQueries({ queryKey: [constants.PRODUCT_QUERY_KEY.GET_PRODUCT_QUERY_KEY] });
       queryClient.invalidateQueries({ queryKey: [constants.HOME_QUERY_KEY.GET_HOME_QUERY_KEY] });
+      queryClient.invalidateQueries({ queryKey: [constants.ORDER_QUERY_KEY.GET_COUNT_ORDER_QUERY_KEY] });
+      queryClient.invalidateQueries({ queryKey: [constants.ORDER_QUERY_KEY.GET_ORDER_BY_STATUS_QUERY_KEY] });
       showDialogSuccess({ textBody: 'Feedbacks submitted successfully!' });
       navigation.goBack();
     },
@@ -74,6 +75,16 @@ const FeedbackProductScreen = ({ route, navigation }: FeedbackProductScreenNavig
     }
   };
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Pressable onPress={handleSubmitFeedbacks}>
+          <Text className='font-inter-medium text-primary text-[18px]'>Submit</Text>
+        </Pressable>
+      ),
+    });
+  }, [handleSubmitFeedbacks, navigation]);
+
   return (
     <ScrollView
       contentContainerClassName='flex-row mx-auto w-full max-w-xl'
@@ -90,17 +101,6 @@ const FeedbackProductScreen = ({ route, navigation }: FeedbackProductScreenNavig
             onFeedbackChange={(rating, note) => handleFeedbackChange(item.id, rating, note)}
           />
         ))}
-
-        <Button disabled={isPending} className='mt-[8px] min-h-[44px]' onPress={handleSubmitFeedbacks}>
-          {isPending ? (
-            <View className='flex-row items-center justify-center gap-[6px]'>
-              <ActivityIndicator className='text-secondary' />
-              <Text className='font-inter-medium text-secondary text-[16px] leading-[24px]'>Loading...</Text>
-            </View>
-          ) : (
-            <Text className='font-inter-medium text-secondary text-[16px] leading-[24px]'>Send</Text>
-          )}
-        </Button>
       </View>
     </ScrollView>
   );

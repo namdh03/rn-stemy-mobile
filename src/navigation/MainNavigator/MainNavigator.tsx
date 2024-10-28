@@ -4,7 +4,7 @@ import MainHeaderLeft from '~components/customs/MainHeaderLeft';
 import MainHeaderRight from '~components/customs/MainHeaderRight';
 import Pressable from '~components/customs/Pressable';
 import { ChevronLeft } from '~components/icons';
-import { Text } from '~components/ui/text';
+// import { Text } from '~components/ui/text';
 import BottomTabNavigator from '~navigation/BottomTabNavigator';
 import ProductDetailNavigator from '~navigation/ProductDetailNavigator';
 import CartScreen from '~screens/CartScreen';
@@ -230,11 +230,6 @@ const MainNavigator = () => (
         headerLeft: () => (
           <Pressable onPress={() => navigation.goBack()}>
             <ChevronLeft className='text-primary' size={30} />
-          </Pressable>
-        ),
-        headerRight: () => (
-          <Pressable onPress={() => console.log('FEEDBACK_SUBMIT')}>
-            <Text className='font-inter-medium text-primary text-[18px]'>Submit</Text>
           </Pressable>
         ),
       })}

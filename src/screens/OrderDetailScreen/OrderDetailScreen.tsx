@@ -19,6 +19,7 @@ import OrderDetailButton from './components/OrderDetailButton';
 import OrderUserInfo from './components/OrderUserInfo';
 
 const OrderDetailScreen = ({ route, navigation }: OrderDetailScreenNavigationProps) => {
+  console.log(route.params.id);
   const { onRepayOrder } = useRepayOrder();
   const { onReceivedOrder } = useReceivedOrder();
   const totalItems = useMemo(
