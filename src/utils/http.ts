@@ -8,7 +8,7 @@ import constants from '~constants';
 import { isErrorResponse, isLoginResponse, isLoginWithGoogleResponse, isRegisterResponse } from './responseChecker';
 import {
   getAccessToken,
-  getRefreshToken,
+  // getRefreshToken,
   removeAccessToken,
   // removeRefreshToken,
   setAccessToken,
@@ -16,16 +16,11 @@ import {
 } from './token-storage';
 
 class Http {
-  private accessToken?: string;
-  private refreshToken?: string;
   instance: AxiosInstance;
 
   constructor() {
-    this.accessToken = getAccessToken();
-    this.refreshToken = getRefreshToken();
     this.instance = axios.create({
       baseURL: configs.env.EXPO_PUBLIC_API_URL,
-      timeout: 10000,
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/graphql-response+json',
@@ -33,8 +28,8 @@ class Http {
     });
     this.instance.interceptors.request.use(
       (config) => {
-        if (this.accessToken && config.headers) {
-          config.headers.Authorization = this.accessToken;
+        if (getAccessToken() && config.headers) {
+          config.headers.Authorization = getAccessToken();
           return config;
         }
         return config;
@@ -44,24 +39,24 @@ class Http {
     this.instance.interceptors.response.use(
       (response) => {
         if (isLoginResponse(response)) {
-          this.accessToken = response.data.data.login.access_token;
-          if (this.accessToken) setAccessToken(this.accessToken);
+          const token = response.data.data.login.access_token;
+          if (token) setAccessToken(token);
         }
 
         if (isRegisterResponse(response)) {
-          this.accessToken = response.data.data.register.access_token;
-          if (this.accessToken) setAccessToken(this.accessToken);
+          const token = response.data.data.register.access_token;
+          if (token) setAccessToken(token);
         }
 
         if (isLoginWithGoogleResponse(response)) {
-          this.accessToken = response.data.data.loginWithGoogle.access_token;
-          if (this.accessToken) setAccessToken(this.accessToken);
+          const token = response.data.data.loginWithGoogle.access_token;
+          if (token) setAccessToken(token);
         }
 
         if (isErrorResponse(response)) {
           const isUnAuthenticated = response.data.errors.some((error) =>
-            [constants.MESSAGES.TOKEN_NOT_FOUND, constants.MESSAGES.TOKEN_NOT_VALID].some((message) =>
-              error.message.includes(message),
+            [constants.MESSAGES.TOKEN_NOT_FOUND, constants.MESSAGES.TOKEN_NOT_VALID].some(
+              (message) => error.message === message,
             ),
           );
 

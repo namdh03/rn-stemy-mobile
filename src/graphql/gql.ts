@@ -34,6 +34,10 @@ const documents = {
     types.GetMyPurchasesDocument,
   '\n  query GetUserLabs {\n    userLabs {\n      orderItem {\n        id\n      }\n    }\n  }\n':
     types.GetUserLabsDocument,
+  '\n  mutation DeactivatePushToken($deviceId: String!) {\n    deactivatePushToken(deviceId: $deviceId)\n  }\n':
+    types.DeactivatePushTokenDocument,
+  '\n  mutation SavePushToken($deviceId: String!, $platform: String!, $token: String!) {\n    savePushToken(deviceId: $deviceId, platform: $platform, token: $token) {\n      id\n    }\n  }\n':
+    types.SavePushTokenDocument,
   '\n  query SearchOrder($search: String!) {\n    searchOrder(search: $search) {\n      id\n      createdAt\n      updatedAt\n      totalPrice\n      status\n      address\n      fullName\n      phone\n      shipTime\n      payment {\n        provider\n        time\n      }\n      orderItems {\n        hasLab\n        id\n        labPrice\n        productPrice\n        quantity\n        product {\n          id\n          name\n          price\n          images {\n            url\n          }\n          lab {\n            price\n          }\n        }\n      }\n    }\n  }\n':
     types.SearchOrderDocument,
   '\n  query GetOrderByStatus($status: OrderStatus!) {\n    searchOrder(search: "", status: $status) {\n      id\n      createdAt\n      updatedAt\n      totalPrice\n      status\n      address\n      fullName\n      phone\n      shipTime\n      payment {\n        provider\n        time\n      }\n      orderItems {\n        hasLab\n        id\n        labPrice\n        productPrice\n        quantity\n        product {\n          id\n          name\n          price\n          images {\n            url\n          }\n          lab {\n            price\n          }\n        }\n      }\n    }\n  }\n':
@@ -163,6 +167,18 @@ export function graphql(
 export function graphql(
   source: '\n  query GetUserLabs {\n    userLabs {\n      orderItem {\n        id\n      }\n    }\n  }\n',
 ): typeof import('./graphql').GetUserLabsDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation DeactivatePushToken($deviceId: String!) {\n    deactivatePushToken(deviceId: $deviceId)\n  }\n',
+): typeof import('./graphql').DeactivatePushTokenDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation SavePushToken($deviceId: String!, $platform: String!, $token: String!) {\n    savePushToken(deviceId: $deviceId, platform: $platform, token: $token) {\n      id\n    }\n  }\n',
+): typeof import('./graphql').SavePushTokenDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
