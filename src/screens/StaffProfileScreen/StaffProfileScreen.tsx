@@ -10,10 +10,10 @@ import { removeAccessToken } from '~utils/token-storage';
 
 const StaffProfileScreen = () => {
   const queryClient = useQueryClient();
-  const { unAuthenticate, clearFilterStoring } = useStore(
+  const { unAuthenticate, clearFilterSorting } = useStore(
     useShallow((state) => ({
       unAuthenticate: state.unAuthenticate,
-      clearFilterStoring: state.clearFilterStoring,
+      clearFilterSorting: state.clearFilterSorting,
     })),
   );
   const { resetCartStore } = useCartStore(
@@ -25,7 +25,7 @@ const StaffProfileScreen = () => {
   const logout = async () => {
     queryClient.clear();
     unAuthenticate();
-    clearFilterStoring();
+    clearFilterSorting();
     resetCartStore();
     removeAccessToken();
     await GoogleSignin.signOut();

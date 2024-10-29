@@ -20,14 +20,14 @@ interface CateProps {
 
 const Category = ({ id, icon: Icon, title, bgColor, colorIcon }: CateProps) => {
   const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
-  const { setFilterStoring } = useStore(
+  const { setFilterSorting } = useStore(
     useShallow((state) => ({
-      setFilterStoring: state.setFilterStoring,
+      setFilterSorting: state.setFilterSorting,
     })),
   );
 
   const handlePress = () => {
-    setFilterStoring({ categoryIds: [+id] });
+    setFilterSorting({ categoryIds: [+id] });
     navigation.navigate('BottomTabStack', {
       screen: 'StoresStack',
       params: {

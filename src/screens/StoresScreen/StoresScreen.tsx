@@ -17,7 +17,7 @@ const StoresScreen = ({ navigation }: StoresScreenNavigationProps) => {
   const { storesFilterSorting } = useStore(
     useShallow((state) => ({
       storesFilterSorting: state.storesFilterSorting,
-      setFilterStoring: state.setFilterStoring,
+      setFilterSorting: state.setFilterSorting,
     })),
   );
   const { data, refetch, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteQuery({

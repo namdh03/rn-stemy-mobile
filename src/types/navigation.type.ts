@@ -179,6 +179,8 @@ export type HomeScreenNavigationProps = CompositeScreenProps<
   CompositeScreenProps<NativeStackScreenProps<BottomTabParamList>, NativeStackScreenProps<MainStackParamList>>
 >;
 
+export type StoresStackNavigationProps = NativeStackScreenProps<StoresStackParamList, 'StoresScreen'>;
+
 export type StoresScreenNavigationProps = CompositeScreenProps<
   NativeStackScreenProps<StoresStackParamList, 'StoresScreen'>,
   CompositeScreenProps<NativeStackScreenProps<BottomTabParamList>, NativeStackScreenProps<MainStackParamList>>

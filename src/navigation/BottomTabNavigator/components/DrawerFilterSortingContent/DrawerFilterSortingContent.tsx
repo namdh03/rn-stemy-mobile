@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ScrollView, useWindowDimensions, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { useForm } from 'react-hook-form';
 import { useShallow } from 'zustand/react/shallow';
 
@@ -22,19 +22,17 @@ import TabFilterContent from '../TabFilterContent';
 import TabSortingContent from '../TabSortingContent';
 
 const DrawerFilterSortingContent = () => {
-  const { height } = useWindowDimensions();
-  const calculatedTopPosition = height - 100;
-  const { storesFilterSorting, setFilterStoring, clearFilterStoring, onStoresDrawerClose } = useStore(
+  const { storesFilterSorting, setFilterSorting, clearFilterSorting, onStoresDrawerClose } = useStore(
     useShallow((state) => ({
       storesFilterSorting: state.storesFilterSorting,
-      setFilterStoring: state.setFilterStoring,
-      clearFilterStoring: state.clearFilterStoring,
+      setFilterSorting: state.setFilterSorting,
+      clearFilterSorting: state.clearFilterSorting,
       onStoresDrawerClose: state.onStoresDrawerClose,
     })),
   );
   const form = useForm<CategoriesFormType>({
     resolver: zodResolver(schema),
-    defaultValues: {
+    values: {
       categoryIds: Array.isArray(storesFilterSorting.categoryIds)
         ? [...storesFilterSorting.categoryIds]
         : [storesFilterSorting.categoryIds],
@@ -44,12 +42,13 @@ const DrawerFilterSortingContent = () => {
       ],
       rating: storesFilterSorting.minRating || constants.FILTER_SORTING.MIN_RATING_VALUE,
       order: storesFilterSorting.order || SortOrder.Asc,
+      sort: (storesFilterSorting.sort as 'name' | 'price' | 'id') || constants.FILTER_SORTING.DEFAULT_SORT_BY_FIELD,
     },
   });
   const [value, setValue] = useState('filter');
 
   const onSubmit = (values: CategoriesFormType) => {
-    setFilterStoring({
+    setFilterSorting({
       categoryIds: values.categoryIds,
       minPrice: values.priceRange[0],
       maxPrice: values.priceRange[1],
@@ -63,11 +62,11 @@ const DrawerFilterSortingContent = () => {
   const onReset = () => {
     form.reset();
     onStoresDrawerClose();
-    clearFilterStoring();
+    clearFilterSorting();
   };
 
   return (
-    <View className='flex-grow pb-[130px]'>
+    <View className='flex-1 flex-grow pb-[50px]'>
       <View className='flex-row justify-between items-center px-[33px] py-[15px] shadow'>
         <Text className='font-inter-bold text-foreground text-[16px] leading-[24px] tracking-[0.2px]'>
           Filter & Sorting
@@ -122,8 +121,8 @@ const DrawerFilterSortingContent = () => {
       </ScrollView>
 
       <View
-        style={{ position: 'absolute', top: calculatedTopPosition, left: 0, right: 0, zIndex: 10 }}
-        className='flex-row gap-[15px] px-[12px] pb-[100px] bg-background shadow'
+        style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 10 }}
+        className='flex-row gap-[15px] px-[12px] shadow py-[20px] bg-background'
       >
         <Button variant='outline' className='flex-1' onPress={onReset}>
           <Text>Reset</Text>

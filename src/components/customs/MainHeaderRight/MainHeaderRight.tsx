@@ -36,7 +36,7 @@ const MainHeaderRight = () => {
         </View>
         <Badge
           pointerEvents='none'
-          className='absolute top-[-3px] right-[-8px] items-center justify-center p-0 w-[20px] h-[20px]'
+          className='absolute top-[-9px] right-[-13px] items-center justify-center p-0 w-[20px] h-[20px]'
           variant='destructive'
         >
           <Text>{data || 0}</Text>

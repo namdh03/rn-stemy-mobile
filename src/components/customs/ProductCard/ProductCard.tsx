@@ -48,7 +48,7 @@ const ProductCard = ({ id, imageUrl, title, price, rating, numOfReviews }: Produ
         source={typeof imageUrl === 'string' ? { uri: imageUrl } : imageUrl}
         placeholder={{ blurhash: constants.EXPO_IMAGE.BLUR_HASH }}
         style={{ width: '100%', height: 155, alignSelf: 'center', borderRadius: 4 }}
-        contentFit='cover'
+        contentFit='contain'
       />
       <Text numberOfLines={1} className='font-inter-medium mt-[20px] text-[16px] tracking-[0.2px]'>
         {title}

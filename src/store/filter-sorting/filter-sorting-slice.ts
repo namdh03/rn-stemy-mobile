@@ -5,7 +5,7 @@ import { SortOrder } from '~graphql/graphql';
 
 import { FilterSortingSlice, FilterSortingState } from './filter-sorting.type';
 
-const initialState: FilterSortingState = {
+export const initialState: FilterSortingState = {
   isFilterSortingActive: false,
   storesFilterSorting: {
     categoryIds: [],
@@ -26,15 +26,15 @@ export const createFilterSortingSlice: StateCreator<
   FilterSortingSlice
 > = (set) => ({
   ...initialState,
-  setFilterStoring: (newData) =>
+  setFilterSorting: (newData) =>
     set((state) => {
       state.isFilterSortingActive = true;
       state.storesFilterSorting = { ...state.storesFilterSorting, ...newData };
     }),
-  clearFilterStoring: () =>
+  clearFilterSorting: () =>
     set((state) => {
       state.isFilterSortingActive = false;
       state.storesFilterSorting = { ...initialState.storesFilterSorting };
     }),
-  reset: () => set(() => ({ ...initialState })),
+  resetFilterSorting: () => set(() => ({ ...initialState })),
 });

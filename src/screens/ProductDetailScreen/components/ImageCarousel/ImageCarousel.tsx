@@ -40,33 +40,14 @@ export default function ImageCarousel({ images }: ImageCarouselProps) {
   };
 
   return (
-    <View className='relative w-full h-full'>
-      <Carousel
-        {...baseOptions}
-        loop
-        enabled
-        style={{ width: '100%' }}
-        data={images}
-        pagingEnabled={true}
-        onSnapToItem={(index) => setCurrentIndex(index)}
-        renderItem={({ item }) => (
-          <Pressable onPress={openModal}>
-            <Image
-              style={{ width: '100%', height: '100%' }}
-              source={{ uri: item.url }}
-              placeholder={{ blurhash: constants.EXPO_IMAGE.BLUR_HASH }}
-              contentFit='cover'
-              transition={1000}
-            />
-          </Pressable>
-        )}
-      />
-
-      <Text className='absolute bottom-2 left-2 text-white bg-black/50 px-2 py-1 rounded-md'>
-        {`${currentIndex + 1}/${images.length} Photo`}
-      </Text>
-
-      <Modal visible={modalVisible} transparent={true} animationType='slide' onRequestClose={closeModal}>
+    <>
+      <Modal
+        style={{ position: 'relative', zIndex: 1000 }}
+        visible={modalVisible}
+        transparent={true}
+        animationType='slide'
+        onRequestClose={closeModal}
+      >
         <View className='relative flex-1 justify-center items-center bg-black/90'>
           <Pressable onPress={closeModal} className='absolute top-6 right-6 z-10'>
             <CircleX size={32} className={`${isDarkColorScheme ? 'text-muted-foreground' : 'text-muted'}`} />
@@ -98,6 +79,32 @@ export default function ImageCarousel({ images }: ImageCarouselProps) {
           </Text>
         </View>
       </Modal>
-    </View>
+      <View className='relative w-full h-full'>
+        <Carousel
+          {...baseOptions}
+          loop
+          enabled
+          style={{ width: '100%' }}
+          data={images}
+          pagingEnabled={true}
+          onSnapToItem={(index) => setCurrentIndex(index)}
+          renderItem={({ item }) => (
+            <Pressable onPress={openModal}>
+              <Image
+                style={{ width: '100%', height: '100%' }}
+                source={{ uri: item.url }}
+                placeholder={{ blurhash: constants.EXPO_IMAGE.BLUR_HASH }}
+                contentFit='cover'
+                transition={1000}
+              />
+            </Pressable>
+          )}
+        />
+
+        <Text className='absolute bottom-2 left-2 text-white bg-black/50 px-2 py-1 rounded-md'>
+          {`${currentIndex + 1}/${images.length} Photo`}
+        </Text>
+      </View>
+    </>
   );
 }

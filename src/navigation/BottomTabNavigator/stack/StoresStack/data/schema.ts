@@ -6,7 +6,7 @@ const schema = z.object({
   priceRange: z.array(z.number()),
   rating: z.number(),
   categoryIds: z.array(z.number()),
-  order: z.enum([SortOrder.Asc, SortOrder.Desc]),
+  order: z.enum([SortOrder.Asc, SortOrder.Desc]).optional(),
   sort: z.enum(['name', 'price', 'id']).optional().default('id'),
 });
 

@@ -50,12 +50,12 @@ const RootNavigator = () => {
   }
 
   return (
-    <SafeAreaProvider style={{ backgroundColor: isDarkColorScheme ? 'black' : 'white' }}>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <ThemeProvider value={isDarkColorScheme ? constants.THEME.DARK_THEME : constants.THEME.LIGHT_THEME}>
-          <AlertNotificationRoot theme={isDarkColorScheme ? 'dark' : 'light'} colors={configs.alertNotifies.colors}>
-            <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
-            <SafeAreaView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <ThemeProvider value={isDarkColorScheme ? constants.THEME.DARK_THEME : constants.THEME.LIGHT_THEME}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: isDarkColorScheme ? 'black' : 'white' }}>
+          <SafeAreaProvider>
+            <AlertNotificationRoot theme={isDarkColorScheme ? 'dark' : 'light'} colors={configs.alertNotifies.colors}>
+              <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
               <NavigationContainer
                 linking={configs.linking}
                 onReady={onLayoutRootView}
@@ -63,12 +63,12 @@ const RootNavigator = () => {
               >
                 {renderNavigator()}
               </NavigationContainer>
-            </SafeAreaView>
-            <PortalHost />
-          </AlertNotificationRoot>
-        </ThemeProvider>
-      </GestureHandlerRootView>
-    </SafeAreaProvider>
+              <PortalHost />
+            </AlertNotificationRoot>
+          </SafeAreaProvider>
+        </SafeAreaView>
+      </ThemeProvider>
+    </GestureHandlerRootView>
   );
 };
 

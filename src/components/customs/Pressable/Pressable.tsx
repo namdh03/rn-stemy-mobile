@@ -18,11 +18,9 @@ const Pressable = ({ children, className, disabled, pointerEvents, onPress }: Pr
       onPress={onPress}
       disabled={disabled}
       hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-      className={`web:ring-offset-background web:transition-colors web:focus-visible:outline-none web:focus-visible:ring-2 web:focus-visible:ring-ring web:focus-visible:ring-offset-2 ${className}`}
+      className={`${className}`}
     >
-      {({ pressed }) => (
-        <View className={cn('pt-0.5 justify-center items-start web:px-5', pressed && 'opacity-70')}>{children}</View>
-      )}
+      {({ pressed }) => <View className={cn(pressed && 'opacity-70')}>{children}</View>}
     </RNPressable>
   );
 };

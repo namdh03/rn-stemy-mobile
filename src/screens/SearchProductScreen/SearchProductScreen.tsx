@@ -35,7 +35,7 @@ const SearchProductScreen = ({ navigation }: SearchProductScreenNavigationProps)
     enabled: !!debouncedSearchValue,
     select: (data) => data.data.products.items,
   });
-  const setFilterStoring = useStore(useShallow((state) => state.setFilterStoring));
+  const setFilterStoring = useStore(useShallow((state) => state.setFilterSorting));
   const setHistorySearchItem = useHistorySearchProductStore(useShallow((state) => state.setItem));
 
   useEffect(() => {
