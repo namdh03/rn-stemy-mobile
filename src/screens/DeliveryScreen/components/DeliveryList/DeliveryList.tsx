@@ -9,13 +9,12 @@ import {
   Text as RNText,
   View,
 } from 'react-native';
-import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { confirmDeliveredOrder, pickUpOrder } from '~api/order.api';
 import EmptyList from '~components/customs/EmptyList';
-import { showConfirmModal } from '~components/customs/Modal/Modal';
+import { showAlertModal, showConfirmModal } from '~components/customs/Modal/Modal';
 import Pressable from '~components/customs/Pressable';
 import PreviewImage from '~components/customs/PreviewImage';
 import { Camera, CircleX, Image } from '~components/icons';
@@ -25,6 +24,7 @@ import constants from '~constants';
 import { GetStaffListOrderQuery, OrderStatus } from '~graphql/graphql';
 import { useUploadImage } from '~hooks';
 import { cn } from '~lib/utils';
+import { ALERT_TYPE } from '~store/modal/modal.type';
 
 import DeliveryItem from '../DeliveryItem';
 import DeliverySkeleton from '../DeliverySkeleton';
@@ -93,12 +93,14 @@ const DeliveryList = ({ isLoading, data, isRefetch, refetch, status }: DeliveryL
     confirmDeliveredOrderMutate(orderIdRef.current, {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: [constants.ORDER_QUERY_KEY.GET_STAFF_LIST_ORDER_QUERY, status] });
-        Toast.show({
+        showAlertModal({
           type: ALERT_TYPE.SUCCESS,
           title: constants.MESSAGES.SYSTEM_MESSAGES.SUCCESS_TITLE,
-          textBody: constants.MESSAGES.ORDER_MESSAGES.DELIVERED_ORDER_SUCCESS,
-          autoClose: 1000,
+          message: constants.MESSAGES.ORDER_MESSAGES.DELIVERED_ORDER_SUCCESS,
+          autoClose: true,
+          autoCloseTime: 1000,
         });
+
         setDeliveryModalVisible(false);
       },
       onError: () => {

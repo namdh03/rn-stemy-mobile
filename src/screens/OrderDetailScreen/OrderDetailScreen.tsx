@@ -1,10 +1,10 @@
 import { useCallback, useMemo } from 'react';
 import { FlatList, ScrollView, View } from 'react-native';
-import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
 import dayjs from 'dayjs';
 
 import Clipboard from '@react-native-clipboard/clipboard';
 
+import { showAlertModal } from '~components/customs/Modal/Modal';
 import Pressable from '~components/customs/Pressable';
 import { CircleDollarSign } from '~components/icons';
 import { Separator } from '~components/ui/separator';
@@ -13,6 +13,7 @@ import constants from '~constants';
 import { GetOrderByStatusQuery, OrderStatus } from '~graphql/graphql';
 import { useReceivedOrder, useRepayOrder } from '~hooks';
 import CheckoutItem from '~screens/CheckoutScreen/components/CheckoutItem';
+import { ALERT_TYPE } from '~store/modal/modal.type';
 import { OrderDetailScreenNavigationProps } from '~types/navigation.type';
 
 import OrderDetailButton from './components/OrderDetailButton';
@@ -78,11 +79,12 @@ const OrderDetailScreen = ({ route, navigation }: OrderDetailScreenNavigationPro
 
   const handleCopyOrderId = () => {
     Clipboard.setString(btoa(btoa(btoa(btoa(route.params.id)))));
-    Toast.show({
+    showAlertModal({
       type: ALERT_TYPE.SUCCESS,
       title: constants.MESSAGES.SYSTEM_MESSAGES.SUCCESS_TITLE,
-      textBody: constants.MESSAGES.ORDER_MESSAGES.COPY_ORDER_ID,
-      autoClose: 1000,
+      message: constants.MESSAGES.ORDER_MESSAGES.COPY_ORDER_PRODUCT_ID,
+      autoClose: true,
+      autoCloseTime: 1000,
     });
   };
 

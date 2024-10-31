@@ -1,4 +1,3 @@
-import { AlertNotificationRoot } from 'react-native-alert-notification';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
@@ -54,17 +53,15 @@ const RootNavigator = () => {
       <ThemeProvider value={isDarkColorScheme ? constants.THEME.DARK_THEME : constants.THEME.LIGHT_THEME}>
         <SafeAreaView style={{ flex: 1, backgroundColor: isDarkColorScheme ? 'black' : 'white' }}>
           <SafeAreaProvider>
-            <AlertNotificationRoot theme={isDarkColorScheme ? 'dark' : 'light'} colors={configs.alertNotifies.colors}>
-              <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
-              <NavigationContainer
-                linking={configs.linking}
-                onReady={onLayoutRootView}
-                theme={isDarkColorScheme ? constants.THEME.DARK_THEME : constants.THEME.LIGHT_THEME}
-              >
-                {renderNavigator()}
-              </NavigationContainer>
-              <PortalHost />
-            </AlertNotificationRoot>
+            <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
+            <NavigationContainer
+              linking={configs.linking}
+              onReady={onLayoutRootView}
+              theme={isDarkColorScheme ? constants.THEME.DARK_THEME : constants.THEME.LIGHT_THEME}
+            >
+              {renderNavigator()}
+            </NavigationContainer>
+            <PortalHost />
           </SafeAreaProvider>
         </SafeAreaView>
       </ThemeProvider>
