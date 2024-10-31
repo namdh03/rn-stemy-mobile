@@ -4,13 +4,14 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import { showConfirmModal } from '~components/customs/Modal/Modal';
 import constants from '~constants';
 import execute from '~graphql/execute';
 import { ReOrderMutation } from '~services/order.services';
 import { useCartStore } from '~store';
+import { ALERT_TYPE } from '~store/modal/modal.type';
 import { MainStackParamList } from '~types/navigation.type';
 import isErrors from '~utils/responseChecker';
-import showDialogError from '~utils/showDialogError';
 
 const useReOrder = () => {
   const queryClient = useQueryClient();
@@ -36,10 +37,18 @@ const useReOrder = () => {
         if (isErrors(errors)) {
           const error = errors.find((error) => error.path.includes('reOrder'));
           if (error?.message) {
-            return showDialogError({ textBody: error.message });
+            return showConfirmModal({
+              type: ALERT_TYPE.DANGER,
+              title: constants.MESSAGES.SYSTEM_MESSAGES.ERROR_TITLE,
+              message: error.message,
+            });
           }
         }
-        showDialogError();
+        showConfirmModal({
+          type: ALERT_TYPE.DANGER,
+          title: constants.MESSAGES.SYSTEM_MESSAGES.ERROR_TITLE,
+          message: constants.MESSAGES.SYSTEM_MESSAGES.SOMETHING_WENT_WRONG,
+        });
       },
     });
   };

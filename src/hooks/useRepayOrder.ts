@@ -2,12 +2,13 @@ import * as WebBrowser from 'expo-web-browser';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import { showConfirmModal } from '~components/customs/Modal/Modal';
 import constants from '~constants';
 import execute from '~graphql/execute';
 import { OrderStatus } from '~graphql/graphql';
 import { RepayOrderMutation } from '~services/order.services';
+import { ALERT_TYPE } from '~store/modal/modal.type';
 import isErrors from '~utils/responseChecker';
-import showDialogError from '~utils/showDialogError';
 
 const useRepayOrder = () => {
   const queryClient = useQueryClient();
@@ -24,10 +25,18 @@ const useRepayOrder = () => {
         if (isErrors(errors)) {
           const error = errors.find((error) => error.path.includes('repayOrder'));
           if (error?.message) {
-            return showDialogError({ textBody: error.message });
+            return showConfirmModal({
+              type: ALERT_TYPE.DANGER,
+              title: constants.MESSAGES.SYSTEM_MESSAGES.ERROR_TITLE,
+              message: error.message,
+            });
           }
         }
-        showDialogError();
+        showConfirmModal({
+          type: ALERT_TYPE.DANGER,
+          title: constants.MESSAGES.SYSTEM_MESSAGES.ERROR_TITLE,
+          message: constants.MESSAGES.SYSTEM_MESSAGES.SOMETHING_WENT_WRONG,
+        });
       },
       onSettled: () => {
         queryClient.invalidateQueries({

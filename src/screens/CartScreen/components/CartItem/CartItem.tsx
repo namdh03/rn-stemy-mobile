@@ -10,6 +10,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import InputPositiveNumber from '~components/customs/InputPositiveNumber';
+import { showAlertModal } from '~components/customs/Modal/Modal';
 import Pressable from '~components/customs/Pressable';
 import { Minus, Plus } from '~components/icons';
 import { Checkbox } from '~components/ui/checkbox';
@@ -20,9 +21,9 @@ import { GetCartQuery } from '~graphql/graphql';
 import { useDebounce } from '~hooks';
 import { DeleteCartsMutation, UpdateCartMutation } from '~services/cart.services';
 import { useCartStore } from '~store';
+import { ALERT_TYPE } from '~store/modal/modal.type';
 import { RootStackParamList } from '~types/navigation.type';
 import isErrors from '~utils/responseChecker';
-import showDialogError from '~utils/showDialogError';
 
 interface CartItemProps {
   item: GetCartQuery['carts'][number];
@@ -67,10 +68,22 @@ const CartItem = memo(({ item }: CartItemProps) => {
             if (isErrors(errors)) {
               const error = errors.find((error) => error.path.includes('updateCart'));
               if (error?.message) {
-                return showDialogError({ textBody: error.message });
+                return showAlertModal({
+                  type: ALERT_TYPE.DANGER,
+                  title: constants.MESSAGES.SYSTEM_MESSAGES.ERROR_TITLE,
+                  message: error.message,
+                  autoClose: true,
+                  autoCloseTime: 1500,
+                });
               }
             }
-            showDialogError();
+            showAlertModal({
+              type: ALERT_TYPE.DANGER,
+              title: constants.MESSAGES.SYSTEM_MESSAGES.ERROR_TITLE,
+              message: constants.MESSAGES.SYSTEM_MESSAGES.SOMETHING_WENT_WRONG,
+              autoClose: true,
+              autoCloseTime: 1500,
+            });
           },
         },
       );
@@ -102,10 +115,22 @@ const CartItem = memo(({ item }: CartItemProps) => {
         if (isErrors(errors)) {
           const error = errors.find((error) => error.path.includes('deleteCarts'));
           if (error?.message) {
-            return showDialogError({ textBody: error.message });
+            return showAlertModal({
+              type: ALERT_TYPE.DANGER,
+              title: constants.MESSAGES.SYSTEM_MESSAGES.ERROR_TITLE,
+              message: error.message,
+              autoClose: true,
+              autoCloseTime: 1500,
+            });
           }
         }
-        showDialogError();
+        showAlertModal({
+          type: ALERT_TYPE.DANGER,
+          title: constants.MESSAGES.SYSTEM_MESSAGES.ERROR_TITLE,
+          message: constants.MESSAGES.SYSTEM_MESSAGES.SOMETHING_WENT_WRONG,
+          autoClose: true,
+          autoCloseTime: 1500,
+        });
       },
     });
   }, [item.id, deleteCartItem, queryClient, removeCartItem]);

@@ -18,6 +18,7 @@ import { useColorScheme, useOnlineManager } from '~hooks';
 import Navigation from '~navigation/Navigation';
 
 import './global.css';
+import Modal from '~components/customs/Modal';
 
 // Config react query
 const queryClient = new QueryClient({
@@ -43,6 +44,7 @@ export default function App() {
         <SafeAreaView className='flex-1'>
           <QueryClientProvider client={queryClient}>
             <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
+            <Modal />
             <Navigation />
             <PortalHost />
           </QueryClientProvider>

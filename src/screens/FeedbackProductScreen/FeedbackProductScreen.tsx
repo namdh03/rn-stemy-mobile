@@ -4,15 +4,15 @@ import { ScrollView, View } from 'react-native';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import FeedbackProduct from '~components/customs/FeedbackProduct';
+import { showAlertModal } from '~components/customs/Modal/Modal';
 import Pressable from '~components/customs/Pressable';
 import { Text } from '~components/ui/text';
 import constants from '~constants';
 import execute from '~graphql/execute';
 import { CreateFeedbackMutation } from '~services/feedback.services';
+import { ALERT_TYPE } from '~store/modal/modal.type';
 import { FeedbackProductScreenNavigationProps } from '~types/navigation.type';
 import isErrors from '~utils/responseChecker';
-import showDialogError from '~utils/showDialogError';
-import showDialogSuccess from '~utils/showDialogSuccess';
 
 const FeedbackProductScreen = ({ route, navigation }: FeedbackProductScreenNavigationProps) => {
   const { order } = route.params;
@@ -35,14 +35,33 @@ const FeedbackProductScreen = ({ route, navigation }: FeedbackProductScreenNavig
       queryClient.invalidateQueries({ queryKey: [constants.HOME_QUERY_KEY.GET_HOME_QUERY_KEY] });
       queryClient.invalidateQueries({ queryKey: [constants.ORDER_QUERY_KEY.GET_COUNT_ORDER_QUERY_KEY] });
       queryClient.invalidateQueries({ queryKey: [constants.ORDER_QUERY_KEY.GET_ORDER_BY_STATUS_QUERY_KEY] });
-      showDialogSuccess({ textBody: 'Feedbacks submitted successfully!' });
+      showAlertModal({
+        type: ALERT_TYPE.SUCCESS,
+        title: constants.MESSAGES.SYSTEM_MESSAGES.SUCCESS_TITLE,
+        message: 'Feedbacks submitted successfully!',
+        autoClose: true,
+        autoCloseTime: 1000,
+      });
+
       navigation.goBack();
     },
     onError: (errors) => {
       if (isErrors(errors)) {
-        showDialogError();
+        showAlertModal({
+          type: ALERT_TYPE.DANGER,
+          title: constants.MESSAGES.SYSTEM_MESSAGES.ERROR_TITLE,
+          message: errors.message,
+          autoClose: true,
+          autoCloseTime: 1500,
+        });
       } else {
-        showDialogError({ textBody: errors.message });
+        showAlertModal({
+          type: ALERT_TYPE.DANGER,
+          title: constants.MESSAGES.SYSTEM_MESSAGES.ERROR_TITLE,
+          message: constants.MESSAGES.SYSTEM_MESSAGES.SOMETHING_WENT_WRONG,
+          autoClose: true,
+          autoCloseTime: 1500,
+        });
       }
     },
   });
@@ -67,11 +86,21 @@ const FeedbackProductScreen = ({ route, navigation }: FeedbackProductScreenNavig
         input: feedbackArray, // Truyền mảng feedbacks
       });
 
-      console.log('All feedbacks submitted:', feedbackArray);
-      showDialogSuccess();
+      showAlertModal({
+        type: ALERT_TYPE.SUCCESS,
+        title: constants.MESSAGES.SYSTEM_MESSAGES.SUCCESS_TITLE,
+        message: 'Feedbacks submitted successfully!',
+        autoClose: true,
+        autoCloseTime: 1500,
+      });
     } catch (errors) {
-      console.log(errors);
-      showDialogError();
+      showAlertModal({
+        type: ALERT_TYPE.DANGER,
+        title: constants.MESSAGES.SYSTEM_MESSAGES.ERROR_TITLE,
+        message: JSON.stringify(errors),
+        autoClose: true,
+        autoCloseTime: 1500,
+      });
     }
   };
 

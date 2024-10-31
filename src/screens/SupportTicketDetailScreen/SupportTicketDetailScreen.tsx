@@ -16,6 +16,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import LoadingOverlay from '~components/customs/LoadingOverlay';
+import { showAlertModal } from '~components/customs/Modal/Modal';
 import Pressable from '~components/customs/Pressable';
 import PreviewImage from '~components/customs/PreviewImage';
 import { Form, FormField, FormTextarea } from '~components/deprecated-ui/form';
@@ -29,10 +30,10 @@ import { TicketStatus } from '~graphql/graphql';
 import { useRefreshByUser, useReplyTicket, useUploadImage } from '~hooks';
 import { cn } from '~lib/utils';
 import { GetTicketByIdQuery } from '~services/ticket.services';
+import { ALERT_TYPE } from '~store/modal/modal.type';
 import { SupportTicketDetailScreenNavigationProps } from '~types/navigation.type';
 import capitalizeFirstLetter from '~utils/capitalizeFirstLetter';
 import isErrors from '~utils/responseChecker';
-import showDialogError from '~utils/showDialogError';
 
 import { ReplyTicketFormType, replyTicketSchema } from './schema';
 
@@ -119,10 +120,22 @@ const SupportTicketDetailScreen = ({ route, navigation }: SupportTicketDetailScr
         if (isErrors(errors)) {
           const error = errors.find((error) => error.path.includes('replyTicket'));
           if (error?.message) {
-            return showDialogError({ textBody: error.message });
+            return showAlertModal({
+              type: ALERT_TYPE.DANGER,
+              title: constants.MESSAGES.SYSTEM_MESSAGES.ERROR_TITLE,
+              message: errors.message,
+              autoClose: true,
+              autoCloseTime: 1500,
+            });
           }
         }
-        showDialogError();
+        showAlertModal({
+          type: ALERT_TYPE.DANGER,
+          title: constants.MESSAGES.SYSTEM_MESSAGES.ERROR_TITLE,
+          message: errors.message,
+          autoClose: true,
+          autoCloseTime: 1500,
+        });
       },
     });
   };

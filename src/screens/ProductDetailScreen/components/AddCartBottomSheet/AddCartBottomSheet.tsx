@@ -6,6 +6,7 @@ import { RouteProp, useRoute } from '@react-navigation/native';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import InputPositiveNumber from '~components/customs/InputPositiveNumber/InputPositiveNumber';
+import { showAlertModal } from '~components/customs/Modal/Modal';
 import Pressable from '~components/customs/Pressable';
 import { CircleX, Minus, Plus } from '~components/icons';
 import { Button } from '~components/ui/button';
@@ -15,9 +16,9 @@ import constants from '~constants';
 import execute from '~graphql/execute';
 import { useColorScheme } from '~hooks';
 import { AddToCartMutation } from '~services/cart.services';
+import { ALERT_TYPE } from '~store/modal/modal.type';
 import { ProductDetailStackParamList } from '~types/navigation.type';
 import isErrors from '~utils/responseChecker';
-import showDialogError from '~utils/showDialogError';
 
 interface AddCartBottomSheetProps {
   defaultPrice: number;
@@ -77,15 +78,34 @@ const AddCartBottomSheet = forwardRef<BottomSheet, AddCartBottomSheetProps>(
           queryClient.invalidateQueries({ queryKey: [constants.CART_QUERY_KEY.GET_CART_COUNT_QUERY_KEY] });
           onClose();
           // HANDLE START ANIMATION HERE
+          showAlertModal({
+            type: ALERT_TYPE.SUCCESS,
+            title: constants.MESSAGES.SYSTEM_MESSAGES.SUCCESS_TITLE,
+            message: constants.MESSAGES.CART_MESSAGES.ADD_TO_CART_SUCCESSFULLY,
+            autoClose: true,
+            autoCloseTime: 1500,
+          });
         },
         onError: (errors) => {
           if (isErrors(errors)) {
             const error = errors.find((error) => error.path.includes('addToCart'));
             if (error?.message) {
-              return showDialogError({ textBody: error.message });
+              return showAlertModal({
+                type: ALERT_TYPE.DANGER,
+                title: constants.MESSAGES.SYSTEM_MESSAGES.ERROR_TITLE,
+                message: error.message,
+                autoClose: true,
+                autoCloseTime: 1500,
+              });
             }
           }
-          showDialogError();
+          showAlertModal({
+            type: ALERT_TYPE.DANGER,
+            title: constants.MESSAGES.SYSTEM_MESSAGES.ERROR_TITLE,
+            message: constants.MESSAGES.SYSTEM_MESSAGES.SOMETHING_WENT_WRONG,
+            autoClose: true,
+            autoCloseTime: 1500,
+          });
         },
       });
     }, [route.params.id, mutate, onClose]);
@@ -93,7 +113,7 @@ const AddCartBottomSheet = forwardRef<BottomSheet, AddCartBottomSheetProps>(
     return (
       <BottomSheet
         ref={ref}
-        snapPoints={['75%', '75%']}
+        snapPoints={['65%', '65%']}
         enablePanDownToClose
         index={-1}
         onClose={handleBottomSheetClose}
@@ -165,10 +185,6 @@ const AddCartBottomSheet = forwardRef<BottomSheet, AddCartBottomSheetProps>(
                     </Text>
                   </Pressable>
                 </View>
-
-                <Text className='font-inter-regular text-[14px] text-muted-foreground tracking-[0.2px]'>
-                  You can only buy 1 lab per kit
-                </Text>
               </View>
 
               <Separator className='my-[20px] bg-muted' />
