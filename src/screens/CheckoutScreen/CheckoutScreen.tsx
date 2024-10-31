@@ -6,6 +6,7 @@ import { useShallow } from 'zustand/react/shallow';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import { showConfirmModal } from '~components/customs/Modal/Modal';
 import { CircleDollarSign } from '~components/icons';
 import { Button } from '~components/ui/button';
 import { Separator } from '~components/ui/separator';
@@ -15,9 +16,9 @@ import execute from '~graphql/execute';
 import { CreateOrderMutation } from '~services/checkout.services';
 import { useCartStore, useStore } from '~store';
 import { CheckoutDataStrict } from '~store/checkout/checkout.type';
+import { ALERT_TYPE } from '~store/modal/modal.type';
 import { CheckoutScreenNavigationProps } from '~types/navigation.type';
 import isErrors from '~utils/responseChecker';
-import showDialogError from '~utils/showDialogError';
 
 import CheckoutItem from './components/CheckoutItem';
 import CheckoutUserInfo from './components/CheckoutUserInfo';
@@ -56,11 +57,12 @@ const CheckoutScreen = ({ navigation }: CheckoutScreenNavigationProps) => {
 
   const handlePlaceOrder = () => {
     if (!checkoutData.fullName || !checkoutData.phone || !checkoutData.address) {
-      return showDialogError({
+      return showConfirmModal({
+        type: ALERT_TYPE.DANGER,
         title: constants.MESSAGES.SYSTEM_MESSAGES.MISSING_INFORMATION,
-        textBody: 'Please provide your phone number and address to complete your order.',
-        button: 'Go to Update',
-        onHide: () => navigation.navigate('CheckoutUserInformationScreen'),
+        message: 'Please provide your phone number and address to complete your order.',
+        confirmText: 'Go to Update',
+        onConfirm: () => navigation.navigate('CheckoutUserInformationScreen'),
       });
     }
 
@@ -87,10 +89,19 @@ const CheckoutScreen = ({ navigation }: CheckoutScreenNavigationProps) => {
             if (isErrors(errors)) {
               const error = errors.find((error) => error.path.includes('createOrder'));
               if (error?.message) {
-                return showDialogError({ textBody: error.message, onHide: () => navigation.navigate('CartScreen') });
+                return showConfirmModal({
+                  type: ALERT_TYPE.DANGER,
+                  title: 'Error',
+                  message: error.message,
+                  onConfirm: () => navigation.navigate('CartScreen'),
+                });
               }
             }
-            showDialogError({ onHide: () => navigation.navigate('CartScreen') });
+            showConfirmModal({
+              type: ALERT_TYPE.DANGER,
+              title: 'Error',
+              onConfirm: () => navigation.navigate('CartScreen'),
+            });
           },
         },
       );
