@@ -1,6 +1,7 @@
 import React, { useLayoutEffect } from 'react';
-import { FlatList, Text as RNText, View } from 'react-native';
+import { FlatList, ScrollView, Text as RNText, View } from 'react-native';
 import { RefreshControl } from 'react-native-gesture-handler';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Image } from 'expo-image';
 import { useShallow } from 'zustand/react/shallow';
 
@@ -21,6 +22,8 @@ import { CartScreenNavigationProps } from '~types/navigation.type';
 import CartItem from './components/CartItem';
 
 const CartScreen = ({ navigation }: CartScreenNavigationProps) => {
+  const insets = useSafeAreaInsets();
+  // const { height } = Dimensions.get('window');
   const { total, cart, selectedCart, setCart } = useCartStore(
     useShallow((state) => ({
       total: state.total,
@@ -54,64 +57,75 @@ const CartScreen = ({ navigation }: CartScreenNavigationProps) => {
     return <LoadingOverlay loop />;
   }
 
-  return cart.length > 0 ? (
-    <>
-      <View
-        style={{
-          position: 'absolute',
-          left: 0,
-          right: 0,
-          bottom: 0,
-          flexShrink: 0,
-          paddingHorizontal: 24,
-          paddingTop: 12,
-          paddingBottom: 24,
-        }}
-        className='bg-card'
-      >
-        <View className='flex-row items-center justify-between px-[12px] py-[8px]'>
-          <Text className='font-inter-regular text-muted-foreground text-[14px] leading-[20px]'>Total</Text>
-          <Text className='font-inter-extraBold text-foreground text-[14px]'>{total.toLocaleString()} ₫</Text>
-        </View>
-
-        <Button
-          size='lg'
-          className='mt-[16px]'
-          onPress={handleCheckout}
-          disabled={!Object.values(selectedCart || {}).length}
-        >
-          <RNText className='font-inter-medium text-background text-[16px] leading-[20px]'>Checkout</RNText>
-        </Button>
-      </View>
-
-      <FlatList
-        data={cart}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View>
-            <CartItem item={item} />
-          </View>
-        )}
-        ItemSeparatorComponent={() => <Separator className='bg-muted my-[12px]' />}
-        contentContainerStyle={{ flexGrow: 1, paddingTop: 24, paddingLeft: 24, paddingBottom: 140 }}
+  return (
+    <View
+      style={{
+        flex: 1,
+        paddingTop: insets.top,
+        paddingLeft: insets.left,
+        paddingRight: insets.right,
+        paddingBottom: insets.bottom,
+      }}
+    >
+      <ScrollView
+        contentContainerClassName='flex-grow mx-auto w-full max-w-xl'
+        showsVerticalScrollIndicator={false}
+        automaticallyAdjustContentInsets={false}
         refreshControl={
           <RefreshControl className='text-primary' refreshing={isRefetchingByUser} onRefresh={refetchByUser} />
         }
-        showsVerticalScrollIndicator={false}
-        automaticallyAdjustContentInsets={false}
-      />
-    </>
-  ) : (
-    <View className='flex-1 justify-center items-center gap-[8px] mr-[24px] pb-[140px]'>
-      <Image
-        source={images.cartEmpty}
-        placeholder={{ blurhash: constants.EXPO_IMAGE.BLUR_HASH }}
-        style={{ width: 150, height: 150 }}
-        contentFit='cover'
-      />
-      <Text className='font-inter-regular text-center text-muted-foreground text-[14px]'>
-        Your cart is empty, awaiting great selections.
-      </Text>
+      >
+        {cart.length > 0 ? (
+          <View className='flex-1 pl-[24px] py-[24px] pb-[180px]'>
+            <FlatList
+              data={cart}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => <CartItem item={item} />}
+              ItemSeparatorComponent={() => <Separator className='bg-muted my-[12px]' />}
+              showsVerticalScrollIndicator={false}
+              automaticallyAdjustContentInsets={false}
+              scrollEnabled={false}
+            />
+          </View>
+        ) : (
+          <View className='flex-1 justify-center items-center gap-[8px] pb-[180px]'>
+            <Image
+              source={images.cartEmpty}
+              placeholder={{ blurhash: constants.EXPO_IMAGE.BLUR_HASH }}
+              style={{ width: 150, height: 150 }}
+              contentFit='cover'
+            />
+            <Text className='font-inter-regular text-center text-muted-foreground text-[14px]'>
+              Your cart is empty, awaiting great selections.
+            </Text>
+          </View>
+        )}
+      </ScrollView>
+
+      <View
+        style={{
+          position: 'absolute',
+          // top: height - 200,
+          bottom: insets.bottom,
+          left: insets.left,
+          right: insets.right,
+          gap: 24,
+          paddingHorizontal: 24,
+          // paddingBottom: 48,
+          paddingBottom: 24,
+          paddingTop: 12,
+        }}
+        className='bg-card'
+      >
+        <View className='flex-row items-center justify-between px-[12px]'>
+          <Text className='font-inter-regular text-muted-foreground text-[16px] leading-[20px]'>Total</Text>
+          <Text className='font-inter-extraBold text-primary text-[16px]'>{total.toLocaleString()} ₫</Text>
+        </View>
+
+        <Button size='lg' onPress={handleCheckout} disabled={!Object.values(selectedCart || {}).length}>
+          <RNText className='font-inter-medium text-background text-[16px] leading-[20px]'>Checkout</RNText>
+        </Button>
+      </View>
     </View>
   );
 };

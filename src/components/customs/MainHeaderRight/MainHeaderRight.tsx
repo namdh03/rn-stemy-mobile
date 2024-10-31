@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -11,12 +11,10 @@ import { Text } from '~components/ui/text';
 import { GET_CART_COUNT_QUERY_KEY } from '~constants/cart-query-key';
 import execute from '~graphql/execute';
 import { GetCartCountQuery } from '~services/cart.services';
-import { MainStackParamList } from '~types/navigation.type';
-
-import Pressable from '../Pressable';
+import { RootStackParamList } from '~types/navigation.type';
 
 const MainHeaderRight = () => {
-  const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { data } = useQuery({
     queryKey: [GET_CART_COUNT_QUERY_KEY],
     queryFn: () => execute(GetCartCountQuery),
@@ -26,22 +24,25 @@ const MainHeaderRight = () => {
   const cartIconRef = useRef<View>(null);
 
   return (
-    <View className='flex-row gap-[18px]'>
+    <View className='flex-shrink-0'>
       {/* <Pressable>
         <Bell className='text-foreground' size={26} />
       </Pressable> */}
-      <Pressable onPress={() => navigation.navigate('CartScreen')}>
+      <TouchableOpacity
+        hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+        onPress={() => navigation.navigate('CartScreen')}
+      >
         <View ref={cartIconRef}>
           <ShoppingCart className='text-foreground' size={26} />
         </View>
         <Badge
           pointerEvents='none'
-          className='absolute top-[-9px] right-[-13px] items-center justify-center p-0 w-[20px] h-[20px]'
+          className='absolute top-[-12px] right-[-8px] items-center justify-center p-0 w-[20px] h-[20px]'
           variant='destructive'
         >
           <Text>{data || 0}</Text>
         </Badge>
-      </Pressable>
+      </TouchableOpacity>
     </View>
   );
 };

@@ -19,5 +19,5 @@ export const createProductDetailSlice: StateCreator<
       state.rating = rating;
       state.feedbacks = feedbacks;
     }),
-  reset: () => set(initialState),
+  resetProductDetail: () => set(initialState),
 });

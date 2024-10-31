@@ -88,5 +88,5 @@ export const createCartSlice: StateCreator<CartSlice, [['zustand/immer', never]]
       state.total = calculateTotal(updatedSelectedCart);
     }),
 
-  reset: () => set(initialState),
+  resetCart: () => set(initialState),
 });

@@ -1,16 +1,23 @@
 // eslint-disable-next-line simple-import-sort/imports
 import './gesture-handler';
 
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { enableScreens } from 'react-native-screens';
+import { useKeepAwake } from 'expo-keep-awake';
+import { StatusBar } from 'expo-status-bar';
+
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { ThemeProvider } from '@react-navigation/native';
+import { PortalHost } from '@rn-primitives/portal';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import configs from '~configs';
-import RootNavigator from '~navigation/RootNavigator';
+import constants from '~constants';
+import { useColorScheme, useOnlineManager } from '~hooks';
+import Navigation from '~navigation/Navigation';
 
 import './global.css';
-import { enableScreens } from 'react-native-screens';
-import { useKeepAwake } from 'expo-keep-awake';
-import { useOnlineManager } from '~hooks';
 
 // Config react query
 const queryClient = new QueryClient({
@@ -28,10 +35,19 @@ enableScreens();
 export default function App() {
   useKeepAwake();
   useOnlineManager();
+  const { isDarkColorScheme } = useColorScheme();
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <RootNavigator />
-    </QueryClientProvider>
+    <GestureHandlerRootView className='flex-1'>
+      <ThemeProvider value={isDarkColorScheme ? constants.THEME.DARK_THEME : constants.THEME.LIGHT_THEME}>
+        <SafeAreaView className='flex-1'>
+          <QueryClientProvider client={queryClient}>
+            <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
+            <Navigation />
+            <PortalHost />
+          </QueryClientProvider>
+        </SafeAreaView>
+      </ThemeProvider>
+    </GestureHandlerRootView>
   );
 }

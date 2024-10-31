@@ -5,7 +5,7 @@ export type StoresDrawerState = {
 export type StoresDrawerActions = {
   onStoresDrawerOpen: () => void;
   onStoresDrawerClose: () => void;
-  reset: () => void;
+  resetStoresDrawer: () => void;
 };
 
 export type StoresDrawerSlice = StoresDrawerState & StoresDrawerActions;

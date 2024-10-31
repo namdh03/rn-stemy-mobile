@@ -9,7 +9,7 @@ export type AuthActions = {
   initialize: (isAuthenticated: boolean, user?: MeQuery['me']) => void;
   authenticate: (user: MeQuery['me']) => void;
   unAuthenticate: () => void;
-  reset: () => void;
+  resetAuth: () => void;
 };
 
 export type AuthSlice = AuthState & AuthActions;

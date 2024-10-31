@@ -31,5 +31,5 @@ export const createHistorySearchProductSlice: StateCreator<
       // Filter the list to remove the item by id
       state.list = state.list.filter((product) => product.id !== id);
     }),
-  reset: () => set(initialState),
+  resetHistorySearchProduct: () => set(initialState),
 });

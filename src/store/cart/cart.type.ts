@@ -18,7 +18,7 @@ export type CartActions = {
   updateCartItemQuantity: (id: string, quantity: number) => void;
   removeCartItem: (id: string) => void;
   syncWithServer: (serverCart: GetCartQuery['carts']) => void;
-  reset: () => void;
+  resetCart: () => void;
 };
 
 export type CartSlice = CartState & CartActions;

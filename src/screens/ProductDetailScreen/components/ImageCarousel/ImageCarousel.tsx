@@ -7,7 +7,11 @@ import Pressable from '~components/customs/Pressable';
 import { CircleX } from '~components/icons';
 import constants from '~constants';
 import { useColorScheme } from '~hooks';
-import { Image as ImageType } from '~types/image.type';
+
+export type ImageType = {
+  id: string;
+  url: string;
+};
 
 interface ImageCarouselProps {
   images: ImageType[];
