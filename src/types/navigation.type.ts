@@ -174,3 +174,8 @@ export type StaffStackParamList = {
   StaffBottomTabs: NavigatorScreenParams<StaffBottomTabsParamList>;
   SupportTicketDetailScreen: { index: number; ticketId: string; status: TicketStatus };
 };
+
+export type SupportTicketDetailScreenNavigationProps = NativeStackScreenProps<
+  StaffStackParamList,
+  'SupportTicketDetailScreen'
+>;

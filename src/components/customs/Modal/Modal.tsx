@@ -31,7 +31,7 @@ export const Modal: React.FC = () => {
   const { isVisible, content, hideModal } = useModalStore();
 
   return (
-    <RNModal animationType='slide' transparent={true} visible={isVisible} onRequestClose={hideModal}>
+    <RNModal animationType='fade' transparent={true} visible={isVisible} onRequestClose={hideModal}>
       <View className='flex-1 justify-center items-center bg-gray-900/60'>
         <View className='w-4/5 bg-background rounded-lg p-5'>
           <View className='flex-row items-center justify-between mb-2'>

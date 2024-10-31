@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { ActivityIndicator, ScrollView, Text as RNText, View } from 'react-native';
-import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
 import dayjs from 'dayjs';
 import { Image } from 'expo-image';
 
@@ -20,6 +19,7 @@ import execute from '~graphql/execute';
 import { TicketStatus } from '~graphql/graphql';
 import { cn } from '~lib/utils';
 import { GetTicketByIdQuery, RatingTicketMutation } from '~services/ticket.services';
+import { ALERT_TYPE } from '~store/modal/modal.type';
 import { TicketDetailScreenNavigationProps } from '~types/navigation.type';
 import capitalizeFirstLetter from '~utils/capitalizeFirstLetter';
 import isErrors from '~utils/responseChecker';
@@ -46,12 +46,14 @@ const TicketDetailScreen = ({ route }: TicketDetailScreenNavigationProps) => {
   const handleRatingTicket = () => {
     mutate(rating, {
       onSuccess: async () => {
-        Toast.show({
+        showAlertModal({
           type: ALERT_TYPE.SUCCESS,
           title: constants.MESSAGES.SYSTEM_MESSAGES.SUCCESS_TITLE,
-          textBody: constants.MESSAGES.TICKET_MESSAGES.RATING_TICKET_TEXT_BODY,
-          autoClose: 1000,
+          message: constants.MESSAGES.TICKET_MESSAGES.RATING_TICKET_TEXT_BODY,
+          autoClose: true,
+          autoCloseTime: 1000,
         });
+
         queryClient.invalidateQueries({
           queryKey: [constants.TICKET_QUERY_KEY.GET_TICKET_BY_ID_QUERY_KEY, route.params.ticketId],
         });
