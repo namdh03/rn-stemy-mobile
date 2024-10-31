@@ -8,14 +8,14 @@ import { Star } from '~components/icons';
 import { Button } from '~components/ui/button';
 import { Text } from '~components/ui/text';
 import { useStore } from '~store';
-import { ProductDetailStackParamList } from '~types/navigation.type';
+import { RootStackParamList } from '~types/navigation.type';
 
 import FeedbackItem from '../FeedbackItem';
 
 const MAX_FEEDBACK_DISPLAY = 4;
 
 const Feedbacks = () => {
-  const navigation = useNavigation<NativeStackNavigationProp<ProductDetailStackParamList>>();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { rating, feedbacks } = useStore(
     useShallow((state) => ({
       rating: state.rating,
@@ -53,8 +53,11 @@ const Feedbacks = () => {
             size='lg'
             variant='outline'
             onPress={() =>
-              navigation.navigate('ProductFeedbackScreen', {
-                rating: rating,
+              navigation.push('RootDrawer', {
+                screen: 'ProductFeedbackScreen',
+                params: {
+                  rating,
+                },
               })
             }
           >

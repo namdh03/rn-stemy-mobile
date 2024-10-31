@@ -22,6 +22,7 @@ import SearchSuggestions from './components/SearchSuggestions';
 const SearchProductScreen = ({ navigation }: SearchProductScreenNavigationProps) => {
   const { isDarkColorScheme } = useColorScheme();
   const [searchValue, setSearchValue] = useState('');
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const debouncedSearchValue = useDebounce(searchValue);
   const inputRef = useRef<TextInput>(null);
   const { data: featuredProduct } = useQuery({
@@ -44,6 +45,20 @@ const SearchProductScreen = ({ navigation }: SearchProductScreenNavigationProps)
     }
   }, []);
 
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+      setKeyboardVisible(true);
+    });
+    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardVisible(false);
+    });
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+
   const handleSearchValueChange = (text: string) => {
     setSearchValue(text);
   };
@@ -51,8 +66,8 @@ const SearchProductScreen = ({ navigation }: SearchProductScreenNavigationProps)
   const handleSearchResultItemPress = useCallback((product: Pick<Product, 'id' | 'name'>) => {
     setHistorySearchItem(product);
     setFilterStoring({ search: product.name });
-    navigation.push('BottomTabStack', {
-      screen: 'StoresStack',
+    navigation.push('RootDrawer', {
+      screen: 'RootBottomTabs',
       params: {
         screen: 'StoresScreen',
       },
@@ -62,8 +77,8 @@ const SearchProductScreen = ({ navigation }: SearchProductScreenNavigationProps)
   const handleSearchIconPress = useCallback(() => {
     if (debouncedSearchValue) setHistorySearchItem({ id: new Date().getTime().toString(), name: debouncedSearchValue });
     setFilterStoring({ search: debouncedSearchValue });
-    navigation.push('BottomTabStack', {
-      screen: 'StoresStack',
+    navigation.push('RootDrawer', {
+      screen: 'RootBottomTabs',
       params: {
         screen: 'StoresScreen',
       },
@@ -102,20 +117,22 @@ const SearchProductScreen = ({ navigation }: SearchProductScreenNavigationProps)
           </View>
         </View>
 
-        <View className={`rounded-t-[10px] ${isDarkColorScheme ? 'bg-secondary' : 'bg-destructive-foreground'}`}>
-          <ProductList
-            title='Featured Product'
-            data={featuredProduct || []}
-            onPress={() =>
-              navigation.navigate('BottomTabStack', {
-                screen: 'StoresStack',
-                params: {
-                  screen: 'StoresScreen',
-                },
-              })
-            }
-          />
-        </View>
+        {!isKeyboardVisible && (
+          <View className={`rounded-t-[10px] ${isDarkColorScheme ? 'bg-secondary' : 'bg-destructive-foreground'}`}>
+            <ProductList
+              title='Featured Product'
+              data={featuredProduct || []}
+              onPress={() =>
+                navigation.push('RootDrawer', {
+                  screen: 'RootBottomTabs',
+                  params: {
+                    screen: 'StoresScreen',
+                  },
+                })
+              }
+            />
+          </View>
+        )}
       </RNPressable>
     </ScrollView>
   );

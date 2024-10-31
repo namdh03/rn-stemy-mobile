@@ -255,7 +255,7 @@ const CreateTicketScreen: FC<CreateTicketScreenNavigationProps> = ({ route, navi
                     </Text>
                     <FormInput
                       placeholder='Ticket Title'
-                      className='font-inter-regular max-h-[36px] text-foreground text-[14px] leading-[20px] rounded-[6px] shadow-sm placeholder:text-muted-foreground placeholder:text-[14px]'
+                      className='font-inter-regular max-h-[36px] text-foreground text-[14px] leading-[20px] rounded-[6px] shadow-sm '
                       autoCapitalize='words'
                       autoComplete='off'
                       {...field}
@@ -275,7 +275,7 @@ const CreateTicketScreen: FC<CreateTicketScreenNavigationProps> = ({ route, navi
                     </Text>
                     <FormTextarea
                       placeholder='Enter a description...'
-                      className='font-inter-regular text-foreground text-[14px] leading-[20px] rounded-[6px] shadow-sm placeholder:text-muted-foreground placeholder:text-[14px]'
+                      className='font-inter-regular text-foreground text-[14px] leading-[20px] rounded-[6px] shadow-sm'
                       autoComplete='off'
                       {...field}
                     />
@@ -363,7 +363,6 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   containerStyle: {
-    marginTop: 4,
     borderRadius: 6,
     backgroundColor: '#fff',
     borderWidth: 1,

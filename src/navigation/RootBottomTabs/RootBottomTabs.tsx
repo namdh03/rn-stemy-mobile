@@ -38,6 +38,9 @@ const RootBottomTabs = () => {
         headerLeftContainerStyle: { paddingLeft: 24 },
         headerRightContainerStyle: { paddingRight: 24 },
       }}
+      screenListeners={() => ({
+        tabPress: resetFilterSorting,
+      })}
     >
       <BottomTab.Screen
         name='HomeScreen'
@@ -47,9 +50,6 @@ const RootBottomTabs = () => {
           tabBarIcon: ({ color, size }) => <House color={color} size={size} />,
           headerTitle: '',
         }}
-        listeners={() => ({
-          tabPress: resetFilterSorting,
-        })}
       />
       <BottomTab.Screen
         name='StoresScreen'

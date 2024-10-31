@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -23,7 +24,7 @@ const Navigation = () => {
     })),
   );
 
-  const renderNavigator = () => {
+  const renderNavigator = useCallback(() => {
     if (!isAuthenticated || !user) {
       return <AuthStack />;
     }
@@ -34,7 +35,7 @@ const Navigation = () => {
       case Role.Staff:
         return <StaffStack />;
     }
-  };
+  }, [isAuthenticated, user]);
 
   if (isLoading) {
     return <LoadingOverlay message='Loading...' loop />;

@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { ImageSourcePropType, View } from 'react-native';
 import { Image } from 'expo-image';
 
@@ -60,4 +61,4 @@ const ProductCard = ({ id, imageUrl, title, price, rating, numOfReviews }: Produ
   );
 };
 
-export default ProductCard;
+export default memo(ProductCard);

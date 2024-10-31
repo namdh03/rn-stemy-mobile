@@ -102,30 +102,32 @@ const CartScreen = ({ navigation }: CartScreenNavigationProps) => {
         )}
       </ScrollView>
 
-      <View
-        style={{
-          position: 'absolute',
-          // top: height - 200,
-          bottom: insets.bottom,
-          left: insets.left,
-          right: insets.right,
-          gap: 24,
-          paddingHorizontal: 24,
-          // paddingBottom: 48,
-          paddingBottom: 24,
-          paddingTop: 12,
-        }}
-        className='bg-card'
-      >
-        <View className='flex-row items-center justify-between px-[12px]'>
-          <Text className='font-inter-regular text-muted-foreground text-[16px] leading-[20px]'>Total</Text>
-          <Text className='font-inter-extraBold text-primary text-[16px]'>{total.toLocaleString()} ₫</Text>
-        </View>
+      {cart.length !== 0 && (
+        <View
+          style={{
+            position: 'absolute',
+            // top: height - 200,
+            bottom: insets.bottom,
+            left: insets.left,
+            right: insets.right,
+            gap: 24,
+            paddingHorizontal: 24,
+            // paddingBottom: 48,
+            paddingBottom: 24,
+            paddingTop: 12,
+          }}
+          className='bg-card'
+        >
+          <View className='flex-row items-center justify-between px-[12px]'>
+            <Text className='font-inter-regular text-muted-foreground text-[16px] leading-[20px]'>Total</Text>
+            <Text className='font-inter-extraBold text-primary text-[16px]'>{total.toLocaleString()} ₫</Text>
+          </View>
 
-        <Button size='lg' onPress={handleCheckout} disabled={!Object.values(selectedCart || {}).length}>
-          <RNText className='font-inter-medium text-background text-[16px] leading-[20px]'>Checkout</RNText>
-        </Button>
-      </View>
+          <Button size='lg' onPress={handleCheckout} disabled={!Object.values(selectedCart || {}).length}>
+            <RNText className='font-inter-medium text-background text-[16px] leading-[20px]'>Checkout</RNText>
+          </Button>
+        </View>
+      )}
     </View>
   );
 };

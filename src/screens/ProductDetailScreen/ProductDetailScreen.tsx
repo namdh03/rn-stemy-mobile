@@ -135,14 +135,7 @@ const ProductDetailScreen = ({ route, navigation }: ProductDetailScreenNavigatio
               hiddenProductId={route.params.id}
               title='Featured Product'
               data={data?.products.items || []}
-              onPress={() =>
-                navigation.navigate('BottomTabStack', {
-                  screen: 'StoresStack',
-                  params: {
-                    screen: 'StoresScreen',
-                  },
-                })
-              }
+              onPress={() => navigation.navigate('RootBottomTabs', { screen: 'StoresScreen' })}
             />
           </View>
         </Pressable>

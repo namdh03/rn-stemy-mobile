@@ -85,11 +85,33 @@ export type RootBottomTabsParamList = {
   MeScreen: undefined;
 };
 
+export type HomeScreenNavigationProps = CompositeScreenProps<
+  BottomTabScreenProps<RootBottomTabsParamList, 'HomeScreen'>,
+  NativeStackScreenProps<RootStackParamList>
+>;
+
+export type StoresScreenNavigationProps = CompositeScreenProps<
+  BottomTabScreenProps<RootBottomTabsParamList, 'StoresScreen'>,
+  NativeStackScreenProps<RootStackParamList>
+>;
+
+export type MeScreenNavigationProps = CompositeScreenProps<
+  BottomTabScreenProps<RootBottomTabsParamList, 'MeScreen'>,
+  NativeStackScreenProps<RootStackParamList>
+>;
+
 export type RootDrawerParamList = {
   RootBottomTabs: NavigatorScreenParams<RootBottomTabsParamList>;
   ProductDetailScreen: { id: string };
   ProductFeedbackScreen: { rating: number };
 };
+
+export type ProductDetailScreenNavigationProps = CompositeScreenProps<
+  DrawerScreenProps<RootDrawerParamList, 'ProductDetailScreen'>,
+  NativeStackScreenProps<RootStackParamList>
+>;
+
+export type ProductFeedbackScreenNavigationProps = DrawerScreenProps<RootDrawerParamList, 'ProductFeedbackScreen'>;
 
 export type RootStackParamList = {
   RootDrawer: NavigatorScreenParams<RootDrawerParamList>;
@@ -113,22 +135,33 @@ export type RootStackParamList = {
   TicketDetailScreen: { index: number; ticketId: string };
 };
 
-export type HomeScreenNavigationProps = CompositeScreenProps<
-  BottomTabScreenProps<RootBottomTabsParamList, 'HomeScreen'>,
-  DrawerScreenProps<RootStackParamList>
->;
+export type CartScreenNavigationProps = NativeStackScreenProps<RootStackParamList, 'CartScreen'>;
 
-export type StoresScreenNavigationProps = CompositeScreenProps<
-  BottomTabScreenProps<RootBottomTabsParamList, 'StoresScreen'>,
-  DrawerScreenProps<RootStackParamList>
->;
+export type CheckoutScreenNavigationProps = NativeStackScreenProps<RootStackParamList, 'CheckoutScreen'>;
 
-export type MeScreenNavigationProps = CompositeScreenProps<
-  BottomTabScreenProps<RootBottomTabsParamList, 'MeScreen'>,
-  DrawerScreenProps<RootStackParamList>
->;
+export type OrderProgressScreenNavigationProps = NativeStackScreenProps<RootStackParamList, 'OrderProgressScreen'>;
 
-export type CartScreenNavigationProps = BottomTabScreenProps<RootStackParamList, 'CartScreen'>;
+export type OrderSuccessScreenNavigationProps = NativeStackScreenProps<RootStackParamList, 'OrderSuccessScreen'>;
+
+export type OrderErrorScreenNavigationProps = NativeStackScreenProps<RootStackParamList, 'OrderErrorScreen'>;
+
+export type SearchProductScreenNavigationProps = NativeStackScreenProps<RootStackParamList, 'SearchProductScreen'>;
+
+export type MyOrdersScreenNavigationProps = NativeStackScreenProps<RootStackParamList, 'MyOrdersScreen'>;
+
+export type OrderDetailScreenNavigationProps = NativeStackScreenProps<RootStackParamList, 'OrderDetailScreen'>;
+
+export type OrderHistoryScreenNavigationProps = NativeStackScreenProps<RootStackParamList, 'OrderHistoryScreen'>;
+
+export type FeedbackProductScreenNavigationProps = NativeStackScreenProps<RootStackParamList, 'FeedbackProductScreen'>;
+
+export type MyPurchasesScreenNavigationProps = NativeStackScreenProps<RootStackParamList, 'MyPurchasesScreen'>;
+
+export type MyTicketsScreenNavigationProps = NativeStackScreenProps<RootStackParamList, 'MyTicketsScreen'>;
+
+export type TicketDetailScreenNavigationProps = NativeStackScreenProps<RootStackParamList, 'TicketDetailScreen'>;
+
+export type CreateTicketScreenNavigationProps = NativeStackScreenProps<RootStackParamList, 'CreateTicketScreen'>;
 
 // * Staff
 export type StaffBottomTabsParamList = {
