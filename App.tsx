@@ -11,6 +11,7 @@ import './global.css';
 import { enableScreens } from 'react-native-screens';
 import { useKeepAwake } from 'expo-keep-awake';
 import { useOnlineManager } from '~hooks';
+import Modal from '~components/customs/Modal';
 
 // Config react query
 const queryClient = new QueryClient({
@@ -31,6 +32,7 @@ export default function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <Modal />
       <RootNavigator />
     </QueryClientProvider>
   );

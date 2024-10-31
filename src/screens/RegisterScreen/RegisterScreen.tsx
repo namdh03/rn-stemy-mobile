@@ -6,16 +6,18 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 
 import InputPassword from '~components/customs/InputPassword';
+import { showAlertModal } from '~components/customs/Modal/Modal';
 import Pressable from '~components/customs/Pressable';
 import { Form, FormField, FormInput } from '~components/deprecated-ui/form';
 import { Button } from '~components/ui/button';
 import { Text } from '~components/ui/text';
+import constants from '~constants';
 import execute from '~graphql/execute';
 import AuthLayout from '~layouts/AuthLayout';
 import { RegisterMutation } from '~services/user.serivces';
+import { ALERT_TYPE } from '~store/modal/modal.type';
 import { RegisterScreenNavigationProps } from '~types/navigation.type';
 import isErrors from '~utils/responseChecker';
-import showDialogError from '~utils/showDialogError';
 
 import schema, { RegisterFormType } from './schema';
 
@@ -49,7 +51,13 @@ const RegisterScreen = ({ navigation }: RegisterScreenNavigationProps) => {
             form.setError('email', { message: error.message });
           }
         } else {
-          showDialogError({ textBody: errors.message });
+          showAlertModal({
+            type: ALERT_TYPE.DANGER,
+            title: constants.MESSAGES.SYSTEM_MESSAGES.ERROR_TITLE,
+            message: errors.message,
+            autoClose: true,
+            autoCloseTime: 1500,
+          });
         }
       },
     });

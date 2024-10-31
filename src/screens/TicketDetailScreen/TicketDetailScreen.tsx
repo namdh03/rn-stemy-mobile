@@ -7,6 +7,7 @@ import { Image } from 'expo-image';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import LoadingOverlay from '~components/customs/LoadingOverlay';
+import { showAlertModal } from '~components/customs/Modal/Modal';
 import Pressable from '~components/customs/Pressable';
 import PreviewImage from '~components/customs/PreviewImage';
 import { Angry, Frown, Laugh, Meh, Smile } from '~components/icons';
@@ -22,7 +23,6 @@ import { GetTicketByIdQuery, RatingTicketMutation } from '~services/ticket.servi
 import { TicketDetailScreenNavigationProps } from '~types/navigation.type';
 import capitalizeFirstLetter from '~utils/capitalizeFirstLetter';
 import isErrors from '~utils/responseChecker';
-import showDialogError from '~utils/showDialogError';
 
 const TicketDetailScreen = ({ route }: TicketDetailScreenNavigationProps) => {
   const queryClient = useQueryClient();
@@ -60,10 +60,22 @@ const TicketDetailScreen = ({ route }: TicketDetailScreenNavigationProps) => {
         if (isErrors(errors)) {
           const error = errors.find((error) => error.path.includes('ratingTicket'));
           if (error?.message) {
-            return showDialogError({ textBody: error.message });
+            return showAlertModal({
+              type: ALERT_TYPE.DANGER,
+              title: constants.MESSAGES.SYSTEM_MESSAGES.ERROR_TITLE,
+              message: errors.message,
+              autoClose: true,
+              autoCloseTime: 1500,
+            });
           }
         }
-        showDialogError();
+        showAlertModal({
+          type: ALERT_TYPE.DANGER,
+          title: constants.MESSAGES.SYSTEM_MESSAGES.ERROR_TITLE,
+          message: constants.MESSAGES.SYSTEM_MESSAGES.SOMETHING_WENT_WRONG,
+          autoClose: true,
+          autoCloseTime: 1500,
+        });
       },
     });
   };

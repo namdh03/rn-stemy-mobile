@@ -12,10 +12,13 @@ import { useMutation } from '@tanstack/react-query';
 
 import { Button } from '~components/ui/button';
 import { Text } from '~components/ui/text';
+import constants from '~constants';
 import execute from '~graphql/execute';
 import { LoginGoogleMutation } from '~services/user.serivces';
-import showDialogError from '~utils/showDialogError';
+import { ALERT_TYPE } from '~store/modal/modal.type';
 import { removeAccessToken } from '~utils/token-storage';
+
+import { showAlertModal } from '../Modal/Modal';
 
 const LoginWithGoogle = () => {
   const [isLoadingProgress, setIsLoadingProgress] = useState(false);
@@ -53,7 +56,14 @@ const LoginWithGoogle = () => {
         // an error that's not related to google sign in occurred
       }
 
-      showDialogError();
+      showAlertModal({
+        type: ALERT_TYPE.DANGER,
+        title: constants.MESSAGES.SYSTEM_MESSAGES.ERROR_TITLE,
+        message: JSON.stringify(error),
+        autoClose: true,
+        autoCloseTime: 1500,
+      });
+
       removeAccessToken();
       await GoogleSignin.signOut();
     } finally {

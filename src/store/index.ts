@@ -9,6 +9,8 @@ import { createCartSlice } from './cart/cart-slice';
 import { createCheckoutSlice } from './checkout/checkout-slice';
 import { createFilterSortingSlice } from './filter-sorting/filter-sorting-slice';
 import { createHistorySearchProductSlice } from './history-search-product/history-search-product.slice';
+import { ModalSlice } from './modal/modal.type';
+import { createModalSlice } from './modal/modal-slice';
 import { createProductDetailSlice } from './product-detail/product-detail-slice';
 import { createStoresDrawerSlice } from './stores-drawer/stores-drawer.slice';
 import { CartStore, HistorySearchProductStore, Store } from './store.type';
@@ -55,6 +57,16 @@ export const useHistorySearchProductStore = create<HistorySearchProductStore>()(
         name: 'history-search-product-storage',
         storage: createJSONStorage(() => zustandStorage),
       },
+    ),
+  ),
+);
+
+export const useModalStore = create<ModalSlice>()(
+  devtools(
+    subscribeWithSelector(
+      immer((...a) => ({
+        ...createModalSlice(...a),
+      })),
     ),
   ),
 );

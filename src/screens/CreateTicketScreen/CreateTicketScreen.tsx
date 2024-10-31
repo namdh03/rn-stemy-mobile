@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import LoadingOverlay from '~components/customs/LoadingOverlay';
+import { showConfirmModal } from '~components/customs/Modal/Modal';
 import Pressable from '~components/customs/Pressable';
 import PreviewImage from '~components/customs/PreviewImage';
 import { Form, FormField, FormInput, FormMessage, FormTextarea } from '~components/deprecated-ui/form';
@@ -18,9 +19,9 @@ import constants from '~constants';
 import execute from '~graphql/execute';
 import { useCreateTicket, useUploadImage } from '~hooks';
 import { GetCreateTicketQuery } from '~services/ticket.services';
+import { ALERT_TYPE } from '~store/modal/modal.type';
 import { CreateTicketScreenNavigationProps } from '~types/navigation.type';
 import isErrors from '~utils/responseChecker';
-import showDialogError from '~utils/showDialogError';
 
 import OrderProductItem from './components/OrderProductItem';
 import { CreateTicketFormType, createTicketSchema } from './schema';
@@ -138,10 +139,20 @@ const CreateTicketScreen: FC<CreateTicketScreenNavigationProps> = ({ route, navi
         if (isErrors(errors)) {
           const error = errors.find((error) => error.path.includes('createTicket'));
           if (error?.message) {
-            return showDialogError({ textBody: error.message });
+            return showConfirmModal({
+              type: ALERT_TYPE.DANGER,
+              title: constants.MESSAGES.SYSTEM_MESSAGES.ERROR_TITLE,
+              message: error.message,
+              onConfirm: () => navigation.navigate('MyPurchasesScreen'),
+            });
           }
         }
-        showDialogError();
+        showConfirmModal({
+          type: ALERT_TYPE.DANGER,
+          title: constants.MESSAGES.SYSTEM_MESSAGES.ERROR_TITLE,
+          message: constants.MESSAGES.SYSTEM_MESSAGES.SOMETHING_WENT_WRONG,
+          onConfirm: () => navigation.navigate('MyPurchasesScreen'),
+        });
       },
     });
   };

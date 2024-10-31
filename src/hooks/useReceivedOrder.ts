@@ -1,17 +1,15 @@
-import { Dialog } from 'react-native-alert-notification';
-
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import { showConfirmModal } from '~components/customs/Modal/Modal';
 import constants from '~constants';
 import execute from '~graphql/execute';
 import { OrderStatus } from '~graphql/graphql';
 import { ReceivedOrderMutation } from '~services/order.services';
+import { ALERT_TYPE } from '~store/modal/modal.type';
 import { MainStackParamList } from '~types/navigation.type';
 import isErrors from '~utils/responseChecker';
-import showDialogError from '~utils/showDialogError';
-import showDialogSuccess from '~utils/showDialogSuccess';
 
 const useReceivedOrder = () => {
   const queryClient = useQueryClient();
@@ -21,12 +19,12 @@ const useReceivedOrder = () => {
   });
 
   const onReceivedOrder = (orderId: number, isGoBack: boolean = false) => {
-    showDialogSuccess({
+    showConfirmModal({
+      type: ALERT_TYPE.SUCCESS,
       title: constants.MESSAGES.ORDER_MESSAGES.RECEIVED_ORDER_TITLE,
-      textBody: constants.MESSAGES.ORDER_MESSAGES.RECEIVED_ORDER_TEXT_BODY,
-      button: constants.MESSAGES.ORDER_MESSAGES.RECEIVED_ORDER_BUTTON,
-      onPressButton: () => {
-        Dialog.hide();
+      message: constants.MESSAGES.ORDER_MESSAGES.RECEIVED_ORDER_TEXT_BODY,
+      confirmText: constants.MESSAGES.ORDER_MESSAGES.RECEIVED_ORDER_BUTTON,
+      onConfirm: () => {
         receivedOrderMutate(orderId, {
           onSuccess: () => {
             queryClient.invalidateQueries({
@@ -42,10 +40,18 @@ const useReceivedOrder = () => {
             if (isErrors(errors)) {
               const error = errors.find((error) => error.path.includes('receiveOrder'));
               if (error?.message) {
-                return showDialogError({ textBody: error.message });
+                return showConfirmModal({
+                  type: ALERT_TYPE.DANGER,
+                  title: constants.MESSAGES.SYSTEM_MESSAGES.ERROR_TITLE,
+                  message: error.message,
+                });
               }
             }
-            showDialogError();
+            showConfirmModal({
+              type: ALERT_TYPE.DANGER,
+              title: constants.MESSAGES.SYSTEM_MESSAGES.ERROR_TITLE,
+              message: constants.MESSAGES.SYSTEM_MESSAGES.SOMETHING_WENT_WRONG,
+            });
           },
         });
       },

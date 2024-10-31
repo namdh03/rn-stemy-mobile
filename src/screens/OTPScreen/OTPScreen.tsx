@@ -6,14 +6,16 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 
+import { showAlertModal } from '~components/customs/Modal/Modal';
 import { Form, FormField, FormMessage } from '~components/deprecated-ui/form';
 import { Button } from '~components/ui/button';
 import { Text } from '~components/ui/text';
+import constants from '~constants';
 import execute from '~graphql/execute';
 import { GetTokenResetPasswordMutation, SendResetPasswordOTPMutation } from '~services/user.serivces';
+import { ALERT_TYPE } from '~store/modal/modal.type';
 import { OTPScreenNavigationProps } from '~types/navigation.type';
 import isErrors from '~utils/responseChecker';
-import showDialogError from '~utils/showDialogError';
 
 import schema, { OTPFormType } from './schema';
 
@@ -53,7 +55,13 @@ const OTPScreen = ({ route, navigation }: OTPScreenNavigationProps) => {
       setTimer(30);
       resendOTPMutate(undefined, {
         onError: (errors) => {
-          showDialogError({ textBody: errors.message });
+          showAlertModal({
+            type: ALERT_TYPE.DANGER,
+            title: constants.MESSAGES.SYSTEM_MESSAGES.ERROR_TITLE,
+            message: errors.message,
+            autoClose: true,
+            autoCloseTime: 1500,
+          });
         },
       });
     }
@@ -70,7 +78,13 @@ const OTPScreen = ({ route, navigation }: OTPScreenNavigationProps) => {
             form.setError('OTPCode', { message: error.message });
           }
         } else {
-          showDialogError({ textBody: errors.message });
+          showAlertModal({
+            type: ALERT_TYPE.DANGER,
+            title: constants.MESSAGES.SYSTEM_MESSAGES.ERROR_TITLE,
+            message: errors.message,
+            autoClose: true,
+            autoCloseTime: 1500,
+          });
         }
       },
     });

@@ -6,14 +6,16 @@ import { useMutation } from '@tanstack/react-query';
 
 import images from '~assets/images';
 import InputPassword from '~components/customs/InputPassword';
+import { showAlertModal } from '~components/customs/Modal/Modal';
 import { Form, FormField } from '~components/deprecated-ui/form';
 import { Button } from '~components/ui/button';
 import { Text } from '~components/ui/text';
+import constants from '~constants';
 import execute from '~graphql/execute';
 import { ResetPasswordMutation } from '~services/user.serivces';
+import { ALERT_TYPE } from '~store/modal/modal.type';
 import { ResetPasswordScreenNavigationProps } from '~types/navigation.type';
 import isErrors from '~utils/responseChecker';
-import showDialogError from '~utils/showDialogError';
 
 import schema, { ResetPasswordFormType } from './schema';
 
@@ -41,7 +43,13 @@ const ResetPasswordScreen = ({ route, navigation }: ResetPasswordScreenNavigatio
             form.setError('password', { message: error.message });
           }
         } else {
-          showDialogError({ textBody: errors.message });
+          showAlertModal({
+            type: ALERT_TYPE.DANGER,
+            title: constants.MESSAGES.SYSTEM_MESSAGES.ERROR_TITLE,
+            message: errors.message,
+            autoClose: true,
+            autoCloseTime: 1500,
+          });
         }
       },
     });

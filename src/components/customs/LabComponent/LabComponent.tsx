@@ -2,6 +2,7 @@ import React, { useCallback, useRef } from 'react';
 import { Alert, Animated, ImageSourcePropType, Platform, Text, View } from 'react-native';
 import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
 import { Swipeable } from 'react-native-gesture-handler';
+import dayjs from 'dayjs';
 import * as FileSystem from 'expo-file-system';
 import { Image } from 'expo-image';
 import { shareAsync } from 'expo-sharing';
@@ -141,10 +142,12 @@ const LabComponent = ({
               contentFit='cover'
             />
             <View className='ml-[16px]'>
-              <Text numberOfLines={1} className='font-inter-semiBold text-[16px] mb-[4px]'>
+              <Text numberOfLines={2} className='font-inter-semiBold text-[16px] mb-[4px] flex-wrap w-[200px]'>
                 {title}
               </Text>
-              <Text className='font-inter-medium mb-[4px] text-[12px] '>{purchaseDate.toLocaleDateString()}</Text>
+              <Text className='font-inter-medium mb-[4px] text-[12px] '>
+                {dayjs(purchaseDate).format('DD-MM-YYYY')}
+              </Text>
               <Text className={`font-inter-regular mb-[4px] text-[12px] ${numberOfTicket > 3 ? 'text-red-500' : ''}`}>
                 Ticket: {numberOfTicket}/3
               </Text>
@@ -168,14 +171,14 @@ const LabComponent = ({
 
         <View className='w-full'>
           <Text className='font-inter-regular text-[12px] text-muted-foreground'>
-            {activeDate ? `Active day: ${activeDate.toLocaleDateString()}` : LAB_MESSAGES.INACTIVE_LAB}
+            {activeDate ? `Active day: ${dayjs(activeDate).format('DD-MM-YYYY')}` : LAB_MESSAGES.INACTIVE_LAB}
           </Text>
           {activeDate && (
             <View className='w-full flex-row items-center justify-end mt-[6px]'>
               <View>
                 <Text className='font-inter-semiBold w-[150px] text-[14px]'> File Lab instruction: </Text>
               </View>
-              <Button className=' w-[120px] p-[8px] rounded-[10px] flex-row items-center ' onPress={onDownloadFile}>
+              <Button className=' w-[150px] p-[8px] rounded-[10px] flex-row items-center ' onPress={onDownloadFile}>
                 <Text className='font-inter-semiBold text-[12px] text-white'>Download</Text>
                 <Download className='text-background ml-[8px]' size={16} strokeWidth={2.5} />
               </Button>

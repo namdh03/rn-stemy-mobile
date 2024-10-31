@@ -15,6 +15,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { confirmDeliveredOrder, pickUpOrder } from '~api/order.api';
 import EmptyList from '~components/customs/EmptyList';
+import { showConfirmModal } from '~components/customs/Modal/Modal';
 import Pressable from '~components/customs/Pressable';
 import PreviewImage from '~components/customs/PreviewImage';
 import { Camera, CircleX, Image } from '~components/icons';
@@ -24,7 +25,6 @@ import constants from '~constants';
 import { GetStaffListOrderQuery, OrderStatus } from '~graphql/graphql';
 import { useUploadImage } from '~hooks';
 import { cn } from '~lib/utils';
-import showDialogError from '~utils/showDialogError';
 
 import DeliveryItem from '../DeliveryItem';
 import DeliverySkeleton from '../DeliverySkeleton';
@@ -73,7 +73,11 @@ const DeliveryList = ({ isLoading, data, isRefetch, refetch, status }: DeliveryL
         setPickupModalVisible(false);
       },
       onError: () => {
-        showDialogError();
+        showConfirmModal({
+          type: ALERT_TYPE.DANGER,
+          title: constants.MESSAGES.SYSTEM_MESSAGES.ERROR_TITLE,
+          message: constants.MESSAGES.SYSTEM_MESSAGES.SOMETHING_WENT_WRONG,
+        });
         setPickupModalVisible(false);
       },
     });
@@ -98,7 +102,11 @@ const DeliveryList = ({ isLoading, data, isRefetch, refetch, status }: DeliveryL
         setDeliveryModalVisible(false);
       },
       onError: () => {
-        showDialogError();
+        showConfirmModal({
+          type: ALERT_TYPE.DANGER,
+          title: constants.MESSAGES.SYSTEM_MESSAGES.ERROR_TITLE,
+          message: constants.MESSAGES.SYSTEM_MESSAGES.SOMETHING_WENT_WRONG,
+        });
         setDeliveryModalVisible(false);
       },
     });
