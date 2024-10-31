@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import { showAlertModal } from '~components/customs/Modal/Modal';
 import { Form, FormField, FormInput, FormTextarea } from '~components/deprecated-ui/form';
 import { Button } from '~components/ui/button';
 import { Text } from '~components/ui/text';
@@ -17,9 +18,9 @@ import execute from '~graphql/execute';
 import { UpdateMeMutationVariables } from '~graphql/graphql';
 import { UpdateMeMutation } from '~services/user.serivces';
 import { useStore } from '~store';
+import { ALERT_TYPE } from '~store/modal/modal.type';
 import { MainStackParamList } from '~types/navigation.type';
 import isErrors from '~utils/responseChecker';
-import showDialogError from '~utils/showDialogError';
 
 import schema, { CheckoutUserInformationFormType } from './schema';
 
@@ -72,10 +73,20 @@ const CheckoutUserInformationScreen = () => {
           if (isErrors(errors)) {
             const error = errors.find((error) => error.path.includes('updateUser'));
             if (error?.message) {
-              return showDialogError({ textBody: error.message });
+              return showAlertModal({
+                type: ALERT_TYPE.DANGER,
+                message: error.message,
+                autoClose: true,
+                autoCloseTime: 1500,
+              });
             }
           }
-          showDialogError();
+          showAlertModal({
+            type: ALERT_TYPE.DANGER,
+            message: constants.MESSAGES.SYSTEM_MESSAGES.MISSING_INFORMATION,
+            autoClose: true,
+            autoCloseTime: 1500,
+          });
           navigation.goBack();
         },
       });

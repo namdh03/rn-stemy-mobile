@@ -1,6 +1,5 @@
 import React, { useCallback, useRef } from 'react';
 import { Alert, Animated, ImageSourcePropType, Platform, Text, View } from 'react-native';
-import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
 import { Swipeable } from 'react-native-gesture-handler';
 import dayjs from 'dayjs';
 import * as FileSystem from 'expo-file-system';
@@ -17,9 +16,11 @@ import { Button } from '~components/ui/button';
 import configs from '~configs';
 import constants from '~constants';
 import { LAB_MESSAGES } from '~constants/messages';
+import { ALERT_TYPE } from '~store/modal/modal.type';
 import { MainStackParamList } from '~types/navigation.type';
 import { getAccessToken } from '~utils/token-storage';
 
+import { showAlertModal } from '../Modal/Modal';
 import Pressable from '../Pressable';
 
 export interface LabComponentProps {
@@ -115,11 +116,12 @@ const LabComponent = ({
 
   const handleCopyOrderId = () => {
     Clipboard.setString(btoa(btoa(btoa(btoa(id)))));
-    Toast.show({
+    showAlertModal({
       type: ALERT_TYPE.SUCCESS,
       title: constants.MESSAGES.SYSTEM_MESSAGES.SUCCESS_TITLE,
-      textBody: constants.MESSAGES.ORDER_MESSAGES.COPY_ORDER_PRODUCT_ID,
-      autoClose: 1000,
+      message: constants.MESSAGES.ORDER_MESSAGES.COPY_ORDER_PRODUCT_ID,
+      autoClose: true,
+      autoCloseTime: 1000,
     });
   };
 
