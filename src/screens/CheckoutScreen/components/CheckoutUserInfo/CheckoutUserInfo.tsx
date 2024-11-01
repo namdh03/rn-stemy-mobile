@@ -8,10 +8,10 @@ import Pressable from '~components/customs/Pressable';
 import { ChevronRight, MapPin } from '~components/icons';
 import { Text } from '~components/ui/text';
 import { useStore } from '~store';
-import { MainStackParamList } from '~types/navigation.type';
+import { RootStackParamList } from '~types/navigation.type';
 
 const CheckoutUserInfo = () => {
-  const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { fullName, phone, address } = useStore(
     useShallow((state) => ({
       fullName: state.checkoutData.fullName,

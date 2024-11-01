@@ -71,7 +71,7 @@ const MyTicketsScreen = ({ navigation }: MyTicketsScreenNavigationProps) => {
           automaticallyAdjustContentInsets={false}
           refreshControl={<RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} />}
           className='flex-1'
-          contentContainerStyle={{ gap: 24, paddingBottom: 50 }}
+          contentContainerStyle={{ gap: 24, paddingBottom: 70 }}
           removeClippedSubviews={true}
           initialNumToRender={10}
           maxToRenderPerBatch={5}

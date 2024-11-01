@@ -130,6 +130,7 @@ type Mutation {
   resetPassword(password: String!, token: String!): String!
   savePushToken(deviceId: String!, platform: String!, token: String!): PushToken!
   sendResetPasswordOTP(email: String!): String!
+  testPushNotification: Boolean!
   updateAvatar(image: File!): User!
   updateCart(cartId: Float!, quantity: Float!): Cart!
   updateProduct(id: Float!, images: [File!], input: ProductInput!, lab: File): Product!
@@ -279,7 +280,7 @@ type Query {
   carts: [Cart!]!
   countCart: Float!
   countOrder: CountOrderResponse!
-  getPushToken(deviceId: String!): PushToken!
+  getPushToken(deviceId: String!): PushToken
   getPushTokens: [PushToken!]!
   listOrders(status: OrderStatus!): [Order!]!
   me: User!

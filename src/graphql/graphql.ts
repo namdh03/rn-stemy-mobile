@@ -126,6 +126,7 @@ export type Mutation = {
   resetPassword: Scalars['String']['output'];
   savePushToken: PushToken;
   sendResetPasswordOTP: Scalars['String']['output'];
+  testPushNotification: Scalars['Boolean']['output'];
   updateAvatar: User;
   updateCart: Cart;
   updateProduct: Product;
@@ -430,7 +431,7 @@ export type Query = {
   carts: Array<Cart>;
   countCart: Scalars['Float']['output'];
   countOrder: CountOrderResponse;
-  getPushToken: PushToken;
+  getPushToken?: Maybe<PushToken>;
   getPushTokens: Array<PushToken>;
   listOrders: Array<Order>;
   me: User;
@@ -849,7 +850,10 @@ export type GetPushTokenQueryVariables = Exact<{
   deviceId: Scalars['String']['input'];
 }>;
 
-export type GetPushTokenQuery = { __typename?: 'Query'; getPushToken: { __typename?: 'PushToken'; id: string } };
+export type GetPushTokenQuery = {
+  __typename?: 'Query';
+  getPushToken?: { __typename?: 'PushToken'; id: string } | null;
+};
 
 export type SearchOrderQueryVariables = Exact<{
   search: Scalars['String']['input'];

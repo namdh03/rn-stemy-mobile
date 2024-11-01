@@ -8,12 +8,12 @@ import execute from '~graphql/execute';
 import { OrderStatus } from '~graphql/graphql';
 import { ReceivedOrderMutation } from '~services/order.services';
 import { ALERT_TYPE } from '~store/modal/modal.type';
-import { MainStackParamList } from '~types/navigation.type';
+import { RootStackParamList } from '~types/navigation.type';
 import isErrors from '~utils/responseChecker';
 
 const useReceivedOrder = () => {
   const queryClient = useQueryClient();
-  const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { mutate: receivedOrderMutate } = useMutation({
     mutationFn: (orderId: number) => execute(ReceivedOrderMutation, { orderId }),
   });

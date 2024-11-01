@@ -17,7 +17,7 @@ import configs from '~configs';
 import constants from '~constants';
 import { LAB_MESSAGES } from '~constants/messages';
 import { ALERT_TYPE } from '~store/modal/modal.type';
-import { MainStackParamList } from '~types/navigation.type';
+import { RootStackParamList } from '~types/navigation.type';
 import { getAccessToken } from '~utils/token-storage';
 
 import { showAlertModal } from '../Modal/Modal';
@@ -44,7 +44,7 @@ const LabComponent = ({
   activeDate,
   fileLink,
 }: LabComponentProps) => {
-  const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const swipeableRowRef = useRef<Swipeable>(null);
 
   const handleNavigateToCreateTicket = useCallback(() => {

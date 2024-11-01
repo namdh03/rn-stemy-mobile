@@ -1,5 +1,5 @@
 import React, { useLayoutEffect } from 'react';
-import { FlatList, ScrollView, Text as RNText, View } from 'react-native';
+import { Dimensions, FlatList, ScrollView, Text as RNText, View } from 'react-native';
 import { RefreshControl } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Image } from 'expo-image';
@@ -23,7 +23,7 @@ import CartItem from './components/CartItem';
 
 const CartScreen = ({ navigation }: CartScreenNavigationProps) => {
   const insets = useSafeAreaInsets();
-  // const { height } = Dimensions.get('window');
+  const { height } = Dimensions.get('window');
   const { total, cart, selectedCart, setCart } = useCartStore(
     useShallow((state) => ({
       total: state.total,
@@ -106,14 +106,14 @@ const CartScreen = ({ navigation }: CartScreenNavigationProps) => {
         <View
           style={{
             position: 'absolute',
-            // top: height - 200,
-            bottom: insets.bottom,
+            top: height - 190,
+            // bottom: insets.bottom,
             left: insets.left,
             right: insets.right,
             gap: 24,
             paddingHorizontal: 24,
-            // paddingBottom: 48,
-            paddingBottom: 24,
+            paddingBottom: 48,
+            // paddingBottom: 24,
             paddingTop: 12,
           }}
           className='bg-card'

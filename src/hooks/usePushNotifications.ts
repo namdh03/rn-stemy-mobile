@@ -56,7 +56,7 @@ const usePushNotifications = () => {
           if (!deviceId) return console.error('Failed to get device id');
 
           const existingToken = await getPushTokenMutateAsync(deviceId);
-          if (!existingToken.data.getPushToken.id) {
+          if (!existingToken.data.getPushToken?.id) {
             await savePushTokenMutateAsync({
               deviceId,
               platform: Platform.OS,
