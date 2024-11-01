@@ -8,7 +8,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Button } from '~components/ui/button';
 import { Text } from '~components/ui/text';
 import { useStore } from '~store';
-import { MainStackParamList } from '~types/navigation.type';
+import { RootBottomTabsParamList } from '~types/navigation.type';
 
 interface CateProps {
   id: string;
@@ -19,7 +19,7 @@ interface CateProps {
 }
 
 const Category = ({ id, icon: Icon, title, bgColor, colorIcon }: CateProps) => {
-  const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
+  const navigation = useNavigation<NativeStackNavigationProp<RootBottomTabsParamList>>();
   const { setFilterSorting } = useStore(
     useShallow((state) => ({
       setFilterSorting: state.setFilterSorting,
@@ -28,12 +28,7 @@ const Category = ({ id, icon: Icon, title, bgColor, colorIcon }: CateProps) => {
 
   const handlePress = () => {
     setFilterSorting({ categoryIds: [+id] });
-    navigation.navigate('BottomTabStack', {
-      screen: 'StoresStack',
-      params: {
-        screen: 'StoresScreen',
-      },
-    });
+    navigation.navigate('StoresScreen');
   };
 
   return (

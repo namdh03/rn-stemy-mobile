@@ -5,28 +5,20 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { Button } from '~components/ui/button';
-import { useCartStore, useStore } from '~store';
+import { useStore } from '~store';
 import { removeAccessToken } from '~utils/token-storage';
 
 const StaffProfileScreen = () => {
   const queryClient = useQueryClient();
-  const { unAuthenticate, clearFilterSorting } = useStore(
+  const { unAuthenticate } = useStore(
     useShallow((state) => ({
       unAuthenticate: state.unAuthenticate,
-      clearFilterSorting: state.clearFilterSorting,
-    })),
-  );
-  const { resetCartStore } = useCartStore(
-    useShallow((state) => ({
-      resetCartStore: state.reset,
     })),
   );
 
   const logout = async () => {
     queryClient.clear();
     unAuthenticate();
-    clearFilterSorting();
-    resetCartStore();
     removeAccessToken();
     await GoogleSignin.signOut();
   };

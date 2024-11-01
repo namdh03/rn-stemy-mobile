@@ -30,8 +30,8 @@ const OrderErrorScreen = ({ navigation }: OrderErrorScreenNavigationProps) => {
             className='w-1/2'
             variant='outline'
             onPress={() =>
-              navigation.navigate('BottomTabStack', {
-                screen: 'HomeStack',
+              navigation.replace('RootDrawer', {
+                screen: 'RootBottomTabs',
                 params: {
                   screen: 'HomeScreen',
                 },
@@ -43,8 +43,8 @@ const OrderErrorScreen = ({ navigation }: OrderErrorScreenNavigationProps) => {
           <Button
             className='w-1/2'
             onPress={() =>
-              navigation.replace('BottomTabStack', {
-                screen: 'MeStack',
+              navigation.replace('RootDrawer', {
+                screen: 'RootBottomTabs',
                 params: {
                   screen: 'MeScreen',
                 },

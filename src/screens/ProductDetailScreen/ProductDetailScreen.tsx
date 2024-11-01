@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
-import { Keyboard, Pressable, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
+import { Keyboard, Pressable, RefreshControl, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
+import RenderHTML from 'react-native-render-html';
 import { useShallow } from 'zustand/react/shallow';
 
 import BottomSheet from '@gorhom/bottom-sheet';
@@ -25,6 +26,7 @@ import Feedbacks from './components/Feedbacks';
 import ImageCarousel from './components/ImageCarousel';
 
 const ProductDetailScreen = ({ route, navigation }: ProductDetailScreenNavigationProps) => {
+  const { width } = useWindowDimensions();
   const { isDarkColorScheme } = useColorScheme();
   const setFeedbacks = useStore(useShallow((state) => state.setFeedbacks));
   const { data, refetch, isFetching } = useQuery({
@@ -102,9 +104,22 @@ const ProductDetailScreen = ({ route, navigation }: ProductDetailScreenNavigatio
 
               {data?.product.categories && <CategoryList categories={data.product.categories || []} />}
 
-              <Text className='font-inter-regular text-foreground text-[14px] leading-[22px] tracking-[0.2px]'>
+              <RenderHTML
+                defaultTextProps={{
+                  style: {
+                    fontFamily: 'Inter_18pt-Regular',
+                    fontSize: 14,
+                    lineHeight: 24,
+                    letterSpacing: 0.2,
+                  },
+                }}
+                contentWidth={width}
+                source={{ html: data?.product.description || '' }}
+              />
+
+              {/* <Text className='font-inter-regular text-foreground text-[14px] leading-[22px] tracking-[0.2px]'>
                 {data?.product.description}
-              </Text>
+              </Text> */}
               {data?.product.images[0]?.url && (
                 <FlexibleImage
                   source={{
@@ -135,14 +150,7 @@ const ProductDetailScreen = ({ route, navigation }: ProductDetailScreenNavigatio
               hiddenProductId={route.params.id}
               title='Featured Product'
               data={data?.products.items || []}
-              onPress={() =>
-                navigation.navigate('BottomTabStack', {
-                  screen: 'StoresStack',
-                  params: {
-                    screen: 'StoresScreen',
-                  },
-                })
-              }
+              onPress={() => navigation.navigate('RootBottomTabs', { screen: 'StoresScreen' })}
             />
           </View>
         </Pressable>

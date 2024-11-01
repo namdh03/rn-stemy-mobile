@@ -22,7 +22,7 @@ import { useDebounce } from '~hooks';
 import { DeleteCartsMutation, UpdateCartMutation } from '~services/cart.services';
 import { useCartStore } from '~store';
 import { ALERT_TYPE } from '~store/modal/modal.type';
-import { MainStackParamList } from '~types/navigation.type';
+import { RootStackParamList } from '~types/navigation.type';
 import isErrors from '~utils/responseChecker';
 
 interface CartItemProps {
@@ -30,7 +30,7 @@ interface CartItemProps {
 }
 
 const CartItem = memo(({ item }: CartItemProps) => {
-  const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const queryClient = useQueryClient();
   const { selectedCart, setSelectedCart, updateCartItemQuantity, removeCartItem } = useCartStore(
     useShallow((state) => ({
@@ -136,11 +136,9 @@ const CartItem = memo(({ item }: CartItemProps) => {
   }, [item.id, deleteCartItem, queryClient, removeCartItem]);
 
   const handleNavigationToProductDetail = useCallback(() => {
-    navigation.navigate('ProductDetailStack', {
+    navigation.navigate('RootDrawer', {
       screen: 'ProductDetailScreen',
-      params: {
-        id: item.product.id,
-      },
+      params: { id: item.product.id },
     });
   }, [navigation, item.product.id]);
 
@@ -201,7 +199,7 @@ const CartItem = memo(({ item }: CartItemProps) => {
               contentFit='cover'
             />
             <View className='flex-1 items-start ml-[16px]'>
-              <Text numberOfLines={1} className='font-inter-bold text-foreground text-[14px]'>
+              <Text numberOfLines={1} className='font-inter-bold text-foreground text-[14px] pr-[24px]'>
                 {item.product.name}
               </Text>
 

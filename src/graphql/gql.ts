@@ -10,6 +10,7 @@ import * as types from './graphql';
  * 3. It does not support dead code elimination, so it will add unused operations.
  *
  * Therefore it is highly recommended to use the babel or swc plugin for production.
+ * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 const documents = {
   '\n  mutation AddToCart($hasLab: Boolean!, $productId: Float!, $quantity: Float!) {\n    addToCart(hasLab: $hasLab, productId: $productId, quantity: $quantity) {\n      id\n    }\n  }\n':
@@ -38,6 +39,8 @@ const documents = {
     types.DeactivatePushTokenDocument,
   '\n  mutation SavePushToken($deviceId: String!, $platform: String!, $token: String!) {\n    savePushToken(deviceId: $deviceId, platform: $platform, token: $token) {\n      id\n    }\n  }\n':
     types.SavePushTokenDocument,
+  '\n  query GetPushToken($deviceId: String!) {\n    getPushToken(deviceId: $deviceId) {\n      id\n    }\n  }\n':
+    types.GetPushTokenDocument,
   '\n  query SearchOrder($search: String!) {\n    searchOrder(search: $search) {\n      id\n      createdAt\n      updatedAt\n      totalPrice\n      status\n      address\n      fullName\n      phone\n      shipTime\n      payment {\n        provider\n        time\n      }\n      orderItems {\n        hasLab\n        id\n        labPrice\n        productPrice\n        quantity\n        product {\n          id\n          name\n          price\n          images {\n            url\n          }\n          lab {\n            price\n          }\n        }\n      }\n    }\n  }\n':
     types.SearchOrderDocument,
   '\n  query GetOrderByStatus($status: OrderStatus!) {\n    searchOrder(search: "", status: $status) {\n      id\n      createdAt\n      updatedAt\n      totalPrice\n      status\n      address\n      fullName\n      phone\n      shipTime\n      payment {\n        provider\n        time\n      }\n      orderItems {\n        hasLab\n        id\n        labPrice\n        productPrice\n        quantity\n        product {\n          id\n          name\n          price\n          images {\n            url\n          }\n          lab {\n            price\n          }\n        }\n      }\n    }\n  }\n':
@@ -179,6 +182,12 @@ export function graphql(
 export function graphql(
   source: '\n  mutation SavePushToken($deviceId: String!, $platform: String!, $token: String!) {\n    savePushToken(deviceId: $deviceId, platform: $platform, token: $token) {\n      id\n    }\n  }\n',
 ): typeof import('./graphql').SavePushTokenDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query GetPushToken($deviceId: String!) {\n    getPushToken(deviceId: $deviceId) {\n      id\n    }\n  }\n',
+): typeof import('./graphql').GetPushTokenDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

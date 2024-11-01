@@ -19,14 +19,14 @@ import { UpdateMeMutationVariables } from '~graphql/graphql';
 import { UpdateMeMutation } from '~services/user.serivces';
 import { useStore } from '~store';
 import { ALERT_TYPE } from '~store/modal/modal.type';
-import { MainStackParamList } from '~types/navigation.type';
+import { RootStackParamList } from '~types/navigation.type';
 import isErrors from '~utils/responseChecker';
 
 import schema, { CheckoutUserInformationFormType } from './schema';
 
 const CheckoutUserInformationScreen = () => {
   const queryClient = useQueryClient();
-  const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { user, fullName, phone, address, setCheckoutData } = useStore(
     useShallow((state) => ({
       user: state.user,

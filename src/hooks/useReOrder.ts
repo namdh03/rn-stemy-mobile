@@ -10,12 +10,12 @@ import execute from '~graphql/execute';
 import { ReOrderMutation } from '~services/order.services';
 import { useCartStore } from '~store';
 import { ALERT_TYPE } from '~store/modal/modal.type';
-import { MainStackParamList } from '~types/navigation.type';
+import { RootStackParamList } from '~types/navigation.type';
 import isErrors from '~utils/responseChecker';
 
 const useReOrder = () => {
   const queryClient = useQueryClient();
-  const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { setMultipleSelectedCart } = useCartStore(
     useShallow((state) => ({
       setMultipleSelectedCart: state.setMultipleSelectedCart,

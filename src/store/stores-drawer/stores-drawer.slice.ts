@@ -21,5 +21,5 @@ export const createStoresDrawerSlice: StateCreator<
     set((state) => {
       state.openStoresDrawer = false;
     }),
-  reset: () => set(initialState),
+  resetStoresDrawer: () => set(initialState),
 });

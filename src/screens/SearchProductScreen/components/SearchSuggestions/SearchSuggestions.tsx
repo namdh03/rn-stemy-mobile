@@ -22,7 +22,10 @@ const SearchSuggestions = ({ data, onItemPress }: SearchSuggestionsProps) => {
           <Pressable key={product.id} onPress={() => onItemPress(product)}>
             <View className='flex-row items-center gap-[10px]'>
               <Search className='text-border' size={20} />
-              <Text className='font-inter-regular text-foreground text-[14px] leading-[20px] tracking-[0.2px]'>
+              <Text
+                numberOfLines={1}
+                className='font-inter-regular text-foreground text-[14px] leading-[20px] tracking-[0.2px] pr-[24px]'
+              >
                 {product.name}
               </Text>
             </View>

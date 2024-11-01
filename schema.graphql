@@ -14,8 +14,10 @@ type AccessTokenResponse {
 
 type Cart {
   createdAt: DateTimeISO!
+  deletedAt: DateTimeISO
   hasLab: Boolean!
   id: ID!
+  isDelete: Boolean!
   product: Product!
   quantity: Int!
   updatedAt: DateTimeISO
@@ -66,8 +68,10 @@ scalar DateTimeISO
 
 type Feedback {
   createdAt: DateTimeISO!
+  deletedAt: DateTimeISO
   id: ID!
   images: [FeedbackImage!]
+  isDelete: Boolean!
   note: String
   orderItem: OrderItem!
   product: Product!
@@ -78,7 +82,9 @@ type Feedback {
 
 type FeedbackImage {
   createdAt: DateTimeISO!
+  deletedAt: DateTimeISO
   id: ID!
+  isDelete: Boolean!
   updatedAt: DateTimeISO
   url: String!
 }
@@ -124,6 +130,7 @@ type Mutation {
   resetPassword(password: String!, token: String!): String!
   savePushToken(deviceId: String!, platform: String!, token: String!): PushToken!
   sendResetPasswordOTP(email: String!): String!
+  testPushNotification: Boolean!
   updateAvatar(image: File!): User!
   updateCart(cartId: Float!, quantity: Float!): Cart!
   updateProduct(id: Float!, images: [File!], input: ProductInput!, lab: File): Product!
@@ -134,8 +141,10 @@ type Mutation {
 type Order {
   address: String!
   createdAt: DateTimeISO!
+  deletedAt: DateTimeISO
   fullName: String!
   id: ID!
+  isDelete: Boolean!
   orderItems: [OrderItem!]!
   payment: OrderPaymentEmbeddable!
   phone: String!
@@ -148,8 +157,10 @@ type Order {
 
 type OrderItem {
   createdAt: DateTimeISO!
+  deletedAt: DateTimeISO
   hasLab: Boolean!
   id: ID!
+  isDelete: Boolean!
   labPrice: Int!
   order: Order!
   product: Product!
@@ -188,10 +199,12 @@ enum PaymentProvider {
 type Product {
   categories: [ProductCategory!]!
   createdAt: DateTimeISO!
+  deletedAt: DateTimeISO
   description: String!
   feedbacks: [Feedback!]!
   id: ID!
   images: [ProductImage!]!
+  isDelete: Boolean!
   lab: ProductLab
   name: String!
   price: Int!
@@ -202,7 +215,9 @@ type Product {
 
 type ProductCategory {
   createdAt: DateTimeISO!
+  deletedAt: DateTimeISO
   id: ID!
+  isDelete: Boolean!
   name: String!
   products: [Product!]!
   title: String!
@@ -218,7 +233,9 @@ input ProductCategoryInput {
 
 type ProductImage {
   createdAt: DateTimeISO!
+  deletedAt: DateTimeISO
   id: ID!
+  isDelete: Boolean!
   updatedAt: DateTimeISO
   url: String!
 }
@@ -233,7 +250,9 @@ input ProductInput {
 
 type ProductLab {
   createdAt: DateTimeISO!
+  deletedAt: DateTimeISO
   id: ID!
+  isDelete: Boolean!
   price: Int!
   updatedAt: DateTimeISO
   url: String!
@@ -246,9 +265,11 @@ type ProductsWithPaginationResponse {
 
 type PushToken {
   createdAt: DateTimeISO!
+  deletedAt: DateTimeISO
   deviceId: String!
   id: ID!
   isActive: Boolean!
+  isDelete: Boolean!
   platform: String!
   token: String!
   updatedAt: DateTimeISO
@@ -259,7 +280,7 @@ type Query {
   carts: [Cart!]!
   countCart: Float!
   countOrder: CountOrderResponse!
-  getPushToken(deviceId: String!): PushToken!
+  getPushToken(deviceId: String!): PushToken
   getPushTokens: [PushToken!]!
   listOrders(status: OrderStatus!): [Order!]!
   me: User!
@@ -303,7 +324,9 @@ type Query {
 
 type ReplyTicketImage {
   createdAt: DateTimeISO!
+  deletedAt: DateTimeISO
   id: ID!
+  isDelete: Boolean!
   owner: Role!
   ticket: Ticket!
   updatedAt: DateTimeISO
@@ -326,8 +349,10 @@ type Ticket {
   category: TicketCategory!
   closedAt: DateTimeISO
   createdAt: DateTimeISO!
+  deletedAt: DateTimeISO
   id: ID!
   images: [TicketImage!]!
+  isDelete: Boolean!
   orderItem: OrderItem!
   rating: Float
   replier: User!
@@ -342,7 +367,9 @@ type Ticket {
 
 type TicketCategory {
   createdAt: DateTimeISO!
+  deletedAt: DateTimeISO
   id: ID!
+  isDelete: Boolean!
   name: String!
   tickets: [Ticket!]!
   updatedAt: DateTimeISO
@@ -350,7 +377,9 @@ type TicketCategory {
 
 type TicketImage {
   createdAt: DateTimeISO!
+  deletedAt: DateTimeISO
   id: ID!
+  isDelete: Boolean!
   owner: Role!
   ticket: Ticket!
   updatedAt: DateTimeISO
@@ -371,9 +400,11 @@ type User {
   address: String
   avatar: String
   createdAt: DateTimeISO!
+  deletedAt: DateTimeISO
   email: String!
   fullName: String!
   id: ID!
+  isDelete: Boolean!
   numberOfOpenTicket: Float!
   phone: String
   rating: Float!
@@ -384,8 +415,10 @@ type User {
 
 type UserLab {
   createdAt: DateTimeISO!
+  deletedAt: DateTimeISO
   id: ID!
   isActive: Boolean!
+  isDelete: Boolean!
   orderItem: OrderItem!
   productLab: ProductLab!
   updatedAt: DateTimeISO

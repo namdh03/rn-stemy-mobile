@@ -7,7 +7,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import Pressable from '~components/customs/Pressable';
 import constants from '~constants';
 import { GetCartQuery } from '~graphql/graphql';
-import { MainStackParamList } from '~types/navigation.type';
+import { RootStackParamList } from '~types/navigation.type';
 
 interface CheckoutItemProps {
   item: GetCartQuery['carts'][number];
@@ -15,10 +15,10 @@ interface CheckoutItemProps {
 }
 
 const CheckoutItem = ({ item, isPressable = true }: CheckoutItemProps) => {
-  const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   const handleNavigationToProductDetail = () => {
-    navigation.navigate('ProductDetailStack', {
+    navigation.navigate('RootDrawer', {
       screen: 'ProductDetailScreen',
       params: {
         id: item.product.id,

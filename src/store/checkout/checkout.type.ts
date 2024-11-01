@@ -19,5 +19,5 @@ export interface CheckoutDataStrict {
 export interface CheckoutSlice {
   checkoutData: CheckoutData;
   setCheckoutData: (data: Partial<CheckoutData>) => void;
-  reset: () => void;
+  resetCheckout: () => void;
 }

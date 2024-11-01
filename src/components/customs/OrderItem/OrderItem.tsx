@@ -12,7 +12,7 @@ import { Text } from '~components/ui/text';
 import constants from '~constants';
 import { OrderStatus, SearchOrderQuery } from '~graphql/graphql';
 import { useReceivedOrder, useReOrder, useRepayOrder } from '~hooks';
-import { MainStackParamList } from '~types/navigation.type';
+import { RootStackParamList } from '~types/navigation.type';
 import { getOrderStatusLabel } from '~utils/getOrderItemText';
 
 import OrderButton from '../OrderButton';
@@ -23,7 +23,7 @@ interface OrderItemProps {
 }
 
 const OrderItem = ({ order }: OrderItemProps) => {
-  const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { onRepayOrder } = useRepayOrder();
   const { onReceivedOrder } = useReceivedOrder();
   const { onReOrder } = useReOrder();

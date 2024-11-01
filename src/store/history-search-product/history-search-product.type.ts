@@ -9,7 +9,7 @@ export type HistorySearchProductState = {
 export type HistorySearchProductActions = {
   setItem: (item: Pick<Product, 'id' | 'name'>) => void;
   removeItem: (id: string) => void;
-  reset: () => void;
+  resetHistorySearchProduct: () => void;
 };
 
 export type HistorySearchProductSlice = HistorySearchProductState & HistorySearchProductActions;

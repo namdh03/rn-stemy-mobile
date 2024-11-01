@@ -1,13 +1,14 @@
+import { memo } from 'react';
 import { ImageSourcePropType, View } from 'react-native';
 import { Image } from 'expo-image';
 
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { Star } from '~components/icons';
 import { Text } from '~components/ui/text';
 import constants from '~constants';
-import { MainStackParamList, ProductDetailStackParamList } from '~types/navigation.type';
+import { RootStackParamList } from '~types/navigation.type';
 
 import Pressable from '../Pressable';
 
@@ -21,22 +22,13 @@ export interface ProductCardProps {
 }
 
 const ProductCard = ({ id, imageUrl, title, price, rating, numOfReviews }: ProductCardProps) => {
-  const route: RouteProp<ProductDetailStackParamList, 'ProductDetailScreen'> = useRoute();
-  const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   function handleNavigateToProductDetail() {
-    if (route.name == 'ProductDetailScreen') {
-      if (!route.params || route.params.id === id) return;
-      navigation.push('ProductDetailStack', {
-        screen: 'ProductDetailScreen',
-        params: { id },
-      });
-    } else {
-      navigation.navigate('ProductDetailStack', {
-        screen: 'ProductDetailScreen',
-        params: { id },
-      });
-    }
+    navigation.push('RootDrawer', {
+      screen: 'ProductDetailScreen',
+      params: { id },
+    });
   }
 
   return (
@@ -69,4 +61,4 @@ const ProductCard = ({ id, imageUrl, title, price, rating, numOfReviews }: Produ
   );
 };
 
-export default ProductCard;
+export default memo(ProductCard);

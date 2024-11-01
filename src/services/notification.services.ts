@@ -13,3 +13,11 @@ export const SavePushTokenMutation = graphql(`
     }
   }
 `);
+
+export const GetPushTokenQuery = graphql(`
+  query GetPushToken($deviceId: String!) {
+    getPushToken(deviceId: $deviceId) {
+      id
+    }
+  }
+`);

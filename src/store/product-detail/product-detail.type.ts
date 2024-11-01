@@ -7,7 +7,7 @@ export type ProductDetailState = {
 
 export type ProductDetailActions = {
   setFeedbacks: (rating: number, feedbacks: GetProductQuery['product']['feedbacks']) => void;
-  reset: () => void;
+  resetProductDetail: () => void;
 };
 
 export type ProductDetailSlice = ProductDetailState & ProductDetailActions;

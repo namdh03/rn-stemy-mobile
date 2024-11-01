@@ -23,10 +23,8 @@ const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
     select: (data) => data.data,
   });
 
-  const handlePress = () => {
-    navigation.navigate('StoresStack', {
-      screen: 'StoresScreen',
-    });
+  const handleNavigateToStores = () => {
+    navigation.navigate('StoresScreen');
   };
 
   const { isRefetchingByUser, refetchByUser } = useRefreshByUser(refetch);
@@ -44,7 +42,7 @@ const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
           editable={false}
           placeholder='Search Product Name'
           onContainerPress={() => {
-            navigation.push('SearchProductScreen');
+            navigation.navigate('SearchProductScreen');
           }}
         />
       </View>
@@ -59,38 +57,26 @@ const HomeScreen = ({ navigation }: HomeScreenNavigationProps) => {
       </View>
       <View className={`${isDarkColorScheme ? 'bg-secondary' : 'bg-destructive-foreground'}`}>
         <ProductList
-          onPress={() => navigation.navigate('StoresStack', { screen: 'StoresScreen' })}
+          onPress={handleNavigateToStores}
           title='Featured Product'
           data={data?.featuredProduct.items || []}
         />
 
-        <Banner imageUrl={images.bannerA} onPress={handlePress} />
+        <Banner imageUrl={images.bannerA} onPress={handleNavigateToStores} />
+
+        <ProductList onPress={handleNavigateToStores} title='Best Sellers' data={data?.bestSellers.items || []} />
+
+        <Banner imageUrl={images.bannerB} onPress={handleNavigateToStores} />
+
+        <ProductList onPress={handleNavigateToStores} title='New Arrivals' data={data?.newArrivals.items || []} />
 
         <ProductList
-          onPress={() => navigation.navigate('StoresStack', { screen: 'StoresScreen' })}
-          title='Best Sellers'
-          data={data?.bestSellers.items || []}
-        />
-
-        <Banner imageUrl={images.bannerB} onPress={handlePress} />
-
-        <ProductList
-          onPress={() => navigation.navigate('StoresStack', { screen: 'StoresScreen' })}
-          title='New Arrivals'
-          data={data?.newArrivals.items || []}
-        />
-
-        <ProductList
-          onPress={() => navigation.navigate('StoresStack', { screen: 'StoresScreen' })}
+          onPress={handleNavigateToStores}
           title='Top Rated Product'
           data={data?.topRatedProduct.items || []}
         />
 
-        <ProductList
-          onPress={() => navigation.navigate('StoresStack', { screen: 'StoresScreen' })}
-          title='Special Offers'
-          data={data?.specialOffers.items || []}
-        />
+        <ProductList onPress={handleNavigateToStores} title='Special Offers' data={data?.specialOffers.items || []} />
       </View>
     </ScrollView>
   );

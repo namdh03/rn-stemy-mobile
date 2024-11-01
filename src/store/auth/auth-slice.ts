@@ -24,5 +24,5 @@ export const createAuthSlice: StateCreator<AuthSlice, [['zustand/immer', never]]
       state.isAuthenticated = false;
       state.user = null;
     }),
-  reset: () => set(initialState),
+  resetAuth: () => set(initialState),
 });

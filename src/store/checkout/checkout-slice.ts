@@ -18,5 +18,5 @@ export const createCheckoutSlice: StateCreator<CheckoutSlice, [['zustand/immer',
     set((state) => ({
       checkoutData: { ...state.checkoutData, ...newData },
     })),
-  reset: () => set({ checkoutData: initialCheckoutData }),
+  resetCheckout: () => set({ checkoutData: initialCheckoutData }),
 });

@@ -16,9 +16,9 @@ const SettingsScreen = () => {
       clearFilterSorting: state.clearFilterSorting,
     })),
   );
-  const { resetCartStore } = useCartStore(
+  const { resetCart } = useCartStore(
     useShallow((state) => ({
-      resetCartStore: state.reset,
+      resetCart: state.resetCart,
     })),
   );
 
@@ -26,7 +26,7 @@ const SettingsScreen = () => {
     queryClient.clear();
     unAuthenticate();
     clearFilterSorting();
-    resetCartStore();
+    resetCart();
     removeAccessToken();
     await GoogleSignin.signOut();
   };

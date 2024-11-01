@@ -32,7 +32,10 @@ const RecentlySearched = ({ onItemPress }: RecentlySearchedProps) => {
               <Pressable key={item.id} className='flex-1' onPress={() => onItemPress(item)}>
                 <View className='flex-row items-center gap-[10px]'>
                   <Clock className='text-border' size={20} />
-                  <Text className='font-inter-regular text-foreground text-[14px] leading-[20px] tracking-[0.2px]'>
+                  <Text
+                    numberOfLines={1}
+                    className='font-inter-regular text-foreground text-[14px] leading-[20px] tracking-[0.2px]'
+                  >
                     {item.name}
                   </Text>
                 </View>

@@ -75,6 +75,7 @@ const MyPurchasesScreen = ({ navigation }: MyPurchasesScreenNavigationProps) => 
           data={orderListSorted}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
+          contentContainerStyle={{ paddingBottom: 70 }}
           showsHorizontalScrollIndicator={false}
           refreshControl={<RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} />}
           showsVerticalScrollIndicator={false}

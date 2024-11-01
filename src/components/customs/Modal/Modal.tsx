@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal as RNModal, Pressable, Text, TouchableOpacity, View } from 'react-native';
+import { Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { AlertCircle, CheckCircle2, Info, X, XCircle } from 'lucide-react-native';
 
 import { Button } from '~components/ui/button';
@@ -30,25 +30,26 @@ const getIconByType = (type?: ALERT_TYPE) => {
 export const Modal: React.FC = () => {
   const { isVisible, content, hideModal } = useModalStore();
 
+  if (!isVisible) return null;
+
   return (
-    <RNModal animationType='fade' transparent={true} visible={isVisible} onRequestClose={hideModal}>
-      <View className='flex-1 justify-center items-center bg-gray-900/60'>
-        <View className='w-4/5 bg-background rounded-lg p-5'>
-          <View className='flex-row items-center justify-between mb-2'>
-            <View className='flex-row items-center'>
-              {content?.icon && (
-                <content.icon size={20} color={content.type ? IconColor[content.type] : IconColor.INFO} />
-              )}
-              <Text className='font-inter-semiBold text-foreground text-lg font-semibold ml-2'>{content?.title}</Text>
-            </View>
-            <TouchableOpacity onPress={hideModal}>
-              <X size={20} color={'#000'} />
-            </TouchableOpacity>
+    <View style={styles.overlay}>
+      <Pressable style={StyleSheet.absoluteFill} onPress={hideModal} />
+      <View style={styles.modalContainer}>
+        <View style={styles.header}>
+          <View style={styles.titleContainer}>
+            {content?.icon && (
+              <content.icon size={20} color={content.type ? IconColor[content.type] : IconColor.INFO} />
+            )}
+            <Text style={styles.titleText}>{content?.title}</Text>
           </View>
-          {content?.children}
+          <TouchableOpacity onPress={hideModal}>
+            <X size={20} color={'#000'} />
+          </TouchableOpacity>
         </View>
+        {content?.children}
       </View>
-    </RNModal>
+    </View>
   );
 };
 
@@ -69,7 +70,7 @@ export const showAlertModal = (params?: AlertModalParams) => {
           hideModal();
         }}
       >
-        <Text className='font-inter-regular text-sm text-muted-foreground mb-6'>{params?.message ?? ''}</Text>
+        <Text style={styles.messageText}>{params?.message ?? ''}</Text>
       </Pressable>
     ),
   });
@@ -84,36 +85,91 @@ export const showConfirmModal = (params?: ConfirmModalParams) => {
     title: params?.title ?? 'Confirm',
     children: (
       <View>
-        <Text className='font-inter-regular text-sm text-muted-foreground mb-6'>{params?.message ?? ''}</Text>
-        <View>
-          <View className='flex-row justify-end gap-[16px]'>
-            <Button
-              variant={'secondary'}
-              className='min-w-[80px]'
-              onPress={() => {
-                params?.onCancel?.();
-                hideModal();
-              }}
-              size='sm'
-            >
-              <Text className='font-inter-semiBold text-foreground text-[12px]'>{params?.cancelText ?? 'Cancel'}</Text>
-            </Button>
-            <Button
-              variant={'default'}
-              className='min-w-[80px]'
-              onPress={() => {
-                params?.onConfirm?.();
-                hideModal();
-              }}
-              size='sm'
-            >
-              <Text className='font-inter-semiBold text-white text-[12px]'>{params?.confirmText ?? 'Confirm'}</Text>
-            </Button>
-          </View>
+        <Text style={styles.messageText}>{params?.message ?? ''}</Text>
+        <View style={styles.buttonRow}>
+          <Button
+            variant={'secondary'}
+            onPress={() => {
+              params?.onCancel?.();
+              hideModal();
+            }}
+            size='sm'
+          >
+            <Text style={styles.cancelText}>{params?.cancelText ?? 'Cancel'}</Text>
+          </Button>
+          <Button
+            variant={'default'}
+            onPress={() => {
+              params?.onConfirm?.();
+              hideModal();
+            }}
+            size='sm'
+          >
+            <Text style={styles.confirmText}>{params?.confirmText ?? 'Confirm'}</Text>
+          </Button>
         </View>
       </View>
     ),
   });
 };
+
+const styles = StyleSheet.create({
+  overlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(30, 30, 30, 0.6)',
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    top: 0,
+    left: 0,
+    zIndex: 1000,
+  },
+  modalContainer: {
+    width: '80%',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 8,
+    padding: 20,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 8,
+  },
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  titleText: {
+    fontFamily: 'Inter_18pt-SemiBold',
+    color: '#000000',
+    fontSize: 18,
+    fontWeight: '600',
+    marginLeft: 8,
+  },
+  messageText: {
+    fontFamily: 'Inter_18pt-Regular',
+    fontSize: 14,
+    color: '#6B7280',
+    marginBottom: 24,
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    gap: 16,
+  },
+  cancelText: {
+    fontFamily: 'Inter_18pt-SemiBold',
+    color: '#000000',
+    fontSize: 12,
+  },
+  confirmText: {
+    fontFamily: 'Inter_18pt-SemiBold',
+    color: '#FFFFFF',
+    fontSize: 12,
+  },
+});
 
 export default Modal;
