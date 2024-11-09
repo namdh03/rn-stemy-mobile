@@ -105,16 +105,9 @@ const ProductDetailScreen = ({ route, navigation }: ProductDetailScreenNavigatio
               {data?.product.categories && <CategoryList categories={data.product.categories || []} />}
 
               <RenderHTML
-                defaultTextProps={{
-                  style: {
-                    fontFamily: 'Inter_18pt-Regular',
-                    fontSize: 14,
-                    lineHeight: 24,
-                    letterSpacing: 0.2,
-                  },
-                }}
                 contentWidth={width}
                 source={{ html: data?.product.description || '' }}
+                defaultTextProps={{ style: styles.text }}
               />
 
               {/* <Text className='font-inter-regular text-foreground text-[14px] leading-[22px] tracking-[0.2px]'>
@@ -190,6 +183,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.17,
     shadowRadius: 3.05,
     elevation: 4,
+  },
+  text: {
+    fontFamily: 'Inter_18pt-Regular',
+    fontSize: 14,
+    lineHeight: 24,
+    letterSpacing: 0.2,
   },
 });
 
